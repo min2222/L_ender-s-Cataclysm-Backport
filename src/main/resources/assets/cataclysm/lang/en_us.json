@@ -33,6 +33,7 @@
   "item.cataclysm.ignitium_upgrade.ingredients.desc":"Ignitium Ingot",
   "item.cataclysm.tidal_claws.desc": "Right click to fire a grappling hook",
   "item.cataclysm.tidal_claws.desc2": "Left click to shoot a tentacle that damages entities",
+  "item.cataclysm.blessed_amethyst_crab_meat.desc": "Be affected by the blessing effect. It is immune to darkness, abyssal fear and abyssal burn during the blessing effect",
   "you_cant_escape": "You can't escape",
   "cataclysm.container.weapon_fusion": "§cWeapon Fusion",
 
@@ -79,6 +80,7 @@
   "item.cataclysm.lionfish": "Lionfish",
   "item.cataclysm.lionfish_spike": "Lionfish's Spike",
   "item.cataclysm.amethyst_crab_meat": "Amethyst Crab Meat",
+  "item.cataclysm.blessed_amethyst_crab_meat": "Blessed Amethyst Crab Meat",
   "item.cataclysm.amethyst_crab_shell": "Amethyst Crab Shell",
   "item.cataclysm.abyssal_egg": "Abyssal Egg",
   "item.cataclysm.athame": "Athame",
@@ -211,6 +213,7 @@
   "effect.cataclysm.bone_fracture": "Bone Fracture",
   "effect.cataclysm.abyssal_fear": "Abyssal Fear",
   "effect.cataclysm.abyssal_curse": "Abyssal Curse",
+  "effect.cataclysm.blessing_of_amethyst": "Blessing Of Amethyst",
 
   "golemhurt.sub": "Ender Golem hurts",
   "golemdeath.sub": "Ender Golem dies",
@@ -312,5 +315,7 @@
   "death.attack.emp": "%s has become Electric Grilled Chicken",
   "death.attack.emp.player": "%s has become Electric Grilled Chicken",
   "death.attack.abyssal_burn": "%s has left this dimension",
-  "death.attack.abyssal_burn.player": "%s has left this dimension"
+  "death.attack.abyssal_burn.player": "%s has left this dimension",
+  "cataclysm.gui.altar_of_amethyst_blessing": "Blessing"
+
 }

@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
@@ -271,6 +272,13 @@ public class ServerEventHandler {
             event.setCanceled(true);
         }
     }
+
+    @SubscribeEvent
+    public void onAddReloadListener(AddReloadListenerEvent event){
+        Cataclysm.LOGGER.info("Adding datapack listener altar_of_amethyst_recipes");
+        event.addListener(Cataclysm.PROXY.getAltarOfAmethystRecipeManager());
+    }
+
 }
 
 

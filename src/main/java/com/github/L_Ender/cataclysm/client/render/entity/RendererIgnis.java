@@ -19,9 +19,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RendererIgnis extends MobRenderer<Ignis_Entity, ModelIgnis> {
 
-    private static final ResourceLocation IGNIS_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis.png");
+    private static final ResourceLocation IGNIS1_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle1.png");
+    private static final ResourceLocation IGNIS2_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle2.png");
+    private static final ResourceLocation IGNIS3_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle3.png");
+    private static final ResourceLocation IGNIS4_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle4.png");
 
-    private static final ResourceLocation IGNIS_SOUL_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul.png");
+    private static final ResourceLocation IGNIS_SOUL1_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle1.png");
+    private static final ResourceLocation IGNIS_SOUL2_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle2.png");
+    private static final ResourceLocation IGNIS_SOUL3_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle3.png");
+    private static final ResourceLocation IGNIS_SOUL4_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle4.png");
 
     public RendererIgnis(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelIgnis(), 1.0F);
@@ -30,7 +36,21 @@ public class RendererIgnis extends MobRenderer<Ignis_Entity, ModelIgnis> {
     }
     @Override
     public ResourceLocation getTextureLocation(Ignis_Entity entity) {
-        return entity.getBossPhase() > 0 ? IGNIS_SOUL_TEXTURES : IGNIS_TEXTURES;
+        return getIdleTexture(entity,entity.tickCount % 9);
+    }
+
+    private ResourceLocation getIdleTexture(Ignis_Entity entity,int age) {
+        if (age < 3) {
+            return entity.getBossPhase() > 0 ? IGNIS_SOUL1_TEXTURES : IGNIS1_TEXTURES;
+        } else if (age < 6) {
+            return entity.getBossPhase() > 0 ? IGNIS_SOUL2_TEXTURES : IGNIS2_TEXTURES;
+        } else if (age < 9) {
+            return entity.getBossPhase() > 0 ? IGNIS_SOUL3_TEXTURES : IGNIS3_TEXTURES;
+        } else if (age < 12) {
+            return entity.getBossPhase() > 0 ? IGNIS_SOUL4_TEXTURES : IGNIS4_TEXTURES;
+        } else {
+            return entity.getBossPhase() > 0 ? IGNIS_SOUL1_TEXTURES : IGNIS1_TEXTURES;
+        }
     }
 
     @Override
