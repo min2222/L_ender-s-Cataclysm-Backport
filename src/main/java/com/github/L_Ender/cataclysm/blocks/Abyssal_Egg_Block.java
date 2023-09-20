@@ -1,22 +1,16 @@
 package com.github.L_Ender.cataclysm.blocks;
 
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAbyssal_Egg;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityEMP;
-import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -33,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
@@ -41,20 +34,19 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.level.pathfinder.PathComputationType;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockAbyssal_Egg extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class Abyssal_Egg_Block extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final int MAX_HATCH_LEVEL = 2;
     public static final IntegerProperty HATCH = BlockStateProperties.HATCH;
     private static final int REGULAR_HATCH_TIME_TICKS = 12000;
     private static final int RANDOM_HATCH_OFFSET_TICKS = 300;
     private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
-    public BlockAbyssal_Egg() {
+    public Abyssal_Egg_Block() {
         super(Properties.of()
                 .noOcclusion()
                 .lightLevel((block) -> 1)

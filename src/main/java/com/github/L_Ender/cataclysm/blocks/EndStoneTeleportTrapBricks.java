@@ -15,11 +15,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public class EndStoneTeleportTrapBricks extends TrapBlock {
-    public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
     public EndStoneTeleportTrapBricks(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
     }
 
     /**

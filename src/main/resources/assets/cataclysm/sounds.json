@@ -717,5 +717,51 @@
         "name": "cataclysm:entity/crab_bite"
       }
     ]
+  },
+  "remnant_bite": {
+    "subtitle": "remnant_bite.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_bite"
+      }
+    ]
+  },
+  "remnant_breathing": {
+    "subtitle": "remnant_breathing.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_breathing"
+      }
+    ]
+  },
+  "remnant_charge_prepare": {
+    "subtitle": "remnant_charge_prepare.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_charge_prepare"
+      }
+    ]
+  },
+  "remnant_charge_roar": {
+    "subtitle": "remnant_charge_roar.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_charge_roar"
+      }
+    ]
+  },
+  "remnant_charge_step": {
+    "subtitle": "remnant_charge_step.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_charge_step1"
+      },
+      {
+        "name": "cataclysm:entity/remnant_charge_step2"
+      },
+      {
+        "name": "cataclysm:entity/remnant_charge_step3"
+      }
+    ]
   }
 }

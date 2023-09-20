@@ -26,14 +26,14 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockAltarOfAmethyst extends BaseEntityBlock {
+public class Altar_Of_Amethyst_Block extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape BASE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
     private static final VoxelShape MID = Block.box(2.0D, 3.0D, 2.0D, 14.0D, 13.0D, 14.0D);
     private static final VoxelShape TOP = Block.box(0.0D, 13.0D, 0.0D, 16.0D, 16.0D, 16.0D);
     private static final VoxelShape AXIS_AABB = Shapes.or(BASE,MID, TOP);
 
-    public BlockAltarOfAmethyst() {
+    public Altar_Of_Amethyst_Block() {
         super(Properties.of()
                 .noOcclusion()
                 .lightLevel((block) -> 7)

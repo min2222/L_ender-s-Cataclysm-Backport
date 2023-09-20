@@ -20,6 +20,9 @@ public class ModTag {
 
     public static final TagKey<EntityType<?>> TRAP_BLOCK_NOT_DETECTED = registerEntityTag("trap_block_not_detected");
 
+
+    public static final TagKey<EntityType<?>> SANDSTONE_TRAP_NOT_DETECTED = registerEntityTag("sandstone_trap_not_detected");
+
     public static final TagKey<EntityType<?>> IGNIS_CANT_POKE = registerEntityTag("ignis_cant_poke");
 
     public static final TagKey<EntityType<?>> HARBINGER_NONE_TARGETS = registerEntityTag("harbinger_none_targets");

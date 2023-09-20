@@ -1,6 +1,6 @@
 package com.github.L_Ender.cataclysm.blockentities;
 
-import com.github.L_Ender.cataclysm.blocks.BlockEMP;
+import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.init.ModSounds;
@@ -35,12 +35,12 @@ public class TileEntityEMP extends BlockEntity {
     public void tick() {
         prevChompProgress = chompProgress;
         boolean powered = false;
-        if(getBlockState().getBlock() instanceof BlockEMP){
-            powered = getBlockState().getValue(BlockEMP.POWERED);
+        if(getBlockState().getBlock() instanceof EMP_Block){
+            powered = getBlockState().getValue(EMP_Block.POWERED);
         }
         boolean overload = false;
-        if(getBlockState().getBlock() instanceof BlockEMP){
-            overload = getBlockState().getValue(BlockEMP.OVERLOAD);
+        if(getBlockState().getBlock() instanceof EMP_Block){
+            overload = getBlockState().getValue(EMP_Block.OVERLOAD);
         }
 
         if(powered && chompProgress < 15F){
@@ -57,10 +57,10 @@ public class TileEntityEMP extends BlockEntity {
             level.addParticle(ModParticle.EM_PULSE.get(), x, y, z, 0, 0, 0);
             ScreenShake_Entity.ScreenShake(this.level, Vec3.atCenterOf(this.getBlockPos()), 20, 0.01f, 0, 20);
             level.playSound((Player)null, this.getBlockPos(), ModSounds.EMP_ACTIVATED.get(), SoundSource.BLOCKS, 4F, level.random.nextFloat() * 0.2F + 1.0F);
-            level.setBlockAndUpdate(this.getBlockPos(), getBlockState().setValue(BlockEMP.OVERLOAD, true));
+            level.setBlockAndUpdate(this.getBlockPos(), getBlockState().setValue(EMP_Block.OVERLOAD, true));
             AABB screamBox = new AABB(this.getBlockPos().getX() - 5f, this.getBlockPos().getY() - 5F, this.getBlockPos().getZ() - 5, this.getBlockPos().getX() + 5, this.getBlockPos().getY() + 5F, this.getBlockPos().getZ() + 5F);
             for(LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, screamBox)){
-               entity.hurt(entity.level().damageSources().source(CMDamageTypes.EMP), 3 + entity.getRandom().nextInt(3));
+               entity.hurt(CMDamageTypes.getDamageSource(level, CMDamageTypes.EMP), 3 + entity.getRandom().nextInt(3));
 
             }
         }

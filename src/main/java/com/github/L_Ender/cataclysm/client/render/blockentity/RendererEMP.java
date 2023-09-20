@@ -1,6 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.blockentity;
 
-import com.github.L_Ender.cataclysm.blocks.BlockEMP;
+import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.client.model.block.Model_EMP;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityEMP;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -22,7 +22,7 @@ public class RendererEMP<T extends TileEntityEMP> implements BlockEntityRenderer
     @Override
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
-        Direction dir = tileEntityIn.getBlockState().getValue(BlockEMP.TIP_DIRECTION);
+        Direction dir = tileEntityIn.getBlockState().getValue(EMP_Block.TIP_DIRECTION);
         if(dir == Direction.UP){
             matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         }else {

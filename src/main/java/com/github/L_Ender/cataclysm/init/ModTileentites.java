@@ -16,6 +16,9 @@ public class ModTileentites {
     public static final RegistryObject<BlockEntityType<TileEntityObsidianExplosionTrapBricks>> OBSIDIAN_EXPLOSION_TRAP_BRICKS = TILE_ENTITY_TYPES.register("obsidian_explosion_trap_bricks", () ->
             BlockEntityType.Builder.of(TileEntityObsidianExplosionTrapBricks::new, ModBlocks.OBSIDIAN_EXPLOSION_TRAP_BRICKS.get()).build(null));
 
+    public static final RegistryObject<BlockEntityType<TileEntitySandstoneIgniteTrap>> SANDSTONE_IGNITE_TRAP = TILE_ENTITY_TYPES.register("sadsotne_ignite_trap", () ->
+            BlockEntityType.Builder.of(TileEntitySandstoneIgniteTrap::new, ModBlocks.SANDSTONE_IGNITE_TRAP.get()).build(null));
+
     public static final RegistryObject<BlockEntityType<TileEntityAltarOfVoid>> ALTAR_OF_VOID = TILE_ENTITY_TYPES.register("altar_of_void", () ->
             BlockEntityType.Builder.of(TileEntityAltarOfVoid::new, ModBlocks.ALTAR_OF_VOID.get()).build(null));
 

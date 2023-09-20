@@ -1,7 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 
-import com.github.L_Ender.cataclysm.blocks.BlockEMP;
+import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.tool.ControlledAnimation;
 import com.github.L_Ender.cataclysm.config.CMConfig;
@@ -141,8 +141,8 @@ public class Death_Laser_Beam_Entity extends Entity {
                     for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(collidePosX - 2.5F), Mth.floor(collidePosY - 2.5F), Mth.floor(collidePosZ - 2.5F), Mth.floor(collidePosX + 2.5F), Mth.floor(collidePosY + 2.5F), Mth.floor(collidePosZ + 2.5F))) {
                         BlockState block = level().getBlockState(pos);
                         if (block.is(ModBlocks.EMP.get())) {
-                            if(!block.getValue(BlockEMP.POWERED) && block.getValue(BlockEMP.OVERLOAD)) {
-                                this.level().setBlockAndUpdate(pos, block.setValue(BlockEMP.OVERLOAD, false));
+                            if(!block.getValue(EMP_Block.POWERED) && block.getValue(EMP_Block.OVERLOAD)) {
+                                this.level().setBlockAndUpdate(pos, block.setValue(EMP_Block.OVERLOAD, false));
                             }
                         }
                     }

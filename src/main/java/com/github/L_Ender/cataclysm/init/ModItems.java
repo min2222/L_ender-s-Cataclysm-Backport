@@ -44,6 +44,9 @@ public class ModItems {
     public static final RegistryObject<BlockItem> DUNGEON_BLOCK = ITEMS.register("dungeon_block",
             () -> new BlockItem(ModBlocks.DUNGEON_BLOCK.get(), new Item.Properties()));
 
+    public static final RegistryObject<BlockItem> POLISHED_SANDSTONE = ITEMS.register("polished_sandstone",
+            () -> new BlockItem(ModBlocks.POLISHED_SANDSTONE.get(), new Item.Properties()));
+
     public static final RegistryObject<BlockItem> POLISHED_END_STONE = ITEMS.register("polished_end_stone",
             () -> new BlockItem(ModBlocks.POLISHED_END_STONE.get(), new Item.Properties()));
 
@@ -97,6 +100,15 @@ public class ModItems {
 
     public static final RegistryObject<BlockItem> OBSIDIAN_EXPLOSION_TRAP_BRICKS = ITEMS.register("obsidian_explosion_trap_bricks",
             () -> new BlockItem(ModBlocks.OBSIDIAN_EXPLOSION_TRAP_BRICKS.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> SANDSTONE_POISON_DART_TRAP = ITEMS.register("sandstone_poison_dart_trap",
+            () -> new BlockItem(ModBlocks.SANDSTONE_POISON_DART_TRAP.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> SANDSTONE_IGNITE_TRAP = ITEMS.register("sandstone_ignite_trap",
+            () -> new BlockItem(ModBlocks.SANDSTONE_IGNITE_TRAP.get(), new Item.Properties()));
+
+    public static final RegistryObject<BlockItem> SANDSTONE_FALLING_TRAP = ITEMS.register("sandstone_falling_trap",
+            () -> new BlockItem(ModBlocks.SANDSTONE_FALLING_TRAP.get(), new Item.Properties()));
 
     public static final RegistryObject<BlockItem> CHORUS_PLANKS = ITEMS.register("chorus_planks",
             () -> new BlockItem(ModBlocks.CHORUS_PLANKS.get(), new Item.Properties()));
@@ -347,6 +359,8 @@ public class ModItems {
     public static final RegistryObject<SpawnEggItem> AMETHYST_CRAB_SPAWN_EGG = ITEMS.register("amethyst_crab_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.AMETHYST_CRAB, 0x646464, 0x7a5bb5, new Item.Properties()));
 
+    public static final RegistryObject<SpawnEggItem> ANCIENT_REMNANT_SPAWN_EGG = ITEMS.register("ancient_remnant_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.ANCIENT_REMNANT, 0xb7b196, 0x682e22, new Item.Properties()));
 
     public static void initDispenser(){
         DispenserBlock.registerBehavior(VOID_SCATTER_ARROW.get(), new AbstractProjectileDispenseBehavior() {

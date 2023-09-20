@@ -2,7 +2,6 @@ package com.github.L_Ender.cataclysm.blocks;
 
 
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAbyss;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +21,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.ChestType;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
@@ -33,7 +31,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockAltarOfAbyss extends BaseEntityBlock implements SimpleWaterloggedBlock {
+public class Altar_Of_Abyss_Block extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     private static final VoxelShape BASE = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 3.0D, 16.0D);
@@ -41,7 +39,7 @@ public class BlockAltarOfAbyss extends BaseEntityBlock implements SimpleWaterlog
     private static final VoxelShape TOP = Block.box(0.0D, 8.0D, 0.0D, 16.0D, 11.0D, 16.0D);
     private static final VoxelShape AXIS_AABB = Shapes.or(BASE,MID, TOP);
 
-    public BlockAltarOfAbyss() {
+    public Altar_Of_Abyss_Block() {
         super(Properties.of()
                 .noOcclusion()
                 .lightLevel((block) -> 7)

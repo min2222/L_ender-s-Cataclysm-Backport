@@ -24,9 +24,9 @@ import net.minecraft.world.phys.BlockHitResult;
 
 import javax.annotation.Nullable;
 
-public class BlockAltarOfFire extends BaseEntityBlock {
+public class Altar_Of_Fire_Block extends BaseEntityBlock {
 
-    public BlockAltarOfFire() {
+    public Altar_Of_Fire_Block() {
         super(Properties.of()
                 .noOcclusion()
                 .lightLevel((block) -> 7)

@@ -15,10 +15,8 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 public class PurpurVoidRuneTrapBlock extends TrapBlock {
     //The code and texture were brought from savage and ravage. Thx abnormal
-    public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public PurpurVoidRuneTrapBlock(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.defaultBlockState().setValue(LIT, Boolean.valueOf(false)));
     }
 
     /**

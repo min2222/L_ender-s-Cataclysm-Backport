@@ -18,13 +18,13 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class BlockAltarOfVoid extends BaseEntityBlock {
+public class Altar_Of_Void_Block extends BaseEntityBlock {
     private static final VoxelShape BASE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
     private static final VoxelShape MID = Block.box(2.0D, 4.0D, 2.0D, 14.0D, 10.0D, 14.0D);
     private static final VoxelShape TOP = Block.box(0.0D, 10.0D, 0.0D, 16.0D, 14.0D, 16.0D);
     private static final VoxelShape AXIS_AABB = Shapes.or(BASE,MID, TOP);
 
-    public BlockAltarOfVoid() {
+    public Altar_Of_Void_Block() {
         super(Properties.of()
                 .noOcclusion()
                 .lightLevel((block) -> 7)

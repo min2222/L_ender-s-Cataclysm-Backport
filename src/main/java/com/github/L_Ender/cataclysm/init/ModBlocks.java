@@ -5,13 +5,13 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.blocks.*;
 import com.github.L_Ender.cataclysm.items.BlockItemCMRender;
 import com.github.L_Ender.cataclysm.items.CMBlockItem;
-import com.github.L_Ender.cataclysm.Cataclysm;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -45,6 +45,7 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> POLISHED_END_STONE = BLOCKS.register("polished_end_stone",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.END_STONE)));
+
 
     public static final RegistryObject<Block> POLISHED_END_STONE_SLAB = BLOCKS.register("polished_end_stone_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(POLISHED_END_STONE.get())));
@@ -114,29 +115,51 @@ public class ModBlocks {
     public static final RegistryObject<Block> OBSIDIAN_EXPLOSION_TRAP_BRICKS = BLOCKS.register("obsidian_explosion_trap_bricks",
             () -> new ObsidianExplosionTrapBricks(BlockBehaviour.Properties.copy(OBSIDIAN_BRICKS.get()).randomTicks().lightLevel(getLightValueLit(7))));
 
+    public static final RegistryObject<Block> SANDSTONE_POISON_DART_TRAP = BLOCKS.register("sandstone_poison_dart_trap",
+            () -> new Sandstone_Poison_Dart_Trap((BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.SAND)
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops().strength(0.8F))));
+
+    public static final RegistryObject<Block> SANDSTONE_IGNITE_TRAP = BLOCKS.register("sandstone_ignite_trap",
+            () -> new Sandstone_Ignite_Trap(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.SAND)
+                    .randomTicks()
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(0.8F)));
+
+    public static final RegistryObject<Block> SANDSTONE_FALLING_TRAP = BLOCKS.register("sandstone_falling_trap",
+            () -> new Sandstone_Falling_Trap(BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.SAND)
+                    .randomTicks()
+                    .instrument(NoteBlockInstrument.BASEDRUM)
+                    .requiresCorrectToolForDrops()
+                    .strength(0.8F)));
+
     public static final RegistryObject<Block> ALTAR_OF_FIRE = registerBlockAndItem("altar_of_fire",
-            BlockAltarOfFire::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
+            Altar_Of_Fire_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> ALTAR_OF_VOID = registerBlockAndItem("altar_of_void",
-            BlockAltarOfVoid::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
+            Altar_Of_Void_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> ALTAR_OF_AMETHYST = registerBlockAndItem("altar_of_amethyst",
-            BlockAltarOfAmethyst::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant().fireResistant(), true);
+            Altar_Of_Amethyst_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant().fireResistant(), true);
 
     public static final RegistryObject<Block> ALTAR_OF_ABYSS = registerBlockAndItem("altar_of_abyss",
-            BlockAltarOfAbyss::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant().fireResistant(), true);
+            Altar_Of_Abyss_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant().fireResistant(), true);
 
     public static final RegistryObject<Block> DUNGEON_BLOCK = BLOCKS.register("dungeon_block",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(-1.0F, 3600000.0F).noLootTable()));
 
     public static final RegistryObject<Block> EMP = registerBlockAndItem("emp",
-            BlockEMP::new, new Item.Properties().rarity(Rarity.EPIC), true);
+            EMP_Block::new, new Item.Properties().rarity(Rarity.EPIC), true);
 
     public static final RegistryObject<Block> MECHANICAL_FUSION_ANVIL = registerBlockAndItem("mechanical_fusion_anvil",
             Mechanical_fusion_Anvil::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> ABYSSAL_EGG = registerBlockAndItem("abyssal_egg",
-            BlockAbyssal_Egg::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
+            Abyssal_Egg_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> CHORUS_PLANKS = BLOCKS.register("chorus_planks",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).
@@ -178,6 +201,9 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> STONE_TILE_WALL = BLOCKS.register("stone_tile_wall",
             () -> new WallBlock(BlockBehaviour.Properties.copy(STONE_TILES.get())));
+
+    public static final RegistryObject<Block> POLISHED_SANDSTONE = BLOCKS.register("polished_sand_stone",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)));
 
     private static ToIntFunction<BlockState> getLightValueLit(int lightValue) {
         return (state) -> {

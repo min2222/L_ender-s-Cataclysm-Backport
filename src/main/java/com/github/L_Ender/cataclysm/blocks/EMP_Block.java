@@ -25,12 +25,12 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 
 import javax.annotation.Nullable;
 
-public class BlockEMP extends BaseEntityBlock {
+public class EMP_Block extends BaseEntityBlock {
     public static final DirectionProperty TIP_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
     public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
     public static final BooleanProperty OVERLOAD = BooleanProperty.create("overload");
 
-    public BlockEMP() {
+    public EMP_Block() {
         super(Properties.of()
                 .noOcclusion()
                 .lightLevel((block) -> 7)

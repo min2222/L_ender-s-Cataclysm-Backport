@@ -366,6 +366,14 @@ public class ModEntities {
             .setUpdateInterval(20)
             .build(Cataclysm.MODID + ":amethyst_cluster_projectile"));
 
+    public static final RegistryObject<EntityType<Ancient_Remnant_Entity>> ANCIENT_REMNANT = ENTITY_TYPE.register("ancient_remnant", () -> EntityType.Builder.of(Ancient_Remnant_Entity::new, MobCategory.MONSTER)
+            .sized(4.0F, 7F)
+            .fireImmune()
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(true)
+            .build(Cataclysm.MODID + ":ancient_remnant"));
+
+
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
         if(entityTag == null){
             return Predicates.alwaysFalse();
@@ -405,6 +413,7 @@ public class ModEntities {
         event.put(CORALSSUS.get(), Coralssus_Entity.coralssus().build());
         event.put(LIONFISH.get(), Lionfish_Entity.lionfish().build());
         event.put(AMETHYST_CRAB.get(), Amethyst_Crab_Entity.amethyst_crab().build());
+        event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.ancient_ramant().build());
     }
 }
 

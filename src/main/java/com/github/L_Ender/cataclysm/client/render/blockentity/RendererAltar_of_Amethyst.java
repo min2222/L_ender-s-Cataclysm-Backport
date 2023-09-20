@@ -1,7 +1,7 @@
 package com.github.L_Ender.cataclysm.client.render.blockentity;
 
 
-import com.github.L_Ender.cataclysm.blocks.BlockAltarOfAmethyst;
+import com.github.L_Ender.cataclysm.blocks.Altar_Of_Amethyst_Block;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Amethyst;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,8 +20,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BeaconBlockEntity;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -37,7 +35,7 @@ public class RendererAltar_of_Amethyst<T extends TileEntityAltarOfAmethyst> impl
     @Override
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
-        Direction dir = tileEntityIn.getBlockState().getValue(BlockAltarOfAmethyst.FACING);
+        Direction dir = tileEntityIn.getBlockState().getValue(Altar_Of_Amethyst_Block.FACING);
         if(dir == Direction.NORTH){
             matrixStackIn.translate(0.5, 1.5F, 0.5F);
         }else if(dir == Direction.EAST){

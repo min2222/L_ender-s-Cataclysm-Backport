@@ -2,11 +2,8 @@ package com.github.L_Ender.cataclysm.client.render.blockentity;
 
 
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAbyss;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
-import com.github.L_Ender.cataclysm.blocks.BlockAltarOfAbyss;
-import com.github.L_Ender.cataclysm.blocks.BlockAltarOfAmethyst;
+import com.github.L_Ender.cataclysm.blocks.Altar_Of_Abyss_Block;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Abyss;
-import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Amethyst;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
@@ -33,7 +30,7 @@ public class RendererAltar_of_Abyss<T extends TileEntityAltarOfAbyss> implements
     @Override
     public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
-        Direction dir = tileEntityIn.getBlockState().getValue(BlockAltarOfAbyss.FACING);
+        Direction dir = tileEntityIn.getBlockState().getValue(Altar_Of_Abyss_Block.FACING);
         if(dir == Direction.NORTH){
             matrixStackIn.translate(0.5, 1.5F, 0.5F);
         }else if(dir == Direction.EAST){

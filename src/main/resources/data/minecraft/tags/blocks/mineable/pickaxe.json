@@ -31,6 +31,9 @@
     "cataclysm:stone_tile_slab",
     "cataclysm:stone_tile_stairs",
     "cataclysm:stone_tile_wall",
-    "cataclysm:stone_pillar"
+    "cataclysm:stone_pillar",
+    "cataclysm:sandstone_poison_dart_trap",
+    "cataclysm:sandstone_ignite_trap",
+    "cataclysm:sandstone_falling_trap"
   ]
 }
