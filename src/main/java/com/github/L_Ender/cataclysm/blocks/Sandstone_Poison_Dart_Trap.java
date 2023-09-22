@@ -1,11 +1,16 @@
 package com.github.L_Ender.cataclysm.blocks;
 
+import com.github.L_Ender.cataclysm.entity.projectile.Poison_Dart_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Void_Scatter_Arrow_Entity;
+import com.github.L_Ender.cataclysm.init.ModEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
+import net.minecraft.core.dispenser.DispenseItemBehavior;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -50,6 +55,11 @@ public class Sandstone_Poison_Dart_Trap extends Block {
         if (flag && !flag1) {
             if (worldIn.isLoaded(pos)) {
                 Vec3 dispensePosition = getDispensePosition(pos, state.getValue(FACING));
+                Direction direction = state.getValue(FACING);
+                Poison_Dart_Entity dart = new Poison_Dart_Entity(ModEntities.POISON_DART.get(),dispensePosition.x, (float) dispensePosition.y +0.25F, (float) dispensePosition.z,worldIn);
+                dart.pickup = AbstractArrow.Pickup.DISALLOWED;
+                dart.shoot(direction.getStepX(), (double)((float)direction.getStepY() + 0.1F), (double)direction.getStepZ(), 2.5f, 1.0f);
+                worldIn.addFreshEntity(dart);
             }
             worldIn.setBlock(pos, state.setValue(LIT, Boolean.valueOf(true)), 2);
             worldIn.scheduleTick(pos, this, 20);

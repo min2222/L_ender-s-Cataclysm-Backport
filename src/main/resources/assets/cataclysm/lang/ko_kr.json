@@ -107,7 +107,8 @@
   "item.cataclysm.deepling_priest_spawn_egg": "심연꾼 사제 생성 알",
   "item.cataclysm.lionfish_spawn_egg": "쏠배감펭 생성 알",
   "item.cataclysm.coralssus_spawn_egg": "코랄서스 생성 알",
-  "item.cataclysm.amethyst_crab_spawn_egg": "자수정 게 생성알",
+  "item.cataclysm.amethyst_crab_spawn_egg": "자수정 게 생성 알",
+  "item.cataclysm.ancient_remnant_spawn_egg": "고대의 잔재 생성 알",
 
   "itemGroup.cataclysm": "대격변",
   "block.cataclysm.witherite_block": "위더라이트 블록",
@@ -143,8 +144,9 @@
   "block.cataclysm.purpur_void_rune_trap_block": "퍼퍼 함정 블록",
   "block.cataclysm.end_stone_teleport_trap_bricks": "엔드 함정 석재 벽돌",
   "block.cataclysm.obsidian_explosion_trap_bricks": "흑요석 함정 벽돌",
+  "block.cataclysm.sandstone_falling_trap":"사암 추락 함정",
   "block.cataclysm.sandstone_poison_dart_trap": "사암 독침 함정",
-  "block.cataclysm.sandstone_ignite_trap": "사암 독침 함정",
+  "block.cataclysm.sandstone_ignite_trap": "사암 점화 함정",
   "block.cataclysm.void_lantern_block": "공허 랜턴 블록",
   "block.cataclysm.altar_of_fire": "불의 제단",
   "block.cataclysm.altar_of_void": "공허의 제단",
@@ -204,6 +206,7 @@
   "entity.cataclysm.tidal_hook": "타이달 갈고리",
   "entity.cataclysm.amethyst_crab": "자수정 게",
   "entity.cataclysm.earthquake": "지진",
+  "entity.cataclysm.ancient_remnant": "고대의 잔재",
 
   "entity.cataclysm.all.command_0": "%s 이(가) 돌아다니는 중",
   "entity.cataclysm.all.command_1": "%s 이(가) 따라오는 중",

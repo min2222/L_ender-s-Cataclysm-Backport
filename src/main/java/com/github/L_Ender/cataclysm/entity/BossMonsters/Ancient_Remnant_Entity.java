@@ -72,7 +72,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         this.goalSelector.addGoal(3, new RemnantAttackGoal(this));
         this.goalSelector.addGoal(0, new RemnantChargeAttackGoal(this, REMNANT_CHARGE_PREPARE));
         this.goalSelector.addGoal(0, new SimpleAnimationGoal<>(this, REMNANT_BITE));
-        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 1));
+        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -152,7 +152,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
     public void tick() {
         super.tick();
-        setYRot(yBodyRot);
+       // setYRot(yBodyRot);
         AnimationHandler.INSTANCE.updateAnimations(this);
         prevchargeProgress = chargeProgress;
         if (this.getIsCharge() && chargeProgress < 3F) {
@@ -173,7 +173,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (!this.isSilent() && frame % 8 == 1 && speed > 0.05 && this.getIsCharge()) {
             this.playSound(ModSounds.REMNANT_CHARGE_STEP.get(), 1F, 1.0f);
         }
-
     }
 
     public void aiStep() {
@@ -284,7 +283,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         public void tick() {
             LivingEntity target = entity.getTarget();
             if(this.entity.getAnimationTick() < 62 && target !=null){
-
+                this.entity.lookAt(target, 30.0F, 30.0F);
                 this.entity.getLookControl().setLookAt(target, 30f, 30f);
             }else{
                 entity.setYRot(entity.yRotO);

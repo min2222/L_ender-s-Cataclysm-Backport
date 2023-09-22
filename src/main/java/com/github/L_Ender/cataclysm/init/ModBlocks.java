@@ -202,7 +202,7 @@ public class ModBlocks {
     public static final RegistryObject<Block> STONE_TILE_WALL = BLOCKS.register("stone_tile_wall",
             () -> new WallBlock(BlockBehaviour.Properties.copy(STONE_TILES.get())));
 
-    public static final RegistryObject<Block> POLISHED_SANDSTONE = BLOCKS.register("polished_sand_stone",
+    public static final RegistryObject<Block> POLISHED_SANDSTONE = BLOCKS.register("polished_sandstone",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)));
 
     private static ToIntFunction<BlockState> getLightValueLit(int lightValue) {

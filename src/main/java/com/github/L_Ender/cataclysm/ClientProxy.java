@@ -84,6 +84,8 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.IGNITED_REVENANT.get(), RendererIgnited_Revenant::new);
         EntityRenderers.register(ModEntities.THE_HARBINGER.get(), RendererThe_Harbinger::new);
         EntityRenderers.register(ModEntities.VOID_SCATTER_ARROW.get(), RendererVoid_Scatter_Arrow::new);
+
+        EntityRenderers.register(ModEntities.POISON_DART.get(), RendererPoison_Dart::new);
         EntityRenderers.register(ModEntities.SCREEN_SHAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.WITHER_SMOKE_EFFECT.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.ASHEN_BREATH.get(), RendererNull::new);

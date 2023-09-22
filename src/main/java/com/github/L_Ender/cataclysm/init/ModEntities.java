@@ -157,6 +157,13 @@ public class ModEntities {
             .clientTrackingRange(4)
             .build(Cataclysm.MODID + ":void_scatter_arrow"));
 
+    public static final RegistryObject<EntityType<Poison_Dart_Entity>> POISON_DART = ENTITY_TYPE.register("poison_dart", () -> EntityType.Builder.<Poison_Dart_Entity>of(Poison_Dart_Entity::new, MobCategory.MISC)
+            .sized(0.5f, 0.5f)
+            .setCustomClientFactory(Poison_Dart_Entity::new)
+            .updateInterval(20)
+            .clientTrackingRange(4)
+            .build(Cataclysm.MODID + ":void_scatter_arrow"));
+
     public static final RegistryObject<EntityType<Void_Shard_Entity>> VOID_SHARD = ENTITY_TYPE.register("void_shard", () -> EntityType.Builder.<Void_Shard_Entity>of(Void_Shard_Entity::new, MobCategory.MISC)
             .sized(0.5f, 0.5f)
             .setCustomClientFactory(Void_Shard_Entity::new)

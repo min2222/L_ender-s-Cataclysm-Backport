@@ -809,7 +809,7 @@ public class ModelAncient_Remnant extends AdvancedEntityModel<Ancient_Remnant_En
 	public void setupAnim(Ancient_Remnant_Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		animate(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 		faceTarget(netHeadYaw, headPitch, 1, head);
-		float globalSpeed = 0.35f;
+		float globalSpeed = 0.25f;
 		float globalDegree = 0.5F;
 
 		float chargeSpeed = 0.5f;
