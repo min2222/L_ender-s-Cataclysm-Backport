@@ -2,9 +2,11 @@ package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
+import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.init.ModSounds;
+import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import net.minecraft.core.BlockPos;
@@ -32,7 +34,10 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -166,6 +171,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             hunting_cooldown--;
         }
 
+        if(this.getAnimation() ==NO_ANIMATION) setAnimation(REMNANT_CHARGE_PREPARE);
+
+        Charge();
         frame++;
         float moveX = (float) (getX() - xo);
         float moveZ = (float) (getZ() - zo);
@@ -175,9 +183,56 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
     }
 
+
+    private void Charge() {
+        if (getIsCharge()) {
+            if (!this.level().isClientSide) {
+                if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+                    boolean flag = false;
+                    AABB aabb = this.getBoundingBox().inflate(0.5D, 0.2D, 0.5D);
+                    for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                        BlockState blockstate = this.level().getBlockState(blockpos);
+                        if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level(), blockpos, this) && !blockstate.is(ModTag.HARBINGER_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                            if (random.nextInt(6) == 0 && !blockstate.hasBlockEntity()) {
+                                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level(), blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
+                                flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                                fallingBlockEntity.setDeltaMovement(fallingBlockEntity.getDeltaMovement().add(this.position().subtract(fallingBlockEntity.position()).multiply((-1.2D + random.nextDouble()) / 3, 0.2D + getRandom().nextGaussian() * 0.15D, (-1.2D + random.nextDouble()) / 3)));
+                                level().addFreshEntity(fallingBlockEntity);
+                            } else {
+                                flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                            }
+                        }
+
+
+                    }
+                    if (flag) {
+                        this.level().levelEvent((Player) null, 1022, this.blockPosition(), 0);
+
+                    }
+                }
+            }
+            if (this.tickCount % 4 == 0) {
+                for (LivingEntity Lentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5D))) {
+                    if (!isAlliedTo(Lentity) && !(Lentity instanceof Ancient_Remnant_Entity) && Lentity != this) {
+                        boolean flag = Lentity.hurt(this.damageSources().mobAttack(this), (float) ((float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE), Lentity.getMaxHealth() * CMConfig.HarbingerChargeHpDamage)));
+                        if (flag) {
+                            if (Lentity.onGround()) {
+                                double d0 = Lentity.getX() - this.getX();
+                                double d1 = Lentity.getZ() - this.getZ();
+                                double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
+                                float f = 1.5F;
+                                Lentity.push(d0 / d2 * f, 0.5F, d1 / d2 * f);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
     public void aiStep() {
         super.aiStep();
-
 
         if(this.getAnimation() == REMNANT_BITE){
             if(this.getAnimationTick() == 5){
@@ -210,15 +265,15 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     }
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.REVENANT_IDLE.get();
+        return super.getAmbientSound();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.REVENANT_HURT.get();
+        return super.getHurtSound(damageSourceIn);
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.REVENANT_DEATH.get();
+        return super.getDeathSound();
     }
 
 

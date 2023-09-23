@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 
-public class RendererAbyssal_Egg<T extends TileEntityAbyssal_Egg> implements BlockEntityRenderer<T> {
+public class RendererAbyssal_Egg implements BlockEntityRenderer<TileEntityAbyssal_Egg> {
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("cataclysm:textures/block/abyssal_egg.png");
     private static final ResourceLocation LAYER_TEXTURE = new ResourceLocation("cataclysm:textures/block/abyssal_egg_layer.png");
@@ -20,7 +20,7 @@ public class RendererAbyssal_Egg<T extends TileEntityAbyssal_Egg> implements Blo
     }
 
     @Override
-    public void render(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileEntityAbyssal_Egg tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         matrixStackIn.scale(1.0F, -1.0F, -1.0F);

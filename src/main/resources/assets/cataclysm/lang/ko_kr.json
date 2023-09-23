@@ -144,7 +144,7 @@
   "block.cataclysm.purpur_void_rune_trap_block": "퍼퍼 함정 블록",
   "block.cataclysm.end_stone_teleport_trap_bricks": "엔드 함정 석재 벽돌",
   "block.cataclysm.obsidian_explosion_trap_bricks": "흑요석 함정 벽돌",
-  "block.cataclysm.sandstone_falling_trap":"사암 추락 함정",
+  "block.cataclysm.sandstone_falling_trap": "사암 추락 함정",
   "block.cataclysm.sandstone_poison_dart_trap": "사암 독침 함정",
   "block.cataclysm.sandstone_ignite_trap": "사암 점화 함정",
   "block.cataclysm.void_lantern_block": "공허 랜턴 블록",
@@ -315,6 +315,9 @@
   "advancements.cataclysm.kill_harbinger.description": "하빈저에게 네더스타를 끼워 깨우고, 쓰러뜨리세요",
   "advancements.cataclysm.kill_leviathan.title": "다차원의 포식자",
   "advancements.cataclysm.kill_leviathan.description": "심연의 제물을 제단에 바쳐 레비아탄을 소환한 뒤, 처치하세요",
+
+  "trim_material.cataclysm.witherite": "위더라이트 소재",
+  "trim_material.cataclysm.ignitium": "이그니티움 소재",
 
   "death.attack.laser": "%s는 %s의 레이저에 의해 말살되었습니다.",
   "death.attack.deathlaser": "%s는 %s의 레이저에 의해 말살되었습니다.",

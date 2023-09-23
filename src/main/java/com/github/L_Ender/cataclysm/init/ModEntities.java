@@ -374,7 +374,7 @@ public class ModEntities {
             .build(Cataclysm.MODID + ":amethyst_cluster_projectile"));
 
     public static final RegistryObject<EntityType<Ancient_Remnant_Entity>> ANCIENT_REMNANT = ENTITY_TYPE.register("ancient_remnant", () -> EntityType.Builder.of(Ancient_Remnant_Entity::new, MobCategory.MONSTER)
-            .sized(4.0F, 7F)
+            .sized(3.8F, 5F)
             .fireImmune()
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(true)

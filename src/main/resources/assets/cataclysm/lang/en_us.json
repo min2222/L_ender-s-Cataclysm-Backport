@@ -316,6 +316,10 @@
   "advancements.cataclysm.kill_leviathan.title": "A Multidimensional Predator",
   "advancements.cataclysm.kill_leviathan.description": "Summon and Defeat the Leviathan",
 
+
+  "trim_material.cataclysm.witherite": "Witherite Material",
+  "trim_material.cataclysm.ignitium" : "Ignitium Material",
+
   "death.attack.laser": "%s was exterminated by %s 's laser",
   "death.attack.deathlaser": "%s was exterminated by %s 's laser",
   "death.attack.emp": "%s has become Electric Grilled Chicken",

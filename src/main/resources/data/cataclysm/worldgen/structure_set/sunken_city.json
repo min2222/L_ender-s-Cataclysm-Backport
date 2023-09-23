@@ -11,7 +11,7 @@
     "spacing": 100,
     "separation": 70,
     "spread_type": "triangular",
-    "exclusion_zone": {
+    "super_exclusion_zone": {
       "chunk_count": 10,
       "other_set": "#cataclysm:sunken_city_avoid"
     }
