@@ -33,6 +33,8 @@
   "item.cataclysm.ignitium_upgrade.ingredients.desc": "이그니티움 주괴",
   "item.cataclysm.tidal_claws.desc": "우클릭:그래플링 훅을 사용할 수 있다.",
   "item.cataclysm.tidal_claws.desc2": "좌클릭:타이달 촉수를 소환해 여러대상을 공격 할 수 있다.",
+  "item.cataclysm.bloom_stone_pauldrons.desc": "웅크려서 숨을 수 있다",
+  "item.cataclysm.bloom_stone_pauldrons.desc2": "웅크리기를 풀었을때, 사방으로 자수정을 발사하여 피해를 준다.",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "축복 효과를 받는다. 축복 동안 어둠,심연의 공포,심연의 화상에 면역이 된다.",
   "you_cant_escape": "넌 벗어날 수 없다.",
   "cataclysm.container.weapon_fusion": "§c무기 융합",
@@ -315,6 +317,7 @@
   "advancements.cataclysm.kill_harbinger.description": "하빈저에게 네더스타를 끼워 깨우고, 쓰러뜨리세요",
   "advancements.cataclysm.kill_leviathan.title": "다차원의 포식자",
   "advancements.cataclysm.kill_leviathan.description": "심연의 제물을 제단에 바쳐 레비아탄을 소환한 뒤, 처치하세요",
+
 
   "trim_material.cataclysm.witherite": "위더라이트 소재",
   "trim_material.cataclysm.ignitium": "이그니티움 소재",

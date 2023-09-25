@@ -98,6 +98,12 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue AmethystCrabHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue AmethystCrabDamageMultiplier;
 
+    public final ForgeConfigSpec.DoubleValue AncientRemnantHealthMultiplier;
+    public final ForgeConfigSpec.DoubleValue AncientRemnantDamageMultiplier;
+    public final ForgeConfigSpec.BooleanValue AncientRemnantBlockBreaking;
+    public final ForgeConfigSpec.IntValue AncientRemnantDamageCap;
+    public final ForgeConfigSpec.DoubleValue AncientRemnantLongRangelimit;
+
     public final ForgeConfigSpec.DoubleValue MonstrositysHpdamage;
     public final ForgeConfigSpec.DoubleValue EnderguardianGravityPunchHpdamage;
     public final ForgeConfigSpec.DoubleValue EnderguardianKnockbackHpdamage;
@@ -248,6 +254,14 @@ public class CommonConfig {
         builder.push("Amethyst Crab");
         AmethystCrabHealthMultiplier = buildDouble(builder, "AmethystCrabHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Amethyst Crab's Health Multiplier");
         AmethystCrabDamageMultiplier  = buildDouble(builder, "AmethystCrabDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Amethyst Crab's Damage Multiplier");
+        builder.pop();
+
+        builder.push("Ancient Remnant");
+        AncientRemnantHealthMultiplier = buildDouble(builder, "AncientRemnantHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Ancient Remnant's Health Multiplier");
+        AncientRemnantDamageMultiplier  = buildDouble(builder, "AncientRemnantDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Ancient Remnant's Damage Multiplier");
+        AncientRemnantLongRangelimit = buildDouble(builder, "Ancient Remnant's prevent attacks from far away Range", "all", 15.0D, 1D, 1000000D, "Ancient Remnant's Immune to Long distance attack range.");
+        AncientRemnantDamageCap = buildInt(builder, "AncientRemnantCap", "all", 21, 0, 1000000, "Ancient Remnant's DamageCap");
+        AncientRemnantBlockBreaking = buildBoolean(builder, "AncientRemnantBlockBreaking", "all", true, "Ancient Remnant's block breaking ignore the MobGriefing");
         builder.pop();
 
         builder.push("spawning");

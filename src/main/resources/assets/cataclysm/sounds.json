@@ -750,6 +750,14 @@
       }
     ]
   },
+  "flame_trap": {
+    "subtitle": "flame_trap.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:block/flame_trap"
+      }
+    ]
+  },
   "remnant_charge_step": {
     "subtitle": "remnant_charge_step.sub",
     "sounds": [

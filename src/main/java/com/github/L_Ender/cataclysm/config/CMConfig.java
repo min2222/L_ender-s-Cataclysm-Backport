@@ -44,6 +44,7 @@ public class CMConfig {
     public static int IgnisDamageCap = 20;
     public static int HarbingerDamageCap = 22;
     public static int LeviathanDamageCap = 20;
+    public static int AncientRemnantDamageCap = 21;
 
     public static int Lavabombmagazine = 3;
     public static int Lavabombamount = 3;
@@ -55,6 +56,7 @@ public class CMConfig {
     public static boolean EnderguardianBlockBreaking = true;
     public static boolean EndergolemBlockBreaking = false;
     public static boolean IgnisBlockBreaking = true;
+    public static boolean AncientRemnantBlockBreaking = true;
     public static boolean LeviathanBlockBreaking = true;
     public static boolean HarbingerLightFire = true;
     public static boolean LeviathanImmuneOutofWater = true;
@@ -90,12 +92,16 @@ public class CMConfig {
     public static double AmethystCrabHealthMultiplier = 1D;
     public static double AmethystCrabDamageMultiplier = 1D;
 
+    public static double AncientRemnantHealthMultiplier = 1D;
+    public static double AncientRemnantDamageMultiplier = 1D;
+
     public static double MonstrosityLongRangelimit = 18D;
     public static double EnderguardianLongRangelimit = 12D;
     public static double EndergolemLongRangelimit = 6D;
     public static double IgnisLongRangelimit = 15D;
     public static double HarbingerLongRangelimit = 35D;
     public static double LeviathanLongRangelimit = 38D;
+    public static double AncientRemnantLongRangelimit = 10;
 
     public static double MonstrosityMusicVolume = 0.5D;
     public static double EnderguardianMusicVolume = 0.5D;
@@ -169,7 +175,10 @@ public class CMConfig {
             EnderguardianDamageCap = ConfigHolder.COMMON.EnderguardianDamageCap.get();
             MonstrosityDamageCap = ConfigHolder.COMMON.MonstrosityDamageCap.get();
             IgnisDamageCap = ConfigHolder.COMMON.IgnisDamageCap.get();
-            HarbingerDamageCap = ConfigHolder.COMMON.IgnisDamageCap.get();
+            HarbingerDamageCap = ConfigHolder.COMMON.HarbingerDamageCap.get();
+            LeviathanDamageCap = ConfigHolder.COMMON.LeviathanDamageCap.get();
+            AncientRemnantDamageCap = ConfigHolder.COMMON.AncientRemnantDamageCap.get();
+
             Lavabombmagazine = ConfigHolder.COMMON.Lavabombmagazine.get();
             Lavabombamount = ConfigHolder.COMMON.Lavabombamount.get();
             EnderguardianBlockBreakingX = ConfigHolder.COMMON.EnderguardianBlockBreakingX.get();
@@ -208,6 +217,7 @@ public class CMConfig {
             IgnisLongRangelimit = ConfigHolder.COMMON.IgnisLongRangelimit.get();
             HarbingerLongRangelimit = ConfigHolder.COMMON.HarbingerLongRangelimit.get();
             LeviathanLongRangelimit = ConfigHolder.COMMON.LeviathanLongRangelimit.get();
+            AncientRemnantLongRangelimit = ConfigHolder.COMMON.AncientRemnantLongRangelimit.get();
 
             MonstrositysHpdamage = ConfigHolder.COMMON.MonstrositysHpdamage.get();
             EnderguardianTeleportAttackHpdamage = ConfigHolder.COMMON.EnderguardianTeleportAttackHpdamage.get();
@@ -225,7 +235,6 @@ public class CMConfig {
             LeviathanHealthMultiplier = ConfigHolder.COMMON.LeviathanHealthMultiplier.get();
             LeviathanDamageMultiplier = ConfigHolder.COMMON.LeviathanDamageMultiplier.get();
             LeviathanBlockBreaking = ConfigHolder.COMMON.LeviathanBlockBreaking.get();
-            LeviathanDamageCap = ConfigHolder.COMMON.LeviathanDamageCap.get();
             LeviathanImmuneOutofWater = ConfigHolder.COMMON.LeviathanImmuneOutofWater.get();
 
             BabyLeviathanHealthMultiplier = ConfigHolder.COMMON.BabyLeviathanHealthMultiplier.get();
@@ -233,6 +242,10 @@ public class CMConfig {
 
             AmethystCrabHealthMultiplier = ConfigHolder.COMMON.AmethystCrabDamageMultiplier.get();
             AmethystCrabDamageMultiplier = ConfigHolder.COMMON.AmethystCrabHealthMultiplier.get();
+
+            AncientRemnantHealthMultiplier = ConfigHolder.COMMON.AncientRemnantHealthMultiplier.get();
+            AncientRemnantDamageMultiplier = ConfigHolder.COMMON.AncientRemnantDamageMultiplier.get();
+            AncientRemnantBlockBreaking = ConfigHolder.COMMON.AncientRemnantBlockBreaking.get();
 
             Armor_Infinity_Durability = ConfigHolder.COMMON.Armor_Infinity_Durability.get();
 
