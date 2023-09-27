@@ -2,12 +2,14 @@ package com.github.L_Ender.cataclysm.blocks;
 
 import com.github.L_Ender.cataclysm.blockentities.TileEntityObsidianExplosionTrapBricks;
 import com.github.L_Ender.cataclysm.blockentities.TileEntitySandstoneIgniteTrap;
+import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -77,6 +79,7 @@ public class Sandstone_Ignite_Trap extends BaseEntityBlock {
     private static void activate(BlockState state, Level world, BlockPos pos, Entity entity) {
         if (!state.getValue(LIT) && shouldTrigger(entity)) {
             world.setBlock(pos, state.setValue(LIT, Boolean.valueOf(true)), 3);
+            world.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ModSounds.FLAME_TRAP.get(), SoundSource.BLOCKS, 1.0F + world.random.nextFloat(), world.random.nextFloat() * 0.7F + 0.3F, false);
         }
     }
 

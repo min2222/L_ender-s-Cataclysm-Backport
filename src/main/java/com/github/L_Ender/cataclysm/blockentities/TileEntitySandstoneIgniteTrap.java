@@ -47,11 +47,6 @@ public class TileEntitySandstoneIgniteTrap extends BlockEntity {
                         level.addParticle(ParticleTypes.FLAME, d0, d2, d4, 0, 0.5D, 0);
 
                 }
-                if (tickCount % 25 == 0) {
-                    level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ModSounds.FLAME_TRAP.get(), SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
-                } else if (tickCount == 1) {
-                    level.playLocalSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, ModSounds.FLAME_TRAP.get(), SoundSource.BLOCKS, 1.0F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.3F, false);
-                }
             }else {
                 if (tickCount % 5 == 0) {
 

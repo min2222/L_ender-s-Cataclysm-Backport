@@ -55,6 +55,12 @@ public class Poison_Dart_Entity extends AbstractArrow {
     }
 
     @Override
+    protected void onHit(HitResult hit) {
+        super.onHit(hit);
+        this.discard();
+    }
+
+    @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
@@ -71,7 +77,7 @@ public class Poison_Dart_Entity extends AbstractArrow {
 
     @Override
     protected ItemStack getPickupItem() {
-        return new ItemStack(Items.ARROW);
+        return new ItemStack(Items.AIR);
     }
 
 

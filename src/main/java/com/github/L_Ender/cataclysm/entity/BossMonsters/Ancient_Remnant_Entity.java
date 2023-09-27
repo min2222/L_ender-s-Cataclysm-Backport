@@ -93,10 +93,10 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(3, new RemnantAttackGoal(this));
         this.goalSelector.addGoal(0, new RemnantChargeAttackGoal(this, REMNANT_CHARGE_PREPARE));
-        this.goalSelector.addGoal(0, new RemnantBiteAttackGoal(this, REMNANT_BITE1,29));
-        this.goalSelector.addGoal(0, new RemnantBiteAttackGoal(this, REMNANT_BITE2,25));
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_BITE1,29));
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_BITE2,25));
 
-        this.goalSelector.addGoal(0, new RemnantBiteAttackGoal(this, REMNANT_TAIL_ATTACK1,13));
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK1,13));
 
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -200,9 +200,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (hunting_cooldown > 0) {
             hunting_cooldown--;
         }
-
-        if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_TAIL_ATTACK1);
-
+       // if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_TAIL_ATTACK1);
         Charge();
         frame++;
         float moveX = (float) (getX() - xo);
@@ -354,7 +352,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
 
     private void TailAreaAttack(float range, float height, float height2 , float arc, float damage, float hpdamage, int shieldbreakticks, int stunticks) {
-        List<LivingEntity> entitiesHit = this.getEntityLivingBaseNearby(range, height, range, range);
+        List<LivingEntity> entitiesHit = this.getTailEntityLivingBaseNearby(range, height,height2, range, range);
         for (LivingEntity entityHit : entitiesHit) {
             float entityHitAngle = (float) ((Math.atan2(entityHit.getZ() - this.getZ(), entityHit.getX() - this.getX()) * (180 / Math.PI) - 90) % 360);
             float entityAttackingAngle = this.yBodyRot % 360;
@@ -367,7 +365,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             float entityRelativeAngle = entityHitAngle - entityAttackingAngle;
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
-                if (!isAlliedTo(entityHit) && !(entityHit instanceof Ancient_Remnant_Entity) && entityHit != this && entityHit.getY() < this.getY() + height2 ) {
+                if (!isAlliedTo(entityHit) && !(entityHit instanceof Ancient_Remnant_Entity) && entityHit != this) {
                     boolean flag = entityHit.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
                     if (entityHit instanceof Player && entityHit.isBlocking() && shieldbreakticks > 0) {
                         disableShield(entityHit, shieldbreakticks);
@@ -386,6 +384,16 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 }
             }
         }
+    }
+
+
+
+    public  List<LivingEntity> getTailEntityLivingBaseNearby(double distanceX, double distanceMinY, double distanceMaxY,double distanceZ, double radius) {
+        return getTailEntitiesNearby(LivingEntity.class, distanceX, distanceMinY,distanceMaxY, distanceZ, radius);
+    }
+
+    public <T extends Entity> List<T> getTailEntitiesNearby(Class<T> entityClass, double dX, double dY, double pY,double dZ, double r) {
+        return level().getEntitiesOfClass(entityClass, new AABB(this.getX() - dX, this.getY() - dY, this.getZ() - dZ, this.getX() + dX, this.getY() + pY, this.getZ() + dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
     }
 
     private void StompParticle(float vec, float math) {
@@ -529,10 +537,10 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     }
 
 
-    static class RemnantBiteAttackGoal extends SimpleAnimationGoal<Ancient_Remnant_Entity> {
+    static class RemnantAnimationAttackGoal extends SimpleAnimationGoal<Ancient_Remnant_Entity> {
         private final int look;
 
-        public RemnantBiteAttackGoal(Ancient_Remnant_Entity entity, Animation animation,int look) {
+        public RemnantAnimationAttackGoal(Ancient_Remnant_Entity entity, Animation animation,int look) {
             super(entity, animation);
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK, Flag.JUMP));
             this.look =look;
@@ -600,7 +608,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             clockwise = this.mob.random.nextBoolean();
             this.target = this.mob.getTarget();
             if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
-                this.mob.setTarget((LivingEntity) null);
+                this.mob.setTarget(null);
             }
 
             this.mob.getNavigation().stop();
@@ -616,7 +624,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             if (target != null) {
                 if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.CIRCLE) {
                     this.mob.lookAt(target, 30.0F, 30.0F);
-                    double dist = this.mob.distanceTo(target);
                     BlockPos circlePos = getRemnantCirclePos(target);
                     if (circlePos != null) {
                         this.mob.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY(), circlePos.getZ() + 0.5D, 1.0D);
@@ -629,12 +636,13 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                             this.mob.mode = Ancient_Remnant_Entity.AttackMode.MELEE;
                         }
                     }else{
-                        if(dist < 6D){
+                        if(this.mob.distanceTo(target) < 7D){
                             this.mob.mode = Ancient_Remnant_Entity.AttackMode.MELEE;
+                            this.mob.setAnimation(REMNANT_TAIL_ATTACK1);
                         }
                     }
                 } else if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.RANGE) {
-                    if (this.mob.getRandom().nextFloat() * 100.0F < 3f) {
+                    if (this.mob.getRandom().nextFloat() * 100.0F < 3f && this.mob.distanceTo(target) > 10.0D) {
                         this.mob.setAnimation(REMNANT_CHARGE_PREPARE);
                     }
                 } else if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.MELEE) {
@@ -649,7 +657,10 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                         } else {
                             this.mob.setAnimation(REMNANT_BITE2);
                         }
+                    }else if (this.mob.getRandom().nextFloat() * 100.0F < 10f && this.mob.distanceTo(target) < 7.0D && target.getY() < this.mob.getY() + 1) {
+                        this.mob.setAnimation(REMNANT_TAIL_ATTACK1);
                     }
+
                 }
 
 
