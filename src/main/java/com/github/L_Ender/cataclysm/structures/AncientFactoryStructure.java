@@ -37,15 +37,19 @@ public class AncientFactoryStructure extends Structure {
     private static final ResourceLocation ANCIENT_FACTORY2 = new ResourceLocation(Cataclysm.MODID, "ancient_factory2");
     private static final ResourceLocation ANCIENT_FACTORY3 = new ResourceLocation(Cataclysm.MODID, "ancient_factory3");
     private static final ResourceLocation ANCIENT_FACTORY4 = new ResourceLocation(Cataclysm.MODID, "ancient_factory4");
+    private static final ResourceLocation ANCIENT_FACTORY5 = new ResourceLocation(Cataclysm.MODID, "ancient_factory5");
+    private static final ResourceLocation ANCIENT_FACTORY6 = new ResourceLocation(Cataclysm.MODID, "ancient_factory6");
     private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
             .put(ANCIENT_FACTORY1, new BlockPos(0, 1, 0))
             .put(ANCIENT_FACTORY2, new BlockPos(0, 1, 0))
             .put(ANCIENT_FACTORY3, new BlockPos(0, 1, 0))
             .put(ANCIENT_FACTORY4, new BlockPos(0, 1, 0))
+            .put(ANCIENT_FACTORY5, new BlockPos(0, 1, 0))
+            .put(ANCIENT_FACTORY6, new BlockPos(0, 1, 0))
             .build();
 
     /*
-     * Begins assembling your structure and where the pieces needs to go.
+     * Begins assembling your structure and where the pieces need to go.
      */
     public static void start(StructureTemplateManager templateManager, BlockPos pos, Rotation rotation, StructurePieceAccessor pieceList, RandomSource random) {
         int x = pos.getX();
@@ -55,24 +59,33 @@ public class AncientFactoryStructure extends Structure {
         BlockPos blockpos = rotationOffSet.offset(x, pos.getY(), z);
         pieceList.addPiece(new Piece(templateManager, ANCIENT_FACTORY1, blockpos, rotation));
 
-        rotationOffSet = new BlockPos(32, 0, 0).rotate(rotation);
+        rotationOffSet = new BlockPos(-35, 0, 0).rotate(rotation);
         blockpos = rotationOffSet.offset(x, pos.getY(), z);
         pieceList.addPiece(new Piece(templateManager, ANCIENT_FACTORY2, blockpos, rotation));
 
-        rotationOffSet = new BlockPos(0, 0, 29).rotate(rotation);
+        rotationOffSet = new BlockPos(-70, 0, 0).rotate(rotation);
         blockpos = rotationOffSet.offset(x, pos.getY(), z);
         pieceList.addPiece(new Piece(templateManager, ANCIENT_FACTORY3, blockpos, rotation));
 
-        rotationOffSet = new BlockPos(32, 0, 29).rotate(rotation);
+        rotationOffSet = new BlockPos(0, 0, 30).rotate(rotation);
         blockpos = rotationOffSet.offset(x, pos.getY(), z);
         pieceList.addPiece(new Piece(templateManager, ANCIENT_FACTORY4, blockpos, rotation));
+
+        rotationOffSet = new BlockPos(-35, 0, 30).rotate(rotation);
+        blockpos = rotationOffSet.offset(x, pos.getY(), z);
+        pieceList.addPiece(new Piece(templateManager, ANCIENT_FACTORY5, blockpos, rotation));
+
+        rotationOffSet = new BlockPos(-70, 0, 30).rotate(rotation);
+        blockpos = rotationOffSet.offset(x, pos.getY(), z);
+        pieceList.addPiece(new Piece(templateManager, ANCIENT_FACTORY6, blockpos, rotation));
+
     }
 
 
     public AncientFactoryStructure(StructureSettings p_227593_) {
         super(p_227593_);
     }
-    
+
     public Optional<GenerationStub> findGenerationPoint(GenerationContext p_228964_) {
         int i = p_228964_.chunkPos().x >> 16;
         int j = p_228964_.chunkPos().z >> 16;
