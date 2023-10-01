@@ -240,8 +240,8 @@ public class CMConfig {
             BabyLeviathanHealthMultiplier = ConfigHolder.COMMON.BabyLeviathanHealthMultiplier.get();
             BabyLeviathanDamageMultiplier = ConfigHolder.COMMON.BabyLeviathanDamageMultiplier.get();
 
-            AmethystCrabHealthMultiplier = ConfigHolder.COMMON.AmethystCrabDamageMultiplier.get();
-            AmethystCrabDamageMultiplier = ConfigHolder.COMMON.AmethystCrabHealthMultiplier.get();
+            AmethystCrabHealthMultiplier = ConfigHolder.COMMON.AmethystCrabHealthMultiplier.get();
+            AmethystCrabDamageMultiplier = ConfigHolder.COMMON.AmethystCrabDamageMultiplier.get();
 
             AncientRemnantHealthMultiplier = ConfigHolder.COMMON.AncientRemnantHealthMultiplier.get();
             AncientRemnantDamageMultiplier = ConfigHolder.COMMON.AncientRemnantDamageMultiplier.get();

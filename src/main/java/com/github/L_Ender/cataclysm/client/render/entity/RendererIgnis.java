@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -19,38 +20,27 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RendererIgnis extends MobRenderer<Ignis_Entity, ModelIgnis> {
 
-    private static final ResourceLocation IGNIS1_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle1.png");
-    private static final ResourceLocation IGNIS2_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle2.png");
-    private static final ResourceLocation IGNIS3_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle3.png");
-    private static final ResourceLocation IGNIS4_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle4.png");
-
-    private static final ResourceLocation IGNIS_SOUL1_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle1.png");
-    private static final ResourceLocation IGNIS_SOUL2_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle2.png");
-    private static final ResourceLocation IGNIS_SOUL3_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle3.png");
-    private static final ResourceLocation IGNIS_SOUL4_TEXTURES = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle4.png");
+    private static final ResourceLocation[] TEXTURE_PROGRESS = new ResourceLocation[8];
+    private static final ResourceLocation[] TEXTURE_SOUL_PROGRESS = new ResourceLocation[8];
 
     public RendererIgnis(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelIgnis(), 1.0F);
         this.addLayer(new Ignis_Armor_Crack_Layer(this));
         this.addLayer(new Ignis_Shield_Layer(this));
-    }
-    @Override
-    public ResourceLocation getTextureLocation(Ignis_Entity entity) {
-        return getIdleTexture(entity,entity.tickCount % 9);
+        for(int i = 0; i < 8; i++){
+            TEXTURE_PROGRESS[i] = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_idle_" + i + ".png");
+            TEXTURE_SOUL_PROGRESS[i] = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_idle_" + i + ".png");
+        }
     }
 
-    private ResourceLocation getIdleTexture(Ignis_Entity entity,int age) {
-        if (age < 3) {
-            return entity.getBossPhase() > 0 ? IGNIS_SOUL1_TEXTURES : IGNIS1_TEXTURES;
-        } else if (age < 6) {
-            return entity.getBossPhase() > 0 ? IGNIS_SOUL2_TEXTURES : IGNIS2_TEXTURES;
-        } else if (age < 9) {
-            return entity.getBossPhase() > 0 ? IGNIS_SOUL3_TEXTURES : IGNIS3_TEXTURES;
-        } else if (age < 12) {
-            return entity.getBossPhase() > 0 ? IGNIS_SOUL4_TEXTURES : IGNIS4_TEXTURES;
-        } else {
-            return entity.getBossPhase() > 0 ? IGNIS_SOUL1_TEXTURES : IGNIS1_TEXTURES;
-        }
+
+    @Override
+    public ResourceLocation getTextureLocation(Ignis_Entity entity) {
+        return getGrowingTexture(entity,(int) ((entity.tickCount * 0.5F) % 7));
+    }
+
+    public ResourceLocation getGrowingTexture(Ignis_Entity entity, int age) {
+        return entity.getBossPhase() > 0 ? TEXTURE_SOUL_PROGRESS[Mth.clamp(age, 0, 7)] : TEXTURE_PROGRESS[Mth.clamp(age, 0, 7)];
     }
 
     @Override
