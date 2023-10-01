@@ -22,16 +22,12 @@ public class ModStructures {
     public static final RegistryObject<StructureType<Burning_Arena_Structure>> BURNING_ARENA = STRUCTURE_TYPE_DEF_REG.register("burning_arena", () -> () ->
             Burning_Arena_Structure.CODEC);
 
-    public static final RegistryObject<StructureType<AncientFactoryStructure>> ANCIENT_FACTORY = STRUCTURE_TYPE_DEF_REG.register("ancient_factory", () -> () ->
-            AncientFactoryStructure.CODEC);
-
     public static final RegistryObject<StructureType<Sunken_City_Structure>> SUNKEN_CITY = STRUCTURE_TYPE_DEF_REG.register("sunken_city", () -> () ->
             Sunken_City_Structure.CODEC);
 
     public static final RegistryObject<StructurePieceType> SBSP = STRUCTURE_PIECE_DEF_REG.register("soul_black_smith", () -> SoulBlackSmithStructure.Piece::new);
     public static final RegistryObject<StructurePieceType> RCP = STRUCTURE_PIECE_DEF_REG.register("ruined_citadel", () -> RuinedCitadelStructure.Piece::new);
     public static final RegistryObject<StructurePieceType> BAP = STRUCTURE_PIECE_DEF_REG.register("burning_arena", () -> Burning_Arena_Structure.Piece::new);
-    public static final RegistryObject<StructurePieceType> AFP = STRUCTURE_PIECE_DEF_REG.register("ancient_factory", () -> AncientFactoryStructure.Piece::new);
 
     public static final RegistryObject<StructurePieceType> SCP = STRUCTURE_PIECE_DEF_REG.register("sunken_city", () -> Sunken_City_Structure.Piece::new);
 

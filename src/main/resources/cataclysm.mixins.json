@@ -9,6 +9,7 @@
     "LivingEntityMixin",
     "NoBasaltColumnsInStructuresMixin",
     "NoDeltasInStructuresMixin",
+    "NoLakesInStructuresMixin",
     "WorldGenRegionAccessor"
   ],
   "client": [

@@ -65,6 +65,8 @@ public class ModTag {
 
     public static final TagKey<Structure> BLOCKED_BASALT = registerStructureTag("blocked_basalt");
 
+    public static final TagKey<Structure> BLOCKED_LAKE = registerStructureTag("blocked_lake");
+
     public static final TagKey<Item> EXPLOSION_IMMUNE_ITEM = registerItemTag("explosion_immune_item");
 
     public static final TagKey<Biome> REQUIRED_SUNKEN_CITY_SURROUNDING = registerBiomeTag("required_sunken_city_surrounding");
