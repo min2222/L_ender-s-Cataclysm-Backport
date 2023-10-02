@@ -6,7 +6,6 @@ import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
-import com.github.L_Ender.cataclysm.entity.projectile.Ender_Guardian_Bullet_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
@@ -20,7 +19,6 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -37,13 +35,10 @@ import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.ShulkerBullet;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -62,6 +57,8 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     public static final Animation REMNANT_BITE2 = Animation.create(65);
     public static final Animation REMNANT_CHARGE_PREPARE = Animation.create(125);
     public static final Animation REMNANT_TAIL_ATTACK1 = Animation.create(57);
+    public static final Animation REMNANT_TAIL_ATTACK2 = Animation.create(57);
+    public static final Animation REMNANT_LEFT_STOMP = Animation.create(49);
     private static final EntityDataAccessor<Boolean> CHARGE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> MODE_CHANCE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.INT);
     private AttackMode mode = AttackMode.CIRCLE;
@@ -86,7 +83,8 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 REMNANT_BITE1,
                 REMNANT_CHARGE_PREPARE,
                 REMNANT_BITE2,
-                REMNANT_TAIL_ATTACK1};
+                REMNANT_TAIL_ATTACK1,
+                REMNANT_LEFT_STOMP};
     }
 
     protected void registerGoals() {
@@ -95,7 +93,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         this.goalSelector.addGoal(0, new RemnantChargeAttackGoal(this, REMNANT_CHARGE_PREPARE));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_BITE1,29));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_BITE2,25));
-
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_LEFT_STOMP,24));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK1,13));
 
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
@@ -200,7 +198,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (hunting_cooldown > 0) {
             hunting_cooldown--;
         }
-       // if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_TAIL_ATTACK1);
+        if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_LEFT_STOMP);
         Charge();
         frame++;
         float moveX = (float) (getX() - xo);

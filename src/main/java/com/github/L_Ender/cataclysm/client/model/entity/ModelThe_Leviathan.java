@@ -2232,7 +2232,43 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 
 
 		animator.setAnimation(The_Leviathan_Entity.LEVIATHAN_TENTACLE_HOLD);
-		animator.startKeyframe(25);
+
+
+		animator.startKeyframe(30);
+		animator.rotate(root,(float)Math.toRadians(5f),0,0);
+		animator.move(root,0,0,13);
+		animator.rotate(Belly,(float)Math.toRadians(5f),0,0);
+		animator.rotate(Tail,(float)Math.toRadians(-7.5f),0,0);
+		animator.rotate(Tail2,(float)Math.toRadians(-7.5f),0,0);
+		animator.rotate(Tail3,(float)Math.toRadians(-12.5f),0,0);
+		animator.rotate(UpperR_Tentacle,0,(float)Math.toRadians(25f),0);
+		animator.rotate(UpperR_Tentacle2,0,(float)Math.toRadians(-32.5f),0);
+		animator.rotate(UpperR_Tentacle3,0,(float)Math.toRadians(-25f),0);
+		animator.rotate(UpperR_Tentacle4,0,(float)Math.toRadians(-20f),0);
+
+		animator.rotate(UpperL_Tentacle,0,(float)Math.toRadians(-25f),0);
+		animator.rotate(UpperL_Tentacle2,0,(float)Math.toRadians(32.5f),0);
+		animator.rotate(UpperL_Tentacle3,0,(float)Math.toRadians(25f),0);
+		animator.rotate(UpperL_Tentacle4,0,(float)Math.toRadians(20f),0);
+
+		animator.rotate(LowerR_Tentacle,(float)Math.toRadians(25f),(float)Math.toRadians(80f),(float)Math.toRadians(40f));
+		animator.rotate(LowerR_Tentacle2,0,(float)Math.toRadians(7.5f),0);
+		animator.rotate(LowerR_Tentacle4,0,(float)Math.toRadians(-57.5f),0);
+
+		animator.rotate(LowerL_Tentacle,(float)Math.toRadians(25f),(float)Math.toRadians(-80f),(float)Math.toRadians(-40f));
+		animator.rotate(LowerL_Tentacle2,0,(float)Math.toRadians(-7.5f),0);
+		animator.rotate(LowerL_Tentacle4,0,(float)Math.toRadians(57.5f),0);
+
+		animator.rotate(Maw,(float)Math.toRadians(30f),0,0);
+		animator.rotate(Skul,(float)Math.toRadians(-40f),0,0);
+
+		animator.rotate(Mouth4,(float)Math.toRadians(7.5f),(float)Math.toRadians(-7.5f),0);
+		animator.rotate(Mouth3,(float)Math.toRadians(7.5f),(float)Math.toRadians(7.5f),0);
+		animator.rotate(Mouth2,(float)Math.toRadians(-7.5f),(float)Math.toRadians(-7.5f),0);
+		animator.rotate(Mouth,(float)Math.toRadians(-7.5f),(float)Math.toRadians(7.5f),0);
+		animator.endKeyframe();
+
+		animator.startKeyframe(3);
 		animator.move(root,0,0,-3);
 		animator.rotate(Belly,(float)Math.toRadians(5f),0,0);
 		animator.rotate(Tail,(float)Math.toRadians(-7.5f),0,0);

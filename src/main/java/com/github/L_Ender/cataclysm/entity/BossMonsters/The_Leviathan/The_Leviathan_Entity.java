@@ -95,7 +95,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
     public static final Animation LEVIATHAN_TENTACLE_STRIKE_UPPER_L = Animation.create(44);
     public static final Animation LEVIATHAN_TENTACLE_STRIKE_LOWER_L = Animation.create(44);
 
-    public static final Animation LEVIATHAN_TENTACLE_HOLD = Animation.create(55);
+    public static final Animation LEVIATHAN_TENTACLE_HOLD = Animation.create(63);
     public static final Animation LEVIATHAN_TENTACLE_HOLD_BLAST = Animation.create(189);
 
     public static final Animation LEVIATHAN_TAIL_WHIPS = Animation.create(42);
@@ -778,7 +778,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             }
         }
         if(this.getAnimation() == LEVIATHAN_TENTACLE_HOLD){
-            if (this.getAnimationTick() == 24) {
+            if (this.getAnimationTick() == 32) {
                 TentacleHoldattack(7,2.5, 2.5,2.5,80);
             }
         }

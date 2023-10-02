@@ -4,7 +4,6 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 
 
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
@@ -1061,6 +1060,86 @@ public class ModelAncient_Remnant extends AdvancedEntityModel<Ancient_Remnant_En
 		animator.rotate(right_ankel_joint,(float) Math.toRadians(1.5F),0,(float) Math.toRadians(2.5F));
 		animator.endKeyframe();
 
+
+		animator.resetKeyframe(15);
+
+
+
+		animator.setAnimation(Ancient_Remnant_Entity.REMNANT_LEFT_STOMP);
+		animator.startKeyframe(12);
+		animator.rotate(mid_pivot, (float) Math.toRadians(-7.5F),(float) Math.toRadians(-5F), 0);
+		animator.move(mid_pivot, 0,2, 0);
+		animator.rotate(tail1, 0,(float) Math.toRadians(5F), 0);
+		animator.rotate(tail2, 0,(float) Math.toRadians(5F), 0);
+		animator.rotate(tail3, (float) Math.toRadians(12.5F),(float) Math.toRadians(7.5F), (float) Math.toRadians(1.5F));
+		animator.rotate(tail4, (float) Math.toRadians(22.5F),(float) Math.toRadians(5F), (float) Math.toRadians(5F));
+		animator.rotate(spine1, 0,(float) Math.toRadians(-5F),0);
+		animator.rotate(spine2, 0,(float) Math.toRadians(-5F),0);
+		animator.rotate(neck1, 0,(float) Math.toRadians(-10F),0);
+		animator.rotate(neck2, 0,(float) Math.toRadians(-10F),0);
+		animator.rotate(head, (float) Math.toRadians(7.5F),(float) Math.toRadians(15F),0);
+		animator.rotate(jaw,(float) Math.toRadians(7.5F),0,0);
+		animator.rotate(left_leg,0,0,(float) Math.toRadians(-10F));
+		//animator.move(left_leg,0,-6,0);
+		animator.rotate(right_leg,(float) Math.toRadians(12.5F),0,0);
+		//animator.move(right_leg,0,-4,0);
+		animator.rotate(left_front_leg,(float) Math.toRadians(10F),0,0);
+		animator.rotate(left_ankel_joint,0,0,(float) Math.toRadians(7.5F));
+		animator.rotate(right_front_leg,(float) Math.toRadians(12.5F),0,0);
+		animator.rotate(right_ankel_joint,(float) Math.toRadians(-12.5F),0,0);
+		animator.endKeyframe();
+
+
+		animator.startKeyframe(12);
+		animator.rotate(mid_pivot, (float) Math.toRadians(-17.5F),(float) Math.toRadians(-7.5F), (float) Math.toRadians(-7.5F));
+		animator.move(mid_pivot, 0,-1, 0);
+		animator.rotate(tail1, 0,(float) Math.toRadians(-5F), 0);
+		animator.rotate(tail2, 0,(float) Math.toRadians(-20F), 0);
+		animator.rotate(tail3, (float) Math.toRadians(12.5F),(float) Math.toRadians(-15F), (float) Math.toRadians(-2.5F));
+		animator.rotate(tail4, (float) Math.toRadians(22.5F),(float) Math.toRadians(-7.5F), (float) Math.toRadians(-7.5F));
+		animator.rotate(spine1, (float) Math.toRadians(10F),(float) Math.toRadians(12.5F),(float) Math.toRadians(2.5F));
+		animator.rotate(spine2, (float) Math.toRadians(7.5F),(float) Math.toRadians(-10F),(float) Math.toRadians(-2.5F));
+		animator.rotate(neck1, (float) Math.toRadians(7.5F),(float) Math.toRadians(-10F),0);
+		animator.rotate(neck2, (float) Math.toRadians(10F),(float) Math.toRadians(-10F),0);
+		animator.rotate(head, (float) Math.toRadians(-2.5F),(float) Math.toRadians(15F),0);
+		animator.rotate(jaw,(float) Math.toRadians(12.5F),0,0);
+		animator.rotate(left_leg,(float) Math.toRadians(-50F),(float) Math.toRadians(-12.5F),(float) Math.toRadians(-15F));
+		animator.move(left_leg,0,-4,0);
+		animator.rotate(left_front_leg,(float) Math.toRadians(50F),0,0);
+		animator.rotate(left_ankel_joint,(float) Math.toRadians(15F),0,(float) Math.toRadians(7.5F));
+		animator.rotate(right_leg,(float) Math.toRadians(17.5F),0,(float) Math.toRadians(7.5F));
+		animator.move(right_leg,0,3,0);
+		animator.rotate(right_front_leg,(float) Math.toRadians(20F),0,0);
+		animator.rotate(right_ankel_joint,(float) Math.toRadians(-15F),0,0);
+		animator.endKeyframe();
+
+		animator.setStaticKeyframe(3);
+
+		animator.startKeyframe(2);
+		animator.rotate(mid_pivot, (float) Math.toRadians(-15F),(float) Math.toRadians(-7.5F), (float) Math.toRadians(-6.0F));
+		animator.move(mid_pivot, 0,12.4F, 0);
+		animator.rotate(pelvis, 0,(float) Math.toRadians(10F), 0);
+		animator.rotate(tail1, 0,(float) Math.toRadians(5F), 0);
+		animator.rotate(tail2, 0,(float) Math.toRadians(-2.5F), 0);
+		animator.rotate(tail3, (float) Math.toRadians(12.5F),0, 0);
+		animator.rotate(tail4, (float) Math.toRadians(22.5F),(float) Math.toRadians(2.5F), 0);
+		animator.rotate(spine1, (float) Math.toRadians(2.5F),(float) Math.toRadians(17.5F),(float) Math.toRadians(7.5F));
+		animator.rotate(spine2, (float) Math.toRadians(3.5F),(float) Math.toRadians(-12.5F),(float) Math.toRadians(-5F));
+		animator.rotate(neck1, (float) Math.toRadians(15F),(float) Math.toRadians(-10F),0);
+		animator.rotate(neck2, (float) Math.toRadians(12.5F),(float) Math.toRadians(-10F),0);
+		animator.rotate(head, (float) Math.toRadians(2.5F),(float) Math.toRadians(15F),0);
+		animator.rotate(jaw,(float) Math.toRadians(2.5F),0,0);
+		animator.rotate(left_leg,0,0,(float) Math.toRadians(-5F));
+		animator.move(left_leg,0,4,-12.5F);
+		animator.rotate(left_front_leg,(float) Math.toRadians(42.5F),0,0);
+		animator.rotate(left_ankel_joint,(float) Math.toRadians(-25F),0,(float) Math.toRadians(7.5F));
+		animator.rotate(right_leg,(float) Math.toRadians(5F),0,(float) Math.toRadians(7.5F));
+		animator.move(right_leg,0,-5f,0);
+		animator.rotate(right_front_leg,(float) Math.toRadians(40F),0,0);
+		animator.rotate(right_ankel_joint,(float) Math.toRadians(-30F),0,0);
+		animator.endKeyframe();
+
+		animator.setStaticKeyframe(10);
 
 		animator.resetKeyframe(15);
 	}
