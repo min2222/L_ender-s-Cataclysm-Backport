@@ -3,7 +3,7 @@ package com.github.L_Ender.cataclysm.entity.BossMonsters;
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.*;
-import com.github.L_Ender.cataclysm.entity.Endermaptera_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Void_Vortex_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;

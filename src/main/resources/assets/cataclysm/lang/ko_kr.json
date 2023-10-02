@@ -111,6 +111,7 @@
   "item.cataclysm.coralssus_spawn_egg": "코랄서스 생성 알",
   "item.cataclysm.amethyst_crab_spawn_egg": "자수정 게 생성 알",
   "item.cataclysm.ancient_remnant_spawn_egg": "고대의 잔재 생성 알",
+  "item.cataclysm.the_watcher_spawn_egg": "감시자 생성 알",
 
   "itemGroup.cataclysm": "대격변",
   "block.cataclysm.witherite_block": "위더라이트 블록",
@@ -209,6 +210,7 @@
   "entity.cataclysm.amethyst_crab": "자수정 게",
   "entity.cataclysm.earthquake": "지진",
   "entity.cataclysm.ancient_remnant": "고대의 잔재",
+  "entity.cataclysm.the_watcher": "감시자",
 
   "entity.cataclysm.all.command_0": "%s 이(가) 돌아다니는 중",
   "entity.cataclysm.all.command_1": "%s 이(가) 따라오는 중",
@@ -329,5 +331,4 @@
   "death.attack.abyssal_burn": "%s가 차원을 떠났습니다",
   "death.attack.abyssal_burn.player": "%s가 차원을 떠났습니다",
   "cataclysm.gui.altar_of_amethyst_blessing": "축복"
-
 }

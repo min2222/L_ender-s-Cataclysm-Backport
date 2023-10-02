@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
 
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -30,9 +31,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.UUID;
 
-public class Boss_monster extends Monster implements IAnimatedEntity {
-    private int animationTick;
-    private Animation currentAnimation;
+public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     protected boolean dropAfterDeathAnim = false;
     private int killDataRecentlyHit;
     private DamageSource killDataCause;
@@ -82,22 +81,12 @@ public class Boss_monster extends Monster implements IAnimatedEntity {
         return Math.atan2(second.getZ() - first.getZ(), second.getX() - first.getX()) * (180 / Math.PI) + 90;
     }
 
-    public  List<LivingEntity> getEntityLivingBaseNearby(double distanceX, double distanceY, double distanceZ, double radius) {
-        return getEntitiesNearby(LivingEntity.class, distanceX, distanceY, distanceZ, radius);
-    }
-
-    public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double dX, double dY, double dZ, double r) {
-        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
-    }
 
     public static void disableShield(LivingEntity livingEntity, int ticks) {
         ((Player)livingEntity).getCooldowns().addCooldown(livingEntity.getUseItem().getItem(), ticks);
         livingEntity.stopUsingItem();
         livingEntity.level().broadcastEntityEvent(livingEntity, (byte)30);
     }
-
-
-    protected void onAnimationFinish(Animation animation) {}
 
     @Override
     public void baseTick() {
@@ -242,41 +231,10 @@ public class Boss_monster extends Monster implements IAnimatedEntity {
         }
     }
 
-
     public BossEvent.BossBarColor bossBarColor() {
         return BossEvent.BossBarColor.PURPLE;
     }
 
-    @Override
-    public Animation[] getAnimations() {
-        return new Animation[]{NO_ANIMATION};
-    }
-
-    @Override
-    public int getAnimationTick() {
-        return animationTick;
-    }
-
-
-    @Override
-    public void setAnimationTick(int tick) {
-        animationTick = tick;
-    }
-
-    @Override
-    public Animation getAnimation() {
-        return this.currentAnimation;
-    }
-
-
-    @Override
-    public void setAnimation(Animation animation) {
-        if (animation == NO_ANIMATION) {
-            onAnimationFinish(this.currentAnimation);
-        }
-        this.currentAnimation = animation;
-        setAnimationTick(0);
-    }
 
     public boolean canBeAffected(MobEffectInstance p_34192_) {
         return p_34192_.getEffect() != ModEffect.EFFECTSTUN.get() && p_34192_.getEffect() != ModEffect.EFFECTABYSSAL_CURSE.get() && super.canBeAffected(p_34192_);

@@ -263,6 +263,12 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> REMNANT_CHARGE_STEP = SOUNDS.register("remnant_charge_step",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_charge_step")));
 
+    public static final RegistryObject<SoundEvent> WATCHER_HURT = SOUNDS.register("watcher_hurt",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"watcher_hurt")));
+
+    public static final RegistryObject<SoundEvent> WATCHER_DEATH = SOUNDS.register("watcher_death",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"watcher_death")));
+
     public static final RegistryObject<SoundEvent> FLAME_TRAP = SOUNDS.register("flame_trap",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"flame_trap")));
 }

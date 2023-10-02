@@ -1,4 +1,4 @@
-package com.github.L_Ender.cataclysm.entity;
+package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Golem_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Guardian_Entity;

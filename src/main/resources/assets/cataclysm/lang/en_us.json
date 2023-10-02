@@ -111,6 +111,7 @@
   "item.cataclysm.coralssus_spawn_egg": "Coralssus Spawn Egg",
   "item.cataclysm.amethyst_crab_spawn_egg": "Amethyst Crab Spawn Egg",
   "item.cataclysm.ancient_remnant_spawn_egg": "Ancient Remnant Spawn Egg",
+  "item.cataclysm.the_watcher_spawn_egg": "The Watcher Spawn Egg",
 
   "itemGroup.cataclysm": "Cataclysm",
   "block.cataclysm.witherite_block": "Witherite Block",
@@ -209,6 +210,7 @@
   "entity.cataclysm.amethyst_crab": "Amethyst Crab",
   "entity.cataclysm.earthquake": "Earthquake",
   "entity.cataclysm.ancient_remnant": "Ancient Remnant",
+  "entity.cataclysm.the_watcher": "The Watcher",
 
   "entity.cataclysm.all.command_0": "%s is wandering",
   "entity.cataclysm.all.command_1": "%s is following",

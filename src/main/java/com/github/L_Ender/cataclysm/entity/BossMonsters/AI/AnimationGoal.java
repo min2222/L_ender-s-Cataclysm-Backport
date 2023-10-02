@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.AI;
 
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Boss_monster;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
@@ -7,7 +8,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-public abstract class AnimationGoal<T extends Boss_monster & IAnimatedEntity> extends Goal {
+public abstract class AnimationGoal<T extends Animation_Monster & IAnimatedEntity> extends Goal {
     protected final T entity;
 
     protected AnimationGoal(T entity) {

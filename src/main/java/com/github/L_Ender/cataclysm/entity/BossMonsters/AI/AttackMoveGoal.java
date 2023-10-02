@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.entity.BossMonsters.AI;
 
 
 
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Boss_monster;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.world.entity.EntitySelector;
@@ -14,14 +15,14 @@ import net.minecraft.world.level.pathfinder.Path;
 import java.util.EnumSet;
 
 public class AttackMoveGoal extends Goal {
-    private final Boss_monster Boss_monster;
+    private final Animation_Monster Boss_monster;
     private final boolean followingTargetEvenIfNotSeen;
     private Path path;
     private int delayCounter;
     protected final double moveSpeed;
 
 
-    public AttackMoveGoal(Boss_monster boss, boolean followingTargetEvenIfNotSeen, double moveSpeed) {
+    public AttackMoveGoal(Animation_Monster boss, boolean followingTargetEvenIfNotSeen, double moveSpeed) {
         this.Boss_monster = boss;
         this.followingTargetEvenIfNotSeen = followingTargetEvenIfNotSeen;
         this.moveSpeed = moveSpeed;

@@ -625,6 +625,10 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                     this.heal((float) CMConfig.HarbingerHealingMultiplier);
                 }
             }
+        }else{
+            if (this.tickCount % 20 == 0) {
+                this.heal(50 * (float) CMConfig.HarbingerHealthMultiplier);
+            }
         }
     }
 

@@ -771,5 +771,21 @@
         "name": "cataclysm:entity/remnant_charge_step3"
       }
     ]
+  },
+  "watcher_hurt": {
+    "subtitle": "watcher_hurt.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/robot_hurt"
+      }
+    ]
+  },
+  "watcher_death": {
+    "subtitle": "watcher_death.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/robot_death"
+      }
+    ]
   }
 }

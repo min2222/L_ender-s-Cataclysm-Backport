@@ -2,7 +2,8 @@ package com.github.L_Ender.cataclysm.init;
 
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.entity.*;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.*;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.*;
 import com.github.L_Ender.cataclysm.entity.Deepling.*;
@@ -95,13 +96,11 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<Deepling_Entity>> DEEPLING = ENTITY_TYPE.register("deepling", () -> EntityType.Builder.<Deepling_Entity>of(Deepling_Entity::new, MobCategory.MONSTER)
             .sized(0.6F, 2.3f)
-            .fireImmune()
             .clientTrackingRange(8)
             .build(Cataclysm.MODID + ":deepling"));
 
     public static final RegistryObject<EntityType<Deepling_Brute_Entity>> DEEPLING_BRUTE = ENTITY_TYPE.register("deepling_brute", () -> EntityType.Builder.<Deepling_Brute_Entity>of(Deepling_Brute_Entity::new, MobCategory.MONSTER)
             .sized(0.7F, 2.6f)
-            .fireImmune()
             .clientTrackingRange(8)
             .build(Cataclysm.MODID + ":deepling_brute"));
 
@@ -136,6 +135,11 @@ public class ModEntities {
             .immuneTo(Blocks.WITHER_ROSE)
             .clientTrackingRange(10)
             .build(Cataclysm.MODID + ":the_harbinger"));
+
+    public static final RegistryObject<EntityType<The_Watcher_Entity>> THE_WATCHER = ENTITY_TYPE.register("the_watcher", () -> EntityType.Builder.of(The_Watcher_Entity::new, MobCategory.MONSTER)
+            .sized(0.85F, 0.85f)
+            .fireImmune()
+            .build(Cataclysm.MODID + ":the_watcher"));
 
     public static final RegistryObject<EntityType<The_Leviathan_Entity>> THE_LEVIATHAN = ENTITY_TYPE.register("the_leviathan", () -> EntityType.Builder.of(The_Leviathan_Entity::new, MobCategory.MONSTER)
             .sized(4.5F, 3F)
@@ -421,6 +425,7 @@ public class ModEntities {
         event.put(LIONFISH.get(), Lionfish_Entity.lionfish().build());
         event.put(AMETHYST_CRAB.get(), Amethyst_Crab_Entity.amethyst_crab().build());
         event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.ancient_ramant().build());
+        event.put(THE_WATCHER.get(), The_Watcher_Entity.the_watcher().build());
     }
 }
 

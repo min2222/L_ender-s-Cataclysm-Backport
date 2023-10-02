@@ -1,13 +1,13 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.AI;
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Boss_monster;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.world.entity.LivingEntity;
 
 import java.util.EnumSet;
 
-public class AttackAnimationGoal2<T extends Boss_monster & IAnimatedEntity> extends SimpleAnimationGoal<T> {
+public class AttackAnimationGoal2<T extends Animation_Monster & IAnimatedEntity> extends SimpleAnimationGoal<T> {
     private final int look1;
     private final int look2;
     public AttackAnimationGoal2(T entity, Animation animation, int look1, int look2) {
