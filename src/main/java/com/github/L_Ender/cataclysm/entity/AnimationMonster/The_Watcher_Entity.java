@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Prowler_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
@@ -129,7 +130,7 @@ public class The_Watcher_Entity extends Animation_Monster {
                 if (!this.isSilent()) {
                     this.playSound(ModSounds.HARBINGER_LASER.get(),1,1.0F);
                 }
-                if (target != null) {
+                if (target != null && target.isAlive()) {
                     double d0 = this.getX();
                     double d1 = this.getY() + this.getBbHeight() * 1 / 2;
                     double d2 = this.getZ();
@@ -153,7 +154,7 @@ public class The_Watcher_Entity extends Animation_Monster {
             return true;
         } else if (super.isAlliedTo(entityIn)) {
             return true;
-        } else if (entityIn instanceof The_Watcher_Entity || entityIn instanceof The_Harbinger_Entity) {
+        } else if (entityIn instanceof The_Watcher_Entity || entityIn instanceof The_Harbinger_Entity || entityIn instanceof The_Prowler_Entity) {
             return this.getTeam() == null && entityIn.getTeam() == null;
         } else {
             return false;

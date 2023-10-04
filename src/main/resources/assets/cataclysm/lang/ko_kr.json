@@ -112,6 +112,7 @@
   "item.cataclysm.amethyst_crab_spawn_egg": "자수정 게 생성 알",
   "item.cataclysm.ancient_remnant_spawn_egg": "고대의 잔재 생성 알",
   "item.cataclysm.the_watcher_spawn_egg": "감시자 생성 알",
+  "item.cataclysm.the_prowler_spawn_egg": "배회자 생성 알",
 
   "itemGroup.cataclysm": "대격변",
   "block.cataclysm.witherite_block": "위더라이트 블록",
@@ -211,6 +212,7 @@
   "entity.cataclysm.earthquake": "지진",
   "entity.cataclysm.ancient_remnant": "고대의 잔재",
   "entity.cataclysm.the_watcher": "감시자",
+  "entity.cataclysm.the_prowler": "배회자",
 
   "entity.cataclysm.all.command_0": "%s 이(가) 돌아다니는 중",
   "entity.cataclysm.all.command_1": "%s 이(가) 따라오는 중",
@@ -248,13 +250,14 @@
   "voidrunerising.sub": "공허의 룬이 솟아남",
   "revenant_idle.sub": "레버넌트가 신음함",
   "revenant_hurt.sub": "레버넌트가 상처를 입음",
-  "revenant_breath.sub": "레버넌트가 재의 숨결을 내뱉음",
   "revenant_death.sub": "레버넌트가 죽음",
+  "revenant_breath.sub": "레버넌트가 재의 숨결을 내뱉음",
   "ignis_ambient.sub": "이그니스가 불타오름",
   "ignis_hurt.sub": "이그니스가 상처를 입음",
   "strongswingattack.sub": "이그니스가 참격을 날림",
   "sword_stomp.sub": "이그니스가 내리침",
   "ignis_poke.sub": "이그니스가 적을 소각자에 꽂음",
+  "ignis_armor_break": "이그니스의 장비가 손상됨",
   "flame_burst.sub": "불꽃이 폭발함",
   "ignis_death.sub": "이그니스가 죽음",
   "ignis_music.sub": "이그니스 음악",
@@ -263,6 +266,7 @@
   "harbinger_mode_change.sub": "하빈저가 모드를 전환함",
   "harbinger_prepare.sub": "하빈저가 공격을 준비함",
   "harbinger_charge_prepare.sub": "하빈저가 돌진을 준비함",
+  "emp_activated.sub": "EMP가 발동됨",
   "harbinger_charge.sub": "하빈저가 돌진함",
   "harbinger_deathlaser_prepare.sub": "하빈저가 죽음의 레이저를 충전함",
   "death_laser.sub": "죽음의 레이저가 발사됨",
@@ -292,6 +296,8 @@
   "tidal_tentacle.sub": "타이달 클로에서 촉수가 발사됨",
   "tidal_hook_hit.sub": "타이달 갈고리가 명중함",
   "tidal_hook_loop.sub": "타이달 갈고리가 철컹거림",
+  "crab_hurt.sub": "자수정 게가 상처를 입음",
+  "crab_bite.sub": "자수정 게가 집게발로 공격함",
 
   "advancements.cataclysm.root.title": "대격변",
   "advancements.cataclysm.root.description": "대격변!",
@@ -331,4 +337,5 @@
   "death.attack.abyssal_burn": "%s가 차원을 떠났습니다",
   "death.attack.abyssal_burn.player": "%s가 차원을 떠났습니다",
   "cataclysm.gui.altar_of_amethyst_blessing": "축복"
+
 }

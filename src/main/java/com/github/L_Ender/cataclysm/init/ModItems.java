@@ -330,6 +330,9 @@ public class ModItems {
     public static final RegistryObject<SpawnEggItem> THE_WATCHER_SPAWN_EGG = ITEMS.register("the_watcher_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.THE_WATCHER, 0x737c8b, 0xe83b3b, new Item.Properties()));
 
+    public static final RegistryObject<SpawnEggItem> THE_PROWLER_SPAWN_EGG = ITEMS.register("the_prowler_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.THE_PROWLER, 0x1e2021, 0x682e22, new Item.Properties()));
+
     public static final RegistryObject<SpawnEggItem> THE_HARBINGER_SPAWN_EGG = ITEMS.register("the_harbinger_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.THE_HARBINGER, 0x1e2021, 0xae2334, new Item.Properties()));
 

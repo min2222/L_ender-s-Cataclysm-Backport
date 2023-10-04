@@ -141,6 +141,12 @@ public class ModEntities {
             .fireImmune()
             .build(Cataclysm.MODID + ":the_watcher"));
 
+    public static final RegistryObject<EntityType<The_Prowler_Entity>> THE_PROWLER = ENTITY_TYPE.register("the_prowler", () -> EntityType.Builder.of(The_Prowler_Entity::new, MobCategory.MONSTER)
+            .sized(2.5F, 2.75F)
+            .fireImmune()
+            .clientTrackingRange(8)
+            .build(Cataclysm.MODID + ":the_prowler"));
+
     public static final RegistryObject<EntityType<The_Leviathan_Entity>> THE_LEVIATHAN = ENTITY_TYPE.register("the_leviathan", () -> EntityType.Builder.of(The_Leviathan_Entity::new, MobCategory.MONSTER)
             .sized(4.5F, 3F)
             .fireImmune()
@@ -426,6 +432,7 @@ public class ModEntities {
         event.put(AMETHYST_CRAB.get(), Amethyst_Crab_Entity.amethyst_crab().build());
         event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.ancient_ramant().build());
         event.put(THE_WATCHER.get(), The_Watcher_Entity.the_watcher().build());
+        event.put(THE_PROWLER.get(), The_Prowler_Entity.the_prowler().build());
     }
 }
 
