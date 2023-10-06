@@ -98,7 +98,6 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
         super(entity, world);
         this.xpReward = 300;
         this.setMaxUpStep(1.75F);
-        this.dropAfterDeathAnim = true;
         this.headPart = new Netherite_Monstrosity_Part(this, 1.6F, 2.5F);
         this.monstrosityParts = new Netherite_Monstrosity_Part[]{this.headPart};
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);

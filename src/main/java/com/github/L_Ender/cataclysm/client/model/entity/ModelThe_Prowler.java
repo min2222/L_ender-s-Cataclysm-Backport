@@ -458,6 +458,14 @@ public class ModelThe_Prowler extends AdvancedEntityModel<The_Prowler_Entity> {
 
 		animator.resetKeyframe(12);
 
+
+		animator.setAnimation(The_Prowler_Entity.PROWLER_STUN);
+		animator.startKeyframe(15);
+		animator.rotate(upperbody,(float)Math.toRadians(40F),0, 0);
+		animator.endKeyframe();
+		animator.setStaticKeyframe(30);
+
+		animator.resetKeyframe(15);
 	}
 
 	@Override
@@ -468,7 +476,7 @@ public class ModelThe_Prowler extends AdvancedEntityModel<The_Prowler_Entity> {
 		float globalDegree = 0.5F;
 
 		float sawspeed = 0;
-		if(entityIn.getIsAwaken()){
+		if(entityIn.getIsAwaken() && entityIn.getAnimation() != The_Prowler_Entity.PROWLER_STUN){
 			sawspeed = 0.75f;
 		}
 

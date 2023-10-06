@@ -1,6 +1,8 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackAniamtionGoal3;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackAnimationGoal1;
 import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
@@ -9,11 +11,13 @@ import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -44,6 +48,7 @@ public class The_Prowler_Entity extends Boss_monster {
     public static final Animation PROWLER_MISSILE = Animation.create(55);
     public static final Animation PROWLER_ATTACK = Animation.create(84);
     public static final Animation PROWLER_SPIN_ATTACK = Animation.create(43);
+    public static final Animation PROWLER_STUN = Animation.create(60);
 
     private static final EntityDataAccessor<Boolean> IS_AWAKEN = SynchedEntityData.defineId(The_Prowler_Entity.class, EntityDataSerializers.BOOLEAN);
     private int timeWithoutTarget;
@@ -52,15 +57,16 @@ public class The_Prowler_Entity extends Boss_monster {
 
     public The_Prowler_Entity(EntityType entity, Level world) {
         super(entity, world);
-        this.xpReward = 8;
+        this.xpReward = 20;
         this.setMaxUpStep(1.25F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        setConfigattribute(this, CMConfig.ProwlerHealthMultiplier, CMConfig.ProwlerDamageMultiplier);
     }
 
     @Override
     public Animation[] getAnimations() {
-        return new Animation[]{NO_ANIMATION, PROWLER_MISSILE,PROWLER_ATTACK,PROWLER_SPIN_ATTACK};
+        return new Animation[]{NO_ANIMATION, PROWLER_MISSILE,PROWLER_ATTACK,PROWLER_SPIN_ATTACK,PROWLER_STUN};
     }
 
     protected void registerGoals() {
@@ -68,6 +74,7 @@ public class The_Prowler_Entity extends Boss_monster {
         this.goalSelector.addGoal(1, new AttackAnimationGoal1<>(this, PROWLER_MISSILE, 33, true));
         this.goalSelector.addGoal(1, new AttackAnimationGoal1<>(this, PROWLER_ATTACK, 19, true));
         this.goalSelector.addGoal(1, new AttackAnimationGoal1<>(this, PROWLER_SPIN_ATTACK, 14, true));
+        this.goalSelector.addGoal(1, new AttackAniamtionGoal3<>(this, PROWLER_STUN));
         this.goalSelector.addGoal(0, new AwakenGoal(this));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
@@ -80,19 +87,30 @@ public class The_Prowler_Entity extends Boss_monster {
         return Monster.createMonsterAttributes()
                 .add(Attributes.FOLLOW_RANGE, 30.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.28F)
-                .add(Attributes.ATTACK_DAMAGE, 14)
-                .add(Attributes.MAX_HEALTH, 175)
+                .add(Attributes.ATTACK_DAMAGE, 11)
+                .add(Attributes.MAX_HEALTH, 150)
                 .add(Attributes.ARMOR, 10)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.9);
     }
 
+    public boolean canBeSeenAsEnemy() {
+        return this.getIsAwaken() && super.canBeSeenAsEnemy();
+    }
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
 
-        if (source.is(CMDamageTypes.EMP)) {
-            super.hurt(source, 1000);
-            return true;
+        if (source.is(CMDamageTypes.EMP) && this.getIsAwaken()) {
+            AnimationHandler.INSTANCE.sendAnimationMessage(this, PROWLER_STUN);
+        }
+        double range = calculateRange(source);
+        if (range > CMConfig.ProwlerLongRangelimit * CMConfig.ProwlerLongRangelimit) {
+            return false;
+        }
+        if (this.deactivateProgress > 0) {
+            if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                return false;
+            }
         }
 
         return super.hurt(source, damage);
@@ -200,6 +218,14 @@ public class The_Prowler_Entity extends Boss_monster {
                 AreaAttack(4f,4f,120,1.5F);
             }
         }
+
+        if (this.getAnimation() == PROWLER_STUN)
+            if (this.level().isClientSide) {
+                for (int i = 0; i < 2; ++i) {
+                    this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                }
+            }
+
     }
 
     private void AreaAttack(float range, float height, float arc, float damage) {

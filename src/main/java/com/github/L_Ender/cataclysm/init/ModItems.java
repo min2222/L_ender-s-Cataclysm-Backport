@@ -108,6 +108,9 @@ public class ModItems {
     public static final RegistryObject<BlockItem> SANDSTONE_FALLING_TRAP = ITEMS.register("sandstone_falling_trap",
             () -> new BlockItem(ModBlocks.SANDSTONE_FALLING_TRAP.get(), new Item.Properties()));
 
+    public static final RegistryObject<BlockItem> CHORUS_STEM = ITEMS.register("chorus_stem",
+            () -> new BlockItem(ModBlocks.CHORUS_STEM.get(), new Item.Properties()));
+
     public static final RegistryObject<BlockItem> CHORUS_PLANKS = ITEMS.register("chorus_planks",
             () -> new BlockItem(ModBlocks.CHORUS_PLANKS.get(), new Item.Properties()));
 

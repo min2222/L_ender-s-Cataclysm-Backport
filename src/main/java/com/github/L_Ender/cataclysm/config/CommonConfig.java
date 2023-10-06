@@ -76,6 +76,10 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue RevenantHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue RevenantDamageMultiplier;
 
+    public final ForgeConfigSpec.DoubleValue ProwlerLongRangelimit;
+    public final ForgeConfigSpec.DoubleValue ProwlerHealthMultiplier;
+    public final ForgeConfigSpec.DoubleValue ProwlerDamageMultiplier;
+
     public final ForgeConfigSpec.DoubleValue HarbingerHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue HarbingerDamageMultiplier;
     public final ForgeConfigSpec.DoubleValue HarbingerHealingMultiplier;
@@ -219,6 +223,12 @@ public class CommonConfig {
         builder.push("revenant");
         RevenantHealthMultiplier = buildDouble(builder, "RevenantHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Revenant's Health Multiplier");
         RevenantDamageMultiplier = buildDouble(builder, "RevenantDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Revenant's Damage Multiplier");
+        builder.pop();
+
+        builder.push("The Prowler");
+        ProwlerLongRangelimit = buildDouble(builder, "The Prowler's prevent attacks from far away Range", "all", 16.0D, 1D, 1000000D, "The Prowler's Immune to Long distance attack range.");
+        ProwlerHealthMultiplier = buildDouble(builder, "ProwlerHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Prowler's Health Multiplier");
+        ProwlerDamageMultiplier = buildDouble(builder, "ProwlerDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Prowler's Damage Multiplier");
         builder.pop();
 
         builder.push("The Harbinger");

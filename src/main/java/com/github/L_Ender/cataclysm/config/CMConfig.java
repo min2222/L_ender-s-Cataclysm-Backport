@@ -79,6 +79,9 @@ public class CMConfig {
     public static double RevenantHealthMultiplier = 1D;
     public static double RevenantDamageMultiplier = 1D;
 
+    public static double ProwlerHealthMultiplier = 1D;
+    public static double ProwlerDamageMultiplier = 1D;
+
     public static double HarbingerHealthMultiplier = 1D;
     public static double HarbingerHealingMultiplier = 1D;
     public static double HarbingerDamageMultiplier = 1D;
@@ -102,6 +105,7 @@ public class CMConfig {
     public static double HarbingerLongRangelimit = 35D;
     public static double LeviathanLongRangelimit = 38D;
     public static double AncientRemnantLongRangelimit = 10;
+    public static double ProwlerLongRangelimit = 12;
 
     public static double MonstrosityMusicVolume = 0.5D;
     public static double EnderguardianMusicVolume = 0.5D;
@@ -197,6 +201,9 @@ public class CMConfig {
             RevenantHealthMultiplier = ConfigHolder.COMMON.RevenantHealthMultiplier.get();
             RevenantDamageMultiplier = ConfigHolder.COMMON.RevenantDamageMultiplier.get();
 
+            ProwlerHealthMultiplier = ConfigHolder.COMMON.ProwlerHealthMultiplier.get();
+            ProwlerDamageMultiplier = ConfigHolder.COMMON.ProwlerDamageMultiplier.get();
+            
             HarbingerHealthMultiplier = ConfigHolder.COMMON.HarbingerHealthMultiplier.get();
             HarbingerDamageMultiplier = ConfigHolder.COMMON.HarbingerDamageMultiplier.get();
             HarbingerHealingMultiplier = ConfigHolder.COMMON.HarbingerHealingMultiplier.get();
@@ -218,6 +225,7 @@ public class CMConfig {
             HarbingerLongRangelimit = ConfigHolder.COMMON.HarbingerLongRangelimit.get();
             LeviathanLongRangelimit = ConfigHolder.COMMON.LeviathanLongRangelimit.get();
             AncientRemnantLongRangelimit = ConfigHolder.COMMON.AncientRemnantLongRangelimit.get();
+            ProwlerLongRangelimit = ConfigHolder.COMMON.ProwlerLongRangelimit.get();
 
             MonstrositysHpdamage = ConfigHolder.COMMON.MonstrositysHpdamage.get();
             EnderguardianTeleportAttackHpdamage = ConfigHolder.COMMON.EnderguardianTeleportAttackHpdamage.get();

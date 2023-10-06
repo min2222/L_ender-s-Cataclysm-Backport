@@ -161,6 +161,12 @@ public class ModBlocks {
     public static final RegistryObject<Block> ABYSSAL_EGG = registerBlockAndItem("abyssal_egg",
             Abyssal_Egg_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
+    public static final RegistryObject<Block> CHORUS_STEM = BLOCKS.register("chorus_stem",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).
+                    strength(2.0F, 3.0F)
+                    .sound(SoundType.WOOD)));
+
+
     public static final RegistryObject<Block> CHORUS_PLANKS = BLOCKS.register("chorus_planks",
             () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).
                     strength(2.0F, 3.0F)

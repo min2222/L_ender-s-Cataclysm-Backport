@@ -117,7 +117,6 @@ public class Ender_Guardian_Entity extends Boss_monster {
         super(entity, world);
         this.xpReward = 300;
         this.setMaxUpStep(1.75F);
-        this.dropAfterDeathAnim = true;
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);

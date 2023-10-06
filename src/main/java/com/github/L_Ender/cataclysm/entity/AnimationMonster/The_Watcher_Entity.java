@@ -68,8 +68,8 @@ public class The_Watcher_Entity extends Animation_Monster {
                 .add(Attributes.FOLLOW_RANGE, 20.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.28F)
                 .add(Attributes.ATTACK_DAMAGE, 5)
-                .add(Attributes.MAX_HEALTH, 30)
-                .add(Attributes.ARMOR, 10)
+                .add(Attributes.MAX_HEALTH, 25)
+                .add(Attributes.ARMOR, 5)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5);
     }
 
