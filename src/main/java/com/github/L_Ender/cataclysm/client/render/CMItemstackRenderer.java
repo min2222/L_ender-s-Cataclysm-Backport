@@ -8,12 +8,10 @@ import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
@@ -43,12 +41,14 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ModelWither_Assault_SHoulder_Weapon WASW_MODEL = new ModelWither_Assault_SHoulder_Weapon();
     private static final ModelVoid_Forge VOID_FORGE_MODEL = new ModelVoid_Forge();
     private static final ModelTidal_Claws TIDAL_CLAWS_MODEL = new ModelTidal_Claws();
+    private static final ModelMeat_Shredder MEAT_SHREDDER_MODEL = new ModelMeat_Shredder();
     private static final ResourceLocation BULWARK_OF_THE_FLAME_TEXTURE = new ResourceLocation("cataclysm:textures/item/bulwark_of_the_flame.png");
     private static final ResourceLocation GAUNTLET_OF_GUARD_TEXTURE = new ResourceLocation("cataclysm:textures/item/gauntlet_of_guard.png");
     private static final ResourceLocation GAUNTLET_OF_BULWARK_TEXTURE = new ResourceLocation("cataclysm:textures/item/gauntlet_of_bulwark.png");
     private static final ResourceLocation THE_INCINERATOR_TEXTURE = new ResourceLocation("cataclysm:textures/item/the_incinerator.png");
     private static final ResourceLocation VOID_FORGE_TEXTURE = new ResourceLocation("cataclysm:textures/item/void_forge.png");
     private static final ResourceLocation TIDAL_CLAWS_TEXTURE = new ResourceLocation("cataclysm:textures/item/tidal_claws.png");
+    private static final ResourceLocation MEAT_SHREDDER_TEXTURE = new ResourceLocation("cataclysm:textures/item/meat_shredder.png");
     private static final ResourceLocation ALTAR_OF_FIRE_TEXTURE = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altar_of_fire.png");
     private static final ResourceLocation ALTAR_OF_VOID_TEXTURE = new ResourceLocation("cataclysm:textures/block/altar_of_void.png");
     private static final ResourceLocation ALTAR_OF_AMETHYST_TEXTURE = new ResourceLocation("cataclysm:textures/block/altar_of_amethyst.png");
@@ -160,6 +160,16 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
             VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(TIDAL_CLAWS_TEXTURE), false, itemStackIn.hasFoil());
             TIDAL_CLAWS_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
+        }
+
+        if (itemStackIn.getItem() == ModItems.MEAT_SHREDDER.get()) {
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0.5F, 0.5F, 0.5F);
+            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(MEAT_SHREDDER_TEXTURE), false, itemStackIn.hasFoil());
+            MEAT_SHREDDER_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            MEAT_SHREDDER_MODEL.animateStack(itemStackIn);
             matrixStackIn.popPose();
         }
 

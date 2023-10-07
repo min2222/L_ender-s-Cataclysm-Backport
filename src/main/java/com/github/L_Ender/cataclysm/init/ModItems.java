@@ -180,6 +180,9 @@ public class ModItems {
     public static final RegistryObject<Item> THE_INCINERATOR = ITEMS.register("the_incinerator",
             () -> new The_Incinerator(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 
+    public static final RegistryObject<Item> MEAT_SHREDDER = ITEMS.register("meat_shredder",
+            () -> new Meat_Shredder( new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
+
     public static final RegistryObject<Item> WITHER_ASSULT_SHOULDER_WEAPON = ITEMS.register("wither_assault_shoulder_weapon",
             () -> new Wither_Assault_SHoulder_Weapon(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 

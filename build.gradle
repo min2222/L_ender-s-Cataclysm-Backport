@@ -37,7 +37,7 @@ repositories{
     }
 }
 
-version = '1.42 -1.20.1'
+version = '1.43-Dev -1.20.1'
 group = 'com.github.L_Ender' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'L_Enders_Cataclysm'
 
@@ -116,7 +116,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.neoforged:forge:1.20.1-47.1.65'
+    minecraft 'net.neoforged:forge:1.20.1-47.1.79'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation fg.deobf("curse.maven:citadel-331936:4744075")
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"))

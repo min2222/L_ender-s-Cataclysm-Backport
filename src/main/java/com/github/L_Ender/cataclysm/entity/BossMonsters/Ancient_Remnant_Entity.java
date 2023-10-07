@@ -198,7 +198,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (hunting_cooldown > 0) {
             hunting_cooldown--;
         }
-        if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_LEFT_STOMP);
+      //  if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_LEFT_STOMP);
         Charge();
         frame++;
         float moveX = (float) (getX() - xo);
