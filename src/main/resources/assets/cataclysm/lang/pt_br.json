@@ -322,11 +322,11 @@
   "trim_material.cataclysm.witherite": "Material de Witherito",
   "trim_material.cataclysm.ignitium": "Material de Ignitium",
 
-  "death.attack.laser": "%s foi exterminado(a) pelo laser de %s",
-  "death.attack.deathlaser": "%s foi exterminado(a) pelo laser de %s",
-  "death.attack.emp": "%s virou frango grelhado queimado",
-  "death.attack.emp.player": "%s virou frango grelhado queimado",
-  "death.attack.abyssal_burn": "%s saiu dessa dimensão",
-  "death.attack.abyssal_burn.player": "%s saiu dessa dimensão",
+  "death.attack.cataclysm.laser": "%s foi exterminado(a) pelo laser de %s",
+  "death.attack.cataclysm.deathlaser": "%s foi exterminado(a) pelo laser de %s",
+  "death.attack.cataclysm.emp": "%s virou frango grelhado queimado",
+  "death.attack.cataclysm.emp.player": "%s virou frango grelhado queimado",
+  "death.attack.cataclysm.abyssal_burn": "%s saiu dessa dimensão",
+  "death.attack.cataclysm.abyssal_burn.player": "%s saiu dessa dimensão",
   "cataclysm.gui.altar_of_amethyst_blessing": "Bênção"
 }

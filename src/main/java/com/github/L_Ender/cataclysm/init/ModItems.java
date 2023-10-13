@@ -181,7 +181,10 @@ public class ModItems {
             () -> new The_Incinerator(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 
     public static final RegistryObject<Item> MEAT_SHREDDER = ITEMS.register("meat_shredder",
-            () -> new Meat_Shredder( new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
+            () -> new Meat_Shredder(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> LASER_GATLING = ITEMS.register("laser_gatling",
+            () -> new Laser_Gatling(new Item.Properties().stacksTo(1).fireResistant().durability(80).rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> WITHER_ASSULT_SHOULDER_WEAPON = ITEMS.register("wither_assault_shoulder_weapon",
             () -> new Wither_Assault_SHoulder_Weapon(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
@@ -299,7 +302,7 @@ public class ModItems {
     public static final RegistryObject<Item> BLESSED_AMETHYST_CRAB_MEAT = ITEMS.register("blessed_amethyst_crab_meat",
             () -> new Blessed_Amethyst_Crab_Meat(new Item.Properties().rarity(Rarity.EPIC).food(new FoodProperties.Builder().nutrition(6).saturationMod(1.2F)
                     .effect(new MobEffectInstance(MobEffects.REGENERATION, 100, 0), 1.0F)
-                    .effect(new MobEffectInstance(ModEffect.EFFECTABYSSAL_BLESSING_OF_AMETHYST.get(), 1800, 0), 1.0F)
+                    .effect(new MobEffectInstance(ModEffect.EFFECTBLESSING_OF_AMETHYST.get(), 1800, 0), 1.0F)
                     .alwaysEat()
                     .build())));
 

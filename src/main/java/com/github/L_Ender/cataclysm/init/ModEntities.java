@@ -316,8 +316,8 @@ public class ModEntities {
     public static final RegistryObject<EntityType<Void_Vortex_Entity>> VOID_VORTEX = ENTITY_TYPE.register("void_vortex", () -> EntityType.Builder.<Void_Vortex_Entity>of(Void_Vortex_Entity::new, MobCategory.MISC)
             .sized(2.5F, 0.5F)
             .fireImmune()
-            .clientTrackingRange(10).
-            updateInterval(Integer.MAX_VALUE)
+            .clientTrackingRange(10)
+            .updateInterval(Integer.MAX_VALUE)
             .build(Cataclysm.MODID + ":void_vortex"));
 
     public static final RegistryObject<EntityType<The_Leviathan_Tongue_Entity>> THE_LEVIATHAN_TONGUE = ENTITY_TYPE.register("the_leviathan_tongue", () -> EntityType.Builder.<The_Leviathan_Tongue_Entity>of(The_Leviathan_Tongue_Entity::new, MobCategory.MISC)
@@ -367,6 +367,7 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<Amethyst_Crab_Entity>> AMETHYST_CRAB = ENTITY_TYPE.register("amethyst_crab", () -> EntityType.Builder.of(Amethyst_Crab_Entity::new, MobCategory.MONSTER)
             .sized(2.5F, 2.6F)
+            .fireImmune()
             .build(Cataclysm.MODID + ":amethyst_crab"));
 
     public static final RegistryObject<EntityType<EarthQuake_Entity>> EARTHQUAKE = ENTITY_TYPE.register("earthquake", () -> EntityType.Builder.<EarthQuake_Entity>of(EarthQuake_Entity::new, MobCategory.MISC).
@@ -389,6 +390,14 @@ public class ModEntities {
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":ancient_remnant"));
+
+    public static final RegistryObject<EntityType<SandStorm_Entity>> SANDSTORM = ENTITY_TYPE.register("sandstorm", () -> EntityType.Builder.<SandStorm_Entity>of(SandStorm_Entity::new, MobCategory.MISC)
+            .sized(2.5F, 0.5F)
+            .fireImmune()
+            .clientTrackingRange(10)
+            .updateInterval(Integer.MAX_VALUE)
+            .build(Cataclysm.MODID + ":sandstorm"));
+
 
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){

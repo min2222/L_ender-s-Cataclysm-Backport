@@ -269,6 +269,33 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> WATCHER_DEATH = SOUNDS.register("watcher_death",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"watcher_death")));
 
+    public static final RegistryObject<SoundEvent> PROWLER_HURT = SOUNDS.register("prowler_hurt",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"prowler_hurt")));
+
+    public static final RegistryObject<SoundEvent> PROWLER_DEATH = SOUNDS.register("prowler_death",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"prowler_death")));
+
+    public static final RegistryObject<SoundEvent> PROWLER_IDLE = SOUNDS.register("prowler_idle",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"prowler_idle")));
+
     public static final RegistryObject<SoundEvent> FLAME_TRAP = SOUNDS.register("flame_trap",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"flame_trap")));
+
+    public static final RegistryObject<SoundEvent> SHREDDER_START = SOUNDS.register("shredder_start",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"shredder_start")));
+
+    public static final RegistryObject<SoundEvent> SHREDDER_LOOP = SOUNDS.register("shredder_loop",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"shredder_loop")));
+
+    public static final RegistryObject<SoundEvent> SHREDDER_END = SOUNDS.register("shredder_end",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"shredder_end")));
+
+    public static final RegistryObject<SoundEvent> ROCKET_LAUNCH = SOUNDS.register("rocket_launch",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"rocket_launch")));
+
+    public static final RegistryObject<SoundEvent> PROWLER_SAW_ATTACK = SOUNDS.register("prowler_saw_attack",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"prowler_saw_attack")));
+
+    public static final RegistryObject<SoundEvent> PROWLER_SAW_SPIN_ATTACK = SOUNDS.register("prowler_saw_spin_attack",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"prowler_saw_spin_attack")));
 }

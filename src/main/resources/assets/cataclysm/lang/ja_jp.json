@@ -322,12 +322,12 @@
   "trim_material.cataclysm.witherite": "ウィザライトの素材",
   "trim_material.cataclysm.ignitium" : "イグニチウムの素材",
 
-  "death.attack.laser": "%sは%sのレーザーに焦がされた",
-  "death.attack.deathlaser": "%sは%sのレーザーに焦がされた",
-  "death.attack.emp": "%sは電気グリルで調理された",
-  "death.attack.emp.player": "%sは電気グリルで調理された",
-  "death.attack.abyssal_burn": "%sは異次元に消し飛んだ",
-  "death.attack.abyssal_burn.player": "%sは異次元に消し飛んだ",
+  "death.attack.cataclysm.laser": "%sは%sのレーザーに焦がされた",
+  "death.attack.cataclysm.deathlaser": "%sは%sのレーザーに焦がされた",
+  "death.attack.cataclysm.emp": "%sは電気グリルで調理された",
+  "death.attack.cataclysm.emp.player": "%sは電気グリルで調理された",
+  "death.attack.cataclysm.abyssal_burn": "%sは異次元に消し飛んだ",
+  "death.attack.cataclysm.abyssal_burn.player": "%sは異次元に消し飛んだ",
   "cataclysm.gui.altar_of_amethyst_blessing": "祝福"
 
 }

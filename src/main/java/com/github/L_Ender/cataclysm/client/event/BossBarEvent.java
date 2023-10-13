@@ -126,7 +126,7 @@ public class BossBarEvent {
             }else{
                 pPoseStack.blit(GUI_BARS_LOCATION, pX + 3, pY + 5, 0, 50, 182, 5, 256, 256);
                 if (i > 0) {
-                    pPoseStack.blit(GUI_BARS_LOCATION, pX + 3, pY + 6, 0, 56, (int) (i * 182.0f), 5, 256, 256);
+                    pPoseStack.blit(GUI_BARS_LOCATION, pX + 3, pY + 6, 0, 56, (int) i, 5, 256, 256);
                 }
                 RenderSystem.setShaderTexture(0, TEXTURE);
                 pPoseStack.blit(TEXTURE, pX , pY, 0, 45, 188, 13, 256, 256);

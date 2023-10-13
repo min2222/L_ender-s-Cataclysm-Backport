@@ -57,8 +57,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     public static final Animation REMNANT_BITE2 = Animation.create(65);
     public static final Animation REMNANT_CHARGE_PREPARE = Animation.create(125);
     public static final Animation REMNANT_TAIL_ATTACK1 = Animation.create(57);
-    public static final Animation REMNANT_TAIL_ATTACK2 = Animation.create(57);
+    public static final Animation REMNANT_TAIL_ATTACK2 = Animation.create(55);
     public static final Animation REMNANT_LEFT_STOMP = Animation.create(49);
+    public static final Animation REMNANT_ROAR = Animation.create(70);
     private static final EntityDataAccessor<Boolean> CHARGE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> MODE_CHANCE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.INT);
     private AttackMode mode = AttackMode.CIRCLE;
@@ -84,7 +85,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 REMNANT_CHARGE_PREPARE,
                 REMNANT_BITE2,
                 REMNANT_TAIL_ATTACK1,
-                REMNANT_LEFT_STOMP};
+                REMNANT_TAIL_ATTACK2,
+                REMNANT_LEFT_STOMP,
+                REMNANT_ROAR};
     }
 
     protected void registerGoals() {
@@ -95,7 +98,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_BITE2,25));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_LEFT_STOMP,24));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK1,13));
-
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK2,11));
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -198,7 +201,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (hunting_cooldown > 0) {
             hunting_cooldown--;
         }
-      //  if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_LEFT_STOMP);
+        if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_ROAR);
         Charge();
         frame++;
         float moveX = (float) (getX() - xo);
@@ -289,6 +292,12 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
         if(this.getAnimation() == REMNANT_TAIL_ATTACK1){
             if(this.getAnimationTick() == 16){
+                TailAreaAttack(8,8,1.05F,120,1.0f,0.05f,200,100);
+            }
+        }
+
+        if(this.getAnimation() == REMNANT_TAIL_ATTACK2){
+            if(this.getAnimationTick() == 14){
                 TailAreaAttack(8,8,1.05F,120,1.0f,0.05f,200,100);
             }
         }
@@ -570,8 +579,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         private LivingEntity target;
         private float circlingTime = 0;
         private float MeleeModeTime = 0;
+        private final float huntingTime = 0;
         private static final int MELEE_MODE_TIME = 160;
-        private float circleDistance = 18;
+        private float circleDistance = 9;
         private boolean clockwise = false;
 
         public RemnantAttackGoal(Ancient_Remnant_Entity mob) {
@@ -593,7 +603,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             this.mob.mode = Ancient_Remnant_Entity.AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
-            circleDistance = 18 + this.mob.random.nextInt(10);
+            circleDistance = 9 + this.mob.random.nextInt(5);
             clockwise = this.mob.random.nextBoolean();
             this.mob.setAggressive(true);
         }
@@ -602,7 +612,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             this.mob.mode = Ancient_Remnant_Entity.AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
-            circleDistance = 18 + this.mob.random.nextInt(10);
+            circleDistance = 9 + this.mob.random.nextInt(5);
             clockwise = this.mob.random.nextBoolean();
             this.target = this.mob.getTarget();
             if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
@@ -621,12 +631,12 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
                 if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.CIRCLE) {
-                    this.mob.lookAt(target, 30.0F, 30.0F);
+                    circlingTime++;
                     BlockPos circlePos = getRemnantCirclePos(target);
                     if (circlePos != null) {
                         this.mob.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY(), circlePos.getZ() + 0.5D, 1.0D);
                     }
-                    if (circlingTime >= this.mob.hunting_cooldown) {
+                    if (huntingTime >= this.mob.hunting_cooldown) {
                         int i = Math.max(this.mob.getModeChance(), 2);
                         if (this.mob.random.nextInt(i) == 0) {
                             this.mob.mode = Ancient_Remnant_Entity.AttackMode.RANGE;

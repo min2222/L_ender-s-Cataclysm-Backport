@@ -3,10 +3,7 @@ package com.github.L_Ender.cataclysm;
 import com.github.L_Ender.cataclysm.client.event.BossBarEvent;
 import com.github.L_Ender.cataclysm.client.event.ClientEvent;
 import com.github.L_Ender.cataclysm.client.gui.GUIWeponfusion;
-import com.github.L_Ender.cataclysm.client.particle.EM_PulseParticle;
-import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
-import com.github.L_Ender.cataclysm.client.particle.Shock_WaveParticle;
-import com.github.L_Ender.cataclysm.client.particle.SoulLavaParticle;
+import com.github.L_Ender.cataclysm.client.particle.*;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.blockentity.*;
 import com.github.L_Ender.cataclysm.client.render.entity.*;
@@ -68,6 +65,7 @@ public class ClientProxy extends CommonProxy {
         registry.registerSpecial(ModParticle.EM_PULSE.get(), new EM_PulseParticle.Factory());
         registry.registerSpecial(ModParticle.SHOCK_WAVE.get(), new Shock_WaveParticle.Factory());
         registry.registerSpecial(ModParticle.LIGHTNING.get(), new LightningParticle.OrbFactory());
+        registry.registerSpriteSet(ModParticle.SANDSTORM.get(), SandStormParticle.Factory::new);
     }
 
     public void clientInit() {
@@ -123,10 +121,9 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.TIDAL_HOOK.get(), RendererTidal_Hook::new);
         EntityRenderers.register(ModEntities.AMETHYST_CRAB.get(), RendererAmethyst_Crab::new);
         EntityRenderers.register(ModEntities.ANCIENT_REMNANT.get(), RendererAncient_Remnant::new);
+        EntityRenderers.register(ModEntities.SANDSTORM.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.THE_WATCHER.get(), RendererThe_Watcher::new);
-
         EntityRenderers.register(ModEntities.THE_PROWLER.get(), RendererThe_Prowler::new);
-
         EntityRenderers.register(ModEntities.EARTHQUAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), RendererAmethyst_Cluster_Projectile::new);
         EntityRenderers.register(ModEntities.VOID_SHARD.get(), (render) -> {

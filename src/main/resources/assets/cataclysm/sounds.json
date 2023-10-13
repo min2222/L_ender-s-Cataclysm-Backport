@@ -787,5 +787,80 @@
         "name": "cataclysm:entity/robot_death"
       }
     ]
+  },
+  "prowler_hurt": {
+    "subtitle": "prowler_hurt.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/robot_hurt"
+      }
+    ]
+  },
+  "prowler_death": {
+    "subtitle": "prowler_death.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/robot_death"
+      }
+    ]
+  },
+  "prowler_saw_attack": {
+    "subtitle": "prowler_saw_attack.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/prowler_saw_attack"
+      }
+    ]
+  },
+  "prowler_saw_spin_attack": {
+    "subtitle": "prowler_saw_spin_attack.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/prowler_saw_spin_attack"
+      }
+    ]
+  },
+  "rocket_launch": {
+    "subtitle": "rocket_launch.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/rocket_launch1"
+      },
+      {
+        "name": "cataclysm:entity/rocket_launch2"
+      }
+    ]
+  },
+  "shredder_end": {
+    "subtitle": "shredder_end.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/shredder_end"
+      }
+    ]
+  },
+  "prowler_idle": {
+    "subtitle": "prowler_idle.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/prowler_idle"
+      }
+    ]
+  },
+  "shredder_loop": {
+    "subtitle": "shredder_loop.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/shredder_loop"
+      }
+    ]
+  },
+  "shredder_start": {
+    "subtitle": "shredder_start.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/shredder_start"
+      }
+    ]
   }
 }

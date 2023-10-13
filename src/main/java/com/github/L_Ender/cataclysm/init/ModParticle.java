@@ -15,6 +15,7 @@ public class ModParticle {
 
     public static final RegistryObject<SimpleParticleType> SOUL_LAVA = PARTICLE.register("soul_lava", ()-> new SimpleParticleType(false));
 
+    public static final RegistryObject<SimpleParticleType> SANDSTORM = PARTICLE.register("sandstorm", ()-> new SimpleParticleType(false));
 
     public static final RegistryObject<ParticleType<LightningParticle.OrbData>> LIGHTNING = PARTICLE.register("lightning", () -> new ParticleType<LightningParticle.OrbData>(false, LightningParticle.OrbData.DESERIALIZER) {
         @Override

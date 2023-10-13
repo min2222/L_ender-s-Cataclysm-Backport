@@ -7,12 +7,17 @@ import com.github.L_Ender.cataclysm.entity.AI.MobAILeaveWater;
 import com.github.L_Ender.cataclysm.entity.AI.SemiAquaticAIRandomSwimming;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.Abyss_Blast_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.Portal_Abyss_Blast_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.AI.PetSimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.Pet.AI.TameableAIFollowOwnerWater;
-import com.github.L_Ender.cataclysm.entity.etc.*;
+import com.github.L_Ender.cataclysm.entity.etc.GroundPathNavigatorWide;
+import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
+import com.github.L_Ender.cataclysm.entity.etc.SemiAquaticPathNavigator;
+import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Mini_Abyss_Blast_Entity;
-import com.github.L_Ender.cataclysm.init.*;
+import com.github.L_Ender.cataclysm.init.ModEntities;
+import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModSounds;
+import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import net.minecraft.core.BlockPos;
@@ -31,7 +36,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -593,10 +597,11 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
             if (target != null) {
                 if (this.mob.mode == The_Baby_Leviathan_Entity.AttackMode.CIRCLE) {
                     BlockPos circlePos = getLeviathanCirclePos(target);
+                    circlingTime++;
                     if (circlePos != null) {
                         this.mob.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY(), circlePos.getZ() + 0.5D, 1.0D);
                     }
-                    if (circlingTime >= this.mob.blast_cooldown) {
+                    if (0 >= this.mob.blast_cooldown) {
                         this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.RANGE;
                     } else {
                         this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.MELEE;

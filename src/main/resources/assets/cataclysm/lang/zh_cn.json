@@ -209,8 +209,8 @@
 "advancements.cataclysm.kill_harbinger.title": "Out Of Place Things",
 "advancements.cataclysm.kill_harbinger.description": "Wake and Defeat the Harbinger",
 
-"death.attack.laser": "%s was exterminated by %s 's laser",
-"death.attack.deathlaser": "%s was exterminated by %s 's laser",
-"death.attack.emp": "%s has become Electric Grilled Chicken",
-"death.attack.emp.player": "%s has become Electric Grilled Chicken"
+"death.attack.cataclysm.laser": "%s was exterminated by %s 's laser",
+"death.attack.cataclysm.deathlaser": "%s was exterminated by %s 's laser",
+"death.attack.cataclysm.emp": "%s has become Electric Grilled Chicken",
+"death.attack.cataclysm.emp.player": "%s has become Electric Grilled Chicken"
 }

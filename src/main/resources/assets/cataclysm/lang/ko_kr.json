@@ -332,11 +332,11 @@
   "trim_material.cataclysm.witherite": "위더라이트 소재",
   "trim_material.cataclysm.ignitium": "이그니티움 소재",
 
-  "death.attack.laser": "%s는 %s의 레이저에 의해 말살되었습니다.",
-  "death.attack.deathlaser": "%s는 %s의 레이저에 의해 말살되었습니다.",
-  "death.attack.emp": "%s는 전기구이 통닭이 되버렸습니다.",
-  "death.attack.emp.player": "%s는 전기구이 통닭이 되버렸습니다.",
-  "death.attack.abyssal_burn": "%s가 차원을 떠났습니다",
-  "death.attack.abyssal_burn.player": "%s가 차원을 떠났습니다",
+  "death.attack.cataclysm.laser": "%s는 %s의 레이저에 의해 말살되었습니다.",
+  "death.attack.cataclysm.deathlaser": "%s는 %s의 레이저에 의해 말살되었습니다.",
+  "death.attack.cataclysm.emp": "%s는 전기구이 통닭이 되버렸습니다.",
+  "death.attack.cataclysm.emp.player": "%s는 전기구이 통닭이 되버렸습니다.",
+  "death.attack.cataclysm.abyssal_burn": "%s가 차원을 떠났습니다",
+  "death.attack.cataclysm.abyssal_burn.player": "%s가 차원을 떠났습니다",
   "cataclysm.gui.altar_of_amethyst_blessing": "축복"
 }

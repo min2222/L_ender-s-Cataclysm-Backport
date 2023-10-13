@@ -1,10 +1,13 @@
 package com.github.L_Ender.cataclysm.items;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.init.ModSounds;
+import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -20,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,8 +40,8 @@ public class Meat_Shredder extends Item {
 	public Meat_Shredder(Properties properties) {
 		super(properties);
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 6.5D, AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.8F, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 7.5D, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.6F, AttributeModifier.Operation.ADDITION));
 		this.whirligigsawAttributes = builder.build();
 	}
 
@@ -45,6 +49,7 @@ public class Meat_Shredder extends Item {
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		if (hand == InteractionHand.MAIN_HAND) {
 			player.startUsingItem(hand);
+			world.playSound(null, player.getX(), player.getY(), player.getZ(), ModSounds.SHREDDER_START.get(), SoundSource.PLAYERS, 1.5f, 1F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
 			return InteractionResultHolder.consume(player.getItemInHand(hand));
 		} else {
 			return InteractionResultHolder.fail(player.getItemInHand(hand));
@@ -81,36 +86,50 @@ public class Meat_Shredder extends Item {
 
 		boolean flag = false;
 
-
 		for (Entity entity : possibleList) {
 			if (entity instanceof LivingEntity) {
 				float borderSize = 0.5F;
 				AABB collisionBB = entity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
 				Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
-				if (count % 5 == 0) {
-					if (collisionBB.contains(srcVec)) {
-						flag =true;
-					} else if (interceptPos.isPresent()) {
-						flag =true;
+				if (collisionBB.contains(srcVec)) {
+					flag =true;
+				} else if (interceptPos.isPresent()) {
+					flag =true;
+				}
+
+				if (flag) {
+					if (entity.hurt(CMDamageTypes.causeShredderDamage(living), (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE) / 6.5F)) {
+						int j = EnchantmentHelper.getFireAspect(living);
+						//level.playSound(null, living.getX(), living.getY(), living.getZ(), ModSounds.SHREDDER_LOOP.get(), SoundSource.PLAYERS, 1.5f, 1F / (living.getRandom().nextFloat() * 0.4F + 0.8F));
+						if (j > 0 && !entity.isOnFire()) {
+							entity.setSecondsOnFire(j * 4);
+						}
+
+						if(count % 80 == 0){
+							level.playSound(null, living.getX(), living.getY(), living.getZ(), ModSounds.SHREDDER_LOOP.get(), SoundSource.PLAYERS, 0.5f, 1F / (living.getRandom().nextFloat() * 0.4F + 0.8F));
+						}
+
+						if (count % 2 == 0) {
+							entity.setDeltaMovement(0,0,0);
+						}
 					}
-					if (flag) {
-						entity.hurt(level.damageSources().mobAttack(living), (float) living.getAttributeValue(Attributes.ATTACK_DAMAGE));
-						entity.setDeltaMovement(0, 0, 0);
+					double d0 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().x;
+					double d1 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().y;
+					double d2 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().z;
+					double dist = 1F + level.getRandom().nextFloat() * 0.2F;
+					double d3 = d0 * dist;
+					double d4 = d1 * dist;
+					double d5 = d2 * dist;
+					entity.level().addParticle(ParticleTypes.LAVA, entity.getX(), living.getEyeY() - 0.1D + (entity.getEyePosition().y - living.getEyeY()), entity.getZ(), d3, d4, d5);
 
-						double d0 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().x;
-						double d1 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().y;
-						double d2 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().z;
-						double dist = 1F + level.getRandom().nextFloat() * 0.2F;
-						double d3 = d0 * dist;
-						double d4 = d1 * dist;
-						double d5 = d2 * dist;
-
-						entity.level().addParticle(ParticleTypes.LAVA, entity.getX(), living.getEyeY() - 0.1D + (entity.getEyePosition().y - living.getEyeY()), entity.getZ(), d3, d4, d5);
-
-					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int remainingUseTicks) {
+		world.playSound(null, living.getX(), living.getY(), living.getZ(), ModSounds.SHREDDER_END.get(), SoundSource.PLAYERS, 1.5f, 1F / (living.getRandom().nextFloat() * 0.4F + 0.8F));
 	}
 
 	public float getDestroySpeed(ItemStack p_41004_, BlockState p_41005_) {

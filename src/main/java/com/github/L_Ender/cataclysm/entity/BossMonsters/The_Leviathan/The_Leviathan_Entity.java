@@ -360,13 +360,24 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         super.tick();
         this.setYRot(this.yHeadRot);
         if (tickCount % 4 == 0) bossInfo.update();
-        this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
         if (isInWater() && this.isLandNavigator) {
             switchNavigator(false);
         }
         if (!isInWater() && !this.isLandNavigator) {
             switchNavigator(true);
         }
+
+
+        if (!level().isClientSide) {
+            float halfHealth = this.getMaxHealth() / 2;
+            if (!this.getMeltDown()) {
+                this.bossInfo.setProgress((this.getHealth() - halfHealth) / (this.getMaxHealth() - halfHealth));
+            }else{
+                this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
+            }
+        }
+
+
         final boolean groundAnimate = !this.isInWater();
         this.prevNoSwimProgress = NoSwimProgress;
         if (groundAnimate) {
@@ -2214,6 +2225,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         private final The_Leviathan_Entity mob;
         private LivingEntity target;
         private float circlingTime = 0;
+        private final float huntingTime = 0;
         private float MeleeModeTime = 0;
         private static final int MELEE_MODE_TIME = 160;
         private float circleDistance = 18;
@@ -2266,11 +2278,12 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
                 if (this.mob.mode == AttackMode.CIRCLE) {
+                    circlingTime++;
                     BlockPos circlePos = getLeviathanCirclePos(target);
                     if (circlePos != null) {
                         this.mob.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY(), circlePos.getZ() + 0.5D, 1.0D);
                     }
-                    if (circlingTime >= this.mob.hunting_cooldown) {
+                    if (huntingTime >= this.mob.hunting_cooldown) {
                         int i = Math.max(this.mob.getModeChance(), 2);
                         if(this.mob.random.nextInt(i) == 0){
                             this.mob.mode = AttackMode.RANGE;

@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -204,11 +205,17 @@ public class The_Prowler_Entity extends Boss_monster {
             }
         }
         if(this.getAnimation() == PROWLER_SPIN_ATTACK){
+            if(this.getAnimationTick() == 8) {
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.PROWLER_SAW_SPIN_ATTACK.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            }
             if(this.getAnimationTick() == 19) {
                 AreaAttack(4f,4f,270,1.5F);
             }
         }
         if(this.getAnimation() == PROWLER_ATTACK){
+            if(this.getAnimationTick()== 1) {
+                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.PROWLER_SAW_ATTACK.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            }
             if(this.getAnimationTick() >= 18 && this.getAnimationTick() <= 64) {
                 if (this.tickCount % 4 ==0) {
                     AreaAttack(4f, 4f, 270, 0.75F);
@@ -253,7 +260,7 @@ public class The_Prowler_Entity extends Boss_monster {
 
     private void Missilelaunch(float y, float math, LivingEntity target) {
         if (!this.isSilent()) {
-            this.level().levelEvent((Player)null, 1024, this.blockPosition(), 0);
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ROCKET_LAUNCH.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         }
         float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
         float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
@@ -288,13 +295,16 @@ public class The_Prowler_Entity extends Boss_monster {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return ModSounds.WATCHER_HURT.get();
+        return ModSounds.PROWLER_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.WATCHER_DEATH.get();
+        return ModSounds.PROWLER_DEATH.get();
     }
 
+    protected SoundEvent getAmbientSound() {
+        return this.getIsAwaken() ? ModSounds.PROWLER_IDLE.get() : super.getAmbientSound();
+    }
 
     @Override
     protected BodyRotationControl createBodyControl() {

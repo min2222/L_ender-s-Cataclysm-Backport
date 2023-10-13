@@ -42,6 +42,7 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ModelVoid_Forge VOID_FORGE_MODEL = new ModelVoid_Forge();
     private static final ModelTidal_Claws TIDAL_CLAWS_MODEL = new ModelTidal_Claws();
     private static final ModelMeat_Shredder MEAT_SHREDDER_MODEL = new ModelMeat_Shredder();
+    private static final ModelLaser_Gatling LASER_GATLING_MODEL = new ModelLaser_Gatling();
     private static final ResourceLocation BULWARK_OF_THE_FLAME_TEXTURE = new ResourceLocation("cataclysm:textures/item/bulwark_of_the_flame.png");
     private static final ResourceLocation GAUNTLET_OF_GUARD_TEXTURE = new ResourceLocation("cataclysm:textures/item/gauntlet_of_guard.png");
     private static final ResourceLocation GAUNTLET_OF_BULWARK_TEXTURE = new ResourceLocation("cataclysm:textures/item/gauntlet_of_bulwark.png");
@@ -49,6 +50,7 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation VOID_FORGE_TEXTURE = new ResourceLocation("cataclysm:textures/item/void_forge.png");
     private static final ResourceLocation TIDAL_CLAWS_TEXTURE = new ResourceLocation("cataclysm:textures/item/tidal_claws.png");
     private static final ResourceLocation MEAT_SHREDDER_TEXTURE = new ResourceLocation("cataclysm:textures/item/meat_shredder.png");
+    private static final ResourceLocation LASER_GATLING_TEXTURE = new ResourceLocation("cataclysm:textures/item/laser_gatling.png");
     private static final ResourceLocation ALTAR_OF_FIRE_TEXTURE = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altar_of_fire.png");
     private static final ResourceLocation ALTAR_OF_VOID_TEXTURE = new ResourceLocation("cataclysm:textures/block/altar_of_void.png");
     private static final ResourceLocation ALTAR_OF_AMETHYST_TEXTURE = new ResourceLocation("cataclysm:textures/block/altar_of_amethyst.png");
@@ -172,7 +174,15 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             MEAT_SHREDDER_MODEL.animateStack(itemStackIn);
             matrixStackIn.popPose();
         }
-
+        if (itemStackIn.getItem() == ModItems.LASER_GATLING.get()) {
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0.5F, 0.5F, 0.5F);
+            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(LASER_GATLING_TEXTURE), false, itemStackIn.hasFoil());
+            LASER_GATLING_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            LASER_GATLING_MODEL.animateStack(itemStackIn,Minecraft.getInstance().getFrameTime());
+            matrixStackIn.popPose();
+        }
         if(itemStackIn.getItem() == ModBlocks.ALTAR_OF_FIRE.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 1.50F, 0.5F);

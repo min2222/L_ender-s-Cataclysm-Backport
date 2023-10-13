@@ -209,9 +209,9 @@
   "advancements.cataclysm.kill_harbinger.title": "Out Of Place Things",
   "advancements.cataclysm.kill_harbinger.description": "Wake and Defeat the Harbinger",
 
-  "death.attack.laser": "%s fue exterminado por el láser de %s",
-  "death.attack.deathlaser": "%s fue exterminado por el láser de %s",
-  "death.attack.emp": "%s dev se ha convertido en pollo asado eléctrico",
-  "death.attack.emp.player": "%s has become Electric Grilled Chicken",
+  "death.attack.cataclysm.laser": "%s fue exterminado por el láser de %s",
+  "death.attack.cataclysm.deathlaser": "%s fue exterminado por el láser de %s",
+  "death.attack.cataclysm.emp": "%s dev se ha convertido en pollo asado eléctrico",
+  "death.attack.cataclysm.emp.player": "%s has become Electric Grilled Chicken",
   "entity.cataclysm.smoke_effect": "Ceniza"
 }

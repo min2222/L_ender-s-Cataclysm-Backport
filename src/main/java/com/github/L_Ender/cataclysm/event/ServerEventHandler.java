@@ -4,13 +4,14 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
 import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.items.ILeftClick;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -18,7 +19,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -31,6 +31,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -115,6 +116,7 @@ public class ServerEventHandler {
         }
 
     }
+
 
     @SubscribeEvent
     public void onPlayerAttack(AttackEntityEvent event) {
@@ -274,11 +276,31 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
+    public void MovementInput(PlayerEvent event) {
+        LocalPlayer player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (player.hasEffect(ModEffect.EFFECTCURSE_OF_DESERT.get())) {
+                if (Minecraft.getInstance().options.keyDown.isDown()) {
+                    player.input.forwardImpulse += 2F;
+                }
+                if (Minecraft.getInstance().options.keyLeft.isDown()) {
+                    player.input.leftImpulse -= 2F;
+                }
+                if (Minecraft.getInstance().options.keyRight.isDown()) {
+                    player.input.leftImpulse += 2F;
+                }
+                if (Minecraft.getInstance().options.keyUp.isDown()) {
+                    player.input.forwardImpulse -= 2F;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onAddReloadListener(AddReloadListenerEvent event){
         Cataclysm.LOGGER.info("Adding datapack listener altar_of_amethyst_recipes");
         event.addListener(Cataclysm.PROXY.getAltarOfAmethystRecipeManager());
     }
-
 }
 
 
