@@ -9,13 +9,6 @@ import com.github.L_Ender.cataclysm.client.render.blockentity.*;
 import com.github.L_Ender.cataclysm.client.render.entity.*;
 import com.github.L_Ender.cataclysm.client.render.item.CMItemRenderProperties;
 import com.github.L_Ender.cataclysm.client.render.item.CustomArmorRenderProperties;
-import com.github.L_Ender.cataclysm.client.sound.*;
-import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Guardian_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Netherite_Monstrosity_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.init.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -26,8 +19,6 @@ import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CrossbowItem;
@@ -39,19 +30,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = Cataclysm.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
 
-    public static final Map<Integer, SoundMonstrosityMusic> MONSTROSITY_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundEnderGuardianMusic> GUARDIAN_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundIgnisMusic> IGNIS_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundHarbingerMusic> HARBINGER_SOUND_MAP = new HashMap<>();
-    public static final Map<Integer, SoundLeviathanMusic> LEVIATHAN_SOUND_MAP = new HashMap<>();
 
 
     public void init() {
@@ -121,7 +105,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.TIDAL_HOOK.get(), RendererTidal_Hook::new);
         EntityRenderers.register(ModEntities.AMETHYST_CRAB.get(), RendererAmethyst_Crab::new);
         EntityRenderers.register(ModEntities.ANCIENT_REMNANT.get(), RendererAncient_Remnant::new);
-        EntityRenderers.register(ModEntities.SANDSTORM.get(), RendererNull::new);
+        EntityRenderers.register(ModEntities.SANDSTORM.get(), RenderSandstorm::new);
         EntityRenderers.register(ModEntities.THE_WATCHER.get(), RendererThe_Watcher::new);
         EntityRenderers.register(ModEntities.THE_PROWLER.get(), RendererThe_Prowler::new);
         EntityRenderers.register(ModEntities.EARTHQUAKE.get(), RendererNull::new);
@@ -167,100 +151,6 @@ public class ClientProxy extends CommonProxy {
     public Player getClientSidePlayer() {
         return Minecraft.getInstance().player;
     }
-
-
-    @OnlyIn(Dist.CLIENT)
-    public void onEntityStatus(Entity entity, byte updateKind) {
-        float f2 = Minecraft.getInstance().options.getSoundSourceVolume(SoundSource.RECORDS);
-        if(CMConfig.BossMusic) {
-            if (entity instanceof Netherite_Monstrosity_Entity && entity.isAlive() && updateKind == 67) {
-                if (f2 <= 0) {
-                    MONSTROSITY_SOUND_MAP.clear();
-                } else {
-                    SoundMonstrosityMusic sound;
-                    if (MONSTROSITY_SOUND_MAP.get(entity.getId()) == null) {
-                        sound = new SoundMonstrosityMusic((Netherite_Monstrosity_Entity) entity);
-                        MONSTROSITY_SOUND_MAP.put(entity.getId(), sound);
-                    } else {
-                        sound = MONSTROSITY_SOUND_MAP.get(entity.getId());
-                    }
-                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.isNearest()) {
-                        Minecraft.getInstance().getSoundManager().play(sound);
-                    }
-                }
-            }
-            if (entity instanceof Ignis_Entity && entity.isAlive() && updateKind == 67) {
-                if (f2 <= 0) {
-                    IGNIS_SOUND_MAP.clear();
-                } else {
-                    SoundIgnisMusic sound;
-                    if (IGNIS_SOUND_MAP.get(entity.getId()) == null) {
-                        sound = new SoundIgnisMusic((Ignis_Entity) entity);
-                        IGNIS_SOUND_MAP.put(entity.getId(), sound);
-                    } else {
-                        sound = IGNIS_SOUND_MAP.get(entity.getId());
-                    }
-                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.isNearest()) {
-                        Minecraft.getInstance().getSoundManager().play(sound);
-                    }
-                }
-
-            }
-            if (entity instanceof Ender_Guardian_Entity && entity.isAlive() && updateKind == 67) {
-                if (f2 <= 0) {
-                    GUARDIAN_SOUND_MAP.clear();
-                } else {
-                    SoundEnderGuardianMusic sound;
-                    if (GUARDIAN_SOUND_MAP.get(entity.getId()) == null) {
-                        sound = new SoundEnderGuardianMusic((Ender_Guardian_Entity) entity);
-                        GUARDIAN_SOUND_MAP.put(entity.getId(), sound);
-                    } else {
-                        sound = GUARDIAN_SOUND_MAP.get(entity.getId());
-                    }
-                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.isNearest()) {
-                        Minecraft.getInstance().getSoundManager().play(sound);
-                    }
-                }
-
-            }
-            if (entity instanceof The_Harbinger_Entity && entity.isAlive() && updateKind == 67) {
-                if (f2 <= 0) {
-                    HARBINGER_SOUND_MAP.clear();
-                } else {
-                    SoundHarbingerMusic sound;
-                    if (HARBINGER_SOUND_MAP.get(entity.getId()) == null) {
-                        sound = new SoundHarbingerMusic((The_Harbinger_Entity) entity);
-                        HARBINGER_SOUND_MAP.put(entity.getId(), sound);
-                    } else {
-                        sound = HARBINGER_SOUND_MAP.get(entity.getId());
-                    }
-                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.isNearest()) {
-                        Minecraft.getInstance().getSoundManager().play(sound);
-                    }
-                }
-
-            }
-            if (entity instanceof The_Leviathan_Entity && entity.isAlive() && updateKind == 67) {
-                if (f2 <= 0) {
-                    LEVIATHAN_SOUND_MAP.clear();
-                } else {
-                    SoundLeviathanMusic sound;
-                    if (LEVIATHAN_SOUND_MAP.get(entity.getId()) == null) {
-                        sound = new SoundLeviathanMusic((The_Leviathan_Entity) entity);
-                        LEVIATHAN_SOUND_MAP.put(entity.getId(), sound);
-                    } else {
-                        sound = LEVIATHAN_SOUND_MAP.get(entity.getId());
-                    }
-                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.isNearest()) {
-                        Minecraft.getInstance().getSoundManager().play(sound);
-                    }
-                }
-
-            }
-
-        }
-    }
-
 
     @Override
     public Object getISTERProperties() {

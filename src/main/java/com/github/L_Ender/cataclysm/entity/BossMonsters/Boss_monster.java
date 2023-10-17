@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
 
+import com.github.L_Ender.cataclysm.client.sound.BossMusicPlayer;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -8,6 +9,7 @@ import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -19,7 +21,6 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -36,6 +37,9 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     private int killDataRecentlyHit;
     private DamageSource killDataCause;
     private Player killDataAttackingPlayer;
+    private static final byte MUSIC_PLAY_ID = 67;
+    private static final byte MUSIC_STOP_ID = 68;
+
 
     @OnlyIn(Dist.CLIENT)
     public Vec3[] socketPosArray;
@@ -99,6 +103,42 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
                 onDeathUpdate(20);
             }
         }
+    }
+
+
+    protected boolean canPlayMusic() {
+        return !isSilent() && getTarget() instanceof Player && getTarget() !=null;
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!level().isClientSide && getBossMusic() != null) {
+            if (canPlayMusic()) {
+                this.level().broadcastEntityEvent(this, MUSIC_PLAY_ID);
+            }
+            else {
+                this.level().broadcastEntityEvent(this, MUSIC_STOP_ID);
+            }
+        }
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == MUSIC_PLAY_ID) {
+            BossMusicPlayer.playBossMusic(this);
+        }
+        else if (id == MUSIC_STOP_ID) {
+            BossMusicPlayer.stopBossMusic(this);
+        }
+        else super.handleEntityEvent(id);
+    }
+
+
+    public boolean canPlayerHearMusic(Player player) {
+        return player != null
+                && canAttack(player)
+                && distanceTo(player) < 2500;
     }
 
     protected void onDeathAIUpdate() {}
@@ -235,6 +275,9 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
         return BossEvent.BossBarColor.PURPLE;
     }
 
+    public SoundEvent getBossMusic() {
+        return null;
+    }
 
     public boolean canBeAffected(MobEffectInstance p_34192_) {
         return p_34192_.getEffect() != ModEffect.EFFECTSTUN.get() && p_34192_.getEffect() != ModEffect.EFFECTABYSSAL_CURSE.get() && super.canBeAffected(p_34192_);

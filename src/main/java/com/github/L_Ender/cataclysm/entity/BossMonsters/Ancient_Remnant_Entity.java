@@ -3,9 +3,11 @@ package com.github.L_Ender.cataclysm.entity.BossMonsters;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
+import com.github.L_Ender.cataclysm.entity.projectile.EarthQuake_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
@@ -60,12 +62,21 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     public static final Animation REMNANT_TAIL_ATTACK2 = Animation.create(55);
     public static final Animation REMNANT_LEFT_STOMP = Animation.create(49);
     public static final Animation REMNANT_ROAR = Animation.create(70);
+    public static final Animation REMNANT_TAIL_THREE = Animation.create(104);
     private static final EntityDataAccessor<Boolean> CHARGE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Integer> MODE_CHANCE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> IS_ACT = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
     private AttackMode mode = AttackMode.CIRCLE;
     public float chargeProgress;
     public float prevchargeProgress;
     private int hunting_cooldown = 160;
+    private int charge_cooldown = 0;
+    private int roar_cooldown = 0;
+    private int earthquake_cooldown = 0;
+    public static final int CHARGE_COOLDOWN = 250;
+    public static final int ROAR_COOLDOWN = 300;
+    public static final int EARTHQUAKE_COOLDOWN = 160;
+
+
     public int frame;
     public static final int MINE_COOLDOWN = 100;
     public Ancient_Remnant_Entity(EntityType entity, Level world) {
@@ -87,7 +98,8 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 REMNANT_TAIL_ATTACK1,
                 REMNANT_TAIL_ATTACK2,
                 REMNANT_LEFT_STOMP,
-                REMNANT_ROAR};
+                REMNANT_ROAR,
+                REMNANT_TAIL_THREE};
     }
 
     protected void registerGoals() {
@@ -99,6 +111,8 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_LEFT_STOMP,24));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK1,13));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK2,11));
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_ROAR,11));
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_THREE,20));
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -159,15 +173,15 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CHARGE, false);
-        this.entityData.define(MODE_CHANCE, 0);
+        this.entityData.define(IS_ACT, false);
     }
 
-
-    public int getModeChance() {
-        return this.entityData.get(MODE_CHANCE);
+    public void setIsAct(boolean isAct) {
+        this.entityData.set(IS_ACT, isAct);
     }
-    public void setModeChance(int chance) {
-        this.entityData.set(MODE_CHANCE, chance);
+
+    public boolean getIsAct() {
+        return this.entityData.get(IS_ACT);
     }
 
     public void addAdditionalSaveData(CompoundTag compound) {
@@ -201,7 +215,11 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (hunting_cooldown > 0) {
             hunting_cooldown--;
         }
-        if(this.getAnimation() == NO_ANIMATION) setAnimation(REMNANT_ROAR);
+
+        if (charge_cooldown > 0) charge_cooldown--;
+        if (roar_cooldown > 0) roar_cooldown--;
+        if (earthquake_cooldown > 0) earthquake_cooldown--;
+
         Charge();
         frame++;
         float moveX = (float) (getX() - xo);
@@ -324,6 +342,38 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 this.level().playSound((Player) null, this, ModSounds.REMNANT_BREATHING.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
             }
         }
+
+        if(this.getAnimation() == REMNANT_ROAR){
+            if(this.getAnimationTick() == 55) {
+                for (int i = 0; i < 4; i++) {
+                    float angle = i * Mth.PI / 2F;
+                    double sx = this.getX() + (Mth.cos(angle) * 8);
+                    double sy = this.getY();
+                    double sz = this.getZ() + (Mth.sin(angle) * 8);
+                    Sandstorm_Entity projectile = new Sandstorm_Entity(this.level(), sx,sy,sz,300,angle,this);
+                    this.level().addFreshEntity(projectile);
+                }
+            }
+
+        }
+
+        if(this.getAnimation() == REMNANT_TAIL_THREE){
+            if(this.getAnimationTick() == 37) {
+                AreaAttack(10,10,50,1.0f,0.05f,160,0);
+                EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
+            }
+            if(this.getAnimationTick() == 55) {
+                AreaAttack(10,10,50,1.0f,0.05f,160,0);
+                EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
+            }
+            if(this.getAnimationTick() == 73) {
+                AreaAttack(10,10,50,1.0f,0.05f,160,0);
+                EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
+            }
+
+        }
+
+
     }
 
     private void AreaAttack(float range, float height, float arc, float damage, float hpdamage, int shieldbreakticks, int stunticks) {
@@ -430,6 +480,25 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
     }
 
+
+    private void EarthQuakeSummon(float vec, int quake,float math) {
+        float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        double theta = (yBodyRot) * (Math.PI / 180);
+        theta += Math.PI / 2;
+        double vecX = Math.cos(theta);
+        double vecZ = Math.sin(theta);
+        float angle = 360.0F / quake;
+        for (int i = 0; i < quake; i++) {
+            EarthQuake_Entity peq = new EarthQuake_Entity(this.level(), this);
+            peq.shootFromRotation(this, 0, angle * i, 0.0F, 0.45F, 0.0F);
+            peq.setPos(this.getX() + vec * vecX + f * math, this.getY(), getZ() + vec * vecZ + f1 * math);
+            this.level().addFreshEntity(peq);
+
+        }
+    }
+
+
     public boolean isAlliedTo(Entity entityIn) {
         if (entityIn == this) {
             return true;
@@ -484,8 +553,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
     private enum AttackMode {
         CIRCLE,
-        MELEE,
-        RANGE
+        MELEE
     }
 
 
@@ -637,29 +705,21 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                         this.mob.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY(), circlePos.getZ() + 0.5D, 1.0D);
                     }
                     if (huntingTime >= this.mob.hunting_cooldown) {
-                        int i = Math.max(this.mob.getModeChance(), 2);
-                        if (this.mob.random.nextInt(i) == 0) {
-                            this.mob.mode = Ancient_Remnant_Entity.AttackMode.RANGE;
-                        } else {
-                            this.mob.mode = Ancient_Remnant_Entity.AttackMode.MELEE;
-                        }
+                        this.mob.mode = Ancient_Remnant_Entity.AttackMode.MELEE;
                     }else{
-                        if(this.mob.distanceTo(target) < 7D){
+                        if(this.mob.distanceTo(target) < 4D){
                             this.mob.mode = Ancient_Remnant_Entity.AttackMode.MELEE;
-                            this.mob.setAnimation(REMNANT_TAIL_ATTACK1);
                         }
-                    }
-                } else if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.RANGE) {
-                    if (this.mob.getRandom().nextFloat() * 100.0F < 3f && this.mob.distanceTo(target) > 10.0D) {
-                        this.mob.setAnimation(REMNANT_CHARGE_PREPARE);
                     }
                 } else if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.MELEE) {
                     this.mob.getNavigation().moveTo(target, 1.0D);
                     MeleeModeTime++;
                     this.mob.getLookControl().setLookAt(target, 30, 90);
-                    if (MeleeModeTime >= MELEE_MODE_TIME) {
-                        this.mob.mode = Ancient_Remnant_Entity.AttackMode.RANGE;
-                    } else if (this.mob.getRandom().nextFloat() * 100.0F < 15f && this.mob.distanceTo(target) < 6.0D) {
+
+                    if (this.mob.roar_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 4f) {
+                        this.mob.setAnimation(REMNANT_ROAR);
+                        this.mob.roar_cooldown = ROAR_COOLDOWN;
+                    }else if (this.mob.getRandom().nextFloat() * 100.0F < 15f && this.mob.distanceTo(target) < 6.0D) {
                         if (this.mob.random.nextInt(2) == 0) {
                             this.mob.setAnimation(REMNANT_BITE1);
                         } else {
@@ -667,6 +727,12 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                         }
                     }else if (this.mob.getRandom().nextFloat() * 100.0F < 10f && this.mob.distanceTo(target) < 7.0D && target.getY() < this.mob.getY() + 1) {
                         this.mob.setAnimation(REMNANT_TAIL_ATTACK1);
+                    }else if (this.mob.earthquake_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 7f && this.mob.distanceTo(target) < 12.0D && target.onGround()) {
+                        this.mob.setAnimation(REMNANT_TAIL_THREE);
+                        this.mob.earthquake_cooldown = EARTHQUAKE_COOLDOWN;
+                    }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 3f && this.mob.distanceTo(target) > 12.0D) {
+                        this.mob.setAnimation(REMNANT_CHARGE_PREPARE);
+                        this.mob.charge_cooldown = CHARGE_COOLDOWN;
                     }
 
                 }

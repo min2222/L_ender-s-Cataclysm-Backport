@@ -15,6 +15,7 @@ public class CMConfig {
     public static int VoidForgeCooldown = 120;
     public static int TheIncineratorCooldown = 400;
     public static int WASWMissileCooldown = 40;
+    public static double WASWMissileDamage = 16;
     public static int WASWHowitzerCooldown = 100;
     public static int VASWCooldown = 120;
     public static int VoidCoreCooldown = 160;
@@ -27,7 +28,6 @@ public class CMConfig {
     public static double Laserdamage = 4;
     public static double BlazingBonedamage = 5;
     public static double LionFishSpikedamage = 4;
-    public static double WitherMissiledamage = 8;
     public static double WitherHowizterdamage = 8;
     public static double WitherHomingMissiledamage = 3;
     public static double AbyssOrbdamage = 4;
@@ -35,6 +35,7 @@ public class CMConfig {
     public static double AbyssBlastHpdamage = 0.1D;
     public static double AmethystClusterdamage = 12D;
     public static int Lavabombradius = 2;
+    public static double Sandstormdamage = 7;
 
     public static boolean ScreenShake = true;
     public static boolean BossMusic = true;
@@ -85,6 +86,7 @@ public class CMConfig {
     public static double HarbingerHealthMultiplier = 1D;
     public static double HarbingerHealingMultiplier = 1D;
     public static double HarbingerDamageMultiplier = 1D;
+    public static double HarbingerWitherMissiledamage = 8;
 
     public static double LeviathanHealthMultiplier = 1D;
     public static double LeviathanDamageMultiplier = 1D;
@@ -107,11 +109,7 @@ public class CMConfig {
     public static double AncientRemnantLongRangelimit = 10;
     public static double ProwlerLongRangelimit = 12;
 
-    public static double MonstrosityMusicVolume = 0.5D;
-    public static double EnderguardianMusicVolume = 0.5D;
-    public static double HarbingerMusicVolume = 0.5D;
-    public static double IgnisMusicVolume = 0.5D;
-    public static double LeviathanMusicVolume = 0.5D;
+    public static int BossMusicVolume = 1;
 
     public static double MonstrositysHpdamage = 0.08D;
     public static double EnderguardianGravityPunchHpdamage = 0.05D;
@@ -153,6 +151,7 @@ public class CMConfig {
             VoidForgeCooldown = ConfigHolder.COMMON.VoidForgeCooldown.get();
             TheIncineratorCooldown = ConfigHolder.COMMON.TheIncineratorCooldown.get();
             WASWMissileCooldown = ConfigHolder.COMMON.WASWMissileCooldown.get();
+            WASWMissileDamage = ConfigHolder.COMMON.WASWMissiledamage.get();
             WASWHowitzerCooldown = ConfigHolder.COMMON.WASWHowitzerCooldown.get();
             VASWCooldown = ConfigHolder.COMMON.VASWCooldown.get();
             VoidCoreCooldown = ConfigHolder.COMMON.VoidCoreCooldown.get();
@@ -164,7 +163,6 @@ public class CMConfig {
             Laserdamage =  ConfigHolder.COMMON.Laserdamage.get();
             BlazingBonedamage = ConfigHolder.COMMON.BlazingBonedamage.get();
             LionFishSpikedamage = ConfigHolder.COMMON.BlazingBonedamage.get();
-            WitherMissiledamage = ConfigHolder.COMMON.WitherMissiledamage.get();
             WitherHowizterdamage = ConfigHolder.COMMON.WitherHowizterdamage.get();
             WitherHomingMissiledamage = ConfigHolder.COMMON.WitherHomingMissiledamage.get();
             DimensionalRiftdamage = ConfigHolder.COMMON.DimensionalRiftDamage.get();
@@ -172,10 +170,12 @@ public class CMConfig {
             AbyssBlastdamage = ConfigHolder.COMMON.AbyssBlastdamage.get();
             AbyssBlastHpdamage = ConfigHolder.COMMON.AbyssBlastHpdamage.get();
             AmethystClusterdamage = ConfigHolder.COMMON.AmethystClusterdamage.get();
+            Sandstormdamage = ConfigHolder.COMMON.Sandstormdamage.get();
 
             Lavabombradius = ConfigHolder.COMMON.Lavabombradius.get();
             ScreenShake = ConfigHolder.COMMON.ScreenShake.get();
             BossMusic = ConfigHolder.COMMON.BossMusic.get();
+            BossMusicVolume = ConfigHolder.COMMON.BossMusicVolume.get();
             EnderguardianDamageCap = ConfigHolder.COMMON.EnderguardianDamageCap.get();
             MonstrosityDamageCap = ConfigHolder.COMMON.MonstrosityDamageCap.get();
             IgnisDamageCap = ConfigHolder.COMMON.IgnisDamageCap.get();
@@ -207,6 +207,7 @@ public class CMConfig {
             HarbingerHealthMultiplier = ConfigHolder.COMMON.HarbingerHealthMultiplier.get();
             HarbingerDamageMultiplier = ConfigHolder.COMMON.HarbingerDamageMultiplier.get();
             HarbingerHealingMultiplier = ConfigHolder.COMMON.HarbingerHealingMultiplier.get();
+            HarbingerWitherMissiledamage = ConfigHolder.COMMON.HarbingerWitherMissiledamage.get();
             HarbingerLightFire = ConfigHolder.COMMON.HarbingerLightFire.get();
 
             IgnisBlockBreaking = ConfigHolder.COMMON.IgnisBlockBreaking.get();
@@ -256,12 +257,6 @@ public class CMConfig {
             AncientRemnantBlockBreaking = ConfigHolder.COMMON.AncientRemnantBlockBreaking.get();
 
             Armor_Infinity_Durability = ConfigHolder.COMMON.Armor_Infinity_Durability.get();
-
-            MonstrosityMusicVolume = ConfigHolder.COMMON.MonstrosityMusicVolume.get();
-            EnderguardianMusicVolume = ConfigHolder.COMMON.EnderguardianMusicVolume.get();
-            IgnisMusicVolume = ConfigHolder.COMMON.IgnisMusicVolume.get();
-            HarbingerMusicVolume = ConfigHolder.COMMON.HarbingerMusicVolume.get();
-            LeviathanMusicVolume = ConfigHolder.COMMON.LeviathanMusicVolume.get();
 
             DeeplingSpawnWeight = ConfigHolder.COMMON.DeeplingSpawnWeight.get();
             DeeplingSpawnRolls = ConfigHolder.COMMON.DeeplingSpawnRolls.get();

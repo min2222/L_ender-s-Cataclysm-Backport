@@ -24,7 +24,7 @@ import java.util.function.Predicate;
 public class Laser_Gatling extends Item {
     private static final String TAG_CHARGED = "Charged";
 
-    public static final Predicate<ItemStack> HEMOLYMPH = (stack) -> {
+    public static final Predicate<ItemStack> REDSTONE = (stack) -> {
         return stack.getItem() == Items.REDSTONE;
     };
 
@@ -78,7 +78,7 @@ public class Laser_Gatling extends Item {
         }
         for(int i = 0; i < entity.getInventory().getContainerSize(); ++i) {
             ItemStack itemstack1 = entity.getInventory().getItem(i);
-            if (HEMOLYMPH.test(itemstack1)) {
+            if (REDSTONE.test(itemstack1)) {
                 return itemstack1;
             }
         }

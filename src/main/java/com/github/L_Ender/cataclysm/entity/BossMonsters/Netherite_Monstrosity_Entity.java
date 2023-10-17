@@ -66,8 +66,6 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -268,9 +266,6 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
         if (tickCount % 4 == 0) bossInfo.update();
 
         //prevgetYRot() = getYRot();
-        if (!this.isSilent() && !level().isClientSide && this.getIsAwaken()) {
-            this.level().broadcastEntityEvent(this, (byte) 67);
-        }
         if (tickCount % 4 == 0) bossInfo.update();
         frame++;
         float moveX = (float) (getX() - xo);
@@ -629,6 +624,16 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
     }
 
     @Override
+    public SoundEvent getBossMusic() {
+        return ModSounds.MONSTROSITY_MUSIC.get();
+    }
+
+    @Override
+    protected boolean canPlayMusic() {
+        return super.canPlayMusic();
+    }
+
+    @Override
     protected BodyRotationControl createBodyControl() {
         return new SmartBodyHelper2(this);
     }
@@ -800,14 +805,6 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id) {
-        if (id == 67) {
-            Cataclysm.PROXY.onEntityStatus(this, id);
-        } else {
-            super.handleEntityEvent(id);
-        }
-    }
 }
 
 

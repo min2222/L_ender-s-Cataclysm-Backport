@@ -93,6 +93,7 @@
   "item.cataclysm.the_baby_leviathan_bucket": "Bucket of The Baby Leviathan",
   "item.cataclysm.bloom_stone_pauldrons": "Bloom Stone Pauldrons",
   "item.cataclysm.meat_shredder": "Meat Shredder",
+  "item.cataclysm.laser_gatling": "Laser Gatling",
 
   "item.cataclysm.endermaptera_spawn_egg": "Endermaptera Spawn Egg",
   "item.cataclysm.ender_golem_spawn_egg": "Ender Golem Spawn Egg",
@@ -228,6 +229,7 @@
   "effect.cataclysm.abyssal_fear": "Abyssal Fear",
   "effect.cataclysm.abyssal_curse": "Abyssal Curse",
   "effect.cataclysm.blessing_of_amethyst": "Blessing Of Amethyst",
+  "effect.cataclysm.curse_of_desert": "Curse Of Desert",
 
   "golemhurt.sub": "Ender Golem hurts",
   "golemdeath.sub": "Ender Golem dies",

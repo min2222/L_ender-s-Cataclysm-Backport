@@ -49,7 +49,7 @@ public class Wither_Assault_SHoulder_Weapon extends Item {
                     player.getCooldowns().addCooldown(this, CMConfig.WASWHowitzerCooldown);
                     if (!p_43395_.isClientSide) {
                         Wither_Howitzer_Entity rocket = new Wither_Howitzer_Entity(ModEntities.WITHER_HOWITZER.get(), p_43395_, player);
-                        rocket.setRadius(1.75F);
+                        rocket.setRadius(3.5F);
                         rocket.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0F, f * 1.0F, 1.0F);
                         p_43395_.addFreshEntity(rocket);
                     }
@@ -68,6 +68,7 @@ public class Wither_Assault_SHoulder_Weapon extends Item {
                         double x = p_43396_.getX() + vecX;
                         double Z = p_43396_.getZ() + vecZ;
                         Wither_Missile_Entity rocket = new Wither_Missile_Entity(ModEntities.WITHER_MISSILE.get(), x, p_43396_.getEyeY(), Z, d1, d2, d3, p_43395_);
+                        rocket.setDamage((float) CMConfig.WASWMissileDamage);
                         p_43395_.addFreshEntity(rocket);
                     }
                 }

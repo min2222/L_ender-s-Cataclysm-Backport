@@ -184,7 +184,7 @@ public class ModItems {
             () -> new Meat_Shredder(new Item.Properties().stacksTo(1).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> LASER_GATLING = ITEMS.register("laser_gatling",
-            () -> new Laser_Gatling(new Item.Properties().stacksTo(1).fireResistant().durability(80).rarity(Rarity.EPIC)));
+            () -> new Laser_Gatling(new Item.Properties().stacksTo(1).fireResistant().durability(40).rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> WITHER_ASSULT_SHOULDER_WEAPON = ITEMS.register("wither_assault_shoulder_weapon",
             () -> new Wither_Assault_SHoulder_Weapon(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));

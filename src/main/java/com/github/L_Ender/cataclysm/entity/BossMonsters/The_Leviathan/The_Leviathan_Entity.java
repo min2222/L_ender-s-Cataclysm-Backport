@@ -2,7 +2,9 @@ package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.AI.*;
+import com.github.L_Ender.cataclysm.entity.AI.AnimalAIRandomSwimming;
+import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
+import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AnimationGoal;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Boss_monster;
@@ -67,8 +69,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
@@ -386,9 +386,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         } else {
             if (this.NoSwimProgress > 0F)
                 this.NoSwimProgress--;
-        }
-        if (!this.isSilent() && !level().isClientSide) {
-            this.level().broadcastEntityEvent(this, (byte) 67);
         }
         this.prevLeftTentacleProgress = LeftTentacleProgress;
         this.prevRightTentacleProgress = RightTentacleProgress;
@@ -1328,6 +1325,16 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         return ModSounds.LEVIATHAN_DEFEAT.get();
     }
 
+    @Override
+    public SoundEvent getBossMusic() {
+        return ModSounds.LEVIATHAN_MUSIC.get();
+    }
+
+    @Override
+    protected boolean canPlayMusic() {
+        return super.canPlayMusic();
+    }
+
     @Nullable
     public Animation getDeathAnimation()
     {
@@ -1368,15 +1375,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         CIRCLE,
         MELEE,
         RANGE
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id) {
-        if (id == 67) {
-            Cataclysm.PROXY.onEntityStatus(this, id);
-        } else {
-            super.handleEntityEvent(id);
-        }
     }
 
     static class LeviathanGrabAttackGoal extends SimpleAnimationGoal<The_Leviathan_Entity> {

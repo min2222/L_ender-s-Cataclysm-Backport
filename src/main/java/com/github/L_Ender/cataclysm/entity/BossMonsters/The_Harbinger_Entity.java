@@ -8,7 +8,9 @@ import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;
 import com.github.L_Ender.cataclysm.entity.projectile.*;
-import com.github.L_Ender.cataclysm.init.*;
+import com.github.L_Ender.cataclysm.init.ModEntities;
+import com.github.L_Ender.cataclysm.init.ModSounds;
+import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
@@ -51,11 +53,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -279,9 +278,6 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
             if (tickCount % 4 == 0) bossEvent.update();
         }
 
-        if (!this.isSilent() && !level().isClientSide && this.deactivateProgress == 0) {
-            this.level().broadcastEntityEvent(this, (byte) 67);
-        }
 
         Entity entity = this.level().getEntity(this.getAlternativeTarget(0));
         if (!this.level().isClientSide && this.getAlternativeTarget(0) > 0 && this.isAlive() && !this.getIsCharge() && this.getAnimation() != STUN_ANIAMATION) {
@@ -645,6 +641,16 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
     }
 
     @Override
+    public SoundEvent getBossMusic() {
+        return ModSounds.HARBINGER_MUSIC.get();
+    }
+
+    @Override
+    protected boolean canPlayMusic() {
+        return super.canPlayMusic();
+    }
+
+    @Override
     protected void onDeathAIUpdate() {
         super.onDeathAIUpdate();
         this.move(MoverType.SELF, new Vec3(0.0D, (double)0.15F, 0.0D));
@@ -722,7 +728,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
             if (!this.isSilent()) {
                 this.level().levelEvent((Player)null, 1024, this.blockPosition(), 0);
             }
-            Wither_Missile_Entity witherskull = new Wither_Missile_Entity(this, d3, d4, d5, this.level());
+            Wither_Missile_Entity witherskull = new Wither_Missile_Entity(this, d3, d4, d5, this.level(),(float) CMConfig.HarbingerWitherMissiledamage);
             witherskull.setPosRaw(d0, d1, d2);
             this.level().addFreshEntity(witherskull);
         }
@@ -820,14 +826,6 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         return BossEvent.BossBarColor.PURPLE;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id) {
-        if (id == 67) {
-            Cataclysm.PROXY.onEntityStatus(this, id);
-        } else {
-            super.handleEntityEvent(id);
-        }
-    }
 
     static class DeathLaserGoal extends SimpleAnimationGoal<The_Harbinger_Entity> {
 

@@ -9,6 +9,9 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,6 +30,8 @@ public class Wither_Missile_Entity extends Projectile {
     public double xPower;
     public double yPower;
     public double zPower;
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Wither_Missile_Entity.class, EntityDataSerializers.FLOAT);
+
 
     public Wither_Missile_Entity(EntityType<? extends Wither_Missile_Entity> type, Level level) {
         super(type, level);
@@ -45,14 +50,26 @@ public class Wither_Missile_Entity extends Projectile {
 
     }
 
-    public Wither_Missile_Entity(LivingEntity p_36827_, double p_36828_, double p_36829_, double p_36830_, Level p_36831_) {
+    public Wither_Missile_Entity(LivingEntity p_36827_, double p_36828_, double p_36829_, double p_36830_, Level p_36831_,float damage) {
         this(ModEntities.WITHER_MISSILE.get(), p_36827_.getX(), p_36827_.getY(), p_36827_.getZ(), p_36828_, p_36829_, p_36830_, p_36831_);
         this.setOwner(p_36827_);
+        this.setDamage(damage);
         this.setRot(p_36827_.getYRot(), p_36827_.getXRot());
     }
 
     protected void defineSynchedData() {
+        this.entityData.define(DAMAGE,8f);
     }
+
+
+    public float getDamage() {
+        return entityData.get(DAMAGE);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DAMAGE, damage);
+    }
+
 
     public boolean shouldRenderAtSqrDistance(double p_36837_) {
         double d0 = this.getBoundingBox().getSize() * 4.0D;
@@ -107,7 +124,7 @@ public class Wither_Missile_Entity extends Projectile {
             boolean flag;
             if (entity1 instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity1;
-                flag = entity.hurt(this.damageSources().mobProjectile(this, livingentity), (float) CMConfig.WitherMissiledamage);
+                flag = entity.hurt(this.damageSources().mobProjectile(this, livingentity), this.getDamage());
                 if (flag) {
                     if (entity.isAlive()) {
                         this.doEnchantDamageEffects(livingentity, entity);

@@ -25,11 +25,15 @@ public class ModStructures {
     public static final RegistryObject<StructureType<Sunken_City_Structure>> SUNKEN_CITY = STRUCTURE_TYPE_DEF_REG.register("sunken_city", () -> () ->
             Sunken_City_Structure.CODEC);
 
+    public static final RegistryObject<StructureType<Cursed_Pyramid_Structure>> CURSED_PYRAMID = STRUCTURE_TYPE_DEF_REG.register("cursed_pyramid", () -> () ->
+            Cursed_Pyramid_Structure.CODEC);
+
     public static final RegistryObject<StructurePieceType> SBSP = STRUCTURE_PIECE_DEF_REG.register("soul_black_smith", () -> SoulBlackSmithStructure.Piece::new);
     public static final RegistryObject<StructurePieceType> RCP = STRUCTURE_PIECE_DEF_REG.register("ruined_citadel", () -> RuinedCitadelStructure.Piece::new);
     public static final RegistryObject<StructurePieceType> BAP = STRUCTURE_PIECE_DEF_REG.register("burning_arena", () -> Burning_Arena_Structure.Piece::new);
-
     public static final RegistryObject<StructurePieceType> SCP = STRUCTURE_PIECE_DEF_REG.register("sunken_city", () -> Sunken_City_Structure.Piece::new);
+    public static final RegistryObject<StructurePieceType> CPD = STRUCTURE_PIECE_DEF_REG.register("cursed_pyramid", () -> Cursed_Pyramid_Structure.Piece::new);
+
 
     public static final ResourceKey<Structure> SOUL_BLACK_SMITH_KEY = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Cataclysm.MODID, "soul_black_smith"));
     public static final ResourceKey<Structure> RUINED_CITADEL_KEY = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Cataclysm.MODID, "ruined_citadel"));

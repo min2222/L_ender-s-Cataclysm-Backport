@@ -68,6 +68,7 @@ public class ControlledAnimation {
     /**
      * Sets the timer to 0.
      */
+
     public void resetTimer() {
         timer = 0;
         prevtimer = 0;
@@ -132,6 +133,10 @@ public class ControlledAnimation {
         } else {
             timer = 0;
         }
+    }
+
+    public float getAnimationFraction() {
+        return this.timer / (float) this.duration;
     }
 
 }

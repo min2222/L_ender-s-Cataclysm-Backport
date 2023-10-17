@@ -706,7 +706,8 @@
     "subtitle": "crab_death.sub",
     "sounds": [
       {
-        "name": "cataclysm:entity/crab_death"
+        "name": "cataclysm:entity/crab_death",
+        "volume": 0.6
       }
     ]
   },

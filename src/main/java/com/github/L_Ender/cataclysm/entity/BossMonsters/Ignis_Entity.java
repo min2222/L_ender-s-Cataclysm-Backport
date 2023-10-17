@@ -11,7 +11,6 @@ import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Abyss_Fireball_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Fireball_Entity;
-
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.init.ModSounds;
@@ -64,8 +63,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ToolActions;
 
 import javax.annotation.Nullable;
@@ -594,9 +591,6 @@ public class Ignis_Entity extends Boss_monster {
 
         if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isShiftKeyDown()) {
             this.getPassengers().get(0).setShiftKeyDown(false);
-        }
-        if (!this.isSilent() && !level().isClientSide) {
-            this.level().broadcastEntityEvent(this, (byte) 67);
         }
 
         if (tickCount % 4 == 0) bossInfo.update();
@@ -2060,6 +2054,12 @@ public class Ignis_Entity extends Boss_monster {
         return ModSounds.IGNIS_DEATH.get();
     }
 
+
+    @Override
+    public SoundEvent getBossMusic() {
+        return ModSounds.IGNIS_MUSIC.get();
+    }
+
     @Override
     protected BodyRotationControl createBodyControl() {
         return new SmartBodyHelper2(this);
@@ -2692,13 +2692,5 @@ public class Ignis_Entity extends Boss_monster {
             }
         }
 
-    }
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id) {
-        if (id == 67) {
-            Cataclysm.PROXY.onEntityStatus(this, id);
-        } else {
-            super.handleEntityEvent(id);
-        }
     }
 }

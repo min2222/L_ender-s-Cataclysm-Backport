@@ -391,8 +391,8 @@ public class ModEntities {
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":ancient_remnant"));
 
-    public static final RegistryObject<EntityType<SandStorm_Entity>> SANDSTORM = ENTITY_TYPE.register("sandstorm", () -> EntityType.Builder.<SandStorm_Entity>of(SandStorm_Entity::new, MobCategory.MISC)
-            .sized(2.5F, 0.5F)
+    public static final RegistryObject<EntityType<Sandstorm_Entity>> SANDSTORM = ENTITY_TYPE.register("sandstorm", () -> EntityType.Builder.<Sandstorm_Entity>of(Sandstorm_Entity::new, MobCategory.MISC)
+            .sized(2.5F, 4.5F)
             .fireImmune()
             .clientTrackingRange(10)
             .updateInterval(Integer.MAX_VALUE)

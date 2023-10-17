@@ -2,8 +2,8 @@ package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.*;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.*;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Void_Vortex_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;
@@ -11,7 +11,6 @@ import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Ender_Guardian_Bullet_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Void_Rune_Entity;
-
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
@@ -66,8 +65,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -328,9 +325,6 @@ public class Ender_Guardian_Entity extends Boss_monster {
         super.tick();
         setYRot(yBodyRot);
         //prevgetYRot() = getYRot();
-        if (!this.isSilent() && !level().isClientSide) {
-            this.level().broadcastEntityEvent(this, (byte) 67);
-        }
         if (tickCount % 4 == 0) bossInfo.update();
         repelEntities(1.8F, 4.0f, 1.8F, 1.8F);
         this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
@@ -1092,6 +1086,16 @@ public class Ender_Guardian_Entity extends Boss_monster {
     }
 
     @Override
+    public SoundEvent getBossMusic() {
+        return ModSounds.ENDERGUARDIAN_MUSIC.get();
+    }
+
+    @Override
+    protected boolean canPlayMusic() {
+        return super.canPlayMusic();
+    }
+
+    @Override
     protected BodyRotationControl createBodyControl() {
         return new SmartBodyHelper2(this);
     }
@@ -1432,14 +1436,6 @@ public class Ender_Guardian_Entity extends Boss_monster {
         }
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public void handleEntityEvent(byte id) {
-        if (id == 67) {
-            Cataclysm.PROXY.onEntityStatus(this, id);
-        } else {
-            super.handleEntityEvent(id);
-        }
-    }
 }
 
 
