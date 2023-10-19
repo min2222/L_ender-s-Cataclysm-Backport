@@ -55,7 +55,6 @@ public class Laser_Gatling extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-
         ItemStack itemstack = playerIn.getItemInHand(handIn);
         playerIn.startUsingItem(handIn);
         if(!isUsable(itemstack)){
@@ -132,8 +131,17 @@ public class Laser_Gatling extends Item {
 
     }
 
-    @Override
-    public void inventoryTick(ItemStack stack, Level level, Entity holder, int slot, boolean isSelected) {
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int i, boolean held) {
+        super.inventoryTick(stack, level, entity, i, held);
+        boolean using = entity instanceof LivingEntity living && living.getUseItem().equals(stack);
+        if (level.isClientSide) {
+            if (using ) {
+                setCharged(stack, true);
+            }
+            if (!using) {
+                setCharged(stack, false);
+            }
+        }
     }
 
     public static boolean isCharged(ItemStack p_40933_) {

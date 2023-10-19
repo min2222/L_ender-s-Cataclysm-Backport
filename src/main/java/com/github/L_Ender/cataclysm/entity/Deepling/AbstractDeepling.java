@@ -13,9 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -34,10 +32,8 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
     public float LayerBrightness, oLayerBrightness;
     public int LayerTicks;
     private boolean isLandNavigator;
-    public float SwimProgress = 0;
-    public float prevSwimProgress = 0;
     private static final EntityDataAccessor<Integer> MOISTNESS = SynchedEntityData.defineId(AbstractDeepling.class, EntityDataSerializers.INT);
-
+    private static final EntityDataAccessor<Boolean> DEEPLINGSWIM = SynchedEntityData.defineId(AbstractDeepling.class, EntityDataSerializers.BOOLEAN);
 
     public AbstractDeepling(EntityType entity, Level world) {
         super(entity, world);
@@ -70,6 +66,7 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(MOISTNESS, 40000);
+        this.entityData.define(DEEPLINGSWIM, false);
     }
 
     public boolean isAlliedTo(Entity entityIn) {
@@ -84,7 +81,6 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
         }
     }
 
-
     @Override
     public void tick() {
         super.tick();
@@ -95,15 +91,6 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
         if (!isInWater() && !this.isLandNavigator) {
             switchNavigator(true);
         }
-        this.prevSwimProgress = SwimProgress;
-        if (this.isInWater()) {
-            if (this.SwimProgress < 10F)
-                this.SwimProgress++;
-        } else {
-            if (this.SwimProgress > 0F)
-                this.SwimProgress--;
-        }
-
 
         if (this.isNoAi()) {
             this.setAirSupply(this.getMaxAirSupply());
@@ -128,16 +115,36 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
         }
     }
 
+    public boolean isVisuallySwimming() {
+        return this.getDeeplingSwim();
+    }
 
     public void switchNavigator(boolean onLand) {
         if (onLand) {
             this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
+            if(this.getDeeplingSwim()){
+                setDeeplingSwim(false);
+            }
+            refreshDimensions();
         } else {
             this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
+            if(!this.getDeeplingSwim()){
+                setDeeplingSwim(true);
+            }
+            refreshDimensions();
         }
     }
+
+    public EntityDimensions getSwimmingSize() {
+        return this.getType().getDimensions().scale(this.getScale());
+    }
+
+    public EntityDimensions getDimensions(Pose poseIn) {
+        return this.getDeeplingSwim() ? getSwimmingSize() : super.getDimensions(poseIn);
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
@@ -157,6 +164,14 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
 
     public void setMoistness(int p_211137_1_) {
         this.entityData.set(MOISTNESS, p_211137_1_);
+    }
+
+    public boolean getDeeplingSwim() {
+        return this.entityData.get(DEEPLINGSWIM);
+    }
+
+    public void setDeeplingSwim(boolean swim) {
+        this.entityData.set(DEEPLINGSWIM, swim);
     }
 
     @Override

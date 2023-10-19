@@ -1,15 +1,12 @@
 package com.github.L_Ender.cataclysm.entity.Deepling;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -47,7 +44,7 @@ public class Deepling_Angler_Entity extends AbstractDeepling {
     boolean searchingForLand;
     public static final Animation DEEPLING_MELEE = Animation.create(20);
     public static final Animation DEEPLING_HUG = Animation.create(20);
-
+    private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(1.225f, 0.65F, false);
     private int hugcooldown = 100;
     public static final int HUG_COOLDOWN = 100;
 
@@ -192,6 +189,10 @@ public class Deepling_Angler_Entity extends AbstractDeepling {
             LivingEntity livingentity = this.getTarget();
             return livingentity != null && livingentity.isInWater();
         }
+    }
+
+    public EntityDimensions getSwimmingSize() {
+        return SWIMMING_SIZE;
     }
 
     public void travel(Vec3 p_32394_) {

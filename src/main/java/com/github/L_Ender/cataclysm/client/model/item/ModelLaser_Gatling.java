@@ -1,17 +1,13 @@
 package com.github.L_Ender.cataclysm.client.model.item;
 
-import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
-import com.github.L_Ender.cataclysm.items.Laser_Gatling;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.Minecraft;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.ItemStack;
 
 public class ModelLaser_Gatling extends AdvancedEntityModel<Entity> {
     private final AdvancedModelBox root;
@@ -71,8 +67,16 @@ public class ModelLaser_Gatling extends AdvancedEntityModel<Entity> {
     }
 
     @Override
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+    public void setupAnim(Entity entity, float openAmount, float switchProgress, float ageInTicks, float netHeadYaw, float headPitch){
         this.resetToDefaultPose();
+
+        this.core.rotationPointY += Mth.cos(ageInTicks) * 1F + 1F;
+        this.core2.rotationPointY += Mth.cos(ageInTicks + (float) Math.PI) * 1F + 1F;
+
+
+        gatling.rotateAngleZ -= openAmount * 0.75f;
+        root.rotationPointZ += Mth.cos(openAmount * 2F) * 1F + 1F;
+
     }
 
     @Override
@@ -105,22 +109,4 @@ public class ModelLaser_Gatling extends AdvancedEntityModel<Entity> {
     }
 
 
-    public void animateStack(ItemStack itemStackIn, float partialTick) {
-        this.resetToDefaultPose();
-        float tick = Minecraft.getInstance().player == null ? 0 : partialTick + Minecraft.getInstance().player.tickCount;
-        if(Minecraft.getInstance().isPaused()){
-            tick = CMItemstackRenderer.ticksExisted;
-        }
-        boolean using = Laser_Gatling.isCharged(itemStackIn);
-
-        this.core.rotationPointY += Mth.cos(tick) * 1F + 1F;
-        this.core2.rotationPointY += Mth.cos(tick + (float) Math.PI) * 1F + 1F;
-
-        if (using) {
-            gatling.rotateAngleZ -= tick * 0.75f;
-            root.rotationPointZ += Mth.cos(tick * 2F) * 1F + 1F;
-        }
-
-
-    }
 }

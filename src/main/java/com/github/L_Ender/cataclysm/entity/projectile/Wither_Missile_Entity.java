@@ -37,9 +37,9 @@ public class Wither_Missile_Entity extends Projectile {
         super(type, level);
     }
 
-    public Wither_Missile_Entity(EntityType<? extends Wither_Missile_Entity> type, double p_36818_, double p_36819_, double p_36820_, double p_36821_, double p_36822_, double p_36823_, Level level) {
+    public Wither_Missile_Entity(EntityType<? extends Wither_Missile_Entity> type, double getX, double gety, double getz, double p_36821_, double p_36822_, double p_36823_, Level level) {
         this(type, level);
-        this.moveTo(p_36818_, p_36819_, p_36820_, this.getYRot(), this.getXRot());
+        this.moveTo(getX, gety, getz, this.getYRot(), this.getXRot());
         this.reapplyPosition();
         double d0 = Math.sqrt(p_36821_ * p_36821_ + p_36822_ * p_36822_ + p_36823_ * p_36823_);
         if (d0 != 0.0D) {
@@ -57,8 +57,24 @@ public class Wither_Missile_Entity extends Projectile {
         this.setRot(p_36827_.getYRot(), p_36827_.getXRot());
     }
 
+    public Wither_Missile_Entity(EntityType<? extends Wither_Missile_Entity> type,LivingEntity p_36827_, double getX, double gety, double getz, double p_36821_, double p_36822_, double p_36823_,float damage, Level level) {
+        this(type, level);
+        this.moveTo(getX, gety, getz, this.getYRot(), this.getXRot());
+        this.setOwner(p_36827_);
+        this.setDamage(damage);
+        this.reapplyPosition();
+        double d0 = Math.sqrt(p_36821_ * p_36821_ + p_36822_ * p_36822_ + p_36823_ * p_36823_);
+        if (d0 != 0.0D) {
+            this.xPower = p_36821_ / d0 * 0.1D;
+            this.yPower = p_36822_ / d0 * 0.1D;
+            this.zPower = p_36823_ / d0 * 0.1D;
+        }
+
+    }
+
+
     protected void defineSynchedData() {
-        this.entityData.define(DAMAGE,8f);
+        this.entityData.define(DAMAGE,0f);
     }
 
 
@@ -137,7 +153,7 @@ public class Wither_Missile_Entity extends Projectile {
                     }
                 }
             } else {
-                flag = entity.hurt(this.damageSources().magic(), 5.0F);
+                flag = entity.hurt(this.damageSources().magic(), this.getDamage());
             }
 
             if (flag && entity instanceof LivingEntity) {

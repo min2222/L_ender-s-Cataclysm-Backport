@@ -1982,25 +1982,22 @@ public class Ignis_Entity extends Boss_monster {
             double extraY = tick < 10 ? 0 : 0.2F * Mth.clamp(tick - 10, 0, 15);
             p_289541_.accept(passenger,this.getX() + extraX, this.getY() + extraY + 1.2F, this.getZ() + extraZ);
             if ((tick - 10) % 4 == 0) {
-                LivingEntity target = this.getTarget();
-                if (target != null) {
-                    if (passenger == target) {
-                        boolean flag = target.hurt(this.damageSources().mobAttack(this), 4 + target.getMaxHealth() * 0.02f);
-                        if (flag) {
-                            MobEffectInstance effectinstance1 = target.getEffect(ModEffect.EFFECTBLAZING_BRAND.get());
-                            int i = 1;
-                            if (effectinstance1 != null) {
-                                i += effectinstance1.getAmplifier();
-                                target.removeEffectNoUpdate(ModEffect.EFFECTBLAZING_BRAND.get());
-                            } else {
-                                --i;
-                            }
-
-                            i = Mth.clamp(i, 0, 4);
-                            MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTBLAZING_BRAND.get(), 240, i, false, true, true);
-                            target.addEffect(effectinstance);
-                            this.heal(2f * (float) CMConfig.IgnisHealingMultiplier * (i + 1));
+                if(passenger instanceof LivingEntity living) {
+                    boolean flag = living.hurt(this.damageSources().mobAttack(this), 4 + living.getMaxHealth() * 0.02f);
+                    if (flag) {
+                        MobEffectInstance effectinstance1 = living.getEffect(ModEffect.EFFECTBLAZING_BRAND.get());
+                        int i = 1;
+                        if (effectinstance1 != null) {
+                            i += effectinstance1.getAmplifier();
+                            living.removeEffectNoUpdate(ModEffect.EFFECTBLAZING_BRAND.get());
+                        } else {
+                            --i;
                         }
+
+                        i = Mth.clamp(i, 0, 4);
+                        MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTBLAZING_BRAND.get(), 240, i, false, true, true);
+                        living.addEffect(effectinstance);
+                        this.heal(2f * (float) CMConfig.IgnisHealingMultiplier * (i + 1));
                     }
                 }
             }

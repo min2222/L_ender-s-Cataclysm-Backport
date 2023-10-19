@@ -44,10 +44,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolActions;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -61,6 +63,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     public static final Animation REMNANT_TAIL_ATTACK1 = Animation.create(57);
     public static final Animation REMNANT_TAIL_ATTACK2 = Animation.create(55);
     public static final Animation REMNANT_LEFT_STOMP = Animation.create(49);
+    public static final Animation REMNANT_RIGHT_STOMP = Animation.create(49);
     public static final Animation REMNANT_ROAR = Animation.create(70);
     public static final Animation REMNANT_TAIL_THREE = Animation.create(104);
     private static final EntityDataAccessor<Boolean> CHARGE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
@@ -72,10 +75,11 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     private int charge_cooldown = 0;
     private int roar_cooldown = 0;
     private int earthquake_cooldown = 0;
+    private int stomp_cooldown = 0;
     public static final int CHARGE_COOLDOWN = 250;
     public static final int ROAR_COOLDOWN = 300;
     public static final int EARTHQUAKE_COOLDOWN = 160;
-
+    public static final int STOMP_COOLDOWN = 200;
 
     public int frame;
     public static final int MINE_COOLDOWN = 100;
@@ -98,6 +102,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 REMNANT_TAIL_ATTACK1,
                 REMNANT_TAIL_ATTACK2,
                 REMNANT_LEFT_STOMP,
+                REMNANT_RIGHT_STOMP,
                 REMNANT_ROAR,
                 REMNANT_TAIL_THREE};
     }
@@ -109,6 +114,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_BITE1,29));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_BITE2,25));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_LEFT_STOMP,24));
+        this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_RIGHT_STOMP,24));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK1,13));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK2,11));
         this.goalSelector.addGoal(0, new RemnantAnimationAttackGoal(this, REMNANT_ROAR,11));
@@ -219,6 +225,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (charge_cooldown > 0) charge_cooldown--;
         if (roar_cooldown > 0) roar_cooldown--;
         if (earthquake_cooldown > 0) earthquake_cooldown--;
+        if (stomp_cooldown > 0) stomp_cooldown--;
 
         Charge();
         frame++;
@@ -360,20 +367,57 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if(this.getAnimation() == REMNANT_TAIL_THREE){
             if(this.getAnimationTick() == 37) {
                 AreaAttack(10,10,50,1.0f,0.05f,160,0);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
                 EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
             }
             if(this.getAnimationTick() == 55) {
                 AreaAttack(10,10,50,1.0f,0.05f,160,0);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
                 EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
             }
             if(this.getAnimationTick() == 73) {
                 AreaAttack(10,10,50,1.0f,0.05f,160,0);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
                 EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
             }
 
         }
+        if(this.getAnimation() == REMNANT_LEFT_STOMP){
+            if(this.getAnimationTick() == 28) {
+                StompParticle(0.9f,1.3f);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                this.playSound(ModSounds.REMNANT_CHARGE_STEP.get(), 1F, 1.0f);
+            }
 
+            for (int l = 28; l <= 45; l = l + 2) {
+                if (this.getAnimationTick() == l) {
+                    int d = l - 26;
+                    int d2 = l - 25;
+                    float ds = (d + d2) / 2;
+                    StompDamage(0.4f, d, 1.05F, 0, 1.3f,80, 1.0f, 0.03f, 0.1f);
+                    StompDamage(0.4f, d2, 1.05F, 0, 1.3f,80, 1.0f, 0.03f, 0.1f);
+                    Stompsound(ds,1.3f);
+                }
+            }
+        }
+        if(this.getAnimation() == REMNANT_RIGHT_STOMP){
+            if(this.getAnimationTick() == 28) {
+                StompParticle(0.9f,-1.3f);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                this.playSound(ModSounds.REMNANT_CHARGE_STEP.get(), 1F, 1.0f);
+            }
 
+            for (int l = 28; l <= 45; l = l + 2) {
+                if (this.getAnimationTick() == l) {
+                    int d = l - 26;
+                    int d2 = l - 25;
+                    float ds = (d + d2) / 2;
+                    StompDamage(0.4f, d, 1.05F, 0, -1.3f,80, 1.0f, 0.03f, 0.1f);
+                    StompDamage(0.4f, d2, 1.05F, 0, -1.3f,80, 1.0f, 0.03f, 0.1f);
+                    Stompsound(ds,-1.3f);
+                }
+            }
+        }
     }
 
     private void AreaAttack(float range, float height, float arc, float damage, float hpdamage, int shieldbreakticks, int stunticks) {
@@ -443,7 +487,74 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
     }
 
+    private void StompDamage(float spreadarc, int distance, float mxy, float vec,float math, int shieldbreakticks, float damage, float hpdamage, float airborne) {
+        double perpFacing = this.yBodyRot * (Math.PI / 180);
+        double facingAngle = perpFacing + Math.PI / 2;
+        int hitY = Mth.floor(this.getBoundingBox().minY - 0.5);
+        double spread = Math.PI * spreadarc;
+        int arcLen = Mth.ceil(distance * spread);
+        double minY = this.getY() - 1;
+        double maxY = this.getY() + mxy;
+        float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        for (int i = 0; i < arcLen; i++) {
+            double theta = (i / (arcLen - 1.0) - 0.5) * spread + facingAngle;
+            double vx = Math.cos(theta);
+            double vz = Math.sin(theta);
+            double px = this.getX() + vx * distance + vec * Math.cos((yBodyRot + 90) * Math.PI / 180) + f * math;
+            double pz = this.getZ() + vz * distance + vec * Math.sin((yBodyRot + 90) * Math.PI / 180  + f1 * math);
+            float factor = 1 - distance / (float) 12;
+            int hitX = Mth.floor(px);
+            int hitZ = Mth.floor(pz);
+            BlockPos pos = new BlockPos(hitX, hitY, hitZ);
+            BlockPos abovePos = new BlockPos(pos).above();
+            BlockState block = level().getBlockState(pos);
+            BlockState blockAbove = level().getBlockState(abovePos);
+            if (block != Blocks.AIR.defaultBlockState() && !block.hasBlockEntity() && !blockAbove.blocksMotion()) {
+                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level(), hitX + 0.5D, hitY + 1.0D, hitZ + 0.5D, block, 10);
+                fallingBlockEntity.push(0, 0.2D + getRandom().nextGaussian() * 0.04D, 0);
+                level().addFreshEntity(fallingBlockEntity);
+            }
+            AABB selection = new AABB(px - 0.5, minY, pz - 0.5, px + 0.5, maxY, pz + 0.5);
+            List<LivingEntity> hit = level().getEntitiesOfClass(LivingEntity.class, selection);
+            for (LivingEntity entity : hit) {
+                if (!isAlliedTo(entity) && !(entity instanceof Ignis_Entity) && entity != this) {
+                    if (entity instanceof Player) {
+                        if (entity.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK) && shieldbreakticks > 0) {
+                            disableShield(entity, shieldbreakticks);
+                        }
+                    }
+                    boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));
+                    if (flag) {
+                        double magnitude = -4;
+                        double x = vx * (1 - factor) * magnitude;
+                        double y = 0;
+                        if (entity.onGround()) {
+                            y += 0.15;
+                        }
+                        double z = vz * (1 - factor) * magnitude;
+                        entity.setDeltaMovement(entity.getDeltaMovement().add(x, y, z));
+                    }
+                }
+            }
+        }
+    }
 
+    private void Stompsound(float distance,float math) {
+        double theta = (yBodyRot) * (Math.PI / 180);
+        theta += Math.PI / 2;
+        double vecX = Math.cos(theta);
+        double vecZ = Math.sin(theta);
+        float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
+        int hitX = Mth.floor(this.getX() + distance * vecX + f * math);
+        int hitY = Mth.floor(getY());
+        int hitZ = Mth.floor(this.getZ() + distance * vecZ + f1 * math);
+        BlockPos hit = new BlockPos(hitX, hitY, hitZ);
+        BlockState block = level().getBlockState(hit.below());
+        SoundType soundtype = block.getSoundType(level(), hit, this);
+        this.level().playLocalSound(this.getX() + distance * vecX + f * math, this.getY(), this.getZ() + distance * vecZ + f1 * math, soundtype.getBreakSound(), this.getSoundSource(), 1.5f, 0.8F + this.getRandom().nextFloat() * 0.1F, false);
+    }
 
     public  List<LivingEntity> getTailEntityLivingBaseNearby(double distanceX, double distanceMinY, double distanceMaxY,double distanceZ, double radius) {
         return getTailEntitiesNearby(LivingEntity.class, distanceX, distanceMinY,distanceMaxY, distanceZ, radius);
@@ -530,7 +641,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         super.onDeathAIUpdate();
 
     }
-
 
     @Override
     protected BodyRotationControl createBodyControl() {
@@ -719,22 +829,29 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                     if (this.mob.roar_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 4f) {
                         this.mob.setAnimation(REMNANT_ROAR);
                         this.mob.roar_cooldown = ROAR_COOLDOWN;
-                    }else if (this.mob.getRandom().nextFloat() * 100.0F < 15f && this.mob.distanceTo(target) < 6.0D) {
-                        if (this.mob.random.nextInt(2) == 0) {
-                            this.mob.setAnimation(REMNANT_BITE1);
-                        } else {
-                            this.mob.setAnimation(REMNANT_BITE2);
-                        }
-                    }else if (this.mob.getRandom().nextFloat() * 100.0F < 10f && this.mob.distanceTo(target) < 7.0D && target.getY() < this.mob.getY() + 1) {
-                        this.mob.setAnimation(REMNANT_TAIL_ATTACK1);
                     }else if (this.mob.earthquake_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 7f && this.mob.distanceTo(target) < 12.0D && target.onGround()) {
                         this.mob.setAnimation(REMNANT_TAIL_THREE);
                         this.mob.earthquake_cooldown = EARTHQUAKE_COOLDOWN;
                     }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 3f && this.mob.distanceTo(target) > 12.0D) {
                         this.mob.setAnimation(REMNANT_CHARGE_PREPARE);
                         this.mob.charge_cooldown = CHARGE_COOLDOWN;
-                    }
+                    }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 6f && this.mob.distanceTo(target) > 7.0D) {
+                        if (this.mob.random.nextBoolean()) {
+                            this.mob.setAnimation(REMNANT_RIGHT_STOMP);
+                        } else {
+                            this.mob.setAnimation(REMNANT_LEFT_STOMP);
+                        }
+                        this.mob.stomp_cooldown = STOMP_COOLDOWN;
+                    }else if (this.mob.getRandom().nextFloat() * 100.0F < 10f && this.mob.distanceTo(target) < 7.0D && target.getY() < this.mob.getY() + 1) {
+                            this.mob.setAnimation(REMNANT_TAIL_ATTACK1);
+                    } else if (this.mob.getRandom().nextFloat() * 100.0F < 10f && this.mob.distanceTo(target) < 6.0D) {
+                        if (this.mob.random.nextBoolean()) {
+                            this.mob.setAnimation(REMNANT_BITE1);
+                        } else {
+                            this.mob.setAnimation(REMNANT_BITE2);
+                        }
 
+                    }
                 }
 
 

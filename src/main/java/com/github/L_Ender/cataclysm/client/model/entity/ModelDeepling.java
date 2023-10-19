@@ -246,40 +246,40 @@ public class ModelDeepling extends AdvancedEntityModel<Deepling_Entity> {
 	public void setupAnim(Deepling_Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		animate(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
-		float walkSpeed = 0.75F;
-		float walkDegree = 0.5F;
 
-		float swimSpeed = 1.0F;
-		float swimDegree = 0.75F;
 		this.faceTarget(netHeadYaw, headPitch, 1, head);
 
-		this.walk(left_arm, 0.05f, walkDegree * 0.05F, false, 0F, 0F, ageInTicks, 1.0f);
-		this.walk(right_arm, 0.05f, walkDegree * 0.05F, true, 0F, 0F, ageInTicks, 1.0f);
-
-		this.flap(left_arm, 0.05f, walkDegree * 0.05F, false, 0F, 0, ageInTicks, 1.0f);
-		this.flap(right_arm, 0.05f, walkDegree * 0.05F, true, 0F, 0F, ageInTicks, 1.0f);
 		float partialTick = Minecraft.getInstance().getFrameTime();
-		float swimProgress = entity.prevSwimProgress + (entity.SwimProgress - entity.prevSwimProgress) * partialTick;
+		float swim = entity.getSwimAmount(partialTick);
+		float walkSpeed = 1F;
+		float walkDegree = 1F;
+		float swimSpeed = 0.25F;
+		float swimDegree = 0.5F;
+		float swimAmount = limbSwingAmount * swim;
 
+		this.walk(left_leg, walkSpeed, walkDegree * 1.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
+		this.walk(right_leg, walkSpeed, walkDegree * 1.2F, false, 0F, 0F, limbSwing, limbSwingAmount);
+		this.walk(left_arm, walkSpeed, walkDegree * 1.2F, false, 0F, 0F, limbSwing, limbSwingAmount);
+		this.walk(right_arm, walkSpeed, walkDegree * 1.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
 
-		progressRotationPrev(root,swimProgress,(float)Math.toRadians(22.5F), 0, 0, 10f);
-		progressRotationPrev(left_leg,swimProgress,(float)Math.toRadians(20F), 0, 0, 10f);
-		progressRotationPrev(right_leg,swimProgress,(float)Math.toRadians(5F), 0, 0, 10f);
-		progressRotationPrev(left_arm,swimProgress,0, 0, (float)Math.toRadians(-37.5F), 10f);
-		progressRotationPrev(right_arm,swimProgress,0, 0, (float)Math.toRadians(37.5F), 10f);
-		if (swimProgress > 0) {
-			this.walk(left_leg, swimSpeed * 1.7F, swimDegree * 1.74F, true, 0F, 0F, limbSwing, limbSwingAmount);
-			this.walk(right_leg, swimSpeed * 1.7F, swimDegree * 1.7F, false, 0F, 0F, limbSwing, limbSwingAmount);
-			this.walk(left_arm, swimSpeed * 1.7F, swimDegree * 1.4F, false, 0F, 0F, limbSwing, limbSwingAmount);
-			this.walk(right_arm, swimSpeed * 1.7F, swimDegree * 1.4F, true, 0F, 0F, limbSwing, limbSwingAmount);
-			this.walk(left_leg, 0.05f, swimDegree * 0.3F, false, 0F, 0F, ageInTicks, 1.0f);
-			this.walk(right_leg, 0.05f, swimDegree * 0.3F, true, 0F, 0F, ageInTicks, 1.0f);
-		}else{
-			this.walk(left_leg, walkSpeed, walkDegree * 1.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
-			this.walk(right_leg, walkSpeed, walkDegree * 1.2F, false, 0F, 0F, limbSwing, limbSwingAmount);
-			this.walk(left_arm, walkSpeed, walkDegree * 1.2F, false, 0F, 0F, limbSwing, limbSwingAmount);
-			this.walk(right_arm, walkSpeed, walkDegree * 1.2F, true, 0F, 0F, limbSwing, limbSwingAmount);
-		}
+		progressRotationPrev(left_arm,swim,0, 0, (float)Math.toRadians(-37.5F), 10f);
+		progressRotationPrev(right_arm,swim,0, 0, (float)Math.toRadians(37.5F), 10f);
+		progressRotationPrev(root, swim, (float) Math.toRadians(80), 0, 0, 1F);
+		progressRotationPrev(head, swim, (float) Math.toRadians(-70), 0, 0, 1F);
+		progressPositionPrev(root, swim, 0, -5, 18, 1F);
+
+		this.flap(root, swimSpeed, swimDegree * 1F, true, 0F, 0F, limbSwing, swimAmount);
+		this.swing(head, swimSpeed, swimDegree * 1, false, 0.5F, 0F, limbSwing, swimAmount);
+
+		this.flap(left_arm, swimSpeed, swimDegree * 2.75F, true, -0.5F, 1.5F, limbSwing, swimAmount);
+		this.swing(left_arm, swimSpeed, swimDegree, true, -1.5F, 0, limbSwing, swimAmount);
+		this.walk(left_arm, swimSpeed, swimDegree, true, -2F, -0.2F, limbSwing, swimAmount);
+		this.flap(right_arm, swimSpeed, swimDegree * 2.75F, false, -0.5F, 1.5F, limbSwing, swimAmount);
+		this.swing(right_arm, swimSpeed, swimDegree, false, -1.5F, 0, limbSwing, swimAmount);
+		this.walk(right_arm, swimSpeed, swimDegree, false, -4.5F, -0.2F, limbSwing, swimAmount);
+
+		this.walk(right_leg, swimSpeed * 1.5F, swimDegree * 1F, true, 2F, 0.0F, limbSwing, swimAmount);
+		this.walk(left_leg, swimSpeed * 1.5F, swimDegree * 1F, false, 2F, 0.0F, limbSwing, swimAmount);
 		if (this.riding) {
 			this.root.rotationPointY += 13;
 			this.right_arm.rotateAngleX += (-(float)Math.PI / 5F);

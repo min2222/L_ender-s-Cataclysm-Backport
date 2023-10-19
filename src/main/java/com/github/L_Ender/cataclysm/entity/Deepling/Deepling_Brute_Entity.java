@@ -32,10 +32,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.projectile.ThrownTrident;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
@@ -55,6 +52,7 @@ public class Deepling_Brute_Entity extends AbstractDeepling {
     public static final Animation DEEPLING_BRUTE_MELEE = Animation.create(20);
     private int SpinAttackTicks;
     private static final EntityDataAccessor<Boolean> SPINATTACK = SynchedEntityData.defineId(Deepling_Brute_Entity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(1.3f, 0.7F, false);
     public Deepling_Brute_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.moveControl = new DeeplingMoveControl(this,2.0f);
@@ -258,6 +256,10 @@ public class Deepling_Brute_Entity extends AbstractDeepling {
             LivingEntity livingentity = this.getTarget();
             return livingentity != null && livingentity.isInWater();
         }
+    }
+
+    public EntityDimensions getSwimmingSize() {
+        return SWIMMING_SIZE;
     }
 
     public void travel(Vec3 p_32394_) {

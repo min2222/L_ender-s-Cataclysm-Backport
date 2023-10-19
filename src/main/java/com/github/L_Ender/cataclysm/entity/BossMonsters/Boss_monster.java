@@ -106,6 +106,7 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     }
 
 
+
     protected boolean canPlayMusic() {
         return !isSilent() && getTarget() instanceof Player && getTarget() !=null;
     }

@@ -67,14 +67,13 @@ public class Wither_Assault_SHoulder_Weapon extends Item {
                         double vecZ = Math.sin(theta);
                         double x = p_43396_.getX() + vecX;
                         double Z = p_43396_.getZ() + vecZ;
-                        Wither_Missile_Entity rocket = new Wither_Missile_Entity(ModEntities.WITHER_MISSILE.get(), x, p_43396_.getEyeY(), Z, d1, d2, d3, p_43395_);
-                        rocket.setDamage((float) CMConfig.WASWMissileDamage);
+                        Wither_Missile_Entity rocket = new Wither_Missile_Entity(ModEntities.WITHER_MISSILE.get(),player, x, p_43396_.getEyeY(), Z, d1, d2, d3,(float) CMConfig.WASWMissileDamage,p_43395_);
+                        //ither_Missile_Entity rocket = new Wither_Missile_Entity(ModEntities.WITHER_MISSILE.get(), x, p_43396_.getEyeY(), Z, d1, d2, d3, p_43395_);
                         p_43395_.addFreshEntity(rocket);
                     }
                 }
             }
         }
-
 
     }
 

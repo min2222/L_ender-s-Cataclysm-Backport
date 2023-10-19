@@ -45,6 +45,7 @@ public class Deepling_Entity extends AbstractDeepling {
     boolean searchingForLand;
     public static final Animation DEEPLING_TRIDENT_THROW = Animation.create(40);
     public static final Animation DEEPLING_MELEE = Animation.create(20);
+    private static final EntityDimensions SWIMMING_SIZE = new EntityDimensions(1.15f, 0.6f, false);
     public Deepling_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.moveControl = new DeeplingMoveControl(this,2.0f);
@@ -176,6 +177,10 @@ public class Deepling_Entity extends AbstractDeepling {
             LivingEntity livingentity = this.getTarget();
             return livingentity != null && livingentity.isInWater();
         }
+    }
+
+    public EntityDimensions getSwimmingSize() {
+        return SWIMMING_SIZE;
     }
 
     public void travel(Vec3 p_32394_) {
