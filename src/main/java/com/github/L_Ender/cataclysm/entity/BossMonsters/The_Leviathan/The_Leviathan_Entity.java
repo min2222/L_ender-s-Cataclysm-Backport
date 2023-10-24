@@ -60,13 +60,11 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeMod;
@@ -157,6 +155,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
     private static final EntityDataAccessor<Integer> BLAST_CHANCE = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MODE_CHANCE = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> MELT_DOWN = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> HELD_ENTITY = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.INT);
     public The_Leviathan_Entity(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
@@ -194,6 +193,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         this.entityData.define(BLAST_CHANCE, 0);
         this.entityData.define(MODE_CHANCE, 0);
         this.entityData.define(MELT_DOWN, false);
+        this.entityData.define(HELD_ENTITY, 0);
     }
 
     protected void registerGoals() {
@@ -303,9 +303,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
                 return false;
             }
         }
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            damage = Math.min(CMConfig.LeviathanDamageCap, damage);
-        }
 
         if ((this.getAnimation() == LEVIATHAN_PHASE2) && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
@@ -324,6 +321,11 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
 
 
         return attack;
+    }
+
+    @Override
+    public int DamageCap() {
+        return CMConfig.LeviathanDamageCap;
     }
 
     @Override
@@ -443,10 +445,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
 
 
         AnimationHandler.INSTANCE.updateAnimations(this);
-
-        if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isShiftKeyDown()) {
-            this.getPassengers().get(0).setShiftKeyDown(false);
-        }
 
         if (!this.isNoAi()) {
             if (this.getAnimation() == NO_ANIMATION && !this.getMeltDown() && this.isMeltDown() && this.isAlive()) {
@@ -792,6 +790,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         }
 
         if(this.getAnimation() == LEVIATHAN_TENTACLE_HOLD_BLAST) {
+            HoldAttack();
             for (int i = 44, j = 0; i <= 84; i++, j++) {
                 float l = j * 0.025f;
                 if (this.getAnimationTick() == i) {
@@ -812,7 +811,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
                 this.level().playSound((Player) null, this, ModSounds.LEVIATHAN_STUN_ROAR.get(), SoundSource.HOSTILE, 3.0f, 0.8f);
             }
         }
-
     }
 
 
@@ -1067,63 +1065,52 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         endPosX = getX() + radius * Math.cos(renderYaw) * Math.cos(renderPitch);
         endPosZ = getZ() + radius * Math.sin(renderYaw) * Math.cos(renderPitch);
         endPosY = getY() + radius * Math.sin(renderPitch);
-        LivingEntity target = this.getTarget();
-        if (target != null) {
-            if (!level().isClientSide) {
-                List<LivingEntity> hit = raytraceEntities(level(), inflateX, inflateY,inflateZ, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
-                for (LivingEntity livingEntity : hit) {
-                    if (livingEntity == this.getTarget()) {
-                        boolean flag = target.hurt(damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + target.getMaxHealth() * 0.1f);
-                        if (target instanceof Player) {
-                            if (target.isBlocking() && shieldbreakticks > 0) {
-                                disableShield(target, shieldbreakticks);
-                            }
-                        }
-
-                        if (flag && !target.getType().is(ModTag.IGNIS_CANT_POKE) && target.isAlive()) {
-                            if (target.isShiftKeyDown()) {
-                                target.setShiftKeyDown(false);
-                            }
-                            target.startRiding(this, true);
-                            AnimationHandler.INSTANCE.sendAnimationMessage(this, LEVIATHAN_TENTACLE_HOLD_BLAST);
-                        }
+        if (!level().isClientSide) {
+            List<LivingEntity> hit = raytraceEntities(level(), inflateX, inflateY, inflateZ, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
+            for (LivingEntity target : hit) {
+                boolean flag = target.hurt(damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + target.getMaxHealth() * 0.1f);
+                if (target instanceof Player) {
+                    if (target.isBlocking() && shieldbreakticks > 0) {
+                        disableShield(target, shieldbreakticks);
                     }
+                }
+                if (flag && !target.getType().is(ModTag.IGNIS_CANT_POKE) && target.isAlive()) {
+                    target.stopRiding();
+                    //entityHit.startRiding(this, true);
+                    if (this.getHeldEntity() == null) {
+                        this.setheldEntity(target.getId());
+                    }
+                    AnimationHandler.INSTANCE.sendAnimationMessage(this, LEVIATHAN_TENTACLE_HOLD_BLAST);
                 }
             }
         }
+
     }
 
-    protected void positionRider(Entity passenger, Entity.MoveFunction p_289541_) {
-        super.positionRider(passenger,p_289541_);
-        if (hasPassenger(passenger)) {
-            if (this.getAnimation() == LEVIATHAN_TENTACLE_HOLD_BLAST) {
-                if (this.getAnimationTick() == 169) {
-                    passenger.stopRiding();
-                    //passenger.push(f1 * 2.5, 0.8, f2 * 2.5);
-                }
-                this.setXRot(this.xRotO);
-                this.yBodyRot = this.getYRot();
-                this.yHeadRot = this.getYRot();
+    private void HoldAttack() {
+        LivingEntity lifted = this.getHeldEntity();
+        if (lifted != null) {
+            if (this.getAnimationTick() == 169) {
+                this.setheldEntity(0);
+                //passenger.push(f1 * 2.5, 0.8, f2 * 2.5);
+
             }
+            this.setXRot(this.xRotO);
+            this.yBodyRot = this.getYRot();
+            this.yHeadRot = this.getYRot();
             final float f17 = this.getYRot() * (float) Math.PI / 180.0F;
             final float pitch = this.getXRot() * (float) Math.PI / 180.0F;
             final float f3 = Mth.sin(f17) * (1 - Math.abs(this.getXRot() / 90F));
             final float f18 = Mth.cos(f17) * (1 - Math.abs(this.getXRot() / 90F));
-            p_289541_.accept(passenger,this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F);
+            lifted.setDeltaMovement(Vec3.ZERO);
+            lifted.setPos(this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F);
+            if (lifted instanceof Player player) {
+                player.displayClientMessage(Component.translatable("entity.cataclysm.you_cant_escape", this.getName()), true);
+            }
         }
     }
 
-    @Nullable
-    public LivingEntity getControllingPassenger() {
-        return null;
-    }
-
-    @Override
-    public boolean canRiderInteract() {
-        return true;
-    }
-
-    public boolean shouldRiderSit() {
+    protected boolean canRide(Entity p_31508_) {
         return false;
     }
 
@@ -1239,6 +1226,23 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         this.entityData.set(MODE_CHANCE, chance);
     }
 
+    public void setheldEntity(int p_175463_1_) {
+        this.entityData.set(HELD_ENTITY, p_175463_1_);
+    }
+
+    public boolean hasLiftedEntity() {
+        return this.entityData.get(HELD_ENTITY) != 0;
+    }
+
+    @Nullable
+    public LivingEntity getHeldEntity() {
+        if (!this.hasLiftedEntity()) {
+            return null;
+        } else {
+            return (LivingEntity) this.level().getEntity(this.entityData.get(HELD_ENTITY));
+        }
+    }
+
     public void createStuckPortal() {
         if (this.getTarget() != null) {
             Vec3 to = new Vec3(this.getTarget().getX(), this.getTarget().getY(), this.getTarget().getZ());
@@ -1284,8 +1288,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         pos1 = new BlockPos(Mth.floor(getX() + vec * vecX + f * math), Math.round((float) (getY() - 2)), Mth.floor(getZ() + vec * vecZ + f1 * math));
         return level().getBlockState(pos1).blocksMotion();
     }
-
-
 
     @Override
     protected BodyRotationControl createBodyControl() {
@@ -1343,12 +1345,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
 
     protected float getSoundVolume() {
         return isSilent() ? 0 : 2;
-    }
-
-    public boolean isTargetBlocked(Vec3 target) {
-        Vec3 Vector3d = new Vec3(this.getX(), this.getEyeY(), this.getZ());
-
-        return this.level().clip(new ClipContext(Vector3d, target, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() != HitResult.Type.MISS;
     }
 
     private void setPartPosition(The_Leviathan_Part part, double offsetX, double offsetY, double offsetZ) {

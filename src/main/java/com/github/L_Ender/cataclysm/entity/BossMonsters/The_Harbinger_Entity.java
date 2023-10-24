@@ -242,6 +242,11 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         }
     }
 
+    @Override
+    public int DamageCap() {
+        return CMConfig.HarbingerDamageCap;
+    }
+
     public boolean canBeSeenAsEnemy() {
         return this.getIsAct() && super.canBeSeenAsEnemy();
     }

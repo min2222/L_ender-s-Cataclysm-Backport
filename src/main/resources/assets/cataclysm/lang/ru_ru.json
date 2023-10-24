@@ -33,7 +33,7 @@
   "item.cataclysm.ignitium_upgrade.ingredients.desc": "Ignitium Ingot",
   "item.cataclysm.tidal_claws.desc": "ПКМ, чтобы использовать как крюк для передвижения,",
   "item.cataclysm.tidal_claws.desc2": "ЛКМ, чтобы призвать щупальце, способное атаковать несколько существ.",
-  "you_cant_escape": "Нельзя сбежать!",
+  "entity.cataclysm.you_cant_escape": "Нельзя сбежать!",
   "cataclysm.container.weapon_fusion": "§cСлияние оружия",
 
   "item.cataclysm.enderite_ingot": "Слиток Эндерита",

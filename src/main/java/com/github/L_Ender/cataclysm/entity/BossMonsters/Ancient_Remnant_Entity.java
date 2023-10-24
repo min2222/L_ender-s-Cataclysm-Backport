@@ -14,6 +14,7 @@ import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +23,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -49,6 +49,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ToolActions;
 
 import java.util.EnumSet;
@@ -162,9 +163,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            damage = Math.min(CMConfig.AncientRemnantDamageCap, damage);
-        }
         double range = calculateRange(source);
 
         if (range > CMConfig.AncientRemnantLongRangelimit * CMConfig.AncientRemnantLongRangelimit) {
@@ -174,6 +172,10 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         return super.hurt(source, damage);
     }
 
+    @Override
+    public int DamageCap() {
+        return CMConfig.AncientRemnantDamageCap;
+    }
 
     @Override
     protected void defineSynchedData() {
@@ -485,6 +487,33 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 }
             }
         }
+    }
+
+    private void spawnSpikeLine(double posX, double posZ, double maxY, double posY) {
+        BlockPos blockpos = BlockPos.containing(posX, posY, posZ);
+        boolean flag = false;
+        double d0 = 0.0;
+
+        do {
+            if (this.level().isEmptyBlock(blockpos) && !this.level().isEmptyBlock(blockpos.below())) {
+                if (!this.level().isEmptyBlock(blockpos)) {
+                    BlockState iblockstate = this.level().getBlockState(blockpos);
+                    VoxelShape voxelshape = iblockstate.getCollisionShape(this.level(), blockpos);
+                    if (!voxelshape.isEmpty()) {
+                        d0 = voxelshape.max(Direction.Axis.Y);
+                    }
+                }
+
+                flag = true;
+                break;
+            }
+
+            blockpos = blockpos.below();
+        } while(blockpos.getY() >= Mth.floor(maxY) - 1);
+
+        if (flag) {
+        }
+
     }
 
     private void StompDamage(float spreadarc, int distance, float mxy, float vec,float math, int shieldbreakticks, float damage, float hpdamage, float airborne) {

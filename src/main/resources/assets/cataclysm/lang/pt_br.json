@@ -36,7 +36,7 @@
   "item.cataclysm.bloom_stone_pauldrons.desc": "Você pode se esconder no chão ao esgueirar-se.",
   "item.cataclysm.bloom_stone_pauldrons.desc2": "Quando você para de se esgueirar, Você dispara cristais de ametista em volta de você que causam dano às entidades.",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "Seja afetado pelo efeito da bênção. Fique imune ao efeito de escuridão, medo abissal e queimadura abissal durante o efeito da bênção",
-  "you_cant_escape": "Você não pode escapar",
+  "entity.cataclysm.you_cant_escape": "Você não pode escapar",
   "cataclysm.container.weapon_fusion": "§cFusão de Armas",
 
   "item.cataclysm.enderite_ingot": "Barra de Enderito",

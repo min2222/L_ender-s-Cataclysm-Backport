@@ -28,7 +28,7 @@
   "item.cataclysm.wither_assault_shoulder_weapon.desc2": "If you use it while sneak, you can shoot wither Howitzer",
   "item.cataclysm.gauntlet_of_bulwark.desc": "When charged : push nearby entity and give them blazing brand",
   "item.cataclysm.gauntlet_of_bulwark.desc2": "If you stop holding right click, user will charge forward and give damage to the entities in front of you.",
-  "you_cant_escape": "You can't escape",
+  "entity.cataclysm.you_cant_escape": "You can't escape",
   "cataclysm.container.weapon_fusion": "§cWeapon Fusion",
 
   "item.cataclysm.enderite_ingot": "Lingotto di Enderite",

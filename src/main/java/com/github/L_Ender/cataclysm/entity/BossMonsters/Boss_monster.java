@@ -10,6 +10,7 @@ import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -53,7 +54,14 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
+
+
+        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            damage = Math.min(DamageCap(), damage);
+        }
+
         boolean attack = super.hurt(source, damage);
+
         if (attack) {
             if (getHealth() <= 0.0F) {
                 AnimationHandler.INSTANCE.sendAnimationMessage(this, getDeathAnimation());
@@ -61,6 +69,11 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
         }
         return attack;
     }
+
+    public int DamageCap() {
+        return Integer.MAX_VALUE;
+    }
+
 
     public static void setConfigattribute(LivingEntity entity, double hpconfig, double dmgconfig) {
         AttributeInstance maxHealthAttr = entity.getAttribute(Attributes.MAX_HEALTH);

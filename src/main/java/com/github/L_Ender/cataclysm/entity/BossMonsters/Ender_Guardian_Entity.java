@@ -281,9 +281,6 @@ public class Ender_Guardian_Entity extends Boss_monster {
         if (this.getAnimation() == GUARDIAN_MASS_DESTRUCTION && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
             return false;
         }
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-            damage = Math.min(CMConfig.EnderguardianDamageCap, damage);
-        }
         double range = calculateRange(source);
 
         if (range > CMConfig.EnderguardianLongRangelimit * CMConfig.EnderguardianLongRangelimit) {
@@ -310,6 +307,12 @@ public class Ender_Guardian_Entity extends Boss_monster {
         }
         return attack;
     }
+
+    @Override
+    public int DamageCap() {
+        return CMConfig.EnderguardianDamageCap;
+    }
+
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {

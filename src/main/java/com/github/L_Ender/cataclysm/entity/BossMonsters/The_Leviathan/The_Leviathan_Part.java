@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.gameevent.GameEvent;
 
@@ -34,6 +35,10 @@ public class The_Leviathan_Part extends Cm_Part_Entity<The_Leviathan_Entity> {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
 
+    }
+
+    public MobType getMobType() {
+        return MobType.WATER;
     }
 
     public boolean canBeCollidedWith() {

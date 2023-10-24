@@ -235,6 +235,11 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
         return attack;
     }
 
+    @Override
+    public int DamageCap() {
+        return CMConfig.MonstrosityDamageCap;
+    }
+
     public boolean canBeCollidedWith() {
         return this.isAlive() && Blocking;
     }

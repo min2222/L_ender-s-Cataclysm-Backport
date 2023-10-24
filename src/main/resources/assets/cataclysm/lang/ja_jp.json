@@ -36,7 +36,7 @@
   "item.cataclysm.bloom_stone_pauldrons.desc": "スニーク中に地面に隠れることができる",
   "item.cataclysm.bloom_stone_pauldrons.desc2": "スニークをやめると、周囲にアメジストの塊が発射され、周囲にダメージを与える。",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "祝福の効果を受ける。 祝福の効果中は暗闇、深淵の恐怖、 深淵の炎焼の影響を受けない。",
-  "you_cant_escape": "逃れられない",
+  "entity.cataclysm.you_cant_escape": "逃れられない",
   "cataclysm.container.weapon_fusion": "§c武器合成",
 
   "item.cataclysm.enderite_ingot": "エンダライトインゴット",

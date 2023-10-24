@@ -36,7 +36,7 @@
   "item.cataclysm.bloom_stone_pauldrons.desc": "웅크려서 숨을 수 있다",
   "item.cataclysm.bloom_stone_pauldrons.desc2": "웅크리기를 풀었을때, 사방으로 자수정을 발사하여 피해를 준다.",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "축복 효과를 받는다. 축복 동안 어둠,심연의 공포,심연의 화상에 면역이 된다.",
-  "you_cant_escape": "넌 벗어날 수 없다.",
+  "entity.cataclysm.you_cant_escape": "넌 벗어날 수 없다.",
   "cataclysm.container.weapon_fusion": "§c무기 융합",
 
   "item.cataclysm.enderite_ingot": "엔더라이트 주괴",
