@@ -8,7 +8,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class EffectCurse_Of_Desert extends MobEffect {
 
     public EffectCurse_Of_Desert() {
-        super(MobEffectCategory.HARMFUL, 0x741aff);
+        super(MobEffectCategory.HARMFUL, 0xfff2cb);
     }
 
     public void applyEffectTick(LivingEntity LivingEntityIn, int amplifier) {

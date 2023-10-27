@@ -29,5 +29,5 @@ public class ModEffect {
 
     public static final RegistryObject<MobEffect> EFFECTBLESSING_OF_AMETHYST = EFFECTS.register("blessing_of_amethyst", EffectBlessing_Of_Amethyst::new);
 
-    public static final RegistryObject<MobEffect> EFFECTCURSE_OF_DESERT = EFFECTS.register("curse_of_desert", EffectAbyssal_Fear::new);
+    public static final RegistryObject<MobEffect> EFFECTCURSE_OF_DESERT = EFFECTS.register("curse_of_desert", EffectCurse_Of_Desert::new);
 }

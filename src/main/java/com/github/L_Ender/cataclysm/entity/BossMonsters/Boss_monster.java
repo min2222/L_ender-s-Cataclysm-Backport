@@ -62,11 +62,7 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
 
         boolean attack = super.hurt(source, damage);
 
-        if (attack) {
-            if (getHealth() <= 0.0F) {
-                AnimationHandler.INSTANCE.sendAnimationMessage(this, getDeathAnimation());
-            }
-        }
+
         return attack;
     }
 
@@ -158,7 +154,11 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     protected void onDeathAIUpdate() {}
 
     @Override
-    protected final void tickDeath() {}
+    protected final void tickDeath() {
+        if (this.getAnimation() != getDeathAnimation()) {
+            AnimationHandler.INSTANCE.sendAnimationMessage(this, getDeathAnimation());
+        }
+    }
 
     private void onDeathUpdate(int deathDuration) { // TODO copy from entityLiving
         onDeathAIUpdate();

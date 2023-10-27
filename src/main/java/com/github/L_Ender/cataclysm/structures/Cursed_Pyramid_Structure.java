@@ -34,7 +34,6 @@ public class Cursed_Pyramid_Structure extends Structure {
 
     private static final ResourceLocation ARENA1 = new ResourceLocation(Cataclysm.MODID, "cursed_pyramid1");
 
-
     private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
             .put(ARENA1, new BlockPos(0, 1, 0))
             .build();
@@ -124,19 +123,19 @@ public class Cursed_Pyramid_Structure extends Structure {
 
         @Override
         protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor worldIn, RandomSource rand, BoundingBox sbb) {
-            int treasureBox = rand.nextInt(5) + 1;
-            for (int i = 1; i <= 5; i++) {
-                String string = "sand_" + i;
-                if (string.equals(function)) {
-                    if (i == treasureBox) {
-                        worldIn.setBlock(pos, Blocks.SUSPICIOUS_SAND.defaultBlockState(), 2);
-                        worldIn.getBlockEntity(pos, BlockEntityType.BRUSHABLE_BLOCK).ifPresent((p_277328_) -> {
-                            p_277328_.setLootTable(new ResourceLocation(Cataclysm.MODID, "archaeology/cursed_pyramid"), pos.asLong());
-                        });
-                    }else{
-                        worldIn.setBlock(pos, Blocks.DIAMOND_BLOCK.defaultBlockState(), 2);
-                    }
-                }
+
+
+            String[] sandTypes = {"sand_0", "sand_1", "sand_2", "sand_3", "sand_4"};
+            String selectedSand = sandTypes[rand.nextInt(sandTypes.length)];
+
+            if (selectedSand.equals(function)) {
+                worldIn.setBlock(pos, Blocks.SUSPICIOUS_SAND.defaultBlockState(), 2);
+                worldIn.getBlockEntity(pos, BlockEntityType.BRUSHABLE_BLOCK).ifPresent((blockEntity) -> {
+                    ResourceLocation lootTableLocation = new ResourceLocation(Cataclysm.MODID, "archaeology/cursed_pyramid");
+                    blockEntity.setLootTable(lootTableLocation, pos.asLong());
+
+                });
+
             }
         }
     }

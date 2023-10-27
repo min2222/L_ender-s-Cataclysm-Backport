@@ -35,7 +35,8 @@ public class CMConfig {
     public static double AbyssBlastHpdamage = 0.1D;
     public static double AmethystClusterdamage = 12D;
     public static int Lavabombradius = 2;
-    public static double Sandstormdamage = 7;
+    public static double Sandstormdamage = 5;
+    public static double AncientDesertSteledamage = 18;
 
     public static boolean ScreenShake = true;
     public static boolean BossMusic = true;
@@ -171,6 +172,7 @@ public class CMConfig {
             AbyssBlastHpdamage = ConfigHolder.COMMON.AbyssBlastHpdamage.get();
             AmethystClusterdamage = ConfigHolder.COMMON.AmethystClusterdamage.get();
             Sandstormdamage = ConfigHolder.COMMON.Sandstormdamage.get();
+            AncientDesertSteledamage = ConfigHolder.COMMON.AncientDesertSteledamage.get();
 
             Lavabombradius = ConfigHolder.COMMON.Lavabombradius.get();
             ScreenShake = ConfigHolder.COMMON.ScreenShake.get();

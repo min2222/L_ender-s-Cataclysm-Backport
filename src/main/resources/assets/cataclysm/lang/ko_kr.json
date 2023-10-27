@@ -36,6 +36,9 @@
   "item.cataclysm.bloom_stone_pauldrons.desc": "웅크려서 숨을 수 있다",
   "item.cataclysm.bloom_stone_pauldrons.desc2": "웅크리기를 풀었을때, 사방으로 자수정을 발사하여 피해를 준다.",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "축복 효과를 받는다. 축복 동안 어둠,심연의 공포,심연의 화상에 면역이 된다.",
+  "item.cataclysm.laser_gatling.desc": "당신의 인벤토리에 있는 레드스톤으로 재장전 할 수 있다.",
+  "item.cataclysm.meat_shredder.desc": "우클릭 시 전방의 엔티티들을 갈아버린다(무적 프레임 무시)",
+
   "entity.cataclysm.you_cant_escape": "넌 벗어날 수 없다.",
   "cataclysm.container.weapon_fusion": "§c무기 융합",
 
@@ -93,6 +96,7 @@
   "item.cataclysm.the_baby_leviathan_bucket": "아기 레비아탄이 담긴 양동이",
   "item.cataclysm.bloom_stone_pauldrons": "개화의 돌 견갑",
   "item.cataclysm.meat_shredder": "미트 슈레더",
+  "item.cataclysm.laser_gatling": "레이저 게틀링",
 
   "item.cataclysm.endermaptera_spawn_egg": "엔더마프테라 생성 알",
   "item.cataclysm.ender_golem_spawn_egg": "엔더 골렘 생성 알",
@@ -215,7 +219,7 @@
   "entity.cataclysm.ancient_remnant": "고대의 잔재",
   "entity.cataclysm.the_watcher": "감시자",
   "entity.cataclysm.the_prowler": "배회자",
-
+  "entity.cataclysm.ancient_desert_stele": "고대 사막 비석",
   "entity.cataclysm.all.command_0": "%s 이(가) 돌아다니는 중",
   "entity.cataclysm.all.command_1": "%s 이(가) 따라오는 중",
   "entity.cataclysm.all.command_2": "%s 이(가) 대기중",
@@ -228,6 +232,7 @@
   "effect.cataclysm.abyssal_fear": "심연의 공포",
   "effect.cataclysm.abyssal_curse": "심연의 저주",
   "effect.cataclysm.blessing_of_amethyst": "자수정의 축복",
+  "effect.cataclysm.curse_of_desert": "Curse Of Desert",
 
   "golemhurt.sub": "엔더 골렘이 상처를 입음",
   "golemdeath.sub": "엔더 골렘이 죽음",
@@ -338,5 +343,6 @@
   "death.attack.cataclysm.emp.player": "%s는 전기구이 통닭이 되버렸습니다.",
   "death.attack.cataclysm.abyssal_burn": "%s가 차원을 떠났습니다",
   "death.attack.cataclysm.abyssal_burn.player": "%s가 차원을 떠났습니다",
+  "death.attack.cataclysm.shredder": "%s was shattered by %s",
   "cataclysm.gui.altar_of_amethyst_blessing": "축복"
 }

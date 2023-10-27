@@ -773,6 +773,50 @@
       }
     ]
   },
+  "remnant_hurt": {
+    "subtitle": "remnant_hurt.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_hurt1"
+      },
+      {
+        "name": "cataclysm:entity/remnant_hurt2"
+      },
+      {
+        "name": "cataclysm:entity/remnant_hurt3"
+      }
+    ]
+  },
+  "remnant_idle": {
+    "subtitle": "remnant_idle.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_idle1"
+      },
+      {
+        "name": "cataclysm:entity/remnant_idle2"
+      },
+      {
+        "name": "cataclysm:entity/remnant_idle3"
+      }
+    ]
+  },
+  "remnant_stomp": {
+    "subtitle": "remnant_stomp.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_stomp"
+      }
+    ]
+  },
+  "remnant_death": {
+    "subtitle": "remnant_death.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_death"
+      }
+    ]
+  },
   "watcher_hurt": {
     "subtitle": "watcher_hurt.sub",
     "sounds": [

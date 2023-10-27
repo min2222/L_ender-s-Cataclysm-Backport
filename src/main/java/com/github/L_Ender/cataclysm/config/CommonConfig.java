@@ -37,6 +37,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue DimensionalRiftDamage;
     public final ForgeConfigSpec.DoubleValue AmethystClusterdamage;
     public final ForgeConfigSpec.DoubleValue Sandstormdamage;
+    public final ForgeConfigSpec.DoubleValue AncientDesertSteledamage;
 
     public final ForgeConfigSpec.BooleanValue ScreenShake;
     public final ForgeConfigSpec.BooleanValue BossMusic;
@@ -170,7 +171,8 @@ public class CommonConfig {
         AbyssOrbdamage = buildDouble(builder, "AbyssOrbdamage", "all", 4, 0, 1000000, "Abyss Orb's Damage");
         Lavabombradius = buildInt(builder, "Lavabombradius", "all", 2, 1, 7, "Lava bomb's Radius");
         AmethystClusterdamage = buildDouble(builder, "Amethyst Cluster Damage", "all", 12, 0, 1000000, "Amethyst Cluster's Damage");
-        Sandstormdamage = buildDouble(builder, "Sandstorm Damage", "all", 3, 0, 1000000, "Sandstorm's Damage");
+        Sandstormdamage = buildDouble(builder, "Sandstorm Damage", "all", 5, 0, 1000000, "Sandstorm's Damage");
+        AncientDesertSteledamage = buildDouble(builder, "Ancient Desert Stele Damage", "all", 18, 0, 1000000, "Ancient Desert Stele's Damage");
         builder.pop();
 
         builder.push("Ender Guardian");

@@ -12,16 +12,6 @@
       ]
     },
     {
-      "name": "weapon",
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "cataclysm:wither_assault_shoulder_weapon"
-        }
-      ]
-    },
-    {
       "name": "disc",
       "conditions": [
         {

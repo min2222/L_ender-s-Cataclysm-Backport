@@ -36,6 +36,9 @@
   "item.cataclysm.bloom_stone_pauldrons.desc": "You can hide in the ground while sneaking.",
   "item.cataclysm.bloom_stone_pauldrons.desc2": "When you stop sneaking, you fire amethyst clusters around you that damage entities.",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "Be affected by the blessing effect. It is immune to darkness, abyssal fear and abyssal burn during the blessing effect",
+  "item.cataclysm.laser_gatling.desc": "You can reload with the Redstone in your inventory",
+  "item.cataclysm.meat_shredder.desc": "Right-click damages entities in front (i-frame ignore)",
+
   "entity.cataclysm.you_cant_escape": "You can't escape",
   "cataclysm.container.weapon_fusion": "§cWeapon Fusion",
 
@@ -216,7 +219,7 @@
   "entity.cataclysm.ancient_remnant": "Ancient Remnant",
   "entity.cataclysm.the_watcher": "The Watcher",
   "entity.cataclysm.the_prowler": "The Prowler",
-
+  "entity.cataclysm.ancient_desert_stele": "Ancient Desert Stele",
   "entity.cataclysm.all.command_0": "%s is wandering",
   "entity.cataclysm.all.command_1": "%s is following",
   "entity.cataclysm.all.command_2": "%s is staying",

@@ -263,6 +263,18 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> REMNANT_CHARGE_STEP = SOUNDS.register("remnant_charge_step",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_charge_step")));
 
+    public static final RegistryObject<SoundEvent> REMNANT_STOMP = SOUNDS.register("remnant_stomp",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_stomp")));
+
+    public static final RegistryObject<SoundEvent> REMNANT_HURT = SOUNDS.register("remnant_hurt",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_hurt")));
+
+    public static final RegistryObject<SoundEvent> REMNANT_DEATH = SOUNDS.register("remnant_death",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_death")));
+
+    public static final RegistryObject<SoundEvent> REMNANT_IDLE = SOUNDS.register("remnant_idle",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_idle")));
+
     public static final RegistryObject<SoundEvent> WATCHER_HURT = SOUNDS.register("watcher_hurt",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"watcher_hurt")));
 
