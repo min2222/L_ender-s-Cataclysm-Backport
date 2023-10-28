@@ -3,10 +3,7 @@ package com.github.L_Ender.cataclysm.client.event;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Guardian_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Netherite_Monstrosity_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.*;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -62,8 +59,6 @@ public class BossBarEvent {
     }
 
     private static void drawBar(GuiGraphics pPoseStack, int pX, int pY, Mob pEntity, BossEvent bossEvent) {
-        float percent = pEntity.getHealth() / pEntity.getMaxHealth();
-        float f2 = (pEntity.getHealth() - ((pEntity.getMaxHealth()- pEntity.getHealth()))) / pEntity.getMaxHealth();
         int i = (int) (bossEvent.getProgress() * 182.0F);
         if (pEntity instanceof Netherite_Monstrosity_Entity) {
             RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
@@ -131,6 +126,15 @@ public class BossBarEvent {
                 RenderSystem.setShaderTexture(0, TEXTURE);
                 pPoseStack.blit(TEXTURE, pX , pY, 0, 45, 188, 13, 256, 256);
             }
+        }
+        if (pEntity instanceof Ancient_Remnant_Entity) {
+            RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+            pPoseStack.blit(GUI_BARS_LOCATION, pX + 3, pY + 10, 0, 60, 182, 5, 256, 256);
+            if (i > 0) {
+                pPoseStack.blit(GUI_BARS_LOCATION, pX + 3, pY +11, 0, 66, i, 5, 256, 256);
+            }
+            RenderSystem.setShaderTexture(0, TEXTURE);
+            pPoseStack.blit(TEXTURE, pX , pY, 0, 79, 188, 26, 256, 256);
         }
 
     }

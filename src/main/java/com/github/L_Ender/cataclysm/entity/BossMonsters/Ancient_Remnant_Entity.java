@@ -1,10 +1,12 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
+import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;
 import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Ancient_Desert_Stele_Entity;
@@ -19,12 +21,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -52,6 +57,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ToolActions;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
@@ -85,6 +91,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     public static final int ROAR2_COOLDOWN = 200;
     public static final int EARTHQUAKE_COOLDOWN = 160;
     public static final int STOMP_COOLDOWN = 200;
+    private final CMBossInfoServer bossEvent = new CMBossInfoServer(this.getUUID(),this, BossEvent.BossBarColor.WHITE,false);
 
     public int frame;
     public static final int MINE_COOLDOWN = 100;
@@ -95,6 +102,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         setConfigattribute(this, CMConfig.AncientRemnantHealthMultiplier, CMConfig.AncientRemnantDamageMultiplier);
+        if (this.level().isClientSide){
+            Cataclysm.PROXY.addBoss(this);
+        }
     }
 
     @Override
@@ -137,7 +147,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         return Monster.createMonsterAttributes()
                 .add(Attributes.FOLLOW_RANGE, 70.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.33F)
-                .add(Attributes.ATTACK_DAMAGE, 20)
+                .add(Attributes.ATTACK_DAMAGE, 25)
                 .add(Attributes.MAX_HEALTH, 400)
                 .add(Attributes.ARMOR, 10)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0);
@@ -198,12 +208,23 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         return this.entityData.get(IS_ACT);
     }
 
+    public void setCustomName(@Nullable Component name) {
+        super.setCustomName(name);
+        this.bossEvent.setName(this.getDisplayName());
+    }
+
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
+        compound.putBoolean("Is_Act", this.getIsAct());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        this.setIsAct(compound.getBoolean("Is_Act"));
+        if (this.hasCustomName()) {
+            this.bossEvent.setName(this.getDisplayName());
+        }
+        this.bossEvent.setId(this.getUUID());
     }
 
     public void setIsCharge(boolean isAnger) {
@@ -219,6 +240,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
        // setYRot(yBodyRot);
         AnimationHandler.INSTANCE.updateAnimations(this);
         prevchargeProgress = chargeProgress;
+        this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
         if (this.getIsCharge() && chargeProgress < 3F) {
             chargeProgress++;
         }
@@ -230,6 +252,8 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (hunting_cooldown > 0) {
             hunting_cooldown--;
         }
+        if (tickCount % 4 == 0) bossEvent.update();
+
 
         if (charge_cooldown > 0) charge_cooldown--;
         if (roar_cooldown > 0) roar_cooldown--;
@@ -652,6 +676,16 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
     }
 
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        this.bossEvent.addPlayer(player);
+    }
+
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        this.bossEvent.removePlayer(player);
+    }
+
     @Override
     protected BodyRotationControl createBodyControl() {
         return new SmartBodyHelper2(this);
@@ -907,14 +941,19 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                     }else if (this.mob.roar_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 3f) {
                         this.mob.setAnimation(REMNANT_ROAR);
                         this.mob.roar_cooldown = ROAR_COOLDOWN;
-                        this.mob.charge_cooldown = ROAR_COOLDOWN;
                     }else if (this.mob.earthquake_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 7f && this.mob.distanceTo(target) < 12.0D && target.onGround()) {
                         this.mob.setAnimation(REMNANT_TAIL_THREE);
                         this.mob.earthquake_cooldown = EARTHQUAKE_COOLDOWN;
+                    }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 9f && this.mob.distanceTo(target) > 7.0D && this.mob.distanceTo(target) < 20D && target.getY() <= this.mob.getY() + 1) {
+                        if (this.mob.random.nextBoolean()) {
+                            this.mob.setAnimation(REMNANT_RIGHT_STOMP);
+                        } else {
+                            this.mob.setAnimation(REMNANT_LEFT_STOMP);
+                        }
                     }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 3f && this.mob.distanceTo(target) > 12.0D) {
                         this.mob.setAnimation(REMNANT_CHARGE_PREPARE);
                         this.mob.charge_cooldown = CHARGE_COOLDOWN;
-                    }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 6f && this.mob.distanceTo(target) > 7.0D && target.getY() < this.mob.getY() + 1) {
+                    }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 9f && this.mob.distanceTo(target) > 7.0D && target.getY() <= this.mob.getY() + 1) {
                         if (this.mob.random.nextBoolean()) {
                             this.mob.setAnimation(REMNANT_RIGHT_STOMP);
                         } else {
