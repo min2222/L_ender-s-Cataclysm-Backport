@@ -12,6 +12,7 @@ import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Ancient_Desert_Stele_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.EarthQuake_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
+import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
@@ -28,8 +29,11 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
@@ -47,10 +51,10 @@ import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
@@ -62,15 +66,17 @@ import java.util.EnumSet;
 import java.util.List;
 
 
-public class Ancient_Remnant_Entity extends Boss_monster {
+public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob {
 
-    public static final Animation REMNANT_BITE1 = Animation.create(69);
-    public static final Animation REMNANT_BITE2 = Animation.create(65);
+    public static final Animation REMNANT_BITE1 = Animation.create(61);
+    public static final Animation REMNANT_BITE2 = Animation.create(67);
     public static final Animation REMNANT_CHARGE_PREPARE = Animation.create(125);
     public static final Animation REMNANT_TAIL_ATTACK1 = Animation.create(57);
     public static final Animation REMNANT_TAIL_ATTACK2 = Animation.create(55);
-    public static final Animation REMNANT_LEFT_STOMP = Animation.create(49);
-    public static final Animation REMNANT_RIGHT_STOMP = Animation.create(49);
+    public static final Animation REMNANT_LEFT_STOMP = Animation.create(47);
+    public static final Animation REMNANT_RIGHT_STOMP = Animation.create(47);
+    public static final Animation REMNANT_LEFT_STOMP_EXTRA = Animation.create(38);
+    public static final Animation REMNANT_RIGHT_STOMP_EXTRA = Animation.create(38);
     public static final Animation REMNANT_ROAR = Animation.create(70);
     public static final Animation REMNANT_ROAR2 = Animation.create(100);
     public static final Animation REMNANT_TAIL_THREE = Animation.create(104);
@@ -80,6 +86,8 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     private AttackMode mode = AttackMode.CIRCLE;
     public float chargeProgress;
     public float prevchargeProgress;
+    public float activeProgress;
+    public float prevactiveProgress;
     private int hunting_cooldown = 160;
     private int charge_cooldown = 0;
     private int roar_cooldown = 0;
@@ -120,17 +128,20 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 REMNANT_RIGHT_STOMP,
                 REMNANT_ROAR,
                 REMNANT_TAIL_THREE,
-                REMNANT_ROAR2};
+                REMNANT_ROAR2,REMNANT_LEFT_STOMP_EXTRA,REMNANT_RIGHT_STOMP_EXTRA};
     }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(3, new RemnantAttackGoal(this));
+        this.goalSelector.addGoal(0, new AwakenGoal());
         this.goalSelector.addGoal(1, new RemnantChargeAttackGoal(this, REMNANT_CHARGE_PREPARE));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_BITE1,29));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_BITE2,25));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_LEFT_STOMP,24));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_RIGHT_STOMP,24));
+        this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_LEFT_STOMP_EXTRA,19));
+        this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_RIGHT_STOMP_EXTRA,19));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK1,13));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_ATTACK2,11));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_ROAR,11));
@@ -165,6 +176,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         return false;
     }
 
+    public boolean canBeSeenAsEnemy() {
+        return this.getIsAct() && super.canBeSeenAsEnemy();
+    }
 
     @Override
     public ItemEntity spawnAtLocation(ItemStack stack) {
@@ -184,6 +198,11 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (range > CMConfig.AncientRemnantLongRangelimit * CMConfig.AncientRemnantLongRangelimit) {
             return false;
         }
+        if (this.activeProgress > 0) {
+            if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                return false;
+            }
+        }
 
         return super.hurt(source, damage);
     }
@@ -197,7 +216,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(CHARGE, false);
-        this.entityData.define(IS_ACT, false);
+        this.entityData.define(IS_ACT, true);
     }
 
     public void setIsAct(boolean isAct) {
@@ -235,11 +254,17 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         return this.entityData.get(CHARGE);
     }
 
+    @Override
+    public boolean isPowered() {
+        return this.getHealth() <= this.getMaxHealth() / 2.0F;
+    }
+
     public void tick() {
         super.tick();
        // setYRot(yBodyRot);
         AnimationHandler.INSTANCE.updateAnimations(this);
         prevchargeProgress = chargeProgress;
+        prevactiveProgress = activeProgress;
         this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
         if (this.getIsCharge() && chargeProgress < 3F) {
             chargeProgress++;
@@ -247,6 +272,13 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (!this.getIsCharge() && chargeProgress > 0F) {
             chargeProgress--;
         }
+        if (!this.getIsAct() && activeProgress < 20F) {
+            activeProgress++;
+        }
+        if (this.getIsAct() && activeProgress > 0F) {
+            activeProgress--;
+        }
+
         this.legSolver.update(this, this.yBodyRot, this.getScale() );
 
         if (hunting_cooldown > 0) {
@@ -260,6 +292,13 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if (roar2_cooldown > 0) roar2_cooldown--;
         if (earthquake_cooldown > 0) earthquake_cooldown--;
         if (stomp_cooldown > 0) stomp_cooldown--;
+
+
+        if(this.isPowered()) {
+            if (this.tickCount % 20 == 0) {
+                this.heal(2.0F);
+            }
+        }
 
         Charge();
         frame++;
@@ -350,12 +389,18 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
 
         if(this.getAnimation() == REMNANT_TAIL_ATTACK1){
+            if(this.getAnimationTick() == 3) {
+                this.level().playSound((Player) null, this, ModSounds.REMNANT_TAIL_SWING.get(), SoundSource.HOSTILE, 2.0f, 1.0f);
+            }
             if(this.getAnimationTick() == 16){
                 TailAreaAttack(8,8,1.05F,120,1.0f,0.05f,200,100);
             }
         }
 
         if(this.getAnimation() == REMNANT_TAIL_ATTACK2){
+            if(this.getAnimationTick() == 1) {
+                this.level().playSound((Player) null, this, ModSounds.REMNANT_TAIL_SWING.get(), SoundSource.HOSTILE, 2.0f, 1.0f);
+            }
             if(this.getAnimationTick() == 14){
                 TailAreaAttack(8,8,1.05F,120,1.0f,0.05f,200,100);
             }
@@ -385,20 +430,32 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
 
         if(this.getAnimation() == REMNANT_ROAR){
+            if(this.getAnimationTick() == 14){
+                this.level().playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 60);
+            }
             if(this.getAnimationTick() == 55) {
                 for (int i = 0; i < 4; i++) {
                     float angle = i * Mth.PI / 2F;
                     double sx = this.getX() + (Mth.cos(angle) * 8);
                     double sy = this.getY();
                     double sz = this.getZ() + (Mth.sin(angle) * 8);
-                    Sandstorm_Entity projectile = new Sandstorm_Entity(this.level(), sx,sy,sz,300,angle,this);
+                    Sandstorm_Entity projectile = new Sandstorm_Entity(this.level(), sx,sy,sz,300,angle,this.getUUID());
                     this.level().addFreshEntity(projectile);
                 }
             }
-
+        }
+        if(this.getAnimation() == REMNANT_ROAR2){
+            if(this.getAnimationTick() == 23){
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 60);
+                this.level().playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+            }
         }
 
         if(this.getAnimation() == REMNANT_TAIL_THREE){
+            if(this.getAnimationTick() == 1) {
+                this.level().playSound((Player) null, this, ModSounds.REMNANT_TAIL_SLAM.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+            }
             if(this.getAnimationTick() == 37) {
                 AreaAttack(10,10,50,1.0f,0.05f,160,0);
                 ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
@@ -421,6 +478,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 StompParticle(0.9f,1.3f);
                 ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
+                if(this.isPowered()){
+                    AnimationHandler.INSTANCE.sendAnimationMessage(this, REMNANT_LEFT_STOMP_EXTRA);
+                }
             }
 
             for (int l = 28; l <= 45; l = l + 2) {
@@ -434,13 +494,42 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 }
             }
         }
+        if(this.getAnimation() == REMNANT_LEFT_STOMP_EXTRA){
+            for (int l = 2; l <= 19; l = l + 2) {
+                if (this.getAnimationTick() == l) {
+                    int d2 = l + 1;
+                    float ds = (float) (l + d2) / 2;
+                    StompDamage(0.4f, l, 1.05F, 0, 1.3f,80, 1.0f, 0.03f, 0.1f);
+                    StompDamage(0.4f, d2, 1.05F, 0, 1.3f,80, 1.0f, 0.03f, 0.1f);
+                    Stompsound(ds,1.3f);
+                }
+            }
+            if(this.getAnimationTick() == 19) {
+                StompParticle(0.9f, 1.3f);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
+            }
+            for (int l = 19; l <= 36; l = l + 2) {
+                if (this.getAnimationTick() == l) {
+                    int d = l - 17;
+                    int d2 = l - 16;
+                    float ds = (d + d2) / 2;
+                    StompDamage(0.4f, d, 1.05F, 0, 1.3f,80, 1.0f, 0.03f, 0.1f);
+                    StompDamage(0.4f, d2, 1.05F, 0, 1.3f,80, 1.0f, 0.03f, 0.1f);
+                    Stompsound(ds,1.3f);
+                }
+            }
+        }
+
         if(this.getAnimation() == REMNANT_RIGHT_STOMP){
             if(this.getAnimationTick() == 28) {
                 StompParticle(0.9f,-1.3f);
                 ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
+                if(this.isPowered()){
+                    AnimationHandler.INSTANCE.sendAnimationMessage(this, REMNANT_RIGHT_STOMP_EXTRA);
+                }
             }
-
             for (int l = 28; l <= 45; l = l + 2) {
                 if (this.getAnimationTick() == l) {
                     int d = l - 26;
@@ -452,6 +541,45 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 }
             }
         }
+        if(this.getAnimation() == REMNANT_RIGHT_STOMP_EXTRA){
+            for (int l = 2; l <= 19; l = l + 2) {
+                if (this.getAnimationTick() == l) {
+                    int d2 = l + 1;
+                    float ds = (float) (l + d2) / 2;
+                    StompDamage(0.4f, l, 1.05F, 0, -1.3f,80, 1.0f, 0.03f, 0.1f);
+                    StompDamage(0.4f, d2, 1.05F, 0, -1.3f,80, 1.0f, 0.03f, 0.1f);
+                    Stompsound(ds,-1.3f);
+                }
+            }
+            if(this.getAnimationTick() == 19) {
+                StompParticle(0.9f, -1.3f);
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
+            }
+            for (int l = 19; l <= 36; l = l + 2) {
+                if (this.getAnimationTick() == l) {
+                    int d = l - 17;
+                    int d2 = l - 16;
+                    float ds = (d + d2) / 2;
+                    StompDamage(0.4f, d, 1.05F, 0, -1.3f,80, 1.0f, 0.03f, 0.1f);
+                    StompDamage(0.4f, d2, 1.05F, 0, -1.3f,80, 1.0f, 0.03f, 0.1f);
+                    Stompsound(ds,-1.3f);
+                }
+            }
+        }
+    }
+
+    public InteractionResult mobInteract(Player player, InteractionHand hand) {
+        ItemStack itemstack = player.getItemInHand(hand);
+        Item item = itemstack.getItem();
+        if (item == ModItems.NECKLACE_OF_THE_DESERT.get() && !this.getIsAct()) {
+            if (!player.isCreative()) {
+                itemstack.shrink(1);
+            }
+            this.setIsAct(true);
+            return InteractionResult.SUCCESS;
+        }
+        return super.mobInteract(player, hand);
     }
 
     private void AreaAttack(float range, float height, float arc, float damage, float hpdamage, int shieldbreakticks, int stunticks) {
@@ -581,13 +709,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         double vecZ = Math.sin(theta);
         float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
         float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
-        int hitX = Mth.floor(this.getX() + distance * vecX + f * math);
-        int hitY = Mth.floor(getY());
-        int hitZ = Mth.floor(this.getZ() + distance * vecZ + f1 * math);
-        BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-        BlockState block = level().getBlockState(hit.below());
-        SoundType soundtype = block.getSoundType(level(), hit, this);
-        this.level().playLocalSound(this.getX() + distance * vecX + f * math, this.getY(), this.getZ() + distance * vecZ + f1 * math, soundtype.getBreakSound(), this.getSoundSource(), 1.5f, 0.8F + this.getRandom().nextFloat() * 0.1F, false);
+        this.level().playLocalSound(this.getX() + distance * vecX + f * math, this.getY(), this.getZ() + distance * vecZ + f1 * math, ModSounds.REMNANT_SHOCKWAVE.get(), this.getSoundSource(), 1.5f, 0.8F + this.getRandom().nextFloat() * 0.1F, false);
     }
 
     public  List<LivingEntity> getTailEntityLivingBaseNearby(double distanceX, double distanceMinY, double distanceMaxY,double distanceZ, double radius) {
@@ -659,7 +781,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
 
     protected SoundEvent getAmbientSound() {
-        return ModSounds.REMNANT_IDLE.get();
+        return this.getIsAct() ? ModSounds.REMNANT_IDLE.get() : super.getAmbientSound();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
@@ -710,6 +832,24 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         MELEE
     }
 
+    class AwakenGoal extends Goal {
+
+        public AwakenGoal() {
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
+        }
+
+        public boolean canUse() {
+            return activeProgress > 0F;
+        }
+
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
+        public void tick() {
+            Ancient_Remnant_Entity.this.setDeltaMovement(0, Ancient_Remnant_Entity.this.getDeltaMovement().y, 0);
+        }
+    }
 
     static class RemnantChargeAttackGoal extends SimpleAnimationGoal<Ancient_Remnant_Entity> {
 
@@ -865,9 +1005,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         private final Ancient_Remnant_Entity mob;
         private LivingEntity target;
         private float circlingTime = 0;
-        private float MeleeModeTime = 0;
         private final float huntingTime = 0;
-        private static final int MELEE_MODE_TIME = 160;
         private float circleDistance = 9;
         private boolean clockwise = false;
 
@@ -889,7 +1027,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         public void start() {
             this.mob.mode = Ancient_Remnant_Entity.AttackMode.CIRCLE;
             circlingTime = 0;
-            MeleeModeTime = 0;
             circleDistance = 9 + this.mob.random.nextInt(5);
             clockwise = this.mob.random.nextBoolean();
             this.mob.setAggressive(true);
@@ -898,7 +1035,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         public void stop() {
             this.mob.mode = Ancient_Remnant_Entity.AttackMode.CIRCLE;
             circlingTime = 0;
-            MeleeModeTime = 0;
             circleDistance = 9 + this.mob.random.nextInt(5);
             clockwise = this.mob.random.nextBoolean();
             this.target = this.mob.getTarget();
@@ -932,7 +1068,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                     }
                 } else if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.MELEE) {
                     this.mob.getNavigation().moveTo(target, 1.0D);
-                    MeleeModeTime++;
                     this.mob.getLookControl().setLookAt(target, 30, 90);
                     if (this.mob.roar2_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 12f && target.getY() >= this.mob.getY() + 8
                     ||this.mob.roar2_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 3f && this.mob.distanceTo(target) > 12.0D) {
@@ -971,8 +1106,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
                     }
                 }
-
-
             }
         }
 

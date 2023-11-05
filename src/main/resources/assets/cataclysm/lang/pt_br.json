@@ -36,6 +36,10 @@
   "item.cataclysm.bloom_stone_pauldrons.desc": "Você pode se esconder no chão ao esgueirar-se.",
   "item.cataclysm.bloom_stone_pauldrons.desc2": "Quando você para de se esgueirar, Você dispara cristais de ametista em volta de você que causam dano às entidades.",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "Seja afetado pelo efeito da bênção. Fique imune ao efeito de escuridão, medo abissal e queimadura abissal durante o efeito da bênção",
+  "item.cataclysm.laser_gatling.desc": "You can reload with the Redstone in your inventory",
+  "item.cataclysm.meat_shredder.desc": "Right-click damages entities in front (i-frame ignore)",
+  "item.cataclysm.necklace_of_the_desert.desc": "It looks like you can wake something up......",
+
   "entity.cataclysm.you_cant_escape": "Você não pode escapar",
   "cataclysm.container.weapon_fusion": "§cFusão de Armas",
 
@@ -92,6 +96,8 @@
   "item.cataclysm.abyssal_sacrifice": "Sacrifício Abissal",
   "item.cataclysm.the_baby_leviathan_bucket": "Balde com Bebê Leviatã",
   "item.cataclysm.bloom_stone_pauldrons": "Brafoneiras de Pedra",
+  "item.cataclysm.meat_shredder": "Meat Shredder",
+  "item.cataclysm.laser_gatling": "Laser Gatling",
 
   "item.cataclysm.endermaptera_spawn_egg": "Ovo Gerador de Besouro do Fim",
   "item.cataclysm.ender_golem_spawn_egg": "Ovo Gerador de Golem do Fim",
@@ -111,6 +117,8 @@
   "item.cataclysm.coralssus_spawn_egg": "Ovo Gerador de Coralssus",
   "item.cataclysm.amethyst_crab_spawn_egg": "Ovo Gerador de Caranguejão de Ametista",
   "item.cataclysm.ancient_remnant_spawn_egg": "Ovo Gerador de Fantasma Incendiado",
+  "item.cataclysm.the_watcher_spawn_egg": "The Watcher Spawn Egg",
+  "item.cataclysm.the_prowler_spawn_egg": "The Prowler Spawn Egg",
 
   "itemGroup.cataclysm": "Cataclysm",
   "block.cataclysm.witherite_block": "Bloco de Witherito",
@@ -131,6 +139,7 @@
   "block.cataclysm.obsidian_brick_slab": "Laje de Tijolos de Obsidiana",
   "block.cataclysm.obsidian_brick_stairs": "Escadas de Tijolos de Obsidiana",
   "block.cataclysm.obsidian_brick_wall": "Muro de Tijolos de Obsidiana",
+  "block.cataclysm.chorus_stem": "Chorus Stem",
   "block.cataclysm.chorus_planks": "Tábuas do Coro",
   "block.cataclysm.chorus_slab": "Laje do Coro",
   "block.cataclysm.chorus_stairs": "Escadas do Coro",
@@ -209,7 +218,9 @@
   "entity.cataclysm.amethyst_crab": "Caranguejão de Ametista",
   "entity.cataclysm.earthquake": "Terremoto",
   "entity.cataclysm.ancient_remnant": "Ancient Remnant",
-
+  "entity.cataclysm.the_watcher": "The Watcher",
+  "entity.cataclysm.the_prowler": "The Prowler",
+  "entity.cataclysm.ancient_desert_stele": "Ancient Desert Stele",
   "entity.cataclysm.all.command_0": "%s está vagando",
   "entity.cataclysm.all.command_1": "%s está seguindo",
   "entity.cataclysm.all.command_2": "%s está ficando",
@@ -222,6 +233,7 @@
   "effect.cataclysm.abyssal_fear": "Medo Abissal",
   "effect.cataclysm.abyssal_curse": "Maldição Abissal",
   "effect.cataclysm.blessing_of_amethyst": "Bênção da Ametista",
+  "effect.cataclysm.curse_of_desert": "Curse Of Desert",
 
   "golemhurt.sub": "Golem do Fim toma dano",
   "golemdeath.sub": "Golem do Fim morre",
@@ -246,13 +258,14 @@
   "voidrunerising.sub": "Runa do Vazio sobe",
   "revenant_idle.sub": "Fantasma Incendiado grunhe",
   "revenant_hurt.sub": "Fantasma Incendiado toma dano",
-  "revenant_breath.sub": "Fantasma Incendiado solta bafo cinza",
   "revenant_death.sub": "Fantasma Incendiado morre",
+  "revenant_breath.sub": "Fantasma Incendiado solta bafo cinza",
   "ignis_ambient.sub": "Ignis está queimando",
   "ignis_hurt.sub": "Ignis toma dano",
   "strongswingattack.sub": "Ignis foi cortado fora",
   "sword_stomp.sub": "Ataques do Ignis",
   "ignis_poke.sub": "Ignis segurando",
+  "ignis_armor_break": "Ignis' equipment damaged",
   "flame_burst.sub": "A explosão de uma chama",
   "ignis_death.sub": "Ignis morre",
   "ignis_music.sub": "Música de fundo do Ignis",
@@ -261,6 +274,7 @@
   "harbinger_mode_change.sub": "WRM muda",
   "harbinger_prepare.sub": "WRM prepara ataque",
   "harbinger_charge_prepare.sub": "WRM prepara carga",
+  "emp_activated.sub": "EMP is activated",
   "harbinger_charge.sub": "WRM carrega",
   "harbinger_deathlaser_prepare.sub": "WRM prepara o laser da morte",
   "death_laser.sub": "Laser da morte disparado",
@@ -290,6 +304,8 @@
   "tidal_tentacle.sub": "Garra das Marés dispara tentáculo",
   "tidal_hook_hit.sub": "Ataque do Gancho das Marés",
   "tidal_hook_loop.sub": "Gancho das Marés faz um som",
+  "crab_hurt.sub": "Amethyst Crab hurts",
+  "crab_bite.sub": "Amethyst Crab attacks with chelipeds",
 
   "advancements.cataclysm.root.title": "Cataclysm",
   "advancements.cataclysm.root.description": "Cataclysm!",
@@ -328,5 +344,7 @@
   "death.attack.cataclysm.emp.player": "%s virou frango grelhado queimado",
   "death.attack.cataclysm.abyssal_burn": "%s saiu dessa dimensão",
   "death.attack.cataclysm.abyssal_burn.player": "%s saiu dessa dimensão",
+  "death.attack.cataclysm.shredder": "%s was shattered by %s",
   "cataclysm.gui.altar_of_amethyst_blessing": "Bênção"
+
 }

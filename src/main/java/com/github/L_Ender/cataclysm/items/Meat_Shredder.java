@@ -108,11 +108,8 @@ public class Meat_Shredder extends Item {
 						if (j > 0 && !entity.isOnFire()) {
 							entity.setSecondsOnFire(j * 4);
 						}
-
-						if(count % 80 == 0){
-							level.playSound(null, living.getX(), living.getY(), living.getZ(), ModSounds.SHREDDER_LOOP.get(), SoundSource.PLAYERS, 0.5f, 1F / (living.getRandom().nextFloat() * 0.4F + 0.8F));
-						}
 					}
+					Cataclysm.PROXY.playWorldSound(living, (byte) 1);
 					double d0 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().x;
 					double d1 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().y;
 					double d2 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().z;
@@ -121,7 +118,6 @@ public class Meat_Shredder extends Item {
 					double d4 = d1 * dist;
 					double d5 = d2 * dist;
 					entity.level().addParticle(ParticleTypes.LAVA, entity.getX(), living.getEyeY() - 0.1D + (entity.getEyePosition().y - living.getEyeY()), entity.getZ(), d3, d4, d5);
-
 				}
 			}
 		}
@@ -130,6 +126,7 @@ public class Meat_Shredder extends Item {
 	@Override
 	public void releaseUsing(ItemStack stack, Level world, LivingEntity living, int remainingUseTicks) {
 		world.playSound(null, living.getX(), living.getY(), living.getZ(), ModSounds.SHREDDER_END.get(), SoundSource.PLAYERS, 1.5f, 1F / (living.getRandom().nextFloat() * 0.4F + 0.8F));
+		Cataclysm.PROXY.clearSoundCacheFor(living);
 	}
 
 	public float getDestroySpeed(ItemStack p_41004_, BlockState p_41005_) {

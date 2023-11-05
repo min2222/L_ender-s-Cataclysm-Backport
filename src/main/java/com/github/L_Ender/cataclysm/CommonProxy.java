@@ -4,7 +4,10 @@ import com.github.L_Ender.cataclysm.crafting.AltarOfAmethystRecipeManager;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.common.Mod;
+
+import javax.annotation.Nullable;
 
 import static com.github.L_Ender.cataclysm.Cataclysm.MODID;
 
@@ -39,6 +42,18 @@ public class CommonProxy {
             AltarOfAmethystManager = new AltarOfAmethystRecipeManager();
         }
         return AltarOfAmethystManager;
+    }
+
+    public void clearSoundCacheFor(Entity entity) {
+
+    }
+
+    public void clearSoundCacheFor(BlockEntity entity) {
+
+    }
+
+    public void playWorldSound(@Nullable Object soundEmitter, byte type) {
+
     }
 
     public void addBoss(Mob mob) {

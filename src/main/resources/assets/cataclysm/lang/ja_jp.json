@@ -36,6 +36,10 @@
   "item.cataclysm.bloom_stone_pauldrons.desc": "スニーク中に地面に隠れることができる",
   "item.cataclysm.bloom_stone_pauldrons.desc2": "スニークをやめると、周囲にアメジストの塊が発射され、周囲にダメージを与える。",
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "祝福の効果を受ける。 祝福の効果中は暗闇、深淵の恐怖、 深淵の炎焼の影響を受けない。",
+  "item.cataclysm.laser_gatling.desc": "You can reload with the Redstone in your inventory",
+  "item.cataclysm.meat_shredder.desc": "Right-click damages entities in front (i-frame ignore)",
+  "item.cataclysm.necklace_of_the_desert.desc": "It looks like you can wake something up......",
+
   "entity.cataclysm.you_cant_escape": "逃れられない",
   "cataclysm.container.weapon_fusion": "§c武器合成",
 
@@ -92,6 +96,8 @@
   "item.cataclysm.abyssal_sacrifice": "§5アビサルサクリファイス",
   "item.cataclysm.the_baby_leviathan_bucket": "ベビーリヴァイアサン入りバケツ",
   "item.cataclysm.bloom_stone_pauldrons": "ブルーム・ストーン・ポールドロン",
+  "item.cataclysm.meat_shredder": "Meat Shredder",
+  "item.cataclysm.laser_gatling": "Laser Gatling",
 
   "item.cataclysm.endermaptera_spawn_egg": "ハテミムシのスポーンエッグ",
   "item.cataclysm.ender_golem_spawn_egg": "エンダーゴーレムのスポーンエッグ",
@@ -111,6 +117,8 @@
   "item.cataclysm.coralssus_spawn_egg": "サンゴゴーレムのスポーンエッグ",
   "item.cataclysm.amethyst_crab_spawn_egg": "アメジストガニのスポーンエッグ",
   "item.cataclysm.ancient_remnant_spawn_egg": "古代の名残のスポーンエッグ",
+  "item.cataclysm.the_watcher_spawn_egg": "The Watcher Spawn Egg",
+  "item.cataclysm.the_prowler_spawn_egg": "The Prowler Spawn Egg",
 
   "itemGroup.cataclysm": "Cataclysm",
   "block.cataclysm.witherite_block": "§cウィザライトブロック",
@@ -131,6 +139,7 @@
   "block.cataclysm.obsidian_brick_slab": "黒曜石レンガのハーフブロック",
   "block.cataclysm.obsidian_brick_stairs": "黒曜石レンガの階段",
   "block.cataclysm.obsidian_brick_wall": "黒曜石レンガの壁",
+  "block.cataclysm.chorus_stem": "Chorus Stem",
   "block.cataclysm.chorus_planks": "コーラス材",
   "block.cataclysm.chorus_slab": "コーラスハーフブロック",
   "block.cataclysm.chorus_stairs": "コーラスの階段",
@@ -146,9 +155,9 @@
   "block.cataclysm.purpur_void_rune_trap_block": "プルプァトラップ",
   "block.cataclysm.end_stone_teleport_trap_bricks": "エンドストーントラップ",
   "block.cataclysm.obsidian_explosion_trap_bricks": "黒曜石トラップ",
-  "block.cataclysm.sandstone_falling_trap":"砂岩の落下トラップ",
-  "block.cataclysm.sandstone_poison_dart_trap":"砂岩の毒矢トラップ",
-  "block.cataclysm.sandstone_ignite_trap":"砂岩の発火トラップ",
+  "block.cataclysm.sandstone_falling_trap": "砂岩の落下トラップ",
+  "block.cataclysm.sandstone_poison_dart_trap": "砂岩の毒矢トラップ",
+  "block.cataclysm.sandstone_ignite_trap": "砂岩の発火トラップ",
   "block.cataclysm.void_lantern_block": "虚無のランタン",
   "block.cataclysm.altar_of_fire": "§6炎の祭壇",
   "block.cataclysm.altar_of_void": "虚空の祭壇",
@@ -209,7 +218,9 @@
   "entity.cataclysm.amethyst_crab": "アメジストガニ",
   "entity.cataclysm.earthquake": "地震",
   "entity.cataclysm.ancient_remnant": "古代の名残",
-
+  "entity.cataclysm.the_watcher": "The Watcher",
+  "entity.cataclysm.the_prowler": "The Prowler",
+  "entity.cataclysm.ancient_desert_stele": "Ancient Desert Stele",
   "entity.cataclysm.all.command_0": "%sは自由に行動している",
   "entity.cataclysm.all.command_1": "%sは追従している",
   "entity.cataclysm.all.command_2": "%sは待機している",
@@ -222,7 +233,8 @@
   "effect.cataclysm.abyssal_fear": "深淵の恐怖",
   "effect.cataclysm.abyssal_curse": "深淵の呪い",
   "effect.cataclysm.blessing_of_amethyst": "アメジストの祝福",
-  
+  "effect.cataclysm.curse_of_desert": "Curse Of Desert",
+
   "golemhurt.sub": "エンダーゴーレムがダメージを受ける",
   "golemdeath.sub": "エンダーゴーレムが死ぬ",
   "golemattack.sub": "エンダーゴーレムが攻撃する",
@@ -246,13 +258,14 @@
   "voidrunerising.sub": "虚空のルーンが呼び出される",
   "revenant_idle.sub": "燃え盛る霊魂がうめく",
   "revenant_hurt.sub": "燃え盛る霊魂がダメージを受ける",
-  "revenant_breath.sub": "燃え盛る霊魂が灰のブレスを吐く",
   "revenant_death.sub": "燃え盛る霊魂が死ぬ",
+  "revenant_breath.sub": "燃え盛る霊魂が灰のブレスを吐く",
   "ignis_ambient.sub": "イグニスが燃えている",
   "ignis_hurt.sub": "イグニスがダメージを受ける",
   "strongswingattack.sub": "イグニスが斬る",
   "sword_stomp.sub": "イグニスが突く",
   "ignis_poke.sub": "イグニスが突き通す",
+  "ignis_armor_break": "Ignis' equipment damaged",
   "flame_burst.sub": "炎の爆発",
   "ignis_death.sub": "イグニスが死ぬ",
   "ignis_music.sub": "イグニス戦BGM",
@@ -261,6 +274,7 @@
   "harbinger_mode_change.sub": "ハービンジャーが突撃する",
   "harbinger_prepare.sub": "ハービンジャーが攻撃の準備をする",
   "harbinger_charge_prepare.sub": "ハービンジャーが突撃の準備をする",
+  "emp_activated.sub": "EMP is activated",
   "harbinger_charge.sub": "ハービンジャーが突撃する",
   "harbinger_deathlaser_prepare.sub": "ハービンジャーがデスレーザーを準備する",
   "death_laser.sub": "デスレーザーが放たれる",
@@ -290,6 +304,8 @@
   "tidal_tentacle.sub": "タイダルクローから触手が発射される",
   "tidal_hook_hit.sub": "タイダルクローのフックが当たる",
   "tidal_hook_loop.sub": "タイダルクローのフックが音を立てる",
+  "crab_hurt.sub": "Amethyst Crab hurts",
+  "crab_bite.sub": "Amethyst Crab attacks with chelipeds",
 
   "advancements.cataclysm.root.title": "Cataclysm",
   "advancements.cataclysm.root.description": "Cataclysm!",
@@ -320,7 +336,7 @@
 
 
   "trim_material.cataclysm.witherite": "ウィザライトの素材",
-  "trim_material.cataclysm.ignitium" : "イグニチウムの素材",
+  "trim_material.cataclysm.ignitium": "イグニチウムの素材",
 
   "death.attack.cataclysm.laser": "%sは%sのレーザーに焦がされた",
   "death.attack.cataclysm.deathlaser": "%sは%sのレーザーに焦がされた",
@@ -328,6 +344,7 @@
   "death.attack.cataclysm.emp.player": "%sは電気グリルで調理された",
   "death.attack.cataclysm.abyssal_burn": "%sは異次元に消し飛んだ",
   "death.attack.cataclysm.abyssal_burn.player": "%sは異次元に消し飛んだ",
+  "death.attack.cataclysm.shredder": "%s was shattered by %s",
   "cataclysm.gui.altar_of_amethyst_blessing": "祝福"
 
 }

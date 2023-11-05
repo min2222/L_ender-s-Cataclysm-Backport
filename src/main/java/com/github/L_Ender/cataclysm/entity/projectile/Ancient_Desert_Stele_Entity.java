@@ -18,22 +18,24 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.TheEndGatewayBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
-import java.util.List;
 import java.util.UUID;
 
-public class Ancient_Desert_Stele_Entity extends Entity {
+public class Ancient_Desert_Stele_Entity extends Projectile {
     private int warmupDelayTicks;
     private boolean sentSpikeEvent;
     private int lifeTicks = 70;
@@ -99,13 +101,26 @@ public class Ancient_Desert_Stele_Entity extends Entity {
     public void tick() {
         super.tick();
 
-        HitResult result = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-        List<Entity> intersecting = this.level().getEntitiesOfClass(Entity.class, this.getBoundingBox(), this::canHitEntity);
-        if (result.getType() != HitResult.Type.MISS || !intersecting.isEmpty()) {
-            intersecting.forEach(e -> this.onHitEntity(new EntityHitResult(e)));
-            if (result.getType() == HitResult.Type.ENTITY && intersecting.isEmpty())
-                this.onHitEntity((EntityHitResult) result);
-            this.onHit(result);
+        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        boolean flag = false;
+        if (hitresult.getType() == HitResult.Type.BLOCK) {
+            BlockPos blockpos = ((BlockHitResult)hitresult).getBlockPos();
+            BlockState blockstate = this.level().getBlockState(blockpos);
+            if (blockstate.is(Blocks.NETHER_PORTAL)) {
+                this.handleInsidePortal(blockpos);
+                flag = true;
+            } else if (blockstate.is(Blocks.END_GATEWAY)) {
+                BlockEntity blockentity = this.level().getBlockEntity(blockpos);
+                if (blockentity instanceof TheEndGatewayBlockEntity && TheEndGatewayBlockEntity.canEntityTeleport(this)) {
+                    TheEndGatewayBlockEntity.teleportEntity(this.level(), blockpos, blockstate, this, (TheEndGatewayBlockEntity)blockentity);
+                }
+
+                flag = true;
+            }
+        }
+
+        if (hitresult.getType() != HitResult.Type.MISS && !flag && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+            this.onHit(hitresult);
         }
 
         this.checkInsideBlocks();
@@ -122,34 +137,23 @@ public class Ancient_Desert_Stele_Entity extends Entity {
             }
         }
 
+        Vec3 vec3 = this.getDeltaMovement();
+        double d2 = this.getX() + vec3.x;
+        double d0 = this.getY() + vec3.y;
+        double d1 = this.getZ() + vec3.z;
         if (this.isActivate()) {
             this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.04, 0.0));
             this.move(MoverType.SELF, this.getDeltaMovement());
             this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
+            Vec3 vec31 = this.getDeltaMovement();
+            this.setDeltaMovement(vec31.x, vec31.y - 0.03, vec31.z);
         }
+        this.setPos(d2, d0, d1);
 
-    }
-
-    protected boolean canHitEntity(Entity entity) {
-        if (!entity.isSpectator() && entity.isAlive() && entity.isPickable() && !entity.noPhysics) {
-            Entity caster = this.getCaster();
-            return caster == null || !caster.isPassengerOfSameVehicle(entity);
-        } else {
-            return false;
-        }
     }
 
     protected void onHit(HitResult ray) {
-        HitResult.Type hitresult$type = ray.getType();
-        if (hitresult$type == HitResult.Type.ENTITY) {
-            this.onHitEntity((EntityHitResult)ray);
-            this.level().gameEvent(GameEvent.PROJECTILE_LAND, ray.getLocation(), GameEvent.Context.of(this, (BlockState)null));
-        } else if (hitresult$type == HitResult.Type.BLOCK) {
-            BlockHitResult blockhitresult = (BlockHitResult)ray;
-            this.onHitBlock(blockhitresult);
-            BlockPos blockpos = blockhitresult.getBlockPos();
-            this.level().gameEvent(GameEvent.PROJECTILE_LAND, blockpos, GameEvent.Context.of(this, this.level().getBlockState(blockpos)));
-        }
+        super.onHit(ray);
         BlockState state = Blocks.SANDSTONE.defaultBlockState();
         SoundType soundtype = state.getSoundType(this.level(), this.blockPosition(), null);
         this.playSound(soundtype.getBreakSound(), (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
@@ -162,24 +166,23 @@ public class Ancient_Desert_Stele_Entity extends Entity {
 
     protected void onHitEntity(EntityHitResult p_213868_1_) {
         LivingEntity shooter = this.getCaster();
-        if (!this.level().isClientSide) {
-                Entity entity = p_213868_1_.getEntity();
-                boolean flag;
-                if (shooter != null) {
-                    LivingEntity owner = shooter;
-                    flag = entity.hurt(damageSources().mobProjectile(this, owner), (float) CMConfig.AncientDesertSteledamage);
-                    if (flag) {
-                        this.doEnchantDamageEffects(owner, entity);
-                    }
-                } else {
-                    flag = entity.hurt(this.damageSources().magic(), (float) CMConfig.AncientDesertSteledamage);
-                }
-                if (flag && entity instanceof LivingEntity) {
-                    MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 200, 0);
-                    ((LivingEntity)entity).addEffect(effectinstance);
-                }
-            }
 
+        Entity entity = p_213868_1_.getEntity();
+        boolean flag;
+        if (shooter != null) {
+            LivingEntity owner = shooter;
+            flag = entity.hurt(damageSources().mobProjectile(this, owner), (float) CMConfig.AncientDesertSteledamage);
+            if (flag) {
+                this.doEnchantDamageEffects(owner, entity);
+            }
+        } else {
+            flag = entity.hurt(this.damageSources().magic(), (float) CMConfig.AncientDesertSteledamage);
+        }
+        if (flag && entity instanceof LivingEntity) {
+            MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 200, 0);
+            ((LivingEntity)entity).addEffect(effectinstance);
+
+        }
 
     }
 

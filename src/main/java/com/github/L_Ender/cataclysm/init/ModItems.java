@@ -231,6 +231,9 @@ public class ModItems {
     public static final RegistryObject<Item> ABYSSAL_SACRIFICE = ITEMS.register("abyssal_sacrifice",
             () -> new Item(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
 
+    public static final RegistryObject<Item> NECKLACE_OF_THE_DESERT = ITEMS.register("necklace_of_the_desert",
+            () -> new Necklace_Of_The_Desert(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
+
     public static final RegistryObject<Item> IGNITIUM_HELMET = ITEMS.register("ignitium_helmet",
             () -> new Ignitium_Armor(Armortier.IGNITIUM, ArmorItem.Type.HELMET, new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
 

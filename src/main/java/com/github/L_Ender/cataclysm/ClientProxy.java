@@ -9,7 +9,12 @@ import com.github.L_Ender.cataclysm.client.render.blockentity.*;
 import com.github.L_Ender.cataclysm.client.render.entity.*;
 import com.github.L_Ender.cataclysm.client.render.item.CMItemRenderProperties;
 import com.github.L_Ender.cataclysm.client.render.item.CustomArmorRenderProperties;
+import com.github.L_Ender.cataclysm.client.sound.MeatShredderSound;
+import com.github.L_Ender.cataclysm.client.sound.SandstormSound;
+import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
 import com.github.L_Ender.cataclysm.init.*;
+import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -18,11 +23,15 @@ import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -30,12 +39,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = Cataclysm.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
-
+    public static final Int2ObjectMap<AbstractTickableSoundInstance> ENTITY_SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();
+    public static final Map<BlockEntity, AbstractTickableSoundInstance> BLOCK_ENTITY_SOUND_INSTANCE_MAP = new HashMap<>();
 
 
     public void init() {
@@ -163,6 +176,52 @@ public class ClientProxy extends CommonProxy {
         return new CustomArmorRenderProperties();
     }
 
+    public void clearSoundCacheFor(Entity entity) {
+        ENTITY_SOUND_INSTANCE_MAP.remove(entity.getId());
+    }
+
+    public void clearSoundCacheFor(BlockEntity entity) {
+        BLOCK_ENTITY_SOUND_INSTANCE_MAP.remove(entity);
+    }
+
+    @Override
+    public void playWorldSound(@Nullable Object soundEmitter, byte type) {
+        if (soundEmitter instanceof Entity entity && !entity.level().isClientSide) {
+            return;
+        }
+        switch (type) {
+            case 1:
+                if (soundEmitter instanceof LivingEntity livingEntity) {
+                    MeatShredderSound sound;
+                    AbstractTickableSoundInstance old = ENTITY_SOUND_INSTANCE_MAP.get(livingEntity.getId());
+                    if (old == null || !(old instanceof MeatShredderSound shredderSound && shredderSound.isSameEntity(livingEntity))) {
+                        sound = new MeatShredderSound(livingEntity);
+                        ENTITY_SOUND_INSTANCE_MAP.put(livingEntity.getId(), sound);
+                    } else {
+                        sound = (MeatShredderSound) old;
+                    }
+                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound()) {
+                        Minecraft.getInstance().getSoundManager().queueTickingSound(sound);
+                    }
+                }
+                break;
+            case 2:
+                if (soundEmitter instanceof Sandstorm_Entity sandstom) {
+                    SandstormSound sound;
+                    AbstractTickableSoundInstance old = ENTITY_SOUND_INSTANCE_MAP.get(sandstom.getId());
+                    if (old == null || !(old instanceof SandstormSound sandstomSound && sandstomSound.isSameEntity(sandstom))) {
+                        sound = new SandstormSound(sandstom);
+                        ENTITY_SOUND_INSTANCE_MAP.put(sandstom.getId(), sound);
+                    } else {
+                        sound = (SandstormSound) old;
+                    }
+                    if (!Minecraft.getInstance().getSoundManager().isActive(sound) && sound.canPlaySound()) {
+                        Minecraft.getInstance().getSoundManager().queueTickingSound(sound);
+                    }
+                }
+                break;
+        }
+    }
 
     @Override
     public void addBoss(Mob mob) {

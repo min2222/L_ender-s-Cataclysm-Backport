@@ -25,7 +25,6 @@ import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -104,17 +103,20 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
     }
 
     public boolean hurt(DamageSource p_32820_, float p_32821_) {
-        if (!p_32820_.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && !p_32820_.is(DamageTypes.THORNS)) {
-            Entity entity = p_32820_.getDirectEntity();
-            if (entity instanceof LivingEntity) {
-                LivingEntity livingentity = (LivingEntity)entity;
-                if(livingentity.hurt(damageSources().mobAttack(this), 1.0F)){
-                    livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
+        if (this.level().isClientSide) {
+            return false;
+        } else {
+            if (!p_32820_.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && !p_32820_.is(DamageTypes.THORNS)) {
+                Entity entity = p_32820_.getDirectEntity();
+                if (entity instanceof LivingEntity livingentity) {
+                    if (livingentity.hurt(damageSources().mobAttack(this), 1.0F)) {
+                        livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
+                    }
                 }
             }
-        }
 
-        return super.hurt(p_32820_, p_32821_);
+            return super.hurt(p_32820_, p_32821_);
+        }
     }
 
     public void tick(){

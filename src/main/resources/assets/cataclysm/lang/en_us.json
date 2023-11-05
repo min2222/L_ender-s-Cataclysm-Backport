@@ -38,6 +38,7 @@
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "Be affected by the blessing effect. It is immune to darkness, abyssal fear and abyssal burn during the blessing effect",
   "item.cataclysm.laser_gatling.desc": "You can reload with the Redstone in your inventory",
   "item.cataclysm.meat_shredder.desc": "Right-click damages entities in front (i-frame ignore)",
+  "item.cataclysm.necklace_of_the_desert.desc": "It looks like you can wake something up......",
 
   "entity.cataclysm.you_cant_escape": "You can't escape",
   "cataclysm.container.weapon_fusion": "§cWeapon Fusion",
@@ -97,6 +98,7 @@
   "item.cataclysm.bloom_stone_pauldrons": "Bloom Stone Pauldrons",
   "item.cataclysm.meat_shredder": "Meat Shredder",
   "item.cataclysm.laser_gatling": "Laser Gatling",
+  "item.cataclysm.necklace_of_the_desert": "Necklace of the desert",
 
   "item.cataclysm.endermaptera_spawn_egg": "Endermaptera Spawn Egg",
   "item.cataclysm.ender_golem_spawn_egg": "Ender Golem Spawn Egg",

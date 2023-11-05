@@ -6,7 +6,7 @@
       "weight": 1,
       "element": {
         "location": "cataclysm:ancient_factory_a",
-        "processors": "minecraft:empty",
+        "processors": "cataclysm:water_logging_fix",
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"
       }

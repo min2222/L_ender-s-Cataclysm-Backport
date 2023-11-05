@@ -817,6 +817,46 @@
       }
     ]
   },
+  "remnant_roar": {
+    "subtitle": "remnant_roar.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_roar"
+      }
+    ]
+  },
+  "remnant_shockwave": {
+    "subtitle": "remnant_shockwave.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_shockwave"
+      }
+    ]
+  },
+  "remnant_tail_slam": {
+    "subtitle": "remnant_tail_slam.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_tail_slam"
+      }
+    ]
+  },
+  "remnant_tail_swing": {
+    "subtitle": "remnant_tail_swing.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/remnant_tail_swing"
+      }
+    ]
+  },
+  "sandstorm": {
+    "subtitle": "sandstorm.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/sandstorm"
+      }
+    ]
+  },
   "watcher_hurt": {
     "subtitle": "watcher_hurt.sub",
     "sounds": [

@@ -275,6 +275,21 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> REMNANT_IDLE = SOUNDS.register("remnant_idle",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_idle")));
 
+    public static final RegistryObject<SoundEvent> REMNANT_ROAR = SOUNDS.register("remnant_roar",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_roar")));
+
+    public static final RegistryObject<SoundEvent> REMNANT_SHOCKWAVE = SOUNDS.register("remnant_shockwave",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_shockwave")));
+
+    public static final RegistryObject<SoundEvent> REMNANT_TAIL_SLAM = SOUNDS.register("remnant_tail_slam",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_tail_slam")));
+
+    public static final RegistryObject<SoundEvent> REMNANT_TAIL_SWING = SOUNDS.register("remnant_tail_swing",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_tail_swing")));
+
+    public static final RegistryObject<SoundEvent> SANDSTORM = SOUNDS.register("sandstorm",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"sandstorm")));
+
     public static final RegistryObject<SoundEvent> WATCHER_HURT = SOUNDS.register("watcher_hurt",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"watcher_hurt")));
 

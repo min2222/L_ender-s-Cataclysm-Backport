@@ -652,7 +652,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
 
     @Override
     protected boolean canPlayMusic() {
-        return super.canPlayMusic();
+        return super.canPlayMusic() && getIsAct();
     }
 
     @Override

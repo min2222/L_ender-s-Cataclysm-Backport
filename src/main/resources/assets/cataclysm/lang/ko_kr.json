@@ -38,6 +38,7 @@
   "item.cataclysm.blessed_amethyst_crab_meat.desc": "축복 효과를 받는다. 축복 동안 어둠,심연의 공포,심연의 화상에 면역이 된다.",
   "item.cataclysm.laser_gatling.desc": "당신의 인벤토리에 있는 레드스톤으로 재장전 할 수 있다.",
   "item.cataclysm.meat_shredder.desc": "우클릭 시 전방의 엔티티들을 갈아버린다(무적 프레임 무시)",
+  "item.cataclysm.necklace_of_the_desert.desc": "무언가를 깨울 수 있어 보입니다.....",
 
   "entity.cataclysm.you_cant_escape": "넌 벗어날 수 없다.",
   "cataclysm.container.weapon_fusion": "§c무기 융합",
@@ -97,6 +98,7 @@
   "item.cataclysm.bloom_stone_pauldrons": "개화의 돌 견갑",
   "item.cataclysm.meat_shredder": "미트 슈레더",
   "item.cataclysm.laser_gatling": "레이저 게틀링",
+  "item.cataclysm.necklace_of_the_desert": "사막의 목걸이",
 
   "item.cataclysm.endermaptera_spawn_egg": "엔더마프테라 생성 알",
   "item.cataclysm.ender_golem_spawn_egg": "엔더 골렘 생성 알",

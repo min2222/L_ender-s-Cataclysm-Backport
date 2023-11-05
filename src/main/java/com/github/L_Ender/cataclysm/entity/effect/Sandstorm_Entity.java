@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.entity.effect;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
@@ -13,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -22,27 +24,23 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
 import java.util.UUID;
 
 public class Sandstorm_Entity extends Entity {
 
+    private static final EntityDataAccessor<Optional<UUID>> CREATOR_ID = SynchedEntityData.defineId(Sandstorm_Entity.class, EntityDataSerializers.OPTIONAL_UUID);
     protected static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(Sandstorm_Entity.class, EntityDataSerializers.INT);
     protected static final EntityDataAccessor<Float> OFFSET = SynchedEntityData.defineId(Sandstorm_Entity.class, EntityDataSerializers.FLOAT);
-
-    @Nullable
-    private LivingEntity owner;
-    @Nullable
-    private UUID ownerUUID;
 
 
     public Sandstorm_Entity(EntityType<?> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
     }
 
-    public Sandstorm_Entity(Level worldIn, double x, double y, double z, int lifespan, float offset, LivingEntity casterIn) {
+    public Sandstorm_Entity(Level worldIn, double x, double y, double z, int lifespan, float offset, UUID casterIn) {
         this(ModEntities.SANDSTORM.get(), worldIn);
-        this.setOwner(casterIn);
+        this.setCreatorEntityUUID(casterIn);
         this.setLifespan(lifespan);
         this.setPos(x, y, z);
         this.setOffset(offset);
@@ -56,23 +54,28 @@ public class Sandstorm_Entity extends Entity {
     public void tick() {
         super.tick();
         updateMotion();
+        Entity owner = getCreatorEntity();
         if (owner != null && !owner.isAlive()) discard();
         if(level().isClientSide) {
             float spawnPercent = 2.0f;
             float maxY = 2.5F * spawnPercent * 1.25F;
             float y = 0;
-            float nY = 60 * spawnPercent;
+            float nY = 30 * spawnPercent;
             float dY = maxY / nY;
             double posX = this.getX();
             double posY = this.getY();
             double posZ = this.getZ();
-            for (float a = 0, nA = 28, dA = (1.4F * (float) Math.PI) / nA; y < maxY; a += dA) {
+            for (float a = 0, nA = 16, dA = (1.4F * (float) Math.PI) / nA; y < maxY; a += dA) {
                 float radius = y * 0.35F;
                 float cosA = Mth.cos(a) * radius;
                 float sinA = Mth.sin(a) * radius;
                 level().addParticle(ModParticle.SANDSTORM.get(), posX + cosA, posY + y - (maxY * 0.15), posZ + sinA, 0.0D, 0D, 0.0D);
                 y += dY;
             }
+        }
+
+        if (!this.isSilent() && level().isClientSide) {
+            Cataclysm.PROXY.playWorldSound(this, (byte) 2);
         }
 
         for(LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
@@ -119,13 +122,24 @@ public class Sandstorm_Entity extends Entity {
         this.entityData.set(OFFSET, i);
     }
 
-    public void setOwner(@Nullable LivingEntity p_19719_) {
-        this.owner = p_19719_;
-        this.ownerUUID = p_19719_ == null ? null : p_19719_.getUUID();
+    public UUID getCreatorEntityUUID() {
+        return this.entityData.get(CREATOR_ID).orElse(null);
     }
 
+    public void setCreatorEntityUUID(UUID id) {
+        this.entityData.set(CREATOR_ID, Optional.ofNullable(id));
+    }
+
+    public Entity getCreatorEntity() {
+        UUID uuid = getCreatorEntityUUID();
+        if(uuid != null && !this.level().isClientSide){
+            return ((ServerLevel) level()).getEntity(uuid);
+        }
+        return null;
+    }
 
     private void updateMotion() {
+        Entity owner = getCreatorEntity();
         if(owner !=null) {
             if (owner instanceof Ancient_Remnant_Entity) {
                 Vec3 center = owner.position().add(0.0, 0, 0.0);
@@ -138,36 +152,34 @@ public class Sandstorm_Entity extends Entity {
         }
     }
 
-    @Nullable
-    public LivingEntity getOwner() {
-        if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.ownerUUID);
-            if (entity instanceof LivingEntity) {
-                this.owner = (LivingEntity)entity;
-            }
-        }
-
-        return this.owner;
-    }
-
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(CREATOR_ID, Optional.empty());
         this.entityData.define(LIFESPAN, 300);
         this.entityData.define(OFFSET,0f);
     }
 
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.setLifespan(compound.getInt("Lifespan"));
+        UUID uuid;
         if (compound.hasUUID("Owner")) {
-            this.ownerUUID = compound.getUUID("Owner");
+            uuid = compound.getUUID("Owner");
+        } else {
+            String s = compound.getString("Owner");
+            uuid = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), s);
         }
+        if (uuid != null) {
+            try {
+                this.setCreatorEntityUUID(uuid);} catch (Throwable ignored) {
 
+            }
+        }
     }
 
     protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putInt("Lifespan", getLifespan());
-        if (this.ownerUUID != null) {
-            compound.putUUID("Owner", this.ownerUUID);
+       if (this.getCreatorEntityUUID() != null) {
+           compound.putUUID("Owner", this.getCreatorEntityUUID());
         }
     }
 }
