@@ -258,6 +258,14 @@ public class Deepling_Brute_Entity extends AbstractDeepling {
         }
     }
 
+    public AABB getSwimmingBox() {
+        return new AABB(this.getX()- 1.3f, this.getY(), this.getZ() -1.3f,  this.getX() + 1.3f, this.getY()+ 0.7f, this.getZ() + 1.3f);
+    }
+
+    public AABB getNormalBox() {
+        return new AABB(this.getX()- 0.7f, this.getY(), this.getZ() - 0.7f,  this.getX() + 0.7f, this.getY()+ 2.6f, this.getZ() + 0.7f);
+    }
+
     public EntityDimensions getSwimmingSize() {
         return SWIMMING_SIZE;
     }

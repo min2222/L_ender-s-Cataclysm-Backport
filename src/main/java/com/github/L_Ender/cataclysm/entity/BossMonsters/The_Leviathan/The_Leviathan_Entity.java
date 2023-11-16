@@ -20,6 +20,7 @@ import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
+import com.github.L_Ender.cataclysm.message.MessageSyncEntityPos;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import net.minecraft.core.BlockPos;
@@ -1102,8 +1103,12 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             final float pitch = this.getXRot() * (float) Math.PI / 180.0F;
             final float f3 = Mth.sin(f17) * (1 - Math.abs(this.getXRot() / 90F));
             final float f18 = Mth.cos(f17) * (1 - Math.abs(this.getXRot() / 90F));
-            lifted.setDeltaMovement(Vec3.ZERO);
-            lifted.setPos(this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F);
+            if(this.level().isClientSide){
+                Cataclysm.sendMSGToServer(new MessageSyncEntityPos(lifted.getId(), this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F));
+            }else{
+                Cataclysm.sendMSGToAll(new MessageSyncEntityPos(lifted.getId(), this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F));
+            }
+
             if (lifted instanceof Player player) {
                 player.displayClientMessage(Component.translatable("entity.cataclysm.you_cant_escape", this.getName()), true);
             }

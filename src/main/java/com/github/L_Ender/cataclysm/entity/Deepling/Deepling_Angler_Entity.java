@@ -35,6 +35,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -194,6 +195,15 @@ public class Deepling_Angler_Entity extends AbstractDeepling {
     public EntityDimensions getSwimmingSize() {
         return SWIMMING_SIZE;
     }
+
+    public AABB getSwimmingBox() {
+        return new AABB(this.getX()- 1.225f, this.getY(), this.getZ() -1.225f,  this.getX() + 1.225f, this.getY()+ 0.65f, this.getZ() + 1.225f);
+    }
+
+    public AABB getNormalBox() {
+        return new AABB(this.getX()- 0.65f, this.getY(), this.getZ() -0.65f,  this.getX() + 0.65f, this.getY()+ 2.45f, this.getZ() + 0.65f);
+    }
+
 
     public void travel(Vec3 p_32394_) {
         if (this.isEffectiveAi() && this.isInWater() && this.wantsToSwim()) {

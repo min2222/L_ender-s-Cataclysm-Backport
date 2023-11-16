@@ -3,15 +3,12 @@ package com.github.L_Ender.cataclysm.init;
 import com.github.L_Ender.cataclysm.Cataclysm;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
-import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import net.minecraft.world.level.levelgen.structure.StructureSet;
 
 
 public class ModTag {
@@ -53,6 +50,8 @@ public class ModTag {
 
     public static final TagKey<Block> NETHERITE_MONSTROSITY_BREAK = registerBlockTag("netherite_monstrosity_break");
 
+    public static final TagKey<Block> SUNKEN_CITY_MATERIAL = registerBlockTag("sunken_city_material");
+
     public static final TagKey<Structure> EYE_OF_MECH_LOCATED = registerStructureTag("eye_of_mech_located");
 
     public static final TagKey<Structure> EYE_OF_RUINED_LOCATED = registerStructureTag("eye_of_ruined_located");
@@ -66,6 +65,10 @@ public class ModTag {
     public static final TagKey<Structure> BLOCKED_BASALT = registerStructureTag("blocked_basalt");
 
     public static final TagKey<Structure> BLOCKED_LAKE = registerStructureTag("blocked_lake");
+
+    public static final TagKey<Structure> BLOCKED_GEODE = registerStructureTag("blocked_geode");
+
+    public static final TagKey<Structure> BLOCKED_ORE = registerStructureTag("blocked_ore");
 
     public static final TagKey<Item> EXPLOSION_IMMUNE_ITEM = registerItemTag("explosion_immune_item");
 

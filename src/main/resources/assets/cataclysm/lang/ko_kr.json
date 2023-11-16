@@ -90,6 +90,7 @@
   "item.cataclysm.amethyst_crab_shell": "자수정 게 껍데기",
   "item.cataclysm.abyssal_egg": "심연의 알",
   "item.cataclysm.athame": "의식용 단검",
+  "item.cataclysm.khopesh": "코피스",
   "item.cataclysm.tidal_claws": "타이달 클로",
   "item.cataclysm.crystallized_coral_fragments": "결정화된 산호 파편",
   "item.cataclysm.crystallized_coral": "결정화된 산호",
@@ -117,6 +118,7 @@
   "item.cataclysm.lionfish_spawn_egg": "쏠배감펭 생성 알",
   "item.cataclysm.coralssus_spawn_egg": "코랄서스 생성 알",
   "item.cataclysm.amethyst_crab_spawn_egg": "자수정 게 생성 알",
+  "item.cataclysm.koboleton_spawn_egg": "코볼레톤 생성 알",
   "item.cataclysm.ancient_remnant_spawn_egg": "고대의 잔재 생성 알",
   "item.cataclysm.the_watcher_spawn_egg": "감시자 생성 알",
   "item.cataclysm.the_prowler_spawn_egg": "배회자 생성 알",
@@ -222,6 +224,7 @@
   "entity.cataclysm.the_watcher": "감시자",
   "entity.cataclysm.the_prowler": "배회자",
   "entity.cataclysm.ancient_desert_stele": "고대 사막 비석",
+  "entity.cataclysm.koboleton": "코볼레톤",
   "entity.cataclysm.all.command_0": "%s 이(가) 돌아다니는 중",
   "entity.cataclysm.all.command_1": "%s 이(가) 따라오는 중",
   "entity.cataclysm.all.command_2": "%s 이(가) 대기중",
@@ -347,4 +350,5 @@
   "death.attack.cataclysm.abyssal_burn.player": "%s가 차원을 떠났습니다",
   "death.attack.cataclysm.shredder": "%s was shattered by %s",
   "cataclysm.gui.altar_of_amethyst_blessing": "축복"
+
 }

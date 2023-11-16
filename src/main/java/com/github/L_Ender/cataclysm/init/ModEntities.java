@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.init;
 
 
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.*;
@@ -10,7 +11,6 @@ import com.github.L_Ender.cataclysm.entity.Deepling.*;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.*;
 import com.github.L_Ender.cataclysm.entity.projectile.*;
-import com.github.L_Ender.cataclysm.entity.projectile.Ashen_Breath_Entity;
 import com.google.common.base.Predicates;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -391,6 +391,11 @@ public class ModEntities {
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":ancient_remnant"));
 
+    public static final RegistryObject<EntityType<Koboleton_Entity>> KOBOLETON = ENTITY_TYPE.register("koboleton", () -> EntityType.Builder.of(Koboleton_Entity::new, MobCategory.MONSTER)
+            .sized(0.85F, 1.6f)
+            .clientTrackingRange(8)
+            .build(Cataclysm.MODID + ":koboleton"));
+
     public static final RegistryObject<EntityType<Sandstorm_Entity>> SANDSTORM = ENTITY_TYPE.register("sandstorm", () -> EntityType.Builder.<Sandstorm_Entity>of(Sandstorm_Entity::new, MobCategory.MISC)
             .sized(2.5F, 4.5F)
             .fireImmune()
@@ -446,6 +451,7 @@ public class ModEntities {
         event.put(LIONFISH.get(), Lionfish_Entity.lionfish().build());
         event.put(AMETHYST_CRAB.get(), Amethyst_Crab_Entity.amethyst_crab().build());
         event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.ancient_ramant().build());
+        event.put(KOBOLETON.get(), Koboleton_Entity.koboleton().build());
         event.put(THE_WATCHER.get(), The_Watcher_Entity.the_watcher().build());
         event.put(THE_PROWLER.get(), The_Prowler_Entity.the_prowler().build());
     }

@@ -22,6 +22,9 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.fluids.FluidType;
 
 import java.util.List;
 
@@ -107,12 +110,36 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
             }
         }
 
+        boolean flag1 = this.canInFluidType(this.getEyeInFluidType());
+
+        if(flag1){
+            if(this.level().noCollision(this, this.getSwimmingBox())) {
+                if (!this.getDeeplingSwim()) {
+                    setDeeplingSwim(true);
+                }
+                refreshDimensions();
+            }
+        }else{
+            if(this.level().noCollision(this, this.getNormalBox())) {
+                if (this.getDeeplingSwim()) {
+                    setDeeplingSwim(false);
+                }
+                refreshDimensions();
+            }
+        }
+
+
         AnimationHandler.INSTANCE.updateAnimations(this);
 
         if (this.level().isClientSide){
             ++LayerTicks;
             this.LayerBrightness += (0.0F - this.LayerBrightness) * 0.8F;
         }
+    }
+
+    private boolean canInFluidType(FluidType type) {
+        ForgeMod.WATER_TYPE.get();
+        return type.canSwim(self());
     }
 
     public boolean isVisuallySwimming() {
@@ -123,18 +150,18 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
         if (onLand) {
             this.navigation = new GroundPathNavigatorWide(this, level());
             this.isLandNavigator = true;
-            if(this.getDeeplingSwim()){
-                setDeeplingSwim(false);
-            }
-            refreshDimensions();
         } else {
             this.navigation = new SemiAquaticPathNavigator(this, level());
             this.isLandNavigator = false;
-            if(!this.getDeeplingSwim()){
-                setDeeplingSwim(true);
-            }
-            refreshDimensions();
         }
+    }
+
+    public AABB getSwimmingBox() {
+        return new AABB(this.getX()- 1.15f, this.getY(), this.getZ() -1.15f,  this.getX() + 1.15f, this.getY()+ 0.6F, this.getZ() + 1.15f);
+    }
+
+    public AABB getNormalBox() {
+        return new AABB(this.getX()- 0.6f, this.getY(), this.getZ() -0.6f,  this.getX() + 0.6f, this.getY()+ 2.3f, this.getZ() + 0.6f);
     }
 
     public EntityDimensions getSwimmingSize() {

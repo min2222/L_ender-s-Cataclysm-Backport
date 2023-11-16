@@ -87,6 +87,7 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
     }
+
     protected void populateDefaultEquipmentSlots(RandomSource p_219154_, DifficultyInstance p_219155_) {
         this.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ModItems.ATHAME.get()));
         this.setDropChance(EquipmentSlot.MAINHAND, 0.0F);

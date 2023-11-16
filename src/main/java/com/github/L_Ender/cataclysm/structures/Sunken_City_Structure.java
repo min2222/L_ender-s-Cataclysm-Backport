@@ -4,13 +4,13 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.init.ModTag;
+import com.github.L_Ender.cataclysm.world.structures.Processor.WaterLoggingFixProcessor;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobSpawnType;
@@ -268,7 +268,7 @@ public class Sunken_City_Structure extends Structure {
     private static void generatePieces(StructurePiecesBuilder p_197233_, GenerationContext p_197234_) {
         int i = p_197234_.chunkPos().getMinBlockX();
         int j = p_197234_.chunkPos().getMinBlockZ();
-        BlockPos blockpos = new BlockPos(i, 68, j);
+        BlockPos blockpos = new BlockPos(i, 19, j);
         Rotation rotation = Rotation.getRandom(p_197234_.random());
         Sunken_City_Structure.start(p_197234_.structureTemplateManager(), blockpos, rotation, p_197233_, p_197234_.random());
     }
@@ -305,7 +305,8 @@ public class Sunken_City_Structure extends Structure {
 
             StructurePlaceSettings structureplacesettings = (new StructurePlaceSettings()).setRotation(p_163156_).setMirror(Mirror.NONE)
                     .addProcessor(blockignoreprocessor)
-                    .addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE));
+                    .addProcessor(new WaterLoggingFixProcessor())
+                    .addProcessor(new ProtectedBlockProcessor(ModTag.SUNKEN_CITY_MATERIAL));
 
 
             return structureplacesettings;

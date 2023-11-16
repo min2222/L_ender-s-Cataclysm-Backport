@@ -1,6 +1,5 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
-import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Leviathan;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Leviathan_Tongue;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Leviathan_Tongue_End;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
@@ -23,7 +22,6 @@ import net.minecraft.world.phys.Vec3;
 public class RendererThe_Leviathan_Tongue extends EntityRenderer<The_Leviathan_Tongue_Entity> {
 
     private static final ResourceLocation THE_LEVIATHAN_TEXTURES = new ResourceLocation("cataclysm:textures/entity/leviathan/the_leviathan.png");
-    private static final ModelThe_Leviathan MODEL = new ModelThe_Leviathan();
     private static final ModelThe_Leviathan_Tongue TONGUE_MODEL = new ModelThe_Leviathan_Tongue();
     private static final ModelThe_Leviathan_Tongue_End TONGUE_END_MODEL = new ModelThe_Leviathan_Tongue_End();
     public static final int MAX_NECK_SEGMENTS = 128;

@@ -15,6 +15,7 @@ import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
+import com.github.L_Ender.cataclysm.message.MessageSyncEntityPos;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.google.common.collect.ImmutableList;
@@ -1581,15 +1582,13 @@ public class Ignis_Entity extends Boss_monster {
                 this.setheldEntity(0);
                 //passenger.push(f1 * 2.5, 0.8, f2 * 2.5);
             }
+            if(this.level().isClientSide){
+                Cataclysm.sendMSGToServer(new MessageSyncEntityPos(lifted.getId(), this.getX() + extraX, this.getY() + extraY + 1.2F, this.getZ() + extraZ));
+            }else{
+                Cataclysm.sendMSGToAll(new MessageSyncEntityPos(lifted.getId(), this.getX() + extraX, this.getY() + extraY + 1.2F, this.getZ() + extraZ));
+            }
             if (lifted instanceof Player player) {
-                lifted.setDeltaMovement(Vec3.ZERO);
-                lifted.setPos(this.getX() + extraX, this.getY() + extraY + 1.2F, this.getZ() + extraZ);
                 player.displayClientMessage(Component.translatable("entity.cataclysm.you_cant_escape", this.getName()), true);
-            } else {
-                if (!level().isClientSide) {
-                    lifted.setDeltaMovement(Vec3.ZERO);
-                    lifted.setPos(this.getX() + extraX, this.getY() + extraY + 1.2F, this.getZ() + extraZ);
-                }
             }
             if ((tick - 10) % 4 == 0) {
                 boolean flag = lifted.hurt(this.damageSources().mobAttack(this), 4 + lifted.getMaxHealth() * 0.02f);

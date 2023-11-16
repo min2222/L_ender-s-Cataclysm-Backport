@@ -7,9 +7,12 @@
   "mixins": [
     "ItemMixin",
     "LivingEntityMixin",
+    "MultifaceGrowthFeatureMixin",
     "NoBasaltColumnsInStructuresMixin",
     "NoDeltasInStructuresMixin",
+    "NoGeodeInStructuresMixin",
     "NoLakesInStructuresMixin",
+    "NoOreInStructuresMixin",
     "WorldGenRegionAccessor"
   ],
   "client": [

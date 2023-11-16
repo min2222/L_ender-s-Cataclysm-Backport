@@ -168,6 +168,9 @@ public class ModItems {
     public static final RegistryObject<Item> ATHAME = ITEMS.register("athame",
             () -> new Athame((new Item.Properties()).durability(250)));
 
+    public static final RegistryObject<Item> KHOPESH = ITEMS.register("khopesh",
+            () -> new Khopesh(Tiers.GOLD, new Item.Properties()));
+
     public static final RegistryObject<Item> BULWARK_OF_THE_FLAME = ITEMS.register("bulwark_of_the_flame",
             () -> new Bulwark_of_the_flame(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 
@@ -374,6 +377,9 @@ public class ModItems {
 
     public static final RegistryObject<SpawnEggItem> AMETHYST_CRAB_SPAWN_EGG = ITEMS.register("amethyst_crab_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.AMETHYST_CRAB, 0x646464, 0x7a5bb5, new Item.Properties()));
+
+    public static final RegistryObject<SpawnEggItem> KOBOLETON_SPAWN_EGG = ITEMS.register("koboleton_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.KOBOLETON, 0xb7b196, 0xe18103, new Item.Properties()));
 
     public static final RegistryObject<SpawnEggItem> ANCIENT_REMNANT_SPAWN_EGG = ITEMS.register("ancient_remnant_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ANCIENT_REMNANT, 0xb7b196, 0x682e22, new Item.Properties()));
