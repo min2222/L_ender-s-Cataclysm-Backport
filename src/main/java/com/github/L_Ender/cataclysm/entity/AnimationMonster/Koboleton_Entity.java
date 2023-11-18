@@ -1,7 +1,10 @@
 package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
+import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
+import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import net.minecraft.nbt.CompoundTag;
@@ -9,6 +12,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,10 +25,12 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
@@ -60,7 +66,6 @@ public class Koboleton_Entity extends Animation_Monster {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-
     }
 
     public static AttributeSupplier.Builder koboleton() {
@@ -146,6 +151,26 @@ public class Koboleton_Entity extends Animation_Monster {
                         if (this.distanceTo(target) < this.getBbWidth() * 2.5F * this.getBbWidth() * 2.5F + target.getBbWidth()) {
                             float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
                             target.hurt(damageSources().mobAttack(this), damage);
+
+                            ItemStack offhand = target.getOffhandItem();
+                            ItemStack mainhand = target.getMainHandItem();
+                            if(this.random.nextFloat() * 100.0F <= CMConfig.CauseKoboletontoDropItemInHandPercent) {
+                                if (!offhand.isEmpty()) {
+                                    if(!offhand.is(ModTag.STICKY_ITEM)) {
+                                        int i = offhand.getCount();
+                                        this.koboletonstealdrop(offhand.copyWithCount(1), target);
+                                        target.setItemSlot(EquipmentSlot.OFFHAND, offhand.split(i - 1));
+                                    }
+                                } else {
+                                    if (!mainhand.isEmpty()) {
+                                        if (!mainhand.is(ModTag.STICKY_ITEM)) {
+                                            int i = mainhand.getCount();
+                                            this.koboletonstealdrop(mainhand.copyWithCount(1), target);
+                                            target.setItemSlot(EquipmentSlot.MAINHAND, mainhand.split(i - 1));
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -153,9 +178,35 @@ public class Koboleton_Entity extends Animation_Monster {
         }
     }
 
+    private ItemEntity koboletonstealdrop(ItemStack p_36179_, LivingEntity target) {
+        if (p_36179_.isEmpty()) {
+            return null;
+        } else if (this.level().isClientSide) {
+            return null;
+        } else {
+            double d0 = target.getEyeY() - (double)0.3F;
+            ItemEntity itementity = new ItemEntity(target.level(), target.getX(), d0, target.getZ(), p_36179_);
+            itementity.setDefaultPickUpDelay();
+            itementity.setExtendedLifetime();
+            float f8 = Mth.sin(target.getXRot() * ((float)Math.PI / 180F));
+            float f2 = Mth.cos(target.getXRot() * ((float)Math.PI / 180F));
+            float f3 = Mth.sin(target.getYRot() * ((float)Math.PI / 180F));
+            float f4 = Mth.cos(target.getYRot() * ((float)Math.PI / 180F));
+            float f5 = target.getRandom().nextFloat() * ((float)Math.PI * 2F);
+            float f6 = 0.02F * target.getRandom().nextFloat();
+            itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (target.getRandom().nextFloat() - target.getRandom().nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
+            this.level().addFreshEntity(itementity);
+            return itementity;
+        }
+
+    }
+
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        return ModEntities.rollSpawn(CMConfig.KoboletonSpawnRolls, this.getRandom(), spawnReasonIn);
+    }
+
     public void setTarget(@Nullable LivingEntity p_32537_) {
         this.setIsAngry(p_32537_ != null);
-
         super.setTarget(p_32537_); //Forge: Moved down to allow event handlers to write data manager values.
     }
 

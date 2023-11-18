@@ -101,6 +101,8 @@ public class CMConfig {
     public static double AncientRemnantHealthMultiplier = 1D;
     public static double AncientRemnantDamageMultiplier = 1D;
 
+    public static double CauseKoboletontoDropItemInHandPercent = 15d;
+
     public static double MonstrosityLongRangelimit = 18D;
     public static double EnderguardianLongRangelimit = 12D;
     public static double EndergolemLongRangelimit = 6D;
@@ -125,7 +127,6 @@ public class CMConfig {
     public static double LeviathanRushHpdamage = 0.05D;
     public static double LeviathanTentacleHpdamage = 0.03D;
 
-
     public static boolean Armor_Infinity_Durability = true;
 
     public static int DeeplingSpawnWeight = 2;
@@ -139,6 +140,9 @@ public class CMConfig {
 
     public static int AmethystCrabSpawnWeight = 1;
     public static int AmethystCrabSpawnRolls = 100;
+
+    public static int KoboletonSpawnWeight = 2;
+    public static int KoboletonSpawnRolls = 30;
 
     public static void bake(ModConfig config) {
         try {
@@ -258,6 +262,8 @@ public class CMConfig {
             AncientRemnantDamageMultiplier = ConfigHolder.COMMON.AncientRemnantDamageMultiplier.get();
             AncientRemnantBlockBreaking = ConfigHolder.COMMON.AncientRemnantBlockBreaking.get();
 
+            CauseKoboletontoDropItemInHandPercent = ConfigHolder.COMMON.CauseKoboletontoDropItemInHandPercent.get();
+
             Armor_Infinity_Durability = ConfigHolder.COMMON.Armor_Infinity_Durability.get();
 
             DeeplingSpawnWeight = ConfigHolder.COMMON.DeeplingSpawnWeight.get();
@@ -271,6 +277,9 @@ public class CMConfig {
 
             AmethystCrabSpawnWeight = ConfigHolder.COMMON.AmethystCrabSpawnWeight.get();
             AmethystCrabSpawnRolls = ConfigHolder.COMMON.AmethystCrabSpawnRolls.get();
+
+            KoboletonSpawnWeight = ConfigHolder.COMMON.KoboletonSpawnWeight.get();
+            KoboletonSpawnRolls  = ConfigHolder.COMMON.KoboletonSpawnRolls.get();
 
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("An exception was caused trying to load the config for CM");

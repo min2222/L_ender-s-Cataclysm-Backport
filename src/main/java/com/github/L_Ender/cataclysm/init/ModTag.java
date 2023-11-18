@@ -72,6 +72,8 @@ public class ModTag {
 
     public static final TagKey<Item> EXPLOSION_IMMUNE_ITEM = registerItemTag("explosion_immune_item");
 
+    public static final TagKey<Item> STICKY_ITEM = registerItemTag("sticky_item");
+
     public static final TagKey<Biome> REQUIRED_SUNKEN_CITY_SURROUNDING = registerBiomeTag("required_sunken_city_surrounding");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {

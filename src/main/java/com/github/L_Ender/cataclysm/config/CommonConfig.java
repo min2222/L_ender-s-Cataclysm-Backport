@@ -121,6 +121,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue LeviathanRushHpdamage;
     public final ForgeConfigSpec.DoubleValue LeviathanTentacleHpdamage;
 
+    public final ForgeConfigSpec.DoubleValue CauseKoboletontoDropItemInHandPercent;
 
     public final ForgeConfigSpec.IntValue DeeplingSpawnWeight;
     public final ForgeConfigSpec.IntValue DeeplingSpawnRolls;
@@ -130,6 +131,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue DeeplingAnglerSpawnRolls;
     public final ForgeConfigSpec.IntValue AmethystCrabSpawnWeight;
     public final ForgeConfigSpec.IntValue AmethystCrabSpawnRolls;
+    public final ForgeConfigSpec.IntValue KoboletonSpawnWeight;
+    public final ForgeConfigSpec.IntValue KoboletonSpawnRolls;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("Etc");
@@ -273,6 +276,10 @@ public class CommonConfig {
         AncientRemnantBlockBreaking = buildBoolean(builder, "AncientRemnantBlockBreaking", "all", true, "Ancient Remnant's block breaking ignore the MobGriefing");
         builder.pop();
 
+        builder.push("Koboleton");
+        CauseKoboletontoDropItemInHandPercent = buildDouble(builder, "CauseKoboletontoDropItemInHandPercent", "all", 15.0D, 0D, 100D, "Cause Koboleton to Drop Item In Hand Percent");
+        builder.pop();
+
         builder.push("spawning");
         DeeplingSpawnWeight = buildInt(builder, "DeeplingSpawnWeight", "spawns", CMConfig.DeeplingSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         DeeplingSpawnRolls = buildInt(builder, "DeeplingSpawnRolls", "spawns", CMConfig.DeeplingSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
@@ -286,6 +293,8 @@ public class CommonConfig {
         AmethystCrabSpawnWeight = buildInt(builder, "AmethystCrabSpawnWeight", "spawns", CMConfig.AmethystCrabSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         AmethystCrabSpawnRolls = buildInt(builder, "AmethystCrabSpawnRolls", "spawns", CMConfig.AmethystCrabSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
+        KoboletonSpawnWeight = buildInt(builder, "KoboletonSpawnWeight", "spawns", CMConfig.KoboletonSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        KoboletonSpawnRolls = buildInt(builder, "KoboletonSpawnRolls", "spawns", CMConfig.KoboletonSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
         builder.pop();
     }

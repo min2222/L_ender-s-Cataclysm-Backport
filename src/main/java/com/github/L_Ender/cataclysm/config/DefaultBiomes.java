@@ -19,4 +19,10 @@ public class DefaultBiomes {
 
     public static final SpawnBiomeData CRAB = new SpawnBiomeData()
             .addBiomeEntry(BiomeEntryType.REGISTRY_NAME, false, "minecraft:lush_caves", 0);
+
+    public static final SpawnBiomeData KOBOLETON = new SpawnBiomeData()
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_dry/overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_hot/overworld", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, false, "forge:is_sandy", 0)
+            .addBiomeEntry(BiomeEntryType.BIOME_TAG, true, "minecraft:is_badlands", 0);
 }
