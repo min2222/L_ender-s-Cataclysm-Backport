@@ -19,6 +19,7 @@ public class CMConfig {
     public static int WASWHowitzerCooldown = 100;
     public static int VASWCooldown = 120;
     public static int VoidCoreCooldown = 160;
+    public static int Sandstorm_In_A_Bottle_Timer = 160;
 
     public static double Voidrunedamage = 7;
     public static double DimensionalRiftdamage = 10;
@@ -101,7 +102,7 @@ public class CMConfig {
     public static double AncientRemnantHealthMultiplier = 1D;
     public static double AncientRemnantDamageMultiplier = 1D;
 
-    public static double CauseKoboletontoDropItemInHandPercent = 15d;
+    public static double CauseKoboletontoDropItemInHandPercent = 10d;
 
     public static double MonstrosityLongRangelimit = 18D;
     public static double EnderguardianLongRangelimit = 12D;
@@ -160,6 +161,7 @@ public class CMConfig {
             WASWHowitzerCooldown = ConfigHolder.COMMON.WASWHowitzerCooldown.get();
             VASWCooldown = ConfigHolder.COMMON.VASWCooldown.get();
             VoidCoreCooldown = ConfigHolder.COMMON.VoidCoreCooldown.get();
+            Sandstorm_In_A_Bottle_Timer = ConfigHolder.COMMON.Sandstorm_In_A_Bottle_Timer.get();
 
             Voidrunedamage = ConfigHolder.COMMON.Voidrunedamage.get();
             Ashenbreathdamage = ConfigHolder.COMMON.Ashenbreathdamage.get();

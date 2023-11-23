@@ -37,6 +37,7 @@ public class Bloom_Stone_PauldronsCapability {
     public interface IBloom_Stone_PauldronsCapability extends INBTSerializable<CompoundTag> {
 
 
+
         void tick(TickEvent.PlayerTickEvent event);
 
         void setBurrow(boolean getBurrow);

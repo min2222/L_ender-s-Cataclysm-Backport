@@ -3,7 +3,6 @@ package com.github.L_Ender.cataclysm.items;
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.config.CMConfig;
-
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModSounds;

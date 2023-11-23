@@ -146,8 +146,11 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 
 		if(!level().isClientSide && getOwner() instanceof Player owner && hookedEntity == null) {
 			owner.setNoGravity(true);
-
 		}
+	}
+
+	public boolean canChangeDimensions() {
+		return false;
 	}
 
 	protected SoundEvent getDefaultHitGroundSoundEvent() {

@@ -1,4 +1,4 @@
-package com.github.L_Ender.cataclysm.client.render.item.Curios;
+package com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer;
 
 import com.github.L_Ender.cataclysm.client.model.armor.CMModelLayers;
 import com.github.L_Ender.cataclysm.client.model.item.CuriosModel.Sandstorm_In_A_BottleModel;
@@ -17,11 +17,11 @@ import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-public class PendantRenderer implements ICurioRenderer {
+public class RendererSandstorm_In_A_Bottle implements ICurioRenderer {
     private final Sandstorm_In_A_BottleModel model;
-    private static final ResourceLocation TEXTURE = new ResourceLocation("cataclysm:textures/curios/abyss_laser_beam.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation("cataclysm:textures/curiositem/sandstorm_in_a_bottle.png");
 
-    public PendantRenderer() {
+    public RendererSandstorm_In_A_Bottle() {
         this.model = new Sandstorm_In_A_BottleModel(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.SANDSTORM_IN_A_BOTTLE_MODEL));
     }
 

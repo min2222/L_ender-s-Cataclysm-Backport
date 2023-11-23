@@ -3,6 +3,7 @@ package com.github.L_Ender.cataclysm.init;
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.entity.projectile.Void_Scatter_Arrow_Entity;
 import com.github.L_Ender.cataclysm.items.*;
+import com.github.L_Ender.cataclysm.items.CuriosItem.Sandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.BlockSource;
@@ -209,6 +210,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> INFERNAL_FORGE = ITEMS.register("infernal_forge",
             () -> new infernal_forge(Tiers.NETHERITE, new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> SANDSTORM_IN_A_BOTTLE = ITEMS.register("sandstorm_in_a_bottle",
+            () -> new Sandstorm_In_A_Bottle(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 
     public static final RegistryObject<Item> VOID_SCATTER_ARROW = ITEMS.register("void_scatter_arrow",
             () -> new ModItemArrow(new Item.Properties().fireResistant()));

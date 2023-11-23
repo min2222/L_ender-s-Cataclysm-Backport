@@ -100,6 +100,7 @@
   "item.cataclysm.meat_shredder": "미트 슈레더",
   "item.cataclysm.laser_gatling": "레이저 게틀링",
   "item.cataclysm.necklace_of_the_desert": "사막의 목걸이",
+  "item.cataclysm.sandstorm_in_a_bottle": "병속의 모래 폭풍",
 
   "item.cataclysm.endermaptera_spawn_egg": "엔더마프테라 생성 알",
   "item.cataclysm.ender_golem_spawn_egg": "엔더 골렘 생성 알",
@@ -349,6 +350,8 @@
   "death.attack.cataclysm.abyssal_burn": "%s가 차원을 떠났습니다",
   "death.attack.cataclysm.abyssal_burn.player": "%s가 차원을 떠났습니다",
   "death.attack.cataclysm.shredder": "%s was shattered by %s",
-  "cataclysm.gui.altar_of_amethyst_blessing": "축복"
+  "cataclysm.gui.altar_of_amethyst_blessing": "축복",
+  "key.categories.cataclysm": "대격변 키",
+  "key.cataclysm.ability": "대격변 능력"
 
 }

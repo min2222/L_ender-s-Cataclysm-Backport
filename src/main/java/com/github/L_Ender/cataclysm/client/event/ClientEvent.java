@@ -1,6 +1,8 @@
 package com.github.L_Ender.cataclysm.client.event;
 
 import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
+import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
+import com.github.L_Ender.cataclysm.client.model.entity.Model_PlayerSandstorm;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.client.render.etc.LavaVisionFluidRenderer;
@@ -25,6 +27,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -37,6 +40,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,8 +54,10 @@ public class ClientEvent {
     public static final ResourceLocation FLAME_STRIKE = new ResourceLocation("cataclysm:textures/entity/soul_flame_strike_sigil.png");
     private boolean previousLavaVision = false;
     private LiquidBlockRenderer previousFluidRenderer;
-
+    private static final ResourceLocation SANDSTORM_ICON = new ResourceLocation("cataclysm:textures/gui/sandstorm_icons.png");
     private static final ResourceLocation EFFECT_HEART = new ResourceLocation("cataclysm:textures/gui/effect_heart.png");
+    private static final ResourceLocation SANDSTORM_TEXTURE = new ResourceLocation("cataclysm:textures/entity/ancient_remnant/sandstorm.png");
+    private static final Model_PlayerSandstorm SANDSTORM_MODEL = new Model_PlayerSandstorm();
     private final Random random = new Random();
     private int lastHealth;
     private int displayHealth;
@@ -101,7 +107,7 @@ public class ClientEvent {
     }
 
     @SubscribeEvent
-    public void onRenderHUD(RenderGuiOverlayEvent.Pre event) {
+    public void onPreRenderHUD(RenderGuiOverlayEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
         if (player != null) {
             Minecraft mc = Minecraft.getInstance();
@@ -115,10 +121,40 @@ public class ClientEvent {
     }
 
     @SubscribeEvent
+    public void onPostRenderHUD(RenderGuiOverlayEvent.Post event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            Minecraft mc = Minecraft.getInstance();
+            ForgeGui gui = (ForgeGui)mc.gui;
+            if (event.getOverlay() == VanillaGuiOverlay.AIR_LEVEL.type() && !mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
+                renderSandstormOverlay(event);
+            }
+        }
+    }
+
+
+    @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onPreRenderEntity(RenderLivingEvent.Pre event) {
         LivingEntity player = (LivingEntity) event.getEntity();
         boolean usingIncinerator = player.isUsingItem() && player.getUseItem().is(ModItems.THE_INCINERATOR.get());
+        Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(player, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
+        if (SandstormCapability != null) {
+            if(SandstormCapability.isSandstorm()){
+                event.setCanceled(true);
+                event.getPoseStack().pushPose();
+                float limbSwing = event.getEntity().walkAnimation.position() - event.getEntity().walkAnimation.speed() * (1.0F - event.getPartialTick());
+                float limbSwingAmount = event.getEntity().walkAnimation.speed(event.getPackedLight());
+                VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(event.getMultiBufferSource(), RenderType.armorCutoutNoCull(SANDSTORM_TEXTURE), false, event.getEntity().getItemBySlot(EquipmentSlot.CHEST).hasFoil());
+                event.getPoseStack().translate(0.0D, event.getEntity().getBbHeight(), 0.0D);
+                event.getPoseStack().mulPose(Axis.ZP.rotationDegrees(180.0F));
+                SANDSTORM_MODEL.setupAnim(event.getEntity(), limbSwing, limbSwingAmount, event.getEntity().tickCount + event.getPartialTick(), 0, 0);
+                SANDSTORM_MODEL.renderToBuffer(event.getPoseStack(), vertexconsumer, event.getPackedLight(), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+                event.getPoseStack().popPose();
+                MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
+                return;
+            }
+        }
         if(usingIncinerator){
             int i = player.getTicksUsingItem();
             float f2 = (float) player.tickCount + event.getPartialTick();
@@ -146,12 +182,19 @@ public class ClientEvent {
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
         Player player = event.getEntity();
         Bloom_Stone_PauldronsCapability.IBloom_Stone_PauldronsCapability chargeCapability = ModCapabilities.getCapability(player, ModCapabilities.BLOOM_STONE_PAULDRONS_CAPABILITY_CAPABILITY);
+        Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(player, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
+        if (SandstormCapability != null) {
+            if (SandstormCapability.isSandstorm()) {
+                return;
+            }
+        }
         if (chargeCapability != null) {
             if(chargeCapability.isBurrow()) {
                 event.getPoseStack().pushPose();
                 event.getPoseStack().translate(0.0D, -event.getEntity().getBbHeight(), 0.0D);
             }
         }
+
     }
 
     @SubscribeEvent
@@ -312,5 +355,41 @@ public class ClientEvent {
 
         RenderSystem.disableBlend();
         RenderSystem.setShaderTexture(0, EFFECT_HEART);
+    }
+
+    private void renderSandstormOverlay(RenderGuiOverlayEvent.Post event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Minecraft mc = Minecraft.getInstance();
+        ForgeGui gui = (ForgeGui) mc.gui;
+        GuiGraphics stack = event.getGuiGraphics();
+        gui.setupOverlayRenderState(true, false);
+        int width = event.getWindow().getGuiScaledWidth();
+        int height = event.getWindow().getGuiScaledHeight();
+        if ((minecraft.getCameraEntity() instanceof LivingEntity player)) {
+            Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(player, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
+            if (SandstormCapability != null) {
+                int left = width / 2 + 91;
+                int top = height - gui.rightHeight;
+
+                int flytime = Math.abs(SandstormCapability.getSandstormTimer());
+                int maxProgressTime = CMConfig.Sandstorm_In_A_Bottle_Timer;
+
+                if (flytime == 0) {
+                    return;
+                }
+
+                float progress = 1 - flytime / (float) maxProgressTime;
+
+                int full = Mth.ceil((progress - 2D / maxProgressTime) * 10);
+                int partial = Mth.ceil(progress * 10) - full;
+
+                for (int i = 0; i < full + partial; ++i) {
+                    stack.blit(SANDSTORM_ICON, left - i * 8 - 9, top, -90, (i < full ? 0 : 9), 0, 9, 9, 32, 16);
+                }
+                gui.rightHeight += 10;
+
+                RenderSystem.disableBlend();
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.client.model.armor;
 
+import com.github.L_Ender.cataclysm.client.model.item.CuriosModel.Sandstorm_In_A_BottleModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.resources.ResourceLocation;
@@ -24,11 +25,10 @@ public class CMModelLayers {
         event.registerLayerDefinition(BLOOM_STONE_PAULDRONS_MODEL, () -> ModelBloom_Stone_Pauldrons.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(ELYTRA_ARMOR, () -> Modelignitium_Elytra_chestplate.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(IGNITIUM_ARMOR_MODEL_LEGS, () -> ModelIgnitium_Armor.createArmorLayer(new CubeDeformation(0.2F)));
+        event.registerLayerDefinition(SANDSTORM_IN_A_BOTTLE_MODEL, () -> Sandstorm_In_A_BottleModel.createLayer(new CubeDeformation(0.2F)));
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {
         return new ModelLayerLocation(new ResourceLocation("cataclysm", model), layer);
     }
-
-
 }

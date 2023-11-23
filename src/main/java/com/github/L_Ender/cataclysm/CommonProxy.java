@@ -48,6 +48,11 @@ public class CommonProxy {
 
     }
 
+
+    public boolean isKeyDown(int keyType) {
+        return false;
+    }
+
     public void clearSoundCacheFor(BlockEntity entity) {
 
     }

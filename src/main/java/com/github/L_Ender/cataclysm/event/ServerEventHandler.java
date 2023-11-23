@@ -3,6 +3,7 @@ package com.github.L_Ender.cataclysm.event;
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
 import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
+import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
@@ -77,6 +78,12 @@ public class ServerEventHandler {
         ChargeCapability.IChargeCapability chargeCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.CHARGE_CAPABILITY);
         if (chargeCapability != null) {
             chargeCapability.tick(event.getEntity());
+        }
+
+
+        Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
+        if (SandstormCapability != null) {
+            SandstormCapability.tick(event.getEntity());
         }
     }
 

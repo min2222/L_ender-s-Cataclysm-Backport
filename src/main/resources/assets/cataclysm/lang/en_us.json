@@ -100,6 +100,7 @@
   "item.cataclysm.meat_shredder": "Meat Shredder",
   "item.cataclysm.laser_gatling": "Laser Gatling",
   "item.cataclysm.necklace_of_the_desert": "Necklace of the desert",
+  "item.cataclysm.sandstorm_in_a_bottle": "Sandstorm In A Bottle",
 
   "item.cataclysm.endermaptera_spawn_egg": "Endermaptera Spawn Egg",
   "item.cataclysm.ender_golem_spawn_egg": "Ender Golem Spawn Egg",
@@ -349,6 +350,8 @@
   "death.attack.cataclysm.abyssal_burn": "%s has left this dimension",
   "death.attack.cataclysm.abyssal_burn.player": "%s has left this dimension",
   "death.attack.cataclysm.shredder": "%s was shattered by %s",
-  "cataclysm.gui.altar_of_amethyst_blessing": "Blessing"
+  "cataclysm.gui.altar_of_amethyst_blessing": "Blessing",
+  "key.categories.cataclysm": "Cataclysm Key Category",
+  "key.cataclysm.ability": "Cataclysm Ability"
 
 }

@@ -48,7 +48,7 @@ public class CMWorldRegistry {
         }
 
         if (testBiome(BiomeConfig.koboleton, biome) && CMConfig.KoboletonSpawnWeight > 0) {
-            builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(ModEntities.KOBOLETON.get(), CMConfig.KoboletonSpawnWeight, 1, 3));
+            builder.getMobSpawnSettings().getSpawner(MobCategory.MONSTER).add(new MobSpawnSettings.SpawnerData(ModEntities.KOBOLETON.get(), CMConfig.KoboletonSpawnWeight, 1, 2));
         }
 
     }

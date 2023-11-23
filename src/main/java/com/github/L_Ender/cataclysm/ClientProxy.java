@@ -8,6 +8,7 @@ import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.blockentity.*;
 import com.github.L_Ender.cataclysm.client.render.entity.*;
 import com.github.L_Ender.cataclysm.client.render.item.CMItemRenderProperties;
+import com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer.RendererSandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.client.render.item.CustomArmorRenderProperties;
 import com.github.L_Ender.cataclysm.client.sound.MeatShredderSound;
 import com.github.L_Ender.cataclysm.client.sound.SandstormSound;
@@ -34,10 +35,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -54,6 +57,7 @@ public class ClientProxy extends CommonProxy {
     public void init() {
        // FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerEvent::onAddLayers);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::setupParticles);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerKeybinds);
     }
 
     public static void setupParticles(RegisterParticleProvidersEvent registry) {
@@ -154,6 +158,7 @@ public class ClientProxy extends CommonProxy {
         BlockEntityRenderers.register(ModTileentites.ALTAR_OF_ABYSS.get(), RendererAltar_of_Abyss::new);
         BlockEntityRenderers.register(ModTileentites.ABYSSAL_EGG.get(), RendererAbyssal_Egg::new);
         MenuScreens.register(ModMenu.WEAPON_FUSION.get(), GUIWeponfusion::new);
+        CuriosRendererRegistry.register(ModItems.SANDSTORM_IN_A_BOTTLE.get(), RendererSandstorm_In_A_Bottle::new);
     }
 
 
@@ -183,6 +188,29 @@ public class ClientProxy extends CommonProxy {
 
     public void clearSoundCacheFor(BlockEntity entity) {
         BLOCK_ENTITY_SOUND_INSTANCE_MAP.remove(entity);
+    }
+
+
+    public boolean isKeyDown(int keyType) {
+        if (keyType == -1) {
+            return Minecraft.getInstance().options.keyLeft.isDown() || Minecraft.getInstance().options.keyRight.isDown() || Minecraft.getInstance().options.keyUp.isDown() || Minecraft.getInstance().options.keyDown.isDown() || Minecraft.getInstance().options.keyJump.isDown();
+        }
+        if (keyType == 0) {
+            return Minecraft.getInstance().options.keyJump.isDown();
+        }
+        if (keyType == 1) {
+            return Minecraft.getInstance().options.keySprint.isDown();
+        }
+        if (keyType == 2) {
+            return ModKeybind.KEY_ABILITY.isDown();
+        }
+        if (keyType == 3) {
+            return Minecraft.getInstance().options.keyAttack.isDown();
+        }
+        if (keyType == 4) {
+            return Minecraft.getInstance().options.keyShift.isDown();
+        }
+        return false;
     }
 
     @Override
@@ -222,6 +250,10 @@ public class ClientProxy extends CommonProxy {
                 }
                 break;
         }
+    }
+
+    private void registerKeybinds(RegisterKeyMappingsEvent e) {
+        e.register(ModKeybind.KEY_ABILITY);
     }
 
     @Override

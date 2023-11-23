@@ -20,6 +20,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue WASWHowitzerCooldown;
     public final ForgeConfigSpec.IntValue VASWCooldown;
     public final ForgeConfigSpec.IntValue VoidCoreCooldown;
+    public final ForgeConfigSpec.IntValue Sandstorm_In_A_Bottle_Timer;
 
     public final ForgeConfigSpec.DoubleValue Voidrunedamage;
     public final ForgeConfigSpec.IntValue Lavabombradius;
@@ -156,6 +157,7 @@ public class CommonConfig {
         WASWHowitzerCooldown = buildInt(builder, "WASWHowitzerCooldown", "all", 100, 0, 1000000, "Wither Assault Shoulder Weapon's Howitzer Cooldown");
         VASWCooldown = buildInt(builder, "VASWCooldown", "all", 120, 0, 1000000, "Void Assault Shoulder Weapon's Cooldown");
         VoidCoreCooldown = buildInt(builder, "VoidCoreCooldown", "all", 160, 0, 1000000, "Void Core's Cooldown");
+        Sandstorm_In_A_Bottle_Timer = buildInt(builder, "SandstormTimer", "all", 160, 0, 1000000, "Sandstorm's Timer");
         builder.pop();
 
         builder.push("Entity damage");
@@ -277,7 +279,7 @@ public class CommonConfig {
         builder.pop();
 
         builder.push("Koboleton");
-        CauseKoboletontoDropItemInHandPercent = buildDouble(builder, "CauseKoboletontoDropItemInHandPercent", "all", 15.0D, 0D, 100D, "Cause Koboleton to Drop Item In Hand Percent");
+        CauseKoboletontoDropItemInHandPercent = buildDouble(builder, "CauseKoboletontoDropItemInHandPercent", "all", 10.0D, 0D, 100D, "Cause Koboleton to Drop Item In Hand Percent");
         builder.pop();
 
         builder.push("spawning");
