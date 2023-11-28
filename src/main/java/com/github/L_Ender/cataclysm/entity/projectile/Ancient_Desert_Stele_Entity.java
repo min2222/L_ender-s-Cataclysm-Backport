@@ -168,12 +168,14 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
         LivingEntity shooter = this.getCaster();
 
         Entity entity = p_213868_1_.getEntity();
-        boolean flag;
+        boolean flag = false;
         if (shooter != null) {
             LivingEntity owner = shooter;
-            flag = entity.hurt(damageSources().mobProjectile(this, owner), (float) CMConfig.AncientDesertSteledamage);
-            if (flag) {
-                this.doEnchantDamageEffects(owner, entity);
+            if (owner != entity) {
+                flag = entity.hurt(damageSources().mobProjectile(this, owner), (float) CMConfig.AncientDesertSteledamage);
+                if (flag) {
+                    this.doEnchantDamageEffects(owner, entity);
+                }
             }
         } else {
             flag = entity.hurt(this.damageSources().magic(), (float) CMConfig.AncientDesertSteledamage);
@@ -181,7 +183,6 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
         if (flag && entity instanceof LivingEntity) {
             MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 200, 0);
             ((LivingEntity)entity).addEffect(effectinstance);
-
         }
 
     }

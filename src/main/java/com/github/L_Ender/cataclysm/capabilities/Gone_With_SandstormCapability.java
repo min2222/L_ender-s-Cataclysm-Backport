@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.network.PacketDistributor;
 
 public class Gone_With_SandstormCapability {
@@ -19,7 +20,7 @@ public class Gone_With_SandstormCapability {
     public interface IGone_With_SandstormCapability extends INBTSerializable<CompoundTag> {
 
 
-        void tick(LivingEntity entity);
+        void tick(TickEvent.PlayerTickEvent event);
 
         void setSandstorm(boolean getSandstorm);
 
@@ -41,8 +42,9 @@ public class Gone_With_SandstormCapability {
         }
 
         @Override
-        public void tick(LivingEntity entity) {
-            entity.getCapability(ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY).ifPresent(handler -> {
+        public void tick(TickEvent.PlayerTickEvent event) {
+            Player player = event.player;
+            player.getCapability(ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY).ifPresent(handler -> {
                 if(handler.isSandstorm()){
                     if(getSandstormTimer() < CMConfig.Sandstorm_In_A_Bottle_Timer){
                         setSandstormTimer(getSandstormTimer() + 1);

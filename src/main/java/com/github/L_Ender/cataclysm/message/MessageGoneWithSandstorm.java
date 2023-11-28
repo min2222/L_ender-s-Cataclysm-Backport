@@ -21,9 +21,6 @@ public class MessageGoneWithSandstorm {
         this.Timer = Timer;
     }
 
-    public MessageGoneWithSandstorm(Entity entity, Gone_With_SandstormCapability.IGone_With_SandstormCapability cap,int Timer) {
-        this(entity.getId(), cap, Timer);
-    }
 
     public MessageGoneWithSandstorm(FriendlyByteBuf buf) {
         this.entityID = buf.readInt();

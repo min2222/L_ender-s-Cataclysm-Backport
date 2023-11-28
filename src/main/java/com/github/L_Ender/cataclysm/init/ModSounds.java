@@ -290,6 +290,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> SANDSTORM = SOUNDS.register("sandstorm",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"sandstorm")));
 
+    public static final RegistryObject<SoundEvent> REMNANT_MUSIC = SOUNDS.register("remnant_music",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_music")));
+
     public static final RegistryObject<SoundEvent> WATCHER_HURT = SOUNDS.register("watcher_hurt",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"watcher_hurt")));
 

@@ -102,6 +102,7 @@ public class Sandstorm_Entity extends Entity {
         this.setLifespan(this.getLifespan() - 1);
 
         if (this.getLifespan() <= 0) {
+            Cataclysm.PROXY.clearSoundCacheFor(this);
             this.remove(RemovalReason.DISCARDED);
         }
     }

@@ -51,6 +51,7 @@ import net.minecraft.world.entity.animal.sniffer.Sniffer;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -66,7 +67,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 
-public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob {
+public class Ancient_Remnant_Entity extends Boss_monster {
 
     public static final Animation REMNANT_BITE1 = Animation.create(61);
     public static final Animation REMNANT_BITE2 = Animation.create(67);
@@ -79,9 +80,12 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
     public static final Animation REMNANT_RIGHT_STOMP_EXTRA = Animation.create(38);
     public static final Animation REMNANT_ROAR = Animation.create(70);
     public static final Animation REMNANT_ROAR2 = Animation.create(100);
+    public static final Animation REMNANT_PHASE_ROAR = Animation.create(100);
     public static final Animation REMNANT_TAIL_THREE = Animation.create(104);
+    public static final Animation REMNANT_DEATH = Animation.create(158);
     private static final EntityDataAccessor<Boolean> CHARGE = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_ACT = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> POWER = SynchedEntityData.defineId(Ancient_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
     public final LegSolver legSolver = new LegSolver(new LegSolver.Leg(0F, 0.75F, 4.0F, false), new LegSolver.Leg(0F, -0.75F, 4.0F, false));
     private AttackMode mode = AttackMode.CIRCLE;
     public float chargeProgress;
@@ -128,7 +132,7 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
                 REMNANT_RIGHT_STOMP,
                 REMNANT_ROAR,
                 REMNANT_TAIL_THREE,
-                REMNANT_ROAR2,REMNANT_LEFT_STOMP_EXTRA,REMNANT_RIGHT_STOMP_EXTRA};
+                REMNANT_ROAR2,REMNANT_LEFT_STOMP_EXTRA,REMNANT_RIGHT_STOMP_EXTRA,REMNANT_PHASE_ROAR,REMNANT_DEATH};
     }
 
     protected void registerGoals() {
@@ -147,6 +151,8 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_ROAR,11));
         this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_TAIL_THREE,20));
         this.goalSelector.addGoal(1, new RemnantSteleAttackGoal(this, REMNANT_ROAR2,29));
+        this.goalSelector.addGoal(1, new RemnantAnimationAttackGoal(this, REMNANT_PHASE_ROAR,29));
+        this.goalSelector.addGoal(1, new SimpleAnimationGoal<>(this, REMNANT_DEATH));
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
@@ -194,8 +200,14 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
     @Override
     public boolean hurt(DamageSource source, float damage) {
         double range = calculateRange(source);
-
+        if (this.getAnimation() == REMNANT_PHASE_ROAR && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            return false;
+        }
         if (range > CMConfig.AncientRemnantLongRangelimit * CMConfig.AncientRemnantLongRangelimit) {
+            return false;
+        }
+        Entity entity = source.getDirectEntity();
+        if (entity instanceof AbstractArrow) {
             return false;
         }
         if (this.activeProgress > 0) {
@@ -217,6 +229,7 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
         super.defineSynchedData();
         this.entityData.define(CHARGE, false);
         this.entityData.define(IS_ACT, true);
+        this.entityData.define(POWER, false);
     }
 
     public void setIsAct(boolean isAct) {
@@ -254,9 +267,12 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
         return this.entityData.get(CHARGE);
     }
 
-    @Override
-    public boolean isPowered() {
-        return this.getHealth() <= this.getMaxHealth() / 2.0F;
+    public void setIsPower(boolean isPower) {
+        this.entityData.set(POWER, isPower);
+    }
+
+    public boolean getIsPower() {
+        return this.entityData.get(POWER);
     }
 
     public void tick() {
@@ -294,7 +310,7 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
         if (stomp_cooldown > 0) stomp_cooldown--;
 
 
-        if(this.isPowered()) {
+        if(this.getIsPower()) {
             if (this.tickCount % 20 == 0) {
                 this.heal(2.0F);
             }
@@ -309,10 +325,21 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
             this.playSound(ModSounds.REMNANT_CHARGE_STEP.get(), 1F, 1.0f);
             ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
         }
+
+       if(this.isAlive() && this.getIsAct()) {
+           if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.isPower() && !this.getIsPower()) {
+               this.setAnimation(REMNANT_PHASE_ROAR);
+           }
+       }
+
        // if (!this.isSilent() && frame % 16 == 1 && speed > 0.05 && !this.getIsCharge()) {
        //     this.playSound(ModSounds.REMNANT_CHARGE_STEP.get(), 1F, 1.0f);
         //    ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.02f, 0, 10);
        // }
+    }
+
+    public boolean isPower() {
+        return this.getHealth() <= this.getMaxHealth() / 2.0F;
     }
 
     private void Charge() {
@@ -452,6 +479,14 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
             }
         }
 
+        if(this.getAnimation() == REMNANT_PHASE_ROAR){
+            if(this.getAnimationTick() == 23){
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 60);
+                this.level().playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+                setIsPower(true);
+            }
+        }
+
         if(this.getAnimation() == REMNANT_TAIL_THREE){
             if(this.getAnimationTick() == 1) {
                 this.level().playSound((Player) null, this, ModSounds.REMNANT_TAIL_SLAM.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
@@ -478,7 +513,7 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
                 StompParticle(0.9f,1.3f);
                 ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
-                if(this.isPowered()){
+                if(this.getIsPower()){
                     AnimationHandler.INSTANCE.sendAnimationMessage(this, REMNANT_LEFT_STOMP_EXTRA);
                 }
             }
@@ -526,7 +561,7 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
                 StompParticle(0.9f,-1.3f);
                 ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
-                if(this.isPowered()){
+                if(this.getIsPower()){
                     AnimationHandler.INSTANCE.sendAnimationMessage(this, REMNANT_RIGHT_STOMP_EXTRA);
                 }
             }
@@ -565,6 +600,11 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
                     StompDamage(0.4f, d2, 1.05F, 0, -1.3f,80, 1.0f, 0.03f, 0.1f);
                     Stompsound(ds,-1.3f);
                 }
+            }
+        }
+        if(this.getAnimation() == REMNANT_DEATH){
+            if(this.getAnimationTick() == 52 || this.getAnimationTick() == 62 || this.getAnimationTick() == 77) {
+                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.05f, 0, 8);
             }
         }
     }
@@ -790,6 +830,22 @@ public class Ancient_Remnant_Entity extends Boss_monster implements PowerableMob
 
     protected SoundEvent getDeathSound() {
         return ModSounds.REMNANT_DEATH.get();
+    }
+
+    @Override
+    public SoundEvent getBossMusic() {
+        return ModSounds.REMNANT_MUSIC.get();
+    }
+
+    @Override
+    protected boolean canPlayMusic() {
+        return super.canPlayMusic() && getIsAct();
+    }
+
+    @Nullable
+    public Animation getDeathAnimation()
+    {
+        return REMNANT_DEATH;
     }
 
     @Override

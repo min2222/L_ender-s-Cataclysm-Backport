@@ -1,10 +1,7 @@
 package com.github.L_Ender.cataclysm.event;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
-import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
-import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
-import com.github.L_Ender.cataclysm.capabilities.HookCapability;
+import com.github.L_Ender.cataclysm.capabilities.*;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
@@ -80,11 +77,11 @@ public class ServerEventHandler {
             chargeCapability.tick(event.getEntity());
         }
 
-
-        Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
-        if (SandstormCapability != null) {
-            SandstormCapability.tick(event.getEntity());
+        HoldAttackCapability.IHoldAttackCapability HoldAttackCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.HOLD_ATTACK_CAPABILITY);
+        if (HoldAttackCapability != null) {
+            HoldAttackCapability.tick(event.getEntity());
         }
+
     }
 
     @SubscribeEvent
@@ -93,6 +90,10 @@ public class ServerEventHandler {
         Bloom_Stone_PauldronsCapability.IBloom_Stone_PauldronsCapability chargeCapability = ModCapabilities.getCapability(player, ModCapabilities.BLOOM_STONE_PAULDRONS_CAPABILITY_CAPABILITY);
         if (chargeCapability != null) {
             chargeCapability.tick(event);
+        }
+        Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(player, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
+        if (SandstormCapability != null) {
+            SandstormCapability.tick(event);
         }
     }
 

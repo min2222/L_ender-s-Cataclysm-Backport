@@ -16,11 +16,7 @@ import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.partentity.Cm_Part_Entity;
 import com.github.L_Ender.cataclysm.entity.util.LeviathanTongueUtil;
-import com.github.L_Ender.cataclysm.init.ModEffect;
-import com.github.L_Ender.cataclysm.init.ModEntities;
-import com.github.L_Ender.cataclysm.init.ModSounds;
-import com.github.L_Ender.cataclysm.init.ModTag;
-import com.github.L_Ender.cataclysm.message.MessageSyncEntityPos;
+import com.github.L_Ender.cataclysm.init.*;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import net.minecraft.core.BlockPos;
@@ -1091,11 +1087,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
     private void HoldAttack() {
         LivingEntity lifted = this.getHeldEntity();
         if (lifted != null) {
-            if (this.getAnimationTick() == 169) {
-                this.setheldEntity(0);
-                //passenger.push(f1 * 2.5, 0.8, f2 * 2.5);
-
-            }
             this.setXRot(this.xRotO);
             this.yBodyRot = this.getYRot();
             this.yHeadRot = this.getYRot();
@@ -1103,11 +1094,15 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             final float pitch = this.getXRot() * (float) Math.PI / 180.0F;
             final float f3 = Mth.sin(f17) * (1 - Math.abs(this.getXRot() / 90F));
             final float f18 = Mth.cos(f17) * (1 - Math.abs(this.getXRot() / 90F));
-            if(this.level().isClientSide){
-                Cataclysm.sendMSGToServer(new MessageSyncEntityPos(lifted.getId(), this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F));
-            }else{
-                Cataclysm.sendMSGToAll(new MessageSyncEntityPos(lifted.getId(), this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F));
-            }
+            Vec3 HoldVec = new Vec3( this.getX() + f3 * -8.25F, this.getY() + -pitch * 6F, this.getZ() + -f18 * -8.25F);
+            lifted.getCapability(ModCapabilities.HOLD_ATTACK_CAPABILITY).ifPresent(cap -> {
+                cap.setHold(true, this,HoldVec);
+                if (this.getAnimationTick() == 169) {
+                    this.setheldEntity(0);
+                    cap.setHold(false, null,Vec3.ZERO);
+                    //passenger.push(f1 * 2.5, 0.8, f2 * 2.5);
+                }
+            });
 
             if (lifted instanceof Player player) {
                 player.displayClientMessage(Component.translatable("entity.cataclysm.you_cant_escape", this.getName()), true);

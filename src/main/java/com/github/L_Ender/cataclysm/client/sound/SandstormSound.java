@@ -28,7 +28,7 @@ public class SandstormSound extends AbstractTickableSoundInstance {
         this.x = (double)((float)this.sandstom.getX());
         this.y = (double)((float)this.sandstom.getY());
         this.z = (double)((float)this.sandstom.getZ());
-        this.volume = 1F;
+        this.volume = 0.05F;
         this.pitch = 1F;
 
     }

@@ -356,6 +356,14 @@
       }
     ]
   },
+  "remnant_music": {
+    "subtitle": "remnant_music.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:music_disc/remnant_theme"
+      }
+    ]
+  },
   "revenant_breath": {
     "subtitle": "revenant_breath.sub",
     "sounds": [

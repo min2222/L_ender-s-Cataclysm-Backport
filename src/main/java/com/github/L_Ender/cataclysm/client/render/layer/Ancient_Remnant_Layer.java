@@ -24,7 +24,7 @@ public class Ancient_Remnant_Layer extends RenderLayer<Ancient_Remnant_Entity, M
 
     @Override
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, Ancient_Remnant_Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (entity.isPowered() && entity.isAlive()) {
+        if (entity.getIsPower() && entity.isAlive()) {
             RenderType eyes = RenderType.eyes(LAYER_TEXTURES);
             VertexConsumer VertexConsumer = bufferIn.getBuffer(eyes);
             this.getParentModel().renderToBuffer(matrixStackIn, VertexConsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
