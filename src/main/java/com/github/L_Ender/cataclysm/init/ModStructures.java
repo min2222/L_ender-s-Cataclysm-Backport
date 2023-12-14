@@ -39,4 +39,5 @@ public class ModStructures {
     public static final ResourceKey<Structure> RUINED_CITADEL_KEY = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Cataclysm.MODID, "ruined_citadel"));
     public static final ResourceKey<Structure> BURNING_ARENA_KEY = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Cataclysm.MODID, "burning_arena"));
     public static final ResourceKey<Structure> ANCIENT_FACTORY_KEY = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Cataclysm.MODID, "ancient_factory"));
+    public static final ResourceKey<Structure> CURSED_PYRAMID_KEY = ResourceKey.create(Registries.STRUCTURE, new ResourceLocation(Cataclysm.MODID, "cursed_pyramid"));
 }

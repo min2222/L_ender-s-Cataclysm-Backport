@@ -2,13 +2,12 @@ package com.github.L_Ender.cataclysm.entity.Deepling;
 
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.AI.MobAILeaveWater;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.GroundPathNavigatorWide;
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.SemiAquaticPathNavigator;
-import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,7 +18,6 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -28,9 +26,7 @@ import net.minecraftforge.fluids.FluidType;
 
 import java.util.List;
 
-public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiAquatic {
-    private int animationTick;
-    private Animation currentAnimation;
+public class AbstractDeepling extends Animation_Monster implements ISemiAquatic {
     private int moistureAttackTime = 0;
     public float LayerBrightness, oLayerBrightness;
     public int LayerTicks;
@@ -41,8 +37,6 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
     public AbstractDeepling(EntityType entity, Level world) {
         super(entity, world);
     }
-
-
 
     protected void registerGoals() {
         super.registerGoals();
@@ -56,15 +50,6 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
     }
 
-    @Override
-    public Animation[] getAnimations() {
-        return new Animation[]{NO_ANIMATION};
-    }
-
-    @Override
-    public int getAnimationTick() {
-        return animationTick;
-    }
 
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -201,21 +186,10 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
         this.entityData.set(DEEPLINGSWIM, swim);
     }
 
-    @Override
-    public void setAnimationTick(int tick) {
-        animationTick = tick;
-    }
-
-    @Override
-    public Animation getAnimation() {
-        return this.currentAnimation;
-    }
 
     public MobType getMobType() {
         return MobType.WATER;
     }
-
-    protected void onAnimationFinish(Animation animation) {}
 
 
     public boolean isPushedByFluid() {
@@ -226,14 +200,6 @@ public class AbstractDeepling extends Monster implements IAnimatedEntity, ISemiA
         return true;
     }
 
-    @Override
-    public void setAnimation(Animation animation) {
-        if (animation == NO_ANIMATION) {
-            onAnimationFinish(this.currentAnimation);
-        }
-        this.currentAnimation = animation;
-        setAnimationTick(0);
-    }
 
     @Override
     public boolean shouldEnterWater() {

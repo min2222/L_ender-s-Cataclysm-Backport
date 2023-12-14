@@ -759,6 +759,14 @@
       }
     ]
   },
+  "modern_remnant_bite": {
+    "subtitle": "modern_remnant_bite.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/modern_remnant_bite"
+      }
+    ]
+  },
   "flame_trap": {
     "subtitle": "flame_trap.sub",
     "sounds": [
@@ -954,6 +962,30 @@
       {
         "name": "cataclysm:entity/shredder_start"
       }
+    ]
+  },
+  "koboleton_ambient": {
+    "subtitle": "koboleton_ambient.sub",
+    "sounds": [
+      {"name": "mob/skeleton/say1", "pitch": 1.1}
+    ]
+  },
+  "koboleton_hurt": {
+    "subtitle": "koboleton_hurt.sub",
+    "sounds": [
+      {"name": "mob/skeleton/hurt1","pitch": 1.1}
+    ]
+  },
+  "koboleton_step": {
+    "subtitle": "koboleton_step.sub",
+    "sounds": [
+      {"name": "mob/skeleton/step1", "pitch": 1.1}
+    ]
+  },
+  "koboleton_death": {
+    "subtitle": "koboleton_death.sub",
+    "sounds": [
+      {"name": "mob/skeleton/death", "pitch" : 1.1}
     ]
   }
 }

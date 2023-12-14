@@ -20,7 +20,6 @@ import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -46,7 +45,6 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.Bucketable;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -119,7 +117,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
 
 
     public static AttributeSupplier.Builder babyleviathan() {
-        return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 100.0D)
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.ARMOR, 5D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
@@ -262,7 +260,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
             this.usePlayerItem(player, hand, itemstack);
             this.gameEvent(GameEvent.EAT);
             fishFeedings++;
-            if (fishFeedings > 10 && getRandom().nextInt(6) == 0 || fishFeedings > 30) {
+            if ((fishFeedings > 10 && getRandom().nextInt(6) == 0 || fishFeedings > 30) && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
                 this.tame(player);
                 this.level().broadcastEntityEvent(this, (byte) 7);
             } else {
@@ -539,10 +537,10 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
         }
     }
 
-    static class BabyLeviathanAttackGoal extends Goal {
+    class BabyLeviathanAttackGoal extends Goal {
         private final The_Baby_Leviathan_Entity mob;
         private LivingEntity target;
-        private float circlingTime = 0;
+        private int circlingTime = 0;
         private float circleDistance = 4;
         private boolean clockwise = false;
         private float MeleeModeTime = 0;
@@ -564,11 +562,15 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
             return this.target != null;
         }
 
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
+
         public void start() {
             this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
-            circleDistance = 4 + this.mob.random.nextInt(1);
+            circleDistance = 8 + this.mob.random.nextInt(2);
             clockwise = this.mob.random.nextBoolean();
             this.mob.setAggressive(true);
         }
@@ -577,7 +579,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
             this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
-            circleDistance = 4 + this.mob.random.nextInt(1);
+            circleDistance = 8 + this.mob.random.nextInt(2);
             clockwise = this.mob.random.nextBoolean();
             this.target = this.mob.getTarget();
             if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
@@ -596,11 +598,8 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
                 if (this.mob.mode == The_Baby_Leviathan_Entity.AttackMode.CIRCLE) {
-                    BlockPos circlePos = getLeviathanCirclePos(target);
                     circlingTime++;
-                    if (circlePos != null) {
-                        this.mob.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY(), circlePos.getZ() + 0.5D, 1.0D);
-                    }
+                    circleEntity(target, circleDistance, 1.0f, clockwise, circlingTime, 0, 1);
                     if (0 >= this.mob.blast_cooldown) {
                         this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.RANGE;
                     } else {
@@ -623,15 +622,6 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
 
             }
         }
-
-        public BlockPos getLeviathanCirclePos(LivingEntity target) {
-            float angle = (0.01745329251F * (clockwise ? -circlingTime : circlingTime));
-            double extraX = circleDistance * Mth.sin((angle));
-            double extraZ = circleDistance * Mth.cos(angle);
-
-            return BlockPos.containing(target.getX() + 0.5F + extraX, target.getY() + 4.0f, target.getZ() + 0.5F + extraZ);
-        }
-
     }
     static class BabyLeviathanMoveController extends MoveControl {
         private final The_Baby_Leviathan_Entity entity;

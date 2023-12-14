@@ -102,7 +102,11 @@ public class CMConfig {
     public static double AncientRemnantHealthMultiplier = 1D;
     public static double AncientRemnantDamageMultiplier = 1D;
 
-    public static double CauseKoboletontoDropItemInHandPercent = 10d;
+
+    public static double ModernRemnantHealthMultiplier = 1D;
+    public static double ModernRemnantDamageMultiplier = 1D;
+
+    public static double CauseKoboletontoDropItemInHandPercent = 5d;
 
     public static double MonstrosityLongRangelimit = 18D;
     public static double EnderguardianLongRangelimit = 12D;
@@ -127,6 +131,10 @@ public class CMConfig {
     public static double LeviathanTailSwingHpdamage = 0.08D;
     public static double LeviathanRushHpdamage = 0.05D;
     public static double LeviathanTentacleHpdamage = 0.03D;
+    public static double RemnantChargeHpDamage = 0.06D;
+    public static double RemnantStompHpDamage = 0.03D;
+    public static double RemnantHpDamage = 0.05D;
+
 
     public static boolean Armor_Infinity_Durability = true;
 
@@ -248,6 +256,9 @@ public class CMConfig {
             LeviathanTailSwingHpdamage = ConfigHolder.COMMON.LeviathanTailSwingHpdamage.get();
             LeviathanRushHpdamage = ConfigHolder.COMMON.LeviathanRushHpdamage.get();
             LeviathanTentacleHpdamage = ConfigHolder.COMMON.LeviathanTentacleHpdamage.get();
+            RemnantChargeHpDamage = ConfigHolder.COMMON.RemnantChargeHpDamage.get();
+            RemnantHpDamage = ConfigHolder.COMMON.RemnantHpDamage.get();
+            RemnantStompHpDamage = ConfigHolder.COMMON.RemnantStompHpDamage.get();
 
             LeviathanHealthMultiplier = ConfigHolder.COMMON.LeviathanHealthMultiplier.get();
             LeviathanDamageMultiplier = ConfigHolder.COMMON.LeviathanDamageMultiplier.get();
@@ -263,6 +274,9 @@ public class CMConfig {
             AncientRemnantHealthMultiplier = ConfigHolder.COMMON.AncientRemnantHealthMultiplier.get();
             AncientRemnantDamageMultiplier = ConfigHolder.COMMON.AncientRemnantDamageMultiplier.get();
             AncientRemnantBlockBreaking = ConfigHolder.COMMON.AncientRemnantBlockBreaking.get();
+
+            ModernRemnantHealthMultiplier = ConfigHolder.COMMON.ModernRemnantHealthMultiplier.get();
+            ModernRemnantDamageMultiplier = ConfigHolder.COMMON.ModernRemnantDamageMultiplier.get();
 
             CauseKoboletontoDropItemInHandPercent = ConfigHolder.COMMON.CauseKoboletontoDropItemInHandPercent.get();
 

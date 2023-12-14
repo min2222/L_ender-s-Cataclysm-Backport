@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.UUID;
 
@@ -116,6 +117,12 @@ public class AnimationPet extends TamableAnimal implements IAnimatedEntity, IFol
         return false;
     }
 
+    public void circleEntity(LivingEntity target, float radius, float speed, boolean direction, int circleFrame, float offset, float moveSpeedMultiplier) {
+        int directionInt = direction ? 1 : -1;
+        double t = directionInt * circleFrame * 0.5 * speed / radius + offset;
+        Vec3 movePos = target.position().add(radius * Math.cos(t), 0, radius * Math.sin(t));
+        this.getNavigation().moveTo(movePos.x, movePos.y, movePos.z, speed * moveSpeedMultiplier);
+    }
 
     @Override
     public boolean shouldFollow() {

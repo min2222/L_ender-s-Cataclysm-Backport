@@ -8,6 +8,7 @@ import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.*;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.*;
 import com.github.L_Ender.cataclysm.entity.Deepling.*;
+import com.github.L_Ender.cataclysm.entity.Pet.Modern_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.*;
 import com.github.L_Ender.cataclysm.entity.projectile.*;
@@ -114,6 +115,19 @@ public class ModEntities {
             .sized(0.6F, 2.3f)
             .clientTrackingRange(8)
             .build(Cataclysm.MODID + ":deepling_priest"));
+
+    public static final RegistryObject<EntityType<Deepling_Warlock_Entity>> DEEPLING_WARLOCK = ENTITY_TYPE.register("deepling_warlock", () -> EntityType.Builder.of(Deepling_Warlock_Entity::new, MobCategory.MONSTER)
+            .sized(0.6F, 2.3f)
+            .clientTrackingRange(8)
+            .build(Cataclysm.MODID + ":deepling_warlock"));
+
+    public static final RegistryObject<EntityType<Abyss_Mark_Entity>> ABYSS_MARK = ENTITY_TYPE.register("abyss_mark", () -> EntityType.Builder.<Abyss_Mark_Entity>of(Abyss_Mark_Entity::new, MobCategory.MISC)
+            .sized(0.5f, 0.5f)
+            .fireImmune()
+            .setUpdateInterval(1)
+            .setTrackingRange(20)
+            .setShouldReceiveVelocityUpdates(true)
+            .build(Cataclysm.MODID + ":abyss_mark"));
 
     public static final RegistryObject<EntityType<Lionfish_Entity>> LIONFISH = ENTITY_TYPE.register("lionfish", () -> EntityType.Builder.of(Lionfish_Entity::new, MobCategory.MONSTER)
             .sized(0.6F, 0.55f)
@@ -392,6 +406,12 @@ public class ModEntities {
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":ancient_remnant"));
 
+    public static final RegistryObject<EntityType<Modern_Remnant_Entity>> MODERN_REMNANT = ENTITY_TYPE.register("modern_remnant", () -> EntityType.Builder.of(Modern_Remnant_Entity::new, MobCategory.CREATURE)
+            .sized(0.75F, 0.42F)
+            .clientTrackingRange(10)
+            .fireImmune()
+            .build(Cataclysm.MODID + ":modern_remnant"));
+
     public static final RegistryObject<EntityType<Koboleton_Entity>> KOBOLETON = ENTITY_TYPE.register("koboleton", () -> EntityType.Builder.of(Koboleton_Entity::new, MobCategory.MONSTER)
             .sized(0.85F, 1.6f)
             .clientTrackingRange(8)
@@ -449,10 +469,12 @@ public class ModEntities {
         event.put(DEEPLING_BRUTE.get(), Deepling_Brute_Entity.deeplingbrute().build());
         event.put(DEEPLING_ANGLER.get(), Deepling_Angler_Entity.deepling().build());
         event.put(DEEPLING_PRIEST.get(), Deepling_Priest_Entity.deeplingpriest().build());
+        event.put(DEEPLING_WARLOCK.get(), Deepling_Warlock_Entity.deeplingwarlock().build());
         event.put(CORALSSUS.get(), Coralssus_Entity.coralssus().build());
         event.put(LIONFISH.get(), Lionfish_Entity.lionfish().build());
         event.put(AMETHYST_CRAB.get(), Amethyst_Crab_Entity.amethyst_crab().build());
-        event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.ancient_ramant().build());
+        event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.ancient_remnant().build());
+        event.put(MODERN_REMNANT.get(), Modern_Remnant_Entity.modernremnant().build());
         event.put(KOBOLETON.get(), Koboleton_Entity.koboleton().build());
         event.put(THE_WATCHER.get(), The_Watcher_Entity.the_watcher().build());
         event.put(THE_PROWLER.get(), The_Prowler_Entity.the_prowler().build());

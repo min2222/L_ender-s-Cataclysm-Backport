@@ -214,6 +214,9 @@ public class ModItems {
     public static final RegistryObject<Item> SANDSTORM_IN_A_BOTTLE = ITEMS.register("sandstorm_in_a_bottle",
             () -> new Sandstorm_In_A_Bottle(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 
+    public static final RegistryObject<Item> REMNANT_SKULL = ITEMS.register("remnant_skull",
+            () -> new Remnant_Skull(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+
     public static final RegistryObject<Item> VOID_SCATTER_ARROW = ITEMS.register("void_scatter_arrow",
             () -> new ModItemArrow(new Item.Properties().fireResistant()));
 
@@ -222,6 +225,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> BLAZING_BONE = ITEMS.register("blazing_bone",
             () -> new ItemInventoryOnly(new Item.Properties().fireResistant()));
+
+    public static final RegistryObject<Item> KOBOLETON_BONE = ITEMS.register("koboleton_bone",
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> VOID_JAW = ITEMS.register("void_jaw",
             () -> new Item(new Item.Properties().fireResistant()));
@@ -302,6 +308,9 @@ public class ModItems {
     public static final RegistryObject<Item> ABYSS_EYE = ITEMS.register("abyss_eye",
             () -> new AbyssEyeItem(new Item.Properties().fireResistant()));
 
+    public static final RegistryObject<Item> DESERT_EYE = ITEMS.register("desert_eye",
+            () -> new DesertEyeItem(new Item.Properties().fireResistant()));
+
     public static final RegistryObject<Item> LIONFISH = ITEMS.register("lionfish",
             () -> new Item(new Item.Properties().food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F)
                     .effect(new MobEffectInstance(MobEffects.POISON, 300, 0), 1.0F)
@@ -377,6 +386,9 @@ public class ModItems {
     public static final RegistryObject<SpawnEggItem> DEEPLING_PRIEST_SPAWN_EGG = ITEMS.register("deepling_priest_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.DEEPLING_PRIEST, 0x182a3c, 0x082054, new Item.Properties()));
 
+    public static final RegistryObject<SpawnEggItem> DEEPLING_WARLOCK_SPAWN_EGG = ITEMS.register("deepling_warlock_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.DEEPLING_WARLOCK, 0x182a3c, 0xd66a98, new Item.Properties()));
+
     public static final RegistryObject<SpawnEggItem> LIONFISH_SPAWN_EGG = ITEMS.register("lionfish_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.LIONFISH, 0x98d8e2, 0x182a3c, new Item.Properties()));
 
@@ -391,6 +403,9 @@ public class ModItems {
 
     public static final RegistryObject<SpawnEggItem> ANCIENT_REMNANT_SPAWN_EGG = ITEMS.register("ancient_remnant_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ANCIENT_REMNANT, 0xb7b196, 0x682e22, new Item.Properties()));
+
+    public static final RegistryObject<SpawnEggItem> MODERN_REMNANT_SPAWN_EGG = ITEMS.register("modern_remnant_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.MODERN_REMNANT, 0xb7b196, 0xdbcca7, new Item.Properties()));
 
     public static void initDispenser(){
         DispenserBlock.registerBehavior(VOID_SCATTER_ARROW.get(), new AbstractProjectileDispenseBehavior() {

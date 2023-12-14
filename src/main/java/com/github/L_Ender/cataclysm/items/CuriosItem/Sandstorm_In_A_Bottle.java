@@ -3,11 +3,18 @@ package com.github.L_Ender.cataclysm.items.CuriosItem;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModKeybind;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 public class Sandstorm_In_A_Bottle extends CuriosItem {
 
@@ -38,7 +45,6 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
                 }
             }
         }
-
     }
 
     @Override
@@ -50,6 +56,11 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
                 SandstormCapability.setSandstorm(false);
             }
         }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+        tooltip.add(Component.translatable("item.cataclysm.sandstorm_in_a_bottle.desc",ModKeybind.KEY_ABILITY.getTranslatedKeyMessage()).withStyle(ChatFormatting.DARK_GREEN));
     }
 
 }

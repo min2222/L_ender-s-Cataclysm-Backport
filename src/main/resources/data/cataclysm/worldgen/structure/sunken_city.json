@@ -1,6 +1,6 @@
 {
   "type": "cataclysm:sunken_city",
-  "biomes": "#cataclysm:has_structure/sunken_city",
+  "biomes": "#cataclysm:has_structure/sunken_city_biomes",
   "step": "surface_structures",
 
   "start_height": {

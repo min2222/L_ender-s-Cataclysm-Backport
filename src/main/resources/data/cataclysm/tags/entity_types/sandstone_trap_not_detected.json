@@ -1,11 +1,8 @@
 {
   "replace": false,
   "values": [
-    "cataclysm:ender_golem",
-    "cataclysm:ender_guardian",
-    "minecraft:ender_dragon",
-    "minecraft:enderman",
-    "minecraft:endermite",
-    "cataclysm:endermaptera"
+    "cataclysm:ancient_remnant",
+    "cataclysm:koboleton",
+    "minecraft:husk"
   ]
 }

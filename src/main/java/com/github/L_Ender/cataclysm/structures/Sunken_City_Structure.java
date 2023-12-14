@@ -339,7 +339,11 @@ public class Sunken_City_Structure extends Structure {
                     list.add(ModEntities.CORALSSUS.get().create(worldIn.getLevel()));
                     break;
                 case "deepling_priest":
-                    list.add(ModEntities.DEEPLING_PRIEST.get().create(worldIn.getLevel()));
+                    if(rand.nextBoolean()) {
+                        list.add(ModEntities.DEEPLING_PRIEST.get().create(worldIn.getLevel()));
+                    }else{
+                        list.add(ModEntities.DEEPLING_WARLOCK.get().create(worldIn.getLevel()));
+                    }
                     break;
                 default:
                     return;

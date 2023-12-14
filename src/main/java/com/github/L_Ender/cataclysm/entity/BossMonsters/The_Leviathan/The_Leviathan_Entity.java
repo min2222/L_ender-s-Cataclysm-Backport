@@ -2215,11 +2215,11 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         }
     }
 
-    static class LeviathanAttackGoal extends Goal {
+    class LeviathanAttackGoal extends Goal {
         private final The_Leviathan_Entity mob;
         private LivingEntity target;
-        private float circlingTime = 0;
-        private final float huntingTime = 0;
+        private int circlingTime = 0;
+        private final int huntingTime = 0;
         private float MeleeModeTime = 0;
         private static final int MELEE_MODE_TIME = 160;
         private float circleDistance = 18;
@@ -2244,7 +2244,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
-            circleDistance = 18 + this.mob.random.nextInt(10);
+            circleDistance = 36 + this.mob.random.nextInt(20);
             clockwise = this.mob.random.nextBoolean();
             this.mob.setAggressive(true);
         }
@@ -2253,7 +2253,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
-            circleDistance = 18 + this.mob.random.nextInt(10);
+            circleDistance = 36 + this.mob.random.nextInt(20);
             clockwise = this.mob.random.nextBoolean();
             this.target = this.mob.getTarget();
             if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
@@ -2267,16 +2267,17 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             }
         }
 
+        public boolean requiresUpdateEveryTick() {
+            return true;
+        }
 
         public void tick() {
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
                 if (this.mob.mode == AttackMode.CIRCLE) {
                     circlingTime++;
-                    BlockPos circlePos = getLeviathanCirclePos(target);
-                    if (circlePos != null) {
-                        this.mob.getNavigation().moveTo(circlePos.getX() + 0.5D, circlePos.getY(), circlePos.getZ() + 0.5D, 1.0D);
-                    }
+                    circleEntity(target, circleDistance, 1.0f, clockwise, circlingTime, 0, 1);
+
                     if (huntingTime >= this.mob.hunting_cooldown) {
                         int i = Math.max(this.mob.getModeChance(), 2);
                         if(this.mob.random.nextInt(i) == 0){
@@ -2325,15 +2326,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
 
             }
         }
-
-        public BlockPos getLeviathanCirclePos(LivingEntity target) {
-            float angle = (0.01745329251F * (clockwise ? -circlingTime : circlingTime));
-            double extraX = circleDistance * Mth.sin((angle));
-            double extraZ = circleDistance * Mth.cos(angle);
-
-            return BlockPos.containing(target.getX() + 0.5F + extraX, target.getY() + 4.0f, target.getZ() + 0.5F + extraZ);
-        }
-
     }
 
     static class LeviathanMoveController extends MoveControl {

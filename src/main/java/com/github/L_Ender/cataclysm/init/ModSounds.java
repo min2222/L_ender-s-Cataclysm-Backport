@@ -287,6 +287,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> REMNANT_TAIL_SWING = SOUNDS.register("remnant_tail_swing",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"remnant_tail_swing")));
 
+    public static final RegistryObject<SoundEvent> MODERN_REMNANT_BITE = SOUNDS.register("modern_remnant_bite",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"modern_remnant_bite")));
+
     public static final RegistryObject<SoundEvent> SANDSTORM = SOUNDS.register("sandstorm",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"sandstorm")));
 
@@ -307,6 +310,18 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> PROWLER_IDLE = SOUNDS.register("prowler_idle",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"prowler_idle")));
+
+    public static final RegistryObject<SoundEvent> KOBOLETON_AMBIENT = SOUNDS.register("koboleton_ambient",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"koboleton_ambient")));
+
+    public static final RegistryObject<SoundEvent> KOBOLETON_HURT = SOUNDS.register("koboleton_hurt",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"koboleton_hurt")));
+
+    public static final RegistryObject<SoundEvent> KOBOLETON_DEATH = SOUNDS.register("koboleton_death",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"koboleton_death")));
+
+    public static final RegistryObject<SoundEvent> KOBOLETON_STEP = SOUNDS.register("koboleton_step",
+            () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"koboleton_step")));
 
     public static final RegistryObject<SoundEvent> FLAME_TRAP = SOUNDS.register("flame_trap",
             () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Cataclysm.MODID,"flame_trap")));

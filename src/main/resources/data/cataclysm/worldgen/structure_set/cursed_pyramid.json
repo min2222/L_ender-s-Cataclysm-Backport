@@ -7,12 +7,12 @@
   ],
   "placement": {
     "type": "cataclysm:cataclysm_random_spread",
-    "salt": 9123456789,
+    "salt": 9167234589,
     "spacing": 80,
     "separation": 50,
     "super_exclusion_zone": {
       "chunk_count": 10,
-      "other_set": "#cataclysm:burning_arena_avoid"
+      "other_set": "#cataclysm:cursed_pyramid_avoid"
     }
   }
 }

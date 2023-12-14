@@ -15,9 +15,6 @@ public class Animation_Monster extends Monster implements IAnimatedEntity {
     public int animationTick;
     public Animation currentAnimation;
 
-
-
-
     public Animation_Monster(EntityType entity, Level world) {
         super(entity, world);
     }

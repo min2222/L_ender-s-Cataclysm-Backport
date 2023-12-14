@@ -6,7 +6,6 @@ import com.github.alexthe666.citadel.animation.Animation;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -15,21 +14,16 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
-import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
 import javax.annotation.Nullable;
@@ -46,7 +40,6 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
 
     public Deepling_Priest_Entity(EntityType entity, Level world) {
         super(entity, world);
-        this.moveControl = new DeeplingMoveControl(this,2.0f);
         switchNavigator(false);
         this.xpReward = 10;
 
@@ -55,8 +48,6 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
     protected void registerGoals() {
         super.registerGoals();
         this.goalSelector.addGoal(2, new DeeplingLightGoal(this));
-        this.goalSelector.addGoal(5, new DeeplingGoToBeachGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new DeeplingSwimUpGoal(this, 1.0D, this.level().getSeaLevel()));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.goalSelector.addGoal(3, new AnimationMeleeAttackGoal(this, 1.0f, false));
     }
@@ -192,58 +183,6 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
 
     }
 
-
-    protected boolean closeToNextPos() {
-        Path path = this.getNavigation().getPath();
-        if (path != null) {
-            BlockPos blockpos = path.getTarget();
-            if (blockpos != null) {
-                double d0 = this.distanceToSqr((double)blockpos.getX(), (double)blockpos.getY(), (double)blockpos.getZ());
-                if (d0 < 4.0D) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-
-    public void setSearchingForLand(boolean p_32399_) {
-        this.searchingForLand = p_32399_;
-    }
-
-    static class DeeplingGoToBeachGoal extends MoveToBlockGoal {
-        private final Deepling_Priest_Entity drowned;
-
-        public DeeplingGoToBeachGoal(Deepling_Priest_Entity p_32409_, double p_32410_) {
-            super(p_32409_, p_32410_, 8, 2);
-            this.drowned = p_32409_;
-        }
-
-        public boolean canUse() {
-            return super.canUse() && this.drowned.level().isRaining() && this.drowned.isInWater() && this.drowned.getY() >= (double)(this.drowned.level().getSeaLevel() - 3);
-        }
-
-        public boolean canContinueToUse() {
-            return super.canContinueToUse();
-        }
-
-        protected boolean isValidTarget(LevelReader p_32413_, BlockPos p_32414_) {
-            BlockPos blockpos = p_32414_.above();
-            return p_32413_.isEmptyBlock(blockpos) && p_32413_.isEmptyBlock(blockpos.above()) ? p_32413_.getBlockState(p_32414_).entityCanStandOn(p_32413_, p_32414_, this.drowned) : false;
-        }
-
-        public void start() {
-            this.drowned.setSearchingForLand(false);
-            super.start();
-        }
-
-        public void stop() {
-            super.stop();
-        }
-    }
-
     static class DeeplingLightGoal extends Goal {
         private final Deepling_Priest_Entity angler;
 
@@ -269,51 +208,6 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
         }
     }
 
-
-    static class DeeplingSwimUpGoal extends Goal {
-        private final Deepling_Priest_Entity drowned;
-        private final double speedModifier;
-        private final int seaLevel;
-        private boolean stuck;
-
-        public DeeplingSwimUpGoal(Deepling_Priest_Entity p_32440_, double p_32441_, int p_32442_) {
-            this.drowned = p_32440_;
-            this.speedModifier = p_32441_;
-            this.seaLevel = p_32442_;
-
-        }
-
-        public boolean canUse() {
-            return (this.drowned.level().isRaining() || this.drowned.isInWater())&& this.drowned.getY() < (double)(this.seaLevel - 2);
-        }
-
-        public boolean canContinueToUse() {
-            return this.canUse() && !this.stuck;
-        }
-
-        public void tick() {
-            if (this.drowned.getY() < (double)(this.seaLevel - 1) && (this.drowned.getNavigation().isDone() || this.drowned.closeToNextPos())) {
-                Vec3 vec3 = DefaultRandomPos.getPosTowards(this.drowned, 4, 8, new Vec3(this.drowned.getX(), (double)(this.seaLevel - 1), this.drowned.getZ()), (double)((float)Math.PI / 2F));
-                if (vec3 == null) {
-                    this.stuck = true;
-                    return;
-                }
-
-                this.drowned.getNavigation().moveTo(vec3.x, vec3.y, vec3.z, this.speedModifier);
-            }
-
-        }
-
-        public void start() {
-            this.drowned.setSearchingForLand(true);
-            this.stuck = false;
-        }
-
-        public void stop() {
-            this.drowned.setSearchingForLand(false);
-        }
-    }
-
     static class AnimationMeleeAttackGoal extends MeleeAttackGoal {
         protected final Deepling_Priest_Entity mob;
 
@@ -329,51 +223,6 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
             double d0 = this.getAttackReachSqr(p_25557_);
             if (p_25558_ <= d0 && this.mob.getAnimation() == NO_ANIMATION) {
                 this.mob.setAnimation(DEEPLING_MELEE);
-            }
-
-        }
-    }
-
-    static class DeeplingMoveControl extends MoveControl {
-        private final Deepling_Priest_Entity drowned;
-        private final float speedMulti;
-
-        public DeeplingMoveControl(Deepling_Priest_Entity p_32433_, float speedMulti) {
-            super(p_32433_);
-            this.drowned = p_32433_;
-            this.speedMulti = speedMulti;
-        }
-
-        public void tick() {
-            LivingEntity livingentity = this.drowned.getTarget();
-            if (this.drowned.wantsToSwim() && this.drowned.isInWater()) {
-                if (livingentity != null && livingentity.getY() > this.drowned.getY() || this.drowned.searchingForLand) {
-                    this.drowned.setDeltaMovement(this.drowned.getDeltaMovement().add(0.0D, 0.002D, 0.0D));
-                }
-
-                if (this.operation != Operation.MOVE_TO || this.drowned.getNavigation().isDone()) {
-                    this.drowned.setSpeed(0.0F);
-                    return;
-                }
-
-                double d0 = this.wantedX - this.drowned.getX();
-                double d1 = this.wantedY - this.drowned.getY();
-                double d2 = this.wantedZ - this.drowned.getZ();
-                double d3 = Math.sqrt(d0 * d0 + d1 * d1 + d2 * d2);
-                d1 /= d3;
-                float f = (float)(Mth.atan2(d2, d0) * (double)(180F / (float)Math.PI)) - 90.0F;
-                this.drowned.setYRot(this.rotlerp(this.drowned.getYRot(), f, 90.0F));
-                this.drowned.yBodyRot = this.drowned.getYRot();
-                float f1 = (float)(this.speedModifier * speedMulti * this.drowned.getAttributeValue(Attributes.MOVEMENT_SPEED));
-                float f2 = Mth.lerp(0.125F, this.drowned.getSpeed(), f1);
-                this.drowned.setSpeed(f2);
-                this.drowned.setDeltaMovement(this.drowned.getDeltaMovement().add((double)f2 * d0 * 0.005D, (double)f2 * d1 * 0.1D, (double)f2 * d2 * 0.005D));
-            } else {
-                if (!this.drowned.onGround()) {
-                    this.drowned.setDeltaMovement(this.drowned.getDeltaMovement().add(0.0D, -0.008D, 0.0D));
-                }
-
-                super.tick();
             }
 
         }

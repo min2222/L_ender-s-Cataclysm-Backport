@@ -57,6 +57,7 @@
   "item.cataclysm.the_incinerator": "소각자",
   "item.cataclysm.void_scatter_arrow": "공허의 갈래 화살",
   "item.cataclysm.void_shard": "공허의 파편",
+  "item.cataclysm.koboleton_bone": "코볼레톤 뼈다귀",
   "item.cataclysm.monstrous_helm": "괴물같은 투구",
   "item.cataclysm.monstrous_horn": "괴상한 뿔",
   "item.cataclysm.void_jaw": "공허의 턱",
@@ -79,6 +80,7 @@
   "item.cataclysm.void_eye": "공허의 눈",
   "item.cataclysm.flame_eye": "불의 눈",
   "item.cataclysm.abyss_eye": "심연의 눈",
+  "item.cataclysm.desert_eye": "사막의 눈",
   "item.cataclysm.wither_assault_shoulder_weapon": "견착식 위더 무기",
   "item.cataclysm.void_assault_shoulder_weapon": "견착식 공허 무기",
   "item.cataclysm.gauntlet_of_bulwark": "보루의 건틀릿",
@@ -103,6 +105,9 @@
   "item.cataclysm.laser_gatling": "레이저 게틀링",
   "item.cataclysm.necklace_of_the_desert": "사막의 목걸이",
   "item.cataclysm.sandstorm_in_a_bottle": "병속의 모래 폭풍",
+  "item.cataclysm.sandstorm_in_a_bottle.desc": "%s를 눌러 모래 폭풍으로 변한다",
+  "item.cataclysm.remnant_skull": "잔재의 두개골",
+  "item.cataclysm.remnant_skull.desc": "현세의 잔재를 소환한다. 스니퍼 알로 길들일 수 있다.",
 
   "item.cataclysm.endermaptera_spawn_egg": "엔더마프테라 생성 알",
   "item.cataclysm.ender_golem_spawn_egg": "엔더 골렘 생성 알",
@@ -118,11 +123,13 @@
   "item.cataclysm.deepling_brute_spawn_egg": "난폭한 심연꾼 생성 알",
   "item.cataclysm.deepling_angler_spawn_egg": "심연낚시꾼 생성 알",
   "item.cataclysm.deepling_priest_spawn_egg": "심연꾼 사제 생성 알",
+  "item.cataclysm.deepling_warlock_spawn_egg": "심연꾼 흑마법사 생성 알",
   "item.cataclysm.lionfish_spawn_egg": "쏠배감펭 생성 알",
   "item.cataclysm.coralssus_spawn_egg": "코랄서스 생성 알",
   "item.cataclysm.amethyst_crab_spawn_egg": "자수정 게 생성 알",
   "item.cataclysm.koboleton_spawn_egg": "코볼레톤 생성 알",
   "item.cataclysm.ancient_remnant_spawn_egg": "고대의 잔재 생성 알",
+  "item.cataclysm.modern_remnant_spawn_egg": "현세의 잔재 생성 알",
   "item.cataclysm.the_watcher_spawn_egg": "감시자 생성 알",
   "item.cataclysm.the_prowler_spawn_egg": "배회자 생성 알",
 
@@ -213,6 +220,7 @@
   "entity.cataclysm.deepling_brute": "난폭한 심연꾼",
   "entity.cataclysm.deepling_angler": "심연낚시꾼",
   "entity.cataclysm.deepling_priest": "심연꾼 사제",
+  "entity.cataclysm.deepling_warlock": "심연꾼 흑마법사",
   "entity.cataclysm.coralssus": "코랄서스",
   "entity.cataclysm.lionfish": "쏠배감펭",
   "entity.cataclysm.dimensional_rift": "차원의 균열",
@@ -224,6 +232,7 @@
   "entity.cataclysm.amethyst_crab": "자수정 게",
   "entity.cataclysm.earthquake": "지진",
   "entity.cataclysm.ancient_remnant": "고대의 잔재",
+  "entity.cataclysm.modern_remnant": "현세의 잔재",
   "entity.cataclysm.the_watcher": "감시자",
   "entity.cataclysm.the_prowler": "배회자",
   "entity.cataclysm.ancient_desert_stele": "고대 사막 비석",
@@ -355,4 +364,5 @@
   "cataclysm.gui.altar_of_amethyst_blessing": "축복",
   "key.categories.cataclysm": "대격변 키",
   "key.cataclysm.ability": "대격변 능력"
+
 }

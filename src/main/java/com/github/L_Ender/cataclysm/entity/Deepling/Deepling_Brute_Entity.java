@@ -28,8 +28,6 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.MoveToBlockGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
@@ -85,11 +83,6 @@ public class Deepling_Brute_Entity extends AbstractDeepling {
         super.defineSynchedData();
         this.entityData.define(SPINATTACK, false);
     }
-
-    protected PathNavigation createNavigation(Level worldIn) {
-        return new WaterBoundPathNavigation(this, worldIn);
-    }
-
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);

@@ -108,6 +108,13 @@ public class CommonConfig {
     public final ForgeConfigSpec.BooleanValue AncientRemnantBlockBreaking;
     public final ForgeConfigSpec.IntValue AncientRemnantDamageCap;
     public final ForgeConfigSpec.DoubleValue AncientRemnantLongRangelimit;
+    public final ForgeConfigSpec.DoubleValue RemnantChargeHpDamage;
+    public final ForgeConfigSpec.DoubleValue RemnantHpDamage;
+    public final ForgeConfigSpec.DoubleValue RemnantStompHpDamage;
+
+
+    public final ForgeConfigSpec.DoubleValue ModernRemnantHealthMultiplier;
+    public final ForgeConfigSpec.DoubleValue ModernRemnantDamageMultiplier;
 
     public final ForgeConfigSpec.DoubleValue MonstrositysHpdamage;
     public final ForgeConfigSpec.DoubleValue EnderguardianGravityPunchHpdamage;
@@ -265,6 +272,11 @@ public class CommonConfig {
         BabyLeviathanDamageMultiplier  = buildDouble(builder, "BabyLeviathanDamageMultiplier", "all", 1.0D, 0D, 1000000D, "BabyLeviathan's Damage Multiplier");
         builder.pop();
 
+        builder.push("Modern Remnant");
+        ModernRemnantHealthMultiplier = buildDouble(builder, "ModernRemnantHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Modern Remnant's Health Multiplier");
+        ModernRemnantDamageMultiplier  = buildDouble(builder, "ModernRemnantDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Modern Remnant's Damage Multiplier");
+        builder.pop();
+
         builder.push("Amethyst Crab");
         AmethystCrabHealthMultiplier = buildDouble(builder, "AmethystCrabHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Amethyst Crab's Health Multiplier");
         AmethystCrabDamageMultiplier  = buildDouble(builder, "AmethystCrabDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Amethyst Crab's Damage Multiplier");
@@ -276,10 +288,13 @@ public class CommonConfig {
         AncientRemnantLongRangelimit = buildDouble(builder, "Ancient Remnant's prevent attacks from far away Range", "all", 15.0D, 1D, 1000000D, "Ancient Remnant's Immune to Long distance attack range.");
         AncientRemnantDamageCap = buildInt(builder, "AncientRemnantCap", "all", 21, 0, 1000000, "Ancient Remnant's DamageCap");
         AncientRemnantBlockBreaking = buildBoolean(builder, "AncientRemnantBlockBreaking", "all", true, "Ancient Remnant's block breaking ignore the MobGriefing");
+        RemnantChargeHpDamage = buildDouble(builder, "Remnant's Charge Hp Damage", "all", 0.07D, 0.0D, 1.0D, "Remnant's Charge Hp Damage");
+        RemnantHpDamage = buildDouble(builder, "Remnant's Normal attack Hp Damage", "all", 0.05D, 0.0D, 1.0D, "Remnant's Hp Damage");
+        RemnantStompHpDamage = buildDouble(builder, "Remnant's Stomp Hp Damage", "all", 0.03D, 0.0D, 1.0D, "Remnant's Stomp Hp Damage");
         builder.pop();
 
         builder.push("Koboleton");
-        CauseKoboletontoDropItemInHandPercent = buildDouble(builder, "CauseKoboletontoDropItemInHandPercent", "all", 10.0D, 0D, 100D, "Cause Koboleton to Drop Item In Hand Percent");
+        CauseKoboletontoDropItemInHandPercent = buildDouble(builder, "CauseKoboletontoDropItemInHandPercent", "all", 5.0D, 0D, 100D, "Cause Koboleton to Drop Item In Hand Percent");
         builder.pop();
 
         builder.push("spawning");

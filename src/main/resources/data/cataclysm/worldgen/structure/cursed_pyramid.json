@@ -1,6 +1,6 @@
 {
   "type": "cataclysm:cursed_pyramid",
-  "biomes": "#cataclysm:has_structure/cursed_pyramid",
+  "biomes": "#cataclysm:has_structure/cursed_pyramid_biomes",
   "step": "surface_structures",
 
   "start_height": {

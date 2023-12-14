@@ -28,6 +28,10 @@ public class ModTag {
 
     public static final TagKey<EntityType<?>> BABY_LEVIATHAN_TARGET = registerEntityTag("baby_leviathan_target");
 
+    public static final TagKey<EntityType<?>> ANCIENT_REMNANT_TARGET = registerEntityTag("ancient_remnant_target");
+
+    public static final TagKey<EntityType<?>> MODERN_REMNANT_TARGET = registerEntityTag("modern_remnant_target");
+
     public static final TagKey<Block> ENDER_GOLEM_CAN_DESTROY = registerBlockTag("ender_golem_can_destroy");
 
     public static final TagKey<Block> CM_GLASS = registerBlockTag("cm_glass");
@@ -62,6 +66,8 @@ public class ModTag {
 
     public static final TagKey<Structure> EYE_OF_ABYSS_LOCATED = registerStructureTag("eye_of_abyss_located");
 
+    public static final TagKey<Structure> EYE_OF_DESERT_LOCATED = registerStructureTag("eye_of_desert_located");
+
     public static final TagKey<Structure> BLOCKED_BASALT = registerStructureTag("blocked_basalt");
 
     public static final TagKey<Structure> BLOCKED_LAKE = registerStructureTag("blocked_lake");
@@ -73,6 +79,8 @@ public class ModTag {
     public static final TagKey<Item> EXPLOSION_IMMUNE_ITEM = registerItemTag("explosion_immune_item");
 
     public static final TagKey<Item> STICKY_ITEM = registerItemTag("sticky_item");
+
+    public static final TagKey<Item> BONE_ITEM = registerItemTag("bone_item");
 
     public static final TagKey<Biome> REQUIRED_SUNKEN_CITY_SURROUNDING = registerBiomeTag("required_sunken_city_surrounding");
 
