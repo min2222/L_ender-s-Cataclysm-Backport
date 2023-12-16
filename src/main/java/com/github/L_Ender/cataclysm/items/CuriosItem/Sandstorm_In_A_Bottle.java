@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.items.CuriosItem;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModKeybind;
@@ -34,17 +35,19 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity livingEntity = slotContext.entity();
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
-        if (SandstormCapability != null) {
-            if (!livingEntity.level().isClientSide()) {
-                if (!SandstormCapability.isSandstorm() && SandstormCapability.getSandstormTimer() <= 0) {
-                    if (ModKeybind.KEY_ABILITY.consumeClick()) {
-                        SandstormCapability.setSandstorm(true);
-                        toggleFlight(livingEntity, true);
-                    }
-                } else {
-                    if (ModKeybind.KEY_ABILITY.consumeClick()) {
-                        SandstormCapability.setSandstorm(false);
-                        toggleFlight(livingEntity, false);
+        if (livingEntity instanceof Player) {
+            if (SandstormCapability != null) {
+                if (!livingEntity.level().isClientSide()) {
+                    if (!SandstormCapability.isSandstorm() && SandstormCapability.getSandstormTimer() <= 0) {
+                        if (Cataclysm.PROXY.isKeyDown(2)) {
+                            SandstormCapability.setSandstorm(true);
+                            toggleFlight(livingEntity, true);
+                        }
+                    } else {
+                        if (Cataclysm.PROXY.isKeyDown(2)) {
+                            SandstormCapability.setSandstorm(false);
+                            toggleFlight(livingEntity, false);
+                        }
                     }
                 }
             }
@@ -55,11 +58,13 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
     public void onUnequip(SlotContext slotContext, ItemStack newStack, ItemStack stack) {
         LivingEntity livingEntity = slotContext.entity();
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
+        if (livingEntity instanceof Player) {
         if (!livingEntity.level().isClientSide()) {
             if (SandstormCapability != null) {
                 SandstormCapability.setSandstorm(false);
                 toggleFlight(livingEntity, false);
             }
+        }
         }
     }
 

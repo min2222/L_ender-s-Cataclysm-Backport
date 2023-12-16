@@ -56,11 +56,11 @@ public class ClientProxy extends CommonProxy {
 
     public void init() {
        // FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerEvent::onAddLayers);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientProxy::setupParticles);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticles);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerKeybinds);
     }
 
-    public static void setupParticles(RegisterParticleProvidersEvent registry) {
+    public void setupParticles(RegisterParticleProvidersEvent registry) {
         Cataclysm.LOGGER.debug("Registered particle factories");
         registry.registerSpriteSet(ModParticle.SOUL_LAVA.get(), SoulLavaParticle.Factory::new);
         registry.registerSpecial(ModParticle.EM_PULSE.get(), new EM_PulseParticle.Factory());
@@ -205,7 +205,7 @@ public class ClientProxy extends CommonProxy {
             return Minecraft.getInstance().options.keySprint.isDown();
         }
         if (keyType == 2) {
-            return ModKeybind.KEY_ABILITY.isDown();
+            return ModKeybind.KEY_ABILITY.consumeClick();
         }
         if (keyType == 3) {
             return Minecraft.getInstance().options.keyAttack.isDown();
