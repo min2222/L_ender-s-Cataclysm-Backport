@@ -194,13 +194,13 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> ENDERITE_INGOT = ITEMS.register("enderite_ingot",
-            () -> new ItemInventoryOnly(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+            () -> new ItemInventoryOnly(new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> IGNITIUM_INGOT = ITEMS.register("ignitium_ingot",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> CHAIN_OF_SOUL_BINDING = ITEMS.register("chain_of_soul_binding",
-            () -> new ItemInventoryOnly(new Item.Properties().tab(Cataclysm.TAB)));
+            () -> new ItemInventoryOnly(new Item.Properties()));
 
     public static final RegistryObject<Item> CORAL_SPEAR = ITEMS.register("coral_spear",
             () -> new Coral_Spear((new Item.Properties().tab(Cataclysm.TAB)).durability(110)));
@@ -263,10 +263,10 @@ public class ModItems {
             () -> new ModItemArrow(new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
 
     public static final RegistryObject<Item> VOID_SHARD = ITEMS.register("void_shard",
-            () -> new ItemInventoryOnly(new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
+            () -> new ItemInventoryOnly(new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> BLAZING_BONE = ITEMS.register("blazing_bone",
-            () -> new ItemInventoryOnly(new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
+            () -> new ItemInventoryOnly(new Item.Properties().fireResistant()));
 
     public static final RegistryObject<Item> KOBOLETON_BONE = ITEMS.register("koboleton_bone",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB)));
@@ -375,7 +375,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB)));
 
     public static final RegistryObject<Item> LIONFISH_SPIKE = ITEMS.register("lionfish_spike",
-            () -> new ItemInventoryOnly(new Item.Properties().tab(Cataclysm.TAB)));
+            () -> new ItemInventoryOnly(new Item.Properties()));
 
     public static final RegistryObject<Item> THE_BABY_LEVIATHAN_BUCKET = ITEMS.register("the_baby_leviathan_bucket",
             () -> new ModFishBucket(ModEntities.THE_BABY_LEVIATHAN, Fluids.WATER, new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
