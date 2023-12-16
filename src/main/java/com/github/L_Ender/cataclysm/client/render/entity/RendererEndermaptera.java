@@ -4,7 +4,8 @@ import com.github.L_Ender.cataclysm.client.model.entity.ModelEndermaptera;
 import com.github.L_Ender.cataclysm.client.render.layer.LayerGenericGlowing;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -47,45 +48,45 @@ public class RendererEndermaptera extends MobRenderer<Endermaptera_Entity, Model
             float progresso = 1F - (entityLiving.prevAttachChangeProgress + (entityLiving.attachChangeProgress - entityLiving.prevAttachChangeProgress) * partialTicks);
 
             if(entityLiving.getAttachmentFacing() == Direction.DOWN){
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees (180.0F - rotationYaw));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees (180.0F - rotationYaw));
                 matrixStackIn.translate(0.0D, trans, 0.0D);
                 if(entityLiving.yo < entityLiving.getY()){
-                    matrixStackIn.mulPose(Axis.XP.rotationDegrees(90 * (1 - progresso)));
+                    matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90 * (1 - progresso)));
                 }else{
-                    matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90 * (1 - progresso)));
+                    matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90 * (1 - progresso)));
                 }
                 matrixStackIn.translate(0.0D, -trans, 0.0D);
 
             }else if(entityLiving.getAttachmentFacing() == Direction.UP){
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees (180.0F - rotationYaw));
-                matrixStackIn.mulPose(Axis.XP.rotationDegrees(180));
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(180));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees (180.0F - rotationYaw));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(180));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180));
                 matrixStackIn.translate(0.0D, -trans, 0.0D);
 
             }else{
                 matrixStackIn.translate(0.0D, trans, 0.0D);
                 switch (entityLiving.getAttachmentFacing()){
                     case NORTH:
-                        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F * progresso));
-                        matrixStackIn.mulPose(Axis.ZP.rotationDegrees(0));
+                        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F * progresso));
+                        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(0));
                         break;
                     case SOUTH:
-                        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
-                        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F * progresso ));
+                        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+                        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F * progresso ));
                         break;
                     case WEST:
-                        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
-                        matrixStackIn.mulPose(Axis.YP.rotationDegrees(90F - 90.0F * progresso));
-                        matrixStackIn.mulPose(Axis.ZP.rotationDegrees(-90.0F));
+                        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+                        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90F - 90.0F * progresso));
+                        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(-90.0F));
                         break;
                     case EAST:
-                        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F ));
-                        matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F * progresso - 90F));
-                        matrixStackIn.mulPose(Axis.ZP.rotationDegrees(90.0F));
+                        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F ));
+                        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F * progresso - 90F));
+                        matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90.0F));
                         break;
                 }
                 if(entityLiving.getDeltaMovement().y <= -0.001F){
-                    matrixStackIn.mulPose(Axis.YP.rotationDegrees(-180.0F));
+                    matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(-180.0F));
                 }
                 matrixStackIn.translate(0.0D, -trans, 0.0D);
             }
@@ -98,17 +99,17 @@ public class RendererEndermaptera extends MobRenderer<Endermaptera_Entity, Model
                 f = 1.0F;
             }
 
-            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(entityLiving)));
         } else if (entityLiving.isAutoSpinAttack()) {
-            matrixStackIn.mulPose(Axis.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.getXRot()));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
         } else if (pose == Pose.SLEEPING) {
 
         } else if (entityLiving.hasCustomName() ) {
             String s = ChatFormatting.stripFormatting(entityLiving.getName().getString());
             if (("Dinnerbone".equals(s) || "Grumm".equals(s))) {
                 matrixStackIn.translate(0.0D, (double)(entityLiving.getBbHeight() + 0.1F), 0.0D);
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F));
+                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
             }
         }
     }

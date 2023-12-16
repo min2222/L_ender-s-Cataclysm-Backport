@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.Deepling;
 
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.AI.MobAILeaveWater;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
@@ -8,11 +10,17 @@ import com.github.L_Ender.cataclysm.entity.etc.GroundPathNavigatorWide;
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.SemiAquaticPathNavigator;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
@@ -23,8 +31,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
-
-import java.util.List;
 
 public class AbstractDeepling extends Animation_Monster implements ISemiAquatic {
     private int moistureAttackTime = 0;
@@ -86,10 +92,10 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
             if (this.isInWaterRainOrBubble()) {
                 this.setMoistness(6000);
             } else {
-                int dry = this.level().isDay() ? 2 : 1;
+                int dry = this.level.isDay() ? 2 : 1;
                 this.setMoistness(this.getMoistness() - dry);
                 if (this.getMoistness() <= 0 && moistureAttackTime-- <= 0) {
-                    this.hurt(damageSources().dryOut(), random.nextInt(2) == 0 ? 1.0F : 0F);
+                    this.hurt(DamageSource.DRY_OUT, random.nextInt(2) == 0 ? 1.0F : 0F);
                     moistureAttackTime = 20;
                 }
             }
@@ -98,14 +104,14 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
         boolean flag1 = this.canInFluidType(this.getEyeInFluidType());
 
         if(flag1){
-            if(this.level().noCollision(this, this.getSwimmingBox())) {
+            if(this.level.noCollision(this, this.getSwimmingBox())) {
                 if (!this.getDeeplingSwim()) {
                     setDeeplingSwim(true);
                 }
                 refreshDimensions();
             }
         }else{
-            if(this.level().noCollision(this, this.getNormalBox())) {
+            if(this.level.noCollision(this, this.getNormalBox())) {
                 if (this.getDeeplingSwim()) {
                     setDeeplingSwim(false);
                 }
@@ -116,7 +122,7 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
 
         AnimationHandler.INSTANCE.updateAnimations(this);
 
-        if (this.level().isClientSide){
+        if (this.level.isClientSide){
             ++LayerTicks;
             this.LayerBrightness += (0.0F - this.LayerBrightness) * 0.8F;
         }
@@ -133,10 +139,10 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
 
     public void switchNavigator(boolean onLand) {
         if (onLand) {
-            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.navigation = new GroundPathNavigatorWide(this, level);
             this.isLandNavigator = true;
         } else {
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new SemiAquaticPathNavigator(this, level);
             this.isLandNavigator = false;
         }
     }
@@ -258,7 +264,7 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
         }
 
         private Coralssus_Entity getClosestCoralssus_Entity(){
-            List<Coralssus_Entity> list = this.drowned.level().getEntitiesOfClass(Coralssus_Entity.class, this.drowned.getBoundingBox().inflate(15, 15, 15));
+            List<Coralssus_Entity> list = this.drowned.level.getEntitiesOfClass(Coralssus_Entity.class, this.drowned.getBoundingBox().inflate(15, 15, 15));
             Coralssus_Entity closest = null;
             if(!list.isEmpty()){
                 for(Coralssus_Entity entity : list){

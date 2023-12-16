@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.Deepling;
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.AI.AnimalAIRandomSwimming;
 import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
@@ -9,15 +11,20 @@ import com.github.L_Ender.cataclysm.entity.projectile.Lionfish_Spike_Entity;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -30,8 +37,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.EnumSet;
 
 public class Lionfish_Entity extends Monster implements IAnimatedEntity {
 
@@ -103,13 +108,13 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
     }
 
     public boolean hurt(DamageSource p_32820_, float p_32821_) {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             return false;
         } else {
-            if (!p_32820_.is(DamageTypeTags.AVOIDS_GUARDIAN_THORNS) && !p_32820_.is(DamageTypes.THORNS)) {
+            if (!p_32820_.isMagic()) {
                 Entity entity = p_32820_.getDirectEntity();
                 if (entity instanceof LivingEntity livingentity) {
-                    if (livingentity.hurt(damageSources().mobAttack(this), 1.0F)) {
+                    if (livingentity.hurt(DamageSource.mobAttack(this), 1.0F)) {
                         livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
                     }
                 }
@@ -129,7 +134,7 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
             onLandProgress--;
         }
 
-        if (!this.isInWater() && this.onGround() && this.verticalCollision) {
+        if (!this.isInWater() && this.isOnGround() && this.verticalCollision) {
             this.setDeltaMovement(this.getDeltaMovement().add((double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F), (double)0.4F, (double)((this.random.nextFloat() * 2.0F - 1.0F) * 0.05F)));
             this.setOnGround(false);
             this.hasImpulse = true;
@@ -137,7 +142,7 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
         }
         AnimationHandler.INSTANCE.updateAnimations(this);
 
-        if (this.level().isClientSide){
+        if (this.level.isClientSide){
             ++LayerTicks;
             this.LayerBrightness += (0.0F - this.LayerBrightness) * 0.8F;
         }
@@ -148,7 +153,7 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
                     this.playSound(SoundEvents.PHANTOM_BITE, 0.4F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
                     if (target != null) {
                         float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                        target.hurt(damageSources().mobAttack(this), damage);
+                        target.hurt(DamageSource.mobAttack(this), damage);
                     }
                 }
             }
@@ -160,7 +165,7 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
             this.setAirSupply(p_30344_ - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(damageSources().drown(), 2.0F);
+                this.hurt(DamageSource.DROWN, 2.0F);
             }
         } else {
             this.setAirSupply(1000);
@@ -191,12 +196,12 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
     public void die(DamageSource cause) {
         super.die(cause);
         int shardCount = 6 + random.nextInt(2);
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             for (int i = 0; i < shardCount; i++) {
                 float f = ((i + 1) / (float) shardCount) * 360F;
-                Lionfish_Spike_Entity shard = new Lionfish_Spike_Entity(this.level(), this);
+                Lionfish_Spike_Entity shard = new Lionfish_Spike_Entity(this.level, this);
                 shard.shoot(this.random.nextFloat() * 0.4F * 2.0F - 0.4F, this.random.nextFloat() * 0.25F + 0.1F,this.random.nextFloat() * 0.4F * 2.0F - 0.4F, 0.35F, 1F);
-                level().addFreshEntity(shard);
+                level.addFreshEntity(shard);
             }
         }
 

@@ -1,7 +1,10 @@
 package com.github.L_Ender.cataclysm.blocks;
 
-import com.github.L_Ender.cataclysm.init.ModTileentites;
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfVoid;
+import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -12,11 +15,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class Altar_Of_Void_Block extends BaseEntityBlock {
     private static final VoxelShape BASE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 4.0D, 15.0D);
@@ -25,7 +27,7 @@ public class Altar_Of_Void_Block extends BaseEntityBlock {
     private static final VoxelShape AXIS_AABB = Shapes.or(BASE,MID, TOP);
 
     public Altar_Of_Void_Block() {
-        super(Properties.of()
+        super(Properties.of(Material.HEAVY_METAL)
                 .noOcclusion()
                 .lightLevel((block) -> 7)
                 .emissiveRendering((block, world, pos) -> true)

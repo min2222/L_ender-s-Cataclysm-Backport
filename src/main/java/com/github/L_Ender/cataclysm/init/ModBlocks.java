@@ -1,24 +1,45 @@
 package com.github.L_Ender.cataclysm.init;
 
 
+import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.blocks.*;
+import com.github.L_Ender.cataclysm.blocks.Abyssal_Egg_Block;
+import com.github.L_Ender.cataclysm.blocks.Altar_Of_Abyss_Block;
+import com.github.L_Ender.cataclysm.blocks.Altar_Of_Amethyst_Block;
+import com.github.L_Ender.cataclysm.blocks.Altar_Of_Fire_Block;
+import com.github.L_Ender.cataclysm.blocks.Altar_Of_Void_Block;
+import com.github.L_Ender.cataclysm.blocks.EMP_Block;
+import com.github.L_Ender.cataclysm.blocks.EndStoneTeleportTrapBricks;
+import com.github.L_Ender.cataclysm.blocks.Mechanical_fusion_Anvil;
+import com.github.L_Ender.cataclysm.blocks.MeltingNetherrack;
+import com.github.L_Ender.cataclysm.blocks.ObsidianExplosionTrapBricks;
+import com.github.L_Ender.cataclysm.blocks.PurpurVoidRuneTrapBlock;
+import com.github.L_Ender.cataclysm.blocks.Sandstone_Falling_Trap;
+import com.github.L_Ender.cataclysm.blocks.Sandstone_Ignite_Trap;
+import com.github.L_Ender.cataclysm.blocks.Sandstone_Poison_Dart_Trap;
 import com.github.L_Ender.cataclysm.items.BlockItemCMRender;
 import com.github.L_Ender.cataclysm.items.CMBlockItem;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Supplier;
-import java.util.function.ToIntFunction;
 
 public class ModBlocks {
 
@@ -26,18 +47,18 @@ public class ModBlocks {
             Cataclysm.MODID);
 
     public static final RegistryObject<Block> WITHERITE_BLOCK = BLOCKS.register("witherite_block",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).color(MaterialColor.COLOR_BLACK)
                     .strength(50f, 1200f)
                     .requiresCorrectToolForDrops()
                     .sound(SoundType.NETHERITE_BLOCK)));
 
     public static final RegistryObject<Block> ENDERRITE_BLOCK = BLOCKS.register("enderite_block",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).color(MaterialColor.COLOR_BLACK)
                     .strength(50f, 1200f)
                     .sound(SoundType.NETHERITE_BLOCK)));
 
     public static final RegistryObject<Block> IGNITIUM_BLOCK = BLOCKS.register("ignitium_block",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK)
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).color(MaterialColor.COLOR_BLACK)
                     .strength(50f, 1200f)
                     .sound(SoundType.NETHERITE_BLOCK).lightLevel((state) -> {
                         return 15;
@@ -64,14 +85,14 @@ public class ModBlocks {
                     })));
 
     public static final RegistryObject<Block> VOID_STONE = BLOCKS.register("void_stone",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE)
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).color(MaterialColor.COLOR_PURPLE)
                     .requiresCorrectToolForDrops()
                     .strength(50f, 1200f).lightLevel((state) -> {
                         return 7;
                     })));
 
     public static final RegistryObject<Block> VOID_LANTERN_BLOCK = BLOCKS.register("void_lantern_block" ,
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.QUARTZ)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.QUARTZ)
             .sound(SoundType.GLASS)
             .requiresCorrectToolForDrops()
             .strength(50f, 1200f)
@@ -80,7 +101,7 @@ public class ModBlocks {
     })));
 
     public static final RegistryObject<Block> END_STONE_PILLAR = BLOCKS.register("end_stone_pillar",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.SAND)
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.SAND)
                     .requiresCorrectToolForDrops()
                     .strength(3f, 9f)));
 
@@ -116,24 +137,21 @@ public class ModBlocks {
             () -> new ObsidianExplosionTrapBricks(BlockBehaviour.Properties.copy(OBSIDIAN_BRICKS.get()).randomTicks().lightLevel(getLightValueLit(7))));
 
     public static final RegistryObject<Block> SANDSTONE_POISON_DART_TRAP = BLOCKS.register("sandstone_poison_dart_trap",
-            () -> new Sandstone_Poison_Dart_Trap((BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.SAND)
-                    .instrument(NoteBlockInstrument.BASEDRUM)
+            () -> new Sandstone_Poison_Dart_Trap((BlockBehaviour.Properties.of(Material.STONE)
+                    .color(MaterialColor.SAND)
                     .requiresCorrectToolForDrops().strength(0.8F))));
 
     public static final RegistryObject<Block> SANDSTONE_IGNITE_TRAP = BLOCKS.register("sandstone_ignite_trap",
-            () -> new Sandstone_Ignite_Trap(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.SAND)
+            () -> new Sandstone_Ignite_Trap(BlockBehaviour.Properties.of(Material.STONE)
+                    .color(MaterialColor.SAND)
                     .randomTicks()
-                    .instrument(NoteBlockInstrument.BASEDRUM)
                     .requiresCorrectToolForDrops()
                     .strength(0.8F)));
 
     public static final RegistryObject<Block> SANDSTONE_FALLING_TRAP = BLOCKS.register("sandstone_falling_trap",
-            () -> new Sandstone_Falling_Trap(BlockBehaviour.Properties.of()
-                    .mapColor(MapColor.SAND)
+            () -> new Sandstone_Falling_Trap(BlockBehaviour.Properties.of(Material.STONE)
+                    .color(MaterialColor.SAND)
                     .randomTicks()
-                    .instrument(NoteBlockInstrument.BASEDRUM)
                     .requiresCorrectToolForDrops()
                     .strength(0.8F)));
 
@@ -150,7 +168,7 @@ public class ModBlocks {
             Altar_Of_Abyss_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant().fireResistant(), true);
 
     public static final RegistryObject<Block> DUNGEON_BLOCK = BLOCKS.register("dungeon_block",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE).strength(-1.0F, 3600000.0F).noLootTable()));
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.STONE).strength(-1.0F, 3600000.0F).noLootTable()));
 
     public static final RegistryObject<Block> EMP = registerBlockAndItem("emp",
             EMP_Block::new, new Item.Properties().rarity(Rarity.EPIC), true);
@@ -162,13 +180,13 @@ public class ModBlocks {
             Abyssal_Egg_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> CHORUS_STEM = BLOCKS.register("chorus_stem",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.NETHER_WOOD).color(MaterialColor.COLOR_PURPLE).
                     strength(2.0F, 3.0F)
                     .sound(SoundType.WOOD)));
 
 
     public static final RegistryObject<Block> CHORUS_PLANKS = BLOCKS.register("chorus_planks",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_PURPLE).
+            () -> new Block(BlockBehaviour.Properties.of(Material.NETHER_WOOD).color(MaterialColor.COLOR_PURPLE).
                     strength(2.0F, 3.0F)
                     .sound(SoundType.WOOD)));
 
@@ -185,17 +203,17 @@ public class ModBlocks {
             () -> new WallBlock(BlockBehaviour.Properties.copy(Blocks.QUARTZ_BRICKS)));
 
     public static final RegistryObject<Block> STONE_PILLAR = BLOCKS.register("stone_pillar",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.STONE)
                     .requiresCorrectToolForDrops()
                     .strength(1.5F, 6.0F)));
 
     public static final RegistryObject<Block> CHISELED_STONE_BRICK_PILLAR = BLOCKS.register("chiseled_stone_brick_pillar",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.STONE)
                     .requiresCorrectToolForDrops()
                     .strength(1.5F, 6.0F)));
 
     public static final RegistryObject<Block> STONE_TILES = BLOCKS.register("stone_tiles",
-            () -> new Block(BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.STONE)
                     .requiresCorrectToolForDrops()
                     .strength(1.5F, 6.0F)));
 
@@ -218,7 +236,7 @@ public class ModBlocks {
     }
 
     public static final RegistryObject<Block> MELTING_NETHERRACK = BLOCKS.register("melting_netherrack" ,
-            () -> new MeltingNetherrack(BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).randomTicks().
+            () -> new MeltingNetherrack(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.NETHER).randomTicks().
                     lightLevel((state) -> {
                         return 3;
                     })));

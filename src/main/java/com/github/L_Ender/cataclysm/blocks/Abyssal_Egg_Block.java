@@ -1,9 +1,12 @@
 package com.github.L_Ender.cataclysm.blocks;
 
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAbyssal_Egg;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -31,13 +34,11 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class Abyssal_Egg_Block extends BaseEntityBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
@@ -47,11 +48,10 @@ public class Abyssal_Egg_Block extends BaseEntityBlock implements SimpleWaterlog
     private static final int RANDOM_HATCH_OFFSET_TICKS = 300;
     private static final VoxelShape SHAPE = Block.box(1.0D, 0.0D, 1.0D, 15.0D, 16.0D, 15.0D);
     public Abyssal_Egg_Block() {
-        super(Properties.of()
+        super(Properties.of(Material.EGG)
                 .noOcclusion()
                 .lightLevel((block) -> 1)
-                .pushReaction(PushReaction.DESTROY)
-                .mapColor(MapColor.COLOR_BLACK)
+                .color(MaterialColor.COLOR_BLACK)
                 .emissiveRendering((block, world, pos) -> true)
                 .strength(3.0F, 9.0F)
                 .sound(SoundType.METAL));

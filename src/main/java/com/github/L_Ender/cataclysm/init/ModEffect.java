@@ -2,7 +2,16 @@ package com.github.L_Ender.cataclysm.init;
 
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.effects.*;
+import com.github.L_Ender.cataclysm.effects.EffectAbyssal_Burn;
+import com.github.L_Ender.cataclysm.effects.EffectAbyssal_Curse;
+import com.github.L_Ender.cataclysm.effects.EffectAbyssal_Fear;
+import com.github.L_Ender.cataclysm.effects.EffectBlazing_Brand;
+import com.github.L_Ender.cataclysm.effects.EffectBlessing_Of_Amethyst;
+import com.github.L_Ender.cataclysm.effects.EffectBone_Fracture;
+import com.github.L_Ender.cataclysm.effects.EffectCurse_Of_Desert;
+import com.github.L_Ender.cataclysm.effects.EffectMonstrous;
+import com.github.L_Ender.cataclysm.effects.EffectStun;
+
 import net.minecraft.world.effect.MobEffect;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

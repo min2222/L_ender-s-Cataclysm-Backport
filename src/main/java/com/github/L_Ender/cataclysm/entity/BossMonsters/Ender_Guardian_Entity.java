@@ -1,9 +1,23 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.toRadians;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.*;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AnimationGoal;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackAnimationGoal1;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackAnimationGoal2;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackMoveGoal;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Void_Vortex_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;
@@ -16,6 +30,7 @@ import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -29,12 +44,10 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -58,6 +71,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.ShulkerBullet;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -65,13 +79,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-
-import static java.lang.Math.*;
 
 public class Ender_Guardian_Entity extends Boss_monster {
 
@@ -113,15 +120,19 @@ public class Ender_Guardian_Entity extends Boss_monster {
     public Ender_Guardian_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 300;
-        this.setMaxUpStep(1.75F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
         setConfigattribute(this, CMConfig.EnderguardianHealthMultiplier, CMConfig.EnderguardianDamageMultiplier);
-        if (this.level().isClientSide){
+        if (this.level.isClientSide){
             Cataclysm.PROXY.addBoss(this);
         }
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.75F;
     }
 
     @Override
@@ -278,7 +289,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
 
     @Override
     public boolean hurt(DamageSource source, float damage) {
-        if (this.getAnimation() == GUARDIAN_MASS_DESTRUCTION && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (this.getAnimation() == GUARDIAN_MASS_DESTRUCTION && !source.isBypassInvul()) {
             return false;
         }
         double range = calculateRange(source);
@@ -316,7 +327,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.is(DamageTypes.IN_WALL)  || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
     }
 
     public boolean causeFallDamage(float p_148711_, float p_148712_, DamageSource p_148713_) {
@@ -343,16 +354,16 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 this.setAnimation(GUARDIAN_MASS_DESTRUCTION);
             }
             else if (target != null && target.isAlive()) {
-                if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceToSqr(target) >= 256 && this.distanceToSqr(target) <= 1024.0D && target.onGround() && this.getIsHelmetless() && this.getRandom().nextFloat() * 100.0F < 20f  && teleport_smash_cooldown <= 0) {
+                if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceToSqr(target) >= 256 && this.distanceToSqr(target) <= 1024.0D && target.isOnGround() && this.getIsHelmetless() && this.getRandom().nextFloat() * 100.0F < 20f  && teleport_smash_cooldown <= 0) {
                     teleport_smash_cooldown = TELEPORT_SMASH_COOLDOWN;
                     this.setAnimation(GUARDIAN_AIR_STRIKE1);
                 }else if (vortexcooldown <= 0 && !isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceToSqr(target) <= 1024.0D && (this.distanceToSqr(target) >= 35.0D &&this.getRandom().nextFloat() * 100.0F < 2f || this.getRandom().nextFloat() * 100.0F < 60f && this.getY() + 3 <= target.getY())) {
                     vortexcooldown = VORTEX_COOLDOWN;
                     this.setAnimation(GUARDIAN_BLACKHOLE);
-                } else if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceTo(target) >= 4.3 && this.distanceTo(target) <= 16D && target.onGround() && this.getRandom().nextFloat() * 100.0F < 4f && teleport_cooldown <= 0) {
+                } else if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceTo(target) >= 4.3 && this.distanceTo(target) <= 16D && target.isOnGround() && this.getRandom().nextFloat() * 100.0F < 4f && teleport_cooldown <= 0) {
                     teleport_cooldown = TELEPORT_COOLDOWN;
                     this.setAnimation(GUARDIAN_HUG_ME);
-                } else if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceTo(target) < 4.3 && target.onGround() && this.getRandom().nextFloat() * 100.0F < 0.7f && teleport_cooldown <= 0) {
+                } else if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceTo(target) < 4.3 && target.isOnGround() && this.getRandom().nextFloat() * 100.0F < 0.7f && teleport_cooldown <= 0) {
                     teleport_cooldown = TELEPORT_COOLDOWN;
                     this.setAnimation(GUARDIAN_HUG_ME);
                 } else if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceTo(target) < 2.75F) {
@@ -364,7 +375,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 } else if (!isNoAi() && this.getAnimation() == NO_ANIMATION && this.distanceTo(target) > 2.75F && this.distanceTo(target) < 4.3F && (target.hasEffect(MobEffects.LEVITATION) || target.hasEffect(ModEffect.EFFECTSTUN.get()))) {
                     uppercut_cooldown = UPPERCUT_COOLDOWN;
                     this.setAnimation(animation2);
-                } else if (stomp_cooldown <= 0 && !isNoAi() && this.getAnimation() == NO_ANIMATION && target.onGround() && (this.distanceTo(target) > 6F && this.distanceTo(target) < 13F && this.getRandom().nextFloat() * 100.0F < 10f || this.distanceTo(target) > 2.75F && this.distanceTo(target) < 4.3F && this.getRandom().nextFloat() * 100.0F < 2f)) {
+                } else if (stomp_cooldown <= 0 && !isNoAi() && this.getAnimation() == NO_ANIMATION && target.isOnGround() && (this.distanceTo(target) > 6F && this.distanceTo(target) < 13F && this.getRandom().nextFloat() * 100.0F < 10f || this.distanceTo(target) > 2.75F && this.distanceTo(target) < 4.3F && this.getRandom().nextFloat() * 100.0F < 2f)) {
                     stomp_cooldown = STOMP_COOLDOWN;
                     Animation animation3 = this.getIsHelmetless() ? GUARDIAN_RAGE_STOMP : GUARDIAN_STOMP;
                     this.setAnimation(animation3);
@@ -401,7 +412,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 this.playSound(ModSounds.ENDER_GUARDIAN_FIST.get(), 0.5f, 1F + this.getRandom().nextFloat() * 0.1F);
                 AreaAttack(5.15f,5,70,1.0f,(float) CMConfig.EnderguardianGravityPunchHpdamage,100,0,0,false);
                 Attackparticle(2.2f,0);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 20, 0.2f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 20, 0.2f, 0, 10);
             }
 
         }
@@ -416,7 +427,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 AreaAttack(5.15f,5,70,1.0f,(float) CMConfig.EnderguardianGravityPunchHpdamage,100,0,0,false);
                 this.playSound(ModSounds.ENDER_GUARDIAN_FIST.get(), 0.5f, 1F + this.getRandom().nextFloat() * 0.1F);
                 Attackparticle(2.2f,0);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 20, 0.2f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 20, 0.2f, 0, 10);
             }
 
         }
@@ -426,7 +437,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 AreaAttack(5.85f,5,80,1, 0,80,0,0,false);
                 this.playSound(ModSounds.ENDER_GUARDIAN_FIST.get(), 0.5f, 1F + this.getRandom().nextFloat() * 0.1F);
                 Attackparticle(2.75f,0.5f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 10);
             }
         }
 
@@ -435,7 +446,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 AreaAttack(5.85f,5,80,1,0,80,0,0,false);
                 this.playSound(ModSounds.ENDER_GUARDIAN_FIST.get(), 0.5f, 1F + this.getRandom().nextFloat() * 0.1F);
                 Attackparticle(2.75f,-0.5f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 10);
             }
         }
 
@@ -452,21 +463,21 @@ public class Ender_Guardian_Entity extends Boss_monster {
             if (this.getAnimationTick() == 27) {
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5f, 1F + this.getRandom().nextFloat() * 0.1F);
                 AreaAttack(6.25f,7,60,1.4f,(float) CMConfig.EnderguardianUppercutHpdamage,150,60,0.5F,false);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.3f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.3f, 0, 10);
             }
         }
         if (this.getAnimation() == GUARDIAN_STOMP) {
             if (this.getAnimationTick() == 32) {
                 StompAttack();
                 Attackparticle(0.4f,0.8f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 10, 0.1f, 0, 5);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 10, 0.1f, 0, 5);
             }
         }
         if (this.getAnimation() == GUARDIAN_RAGE_STOMP) {
             if (this.getAnimationTick() == 32 || this.getAnimationTick() == 53 || this.getAnimationTick() == 62) {
                 StompAttack();
                 Attackparticle(0.4f,0.8f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 10, 0.1f, 0, 5);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 10, 0.1f, 0, 5);
             }
         }
         if (this.getAnimation() == GUARDIAN_RAGE_UPPERCUT) {
@@ -475,7 +486,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 AreaAttack(5.5f,5,120,1.2f,(float) CMConfig.EnderguardianAreaAttackHpdamage,100,0,0.0F,false);
 
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5f, 1F + this.getRandom().nextFloat() * 0.1F);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.2f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.2f, 0, 10);
             }
         }
 
@@ -485,12 +496,12 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 Attackparticle(2.75f,-2.25f);
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5f, 1F + this.getRandom().nextFloat() * 0.1F);
                 MassDestruction(5.0f, 1.1f,150);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.3f, 0, 10);
-                if (!this.level().isClientSide) {
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.3f, 0, 10);
+                if (!this.level.isClientSide) {
                     if (Breaking) {
                         BlockBreaking(CMConfig.EnderguardianBlockBreakingX, CMConfig.EnderguardianBlockBreakingY, CMConfig.EnderguardianBlockBreakingZ);
                     } else {
-                        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+                        if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                             BlockBreaking(CMConfig.EnderguardianBlockBreakingX, CMConfig.EnderguardianBlockBreakingY, CMConfig.EnderguardianBlockBreakingZ);
                         }
                     }
@@ -506,14 +517,14 @@ public class Ender_Guardian_Entity extends Boss_monster {
             if (this.getAnimationTick() == 38) {
                 AreaAttack(6.0f,6.0f,120,1.0f,(float) CMConfig.EnderguardianTeleportAttackHpdamage,80,60,0.6F,false);
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5f, 1F + this.getRandom().nextFloat() * 0.1F);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.2f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.2f, 0, 10);
 
             }
         }
 
         if (this.getAnimation() == GUARDIAN_AIR_STRIKE1) {
             if (this.getAnimationTick() == 20) {
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 20, 0.15f, 0, 20);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 20, 0.15f, 0, 20);
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5f, 1F + this.getRandom().nextFloat() * 0.1F);
             }
 
@@ -529,7 +540,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 this.playSound(ModSounds.ENDER_GUARDIAN_FIST.get(), 0.5f, 1F + this.getRandom().nextFloat() * 0.1F);
                 Attackparticle(2.5f,1.25f);
                 Attackparticle(2.5f,-0.5f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 20, 0.3f, 0, 20);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 20, 0.3f, 0, 20);
                 switch (random.nextInt(3)) {
                     case 0 -> StrikeRune(8,0.5);
                     case 1 -> StrikeRune(10,0.75);
@@ -550,7 +561,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
             if (this.getAnimationTick() == 26) {
                 this.playSound(ModSounds.ENDER_GUARDIAN_FIST.get(), 0.3f, 1F + this.getRandom().nextFloat() * 0.1F);
                 Attackparticle(1.0f,0.2f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 10, 0.1f, 0, 5);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 10, 0.1f, 0, 5);
             }
         }
         if (this.getAnimation() == GUARDIAN_ROCKETPUNCH) {
@@ -618,7 +629,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!(entityHit instanceof Ender_Guardian_Entity)) {
-                    boolean flag = entityHit.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
+                    boolean flag = entityHit.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
                     if (entityHit instanceof Player && entityHit.isBlocking() && shieldbreakticks > 0) {
                         disableShield(entityHit, shieldbreakticks);
                     }
@@ -642,9 +653,9 @@ public class Ender_Guardian_Entity extends Boss_monster {
 
 
     private void MassDestruction(float grow, float damage, int ticks) {
-        for (LivingEntity entityHit : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(grow))) {
+        for (LivingEntity entityHit : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(grow))) {
             if (!isAlliedTo(entityHit) && !(entityHit instanceof Ender_Guardian_Entity) && entityHit != this) {
-                entityHit.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage);
+                entityHit.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage);
                 if (entityHit instanceof Player && entityHit.isBlocking()) {
                     disableShield(entityHit, ticks);
                 }
@@ -665,10 +676,10 @@ public class Ender_Guardian_Entity extends Boss_monster {
                     int k = MthY + j;
                     int l = MthZ + l2;
                     BlockPos blockpos = new BlockPos(i3, k, l);
-                    BlockState block = this.level().getBlockState(blockpos);
+                    BlockState block = this.level.getBlockState(blockpos);
                     if (block != Blocks.AIR.defaultBlockState() && block.is(ModTag.ENDER_GUARDIAN_CAN_DESTROY)) {
-                        if (block.canEntityDestroy(this.level(), blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, block)) {
-                            flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                        if (block.canEntityDestroy(this.level, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, block)) {
+                            flag = this.level.destroyBlock(blockpos, false, this) || flag;
                         }
                     }
                 }
@@ -678,7 +689,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
 
 
     private void Burstparticle() {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             double d0 = this.getX();
             double d1 = this.getY() + 2.0;
             double d2 = this.getZ();
@@ -690,7 +701,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                         double d4 = (double) i + (this.random.nextDouble() - this.random.nextDouble()) * 0.5D;
                         double d5 = (double) k + (this.random.nextDouble() - this.random.nextDouble()) * 0.5D;
                         double d6 = (double) Mth.sqrt((float) (d3 * d3 + d4 * d4 + d5 * d5)) / 0.5 + this.random.nextGaussian() * 0.05D;
-                        this.level().addParticle(ParticleTypes.REVERSE_PORTAL, d0, d1, d2, d3 / d6, d4 / d6, d5 / d6);
+                        this.level.addParticle(ParticleTypes.REVERSE_PORTAL, d0, d1, d2, d3 / d6, d4 / d6, d5 / d6);
                         if (i != -size && i != size && j != -size && j != size) {
                             k += size * 2 - 1;
                         }
@@ -701,19 +712,19 @@ public class Ender_Guardian_Entity extends Boss_monster {
     }
 
     private void Teleportparticle() {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             if (getTeleportPos().isPresent()) {
                 double d0 = this.getTeleportPos().get().getX();
                 double d1 = this.getY();
                 double d2 = this.getTeleportPos().get().getZ();
-                if (this.level().isClientSide) {
+                if (this.level.isClientSide) {
                     for (int i1 = 0; i1 < 40 + random.nextInt(12); i1++) {
                         double DeltaMovementY = getRandom().nextGaussian() * 0.07D;
                         float angle = (0.01745329251F * this.yBodyRot) + i1;
                         double extraX = 2F * Mth.sin((float) (Math.PI + angle));
                         double extraY = 0.3F;
                         double extraZ = 2F * Mth.cos(angle);
-                        this.level().addParticle(ParticleTypes.END_ROD, d0 + extraX, d1 + extraY, d2 + extraZ, 0, DeltaMovementY, 0);
+                        this.level.addParticle(ParticleTypes.END_ROD, d0 + extraX, d1 + extraY, d2 + extraZ, 0, DeltaMovementY, 0);
                     }
                 }
             }
@@ -748,7 +759,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
     }
 
     private void GravityPullparticle() {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 float angle = (0.01745329251F * this.yBodyRot) + i1;
                 double extraX = Mth.sin((float) (Math.PI + angle));
@@ -758,13 +769,13 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 theta += Math.PI / 2;
                 double vecX = Math.cos(theta);
                 double vecZ = Math.sin(theta);
-                this.level().addParticle(ParticleTypes.PORTAL, getX() + 2.2 * vecX + extraX * 0.75, this.getY() + extraY, getZ() + 2.2 * vecZ + extraZ * 0.75, (this.random.nextDouble() - 0.5D) * 12.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 12.0D);
+                this.level.addParticle(ParticleTypes.PORTAL, getX() + 2.2 * vecX + extraX * 0.75, this.getY() + extraY, getZ() + 2.2 * vecZ + extraZ * 0.75, (this.random.nextDouble() - 0.5D) * 12.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 12.0D);
             }
         }
     }
 
     private void Attackparticle(float vec, float math) {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 double DeltaMovementX = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementY = getRandom().nextGaussian() * 0.07D;
@@ -783,8 +794,8 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 int hitY = Mth.floor(getY());
                 int hitZ = Mth.floor(getZ() + vec * vecZ + extraZ);
                 BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-                BlockState block = level().getBlockState(hit.below());
-                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
+                BlockState block = level.getBlockState(hit.below());
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
 
             }
         }
@@ -867,17 +878,17 @@ public class Ender_Guardian_Entity extends Boss_monster {
 
 
     private void spawnFangs(double x, double z, double minY, double maxY, float rotation, int delay) {
-        BlockPos blockpos = BlockPos.containing(x, maxY, z);
+        BlockPos blockpos = new BlockPos(x, maxY, z);
         boolean flag = false;
         double d0 = 0.0D;
 
         do {
             BlockPos blockpos1 = blockpos.below();
-            BlockState blockstate = this.level().getBlockState(blockpos1);
-            if (blockstate.isFaceSturdy(this.level(), blockpos1, Direction.UP)) {
-                if (!this.level().isEmptyBlock(blockpos)) {
-                    BlockState blockstate1 = this.level().getBlockState(blockpos);
-                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level(), blockpos);
+            BlockState blockstate = this.level.getBlockState(blockpos1);
+            if (blockstate.isFaceSturdy(this.level, blockpos1, Direction.UP)) {
+                if (!this.level.isEmptyBlock(blockpos)) {
+                    BlockState blockstate1 = this.level.getBlockState(blockpos);
+                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level, blockpos);
                     if (!voxelshape.isEmpty()) {
                         d0 = voxelshape.max(Direction.Axis.Y);
                     }
@@ -891,22 +902,22 @@ public class Ender_Guardian_Entity extends Boss_monster {
         } while(blockpos.getY() >= Mth.floor(minY) - 1);
 
         if (flag) {
-            this.level().addFreshEntity(new Void_Rune_Entity(this.level(), x, (double)blockpos.getY() + d0, z, rotation, delay, this));
+            this.level.addFreshEntity(new Void_Rune_Entity(this.level, x, (double)blockpos.getY() + d0, z, rotation, delay, this));
         }
     }
 
     private void spawnVortex(double x, double z, double minY, double maxY, float rotation) {
-        BlockPos blockpos =  BlockPos.containing(x, maxY, z);
+        BlockPos blockpos =  new BlockPos(x, maxY, z);
         boolean flag = false;
         double d0 = 0.0D;
 
         do {
             BlockPos blockpos1 = blockpos.below();
-            BlockState blockstate = this.level().getBlockState(blockpos1);
-            if (blockstate.isFaceSturdy(this.level(), blockpos1, Direction.UP)) {
-                if (!this.level().isEmptyBlock(blockpos)) {
-                    BlockState blockstate1 = this.level().getBlockState(blockpos);
-                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level(), blockpos);
+            BlockState blockstate = this.level.getBlockState(blockpos1);
+            if (blockstate.isFaceSturdy(this.level, blockpos1, Direction.UP)) {
+                if (!this.level.isEmptyBlock(blockpos)) {
+                    BlockState blockstate1 = this.level.getBlockState(blockpos);
+                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level, blockpos);
                     if (!voxelshape.isEmpty()) {
                         d0 = voxelshape.max(Direction.Axis.Y);
                     }
@@ -920,15 +931,15 @@ public class Ender_Guardian_Entity extends Boss_monster {
         } while(blockpos.getY() >= Mth.floor(minY) - 1);
 
         if (flag) {
-            this.level().addFreshEntity(new Void_Vortex_Entity(this.level(), x, (double)blockpos.getY() + d0, z, rotation, this));
+            this.level.addFreshEntity(new Void_Vortex_Entity(this.level, x, (double)blockpos.getY() + d0, z, rotation, this));
         }
     }
 
     private void BrokenHelmet() {
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             double xx = Mth.cos(this.getYRot() % 360.0F / 180.0F * 3.1415927F) * 0.75F;
             double zz = Mth.sin(this.getYRot() % 360.0F / 180.0F * 3.1415927F) * 0.75F;
-            this.level().explode(this, this.getX() + xx, this.getY() + (double) this.getEyeHeight(), getZ() + zz, 2.0F, Level.ExplosionInteraction.NONE);
+            this.level.explode(this, this.getX() + xx, this.getY() + (double) this.getEyeHeight(), getZ() + zz, 2.0F, Explosion.BlockInteraction.NONE);
         }
     }
 
@@ -940,7 +951,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
             double tz = tgt.getZ();
             double ty = target.getY() + 0.1;
             if (this.getAnimationTick() == 54) {
-                if (!target.onGround() && !target.isInWater() && !this.level().getBlockState(tgt.below()).blocksMotion())
+                if (!target.isOnGround() && !target.isInWater() && !this.level.getBlockState(tgt.below()).getMaterial().blocksMotion())
                     ty -= 1;
                 {
                     BlockPos Pos = this.blockPosition();
@@ -955,11 +966,11 @@ public class Ender_Guardian_Entity extends Boss_monster {
                         double angle = (i - (4 / 2)) * offsetangle;
                         double x = cx * cos(angle) + cz * sin(angle);
                         double z = -cx * sin(angle) + cz * cos(angle);
-                        Ender_Guardian_Bullet_Entity bullet = new Ender_Guardian_Bullet_Entity(level(), this, x, this.getY() + 2, z);
+                        Ender_Guardian_Bullet_Entity bullet = new Ender_Guardian_Bullet_Entity(level, this, x, this.getY() + 2, z);
                         bullet.setOwner(this);
                         bullet.setPos(getX(), getY() - 2 + random.nextDouble() * 4, getZ());
                         bullet.setUp(30, cx, 0, cz, tx - 7 * cx + i * cz, ty, tz - 7 * cz + i * cx);
-                       this.level().addFreshEntity(bullet);
+                       this.level.addFreshEntity(bullet);
                     }
                 }
             }
@@ -970,19 +981,19 @@ public class Ender_Guardian_Entity extends Boss_monster {
     private boolean teleport(double p_32544_, double p_32545_, double p_32546_) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos(p_32544_, p_32545_, p_32546_);
 
-        while(blockpos$mutableblockpos.getY() > this.level().getMinBuildHeight() && !this.level().getBlockState(blockpos$mutableblockpos).blocksMotion()) {
+        while(blockpos$mutableblockpos.getY() > this.level.getMinBuildHeight() && !this.level.getBlockState(blockpos$mutableblockpos).getMaterial().blocksMotion()) {
             blockpos$mutableblockpos.move(Direction.DOWN);
         }
 
-        BlockState blockstate = this.level().getBlockState(blockpos$mutableblockpos);
-        boolean flag = blockstate.blocksMotion();
+        BlockState blockstate = this.level.getBlockState(blockpos$mutableblockpos);
+        boolean flag = blockstate.getMaterial().blocksMotion();
         if (flag) {
             net.minecraftforge.event.entity.EntityTeleportEvent.EnderEntity event = net.minecraftforge.event.ForgeEventFactory.onEnderTeleport(this, p_32544_, p_32545_, p_32546_);
             if (event.isCanceled()) return false;
             Vec3 vec3 = this.position();
             boolean flag2 = this.ProperTeleport(event.getTargetX(), event.getTargetY(), event.getTargetZ(), true);
             if (flag2) {
-                this.level().gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
+                this.level.gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
                 if (!this.isSilent()) {
                     this.playSound(SoundEvents.SHULKER_TELEPORT, 1.0F, 1.0F);
                 }
@@ -1000,15 +1011,15 @@ public class Ender_Guardian_Entity extends Boss_monster {
         double d2 = this.getZ();
         double d3 = p_20986_;
         boolean flag = false;
-        BlockPos blockpos = BlockPos.containing(p_20985_, p_20986_, p_20987_);
-        Level level = this.level();
+        BlockPos blockpos = new BlockPos(p_20985_, p_20986_, p_20987_);
+        Level level = this.level;
         if (level.hasChunkAt(blockpos)) {
             boolean flag1 = false;
 
             while(!flag1 && blockpos.getY() > level.getMinBuildHeight()) {
                 BlockPos blockpos1 = blockpos.below();
                 BlockState blockstate = level.getBlockState(blockpos1);
-                if (blockstate.blocksMotion()) {
+                if (blockstate.getMaterial().blocksMotion()) {
                     flag1 = true;
                 } else {
                     --d3;
@@ -1313,7 +1324,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
             }
 
 
-            if (entity.getAnimationTick() > 48 && entity.onGround()) {
+            if (entity.getAnimationTick() > 48 && entity.isOnGround()) {
                 AnimationHandler.INSTANCE.sendAnimationMessage(entity, GUARDIAN_AIR_STRIKE2);
             }
 
@@ -1366,7 +1377,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
                 double vz = (z - prevZ) / teleport;
                 newX = Mth.floor(x + vx * sensing);
                 newZ = Mth.floor(z + vz * sensing);
-                entity.setTeleportPos(BlockPos.containing(newX, target.getY(), newZ));
+                entity.setTeleportPos(new BlockPos(newX, target.getY(), newZ));
             }
 
             if (entity.getAnimationTick() == teleport && target != null) {

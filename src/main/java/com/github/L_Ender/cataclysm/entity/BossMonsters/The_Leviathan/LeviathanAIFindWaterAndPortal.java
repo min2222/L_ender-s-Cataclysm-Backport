@@ -1,12 +1,13 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.ai.goal.Goal;
-
-import java.util.EnumSet;
 
 public class LeviathanAIFindWaterAndPortal extends Goal {
     private final The_Leviathan_Entity creature;
@@ -19,7 +20,7 @@ public class LeviathanAIFindWaterAndPortal extends Goal {
     }
 
     public boolean canUse() {
-        if (this.creature.onGround() && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER)) {
+        if (this.creature.isOnGround() && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER)) {
             if (((ISemiAquatic) this.creature).shouldEnterWater() && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)) {
                 targetPos = generateTarget();
                 return targetPos != null;
@@ -45,7 +46,7 @@ public class LeviathanAIFindWaterAndPortal extends Goal {
             this.creature.getNavigation().stop();
             return false;
         }
-        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER);
+        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER);
     }
 
     public BlockPos generateTarget() {
@@ -54,11 +55,11 @@ public class LeviathanAIFindWaterAndPortal extends Goal {
         final int range = this.creature.getWaterSearchRange();
         for(int i = 0; i < 15; i++) {
             BlockPos blockPos = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
-            while (this.creature.level().isEmptyBlock(blockPos) && blockPos.getY() > 1) {
+            while (this.creature.level.isEmptyBlock(blockPos) && blockPos.getY() > 1) {
                 blockPos = blockPos.below();
             }
 
-            if (this.creature.level().getFluidState(blockPos).is(FluidTags.WATER)) {
+            if (this.creature.level.getFluidState(blockPos).is(FluidTags.WATER)) {
                 blockpos = blockPos;
             }
         }

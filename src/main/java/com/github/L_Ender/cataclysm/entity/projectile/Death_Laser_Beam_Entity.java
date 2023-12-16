@@ -1,6 +1,10 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.tool.ControlledAnimation;
@@ -9,11 +13,11 @@ import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -33,10 +37,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class Death_Laser_Beam_Entity extends Entity {
     public static final double RADIUS = 30;
@@ -100,11 +100,11 @@ public class Death_Laser_Beam_Entity extends Entity {
         xo = getX();
         yo = getY();
         zo = getZ();
-        if (tickCount == 1 && level().isClientSide) {
-            caster = (LivingEntity) level().getEntity(getCasterID());
+        if (tickCount == 1 && level.isClientSide) {
+            caster = (LivingEntity) level.getEntity(getCasterID());
         }
 
-        if (!level().isClientSide) {
+        if (!level.isClientSide) {
             if (caster instanceof The_Harbinger_Entity) {
                 this.updateWithHarbinger();
             }
@@ -128,34 +128,34 @@ public class Death_Laser_Beam_Entity extends Entity {
 
         if (tickCount > 20) {
             this.calculateEndPos();
-            List<LivingEntity> hit = raytraceEntities(level(), new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
+            List<LivingEntity> hit = raytraceEntities(level, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
             if (blockSide != null) {
                 spawnExplosionParticles(3);
-                if (!this.level().isClientSide) {
+                if (!this.level.isClientSide) {
                     for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(collidePosX - 0.5F), Mth.floor(collidePosY - 0.5F), Mth.floor(collidePosZ - 0.5F), Mth.floor(collidePosX + 0.5F), Mth.floor(collidePosY + 0.5F), Mth.floor(collidePosZ + 0.5F))) {
-                        BlockState block = level().getBlockState(pos);
-                        if (!block.isAir() && block.is(ModTag.CM_GLASS) && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
-                            level().destroyBlock(pos, true);
+                        BlockState block = level.getBlockState(pos);
+                        if (!block.isAir() && block.is(ModTag.CM_GLASS) && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                            level.destroyBlock(pos, true);
                         }
                     }
                     for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(collidePosX - 2.5F), Mth.floor(collidePosY - 2.5F), Mth.floor(collidePosZ - 2.5F), Mth.floor(collidePosX + 2.5F), Mth.floor(collidePosY + 2.5F), Mth.floor(collidePosZ + 2.5F))) {
-                        BlockState block = level().getBlockState(pos);
+                        BlockState block = level.getBlockState(pos);
                         if (block.is(ModBlocks.EMP.get())) {
                             if(!block.getValue(EMP_Block.POWERED) && block.getValue(EMP_Block.OVERLOAD)) {
-                                this.level().setBlockAndUpdate(pos, block.setValue(EMP_Block.OVERLOAD, false));
+                                this.level.setBlockAndUpdate(pos, block.setValue(EMP_Block.OVERLOAD, false));
                             }
                         }
                     }
                     if(this.getFire()) {
-                        BlockPos blockpos1 = BlockPos.containing(collidePosX,collidePosY, collidePosZ);
+                        BlockPos blockpos1 = new BlockPos(collidePosX,collidePosY, collidePosZ);
                         if(CMConfig.HarbingerLightFire) {
-                            if (this.level().isEmptyBlock(blockpos1)) {
-                                this.level().setBlockAndUpdate(blockpos1, BaseFireBlock.getState(this.level(), blockpos1));
+                            if (this.level.isEmptyBlock(blockpos1)) {
+                                this.level.setBlockAndUpdate(blockpos1, BaseFireBlock.getState(this.level, blockpos1));
                             }
                         }else{
-                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
-                                if (this.level().isEmptyBlock(blockpos1)) {
-                                    this.level().setBlockAndUpdate(blockpos1, BaseFireBlock.getState(this.level(), blockpos1));
+                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                                if (this.level.isEmptyBlock(blockpos1)) {
+                                    this.level.setBlockAndUpdate(blockpos1, BaseFireBlock.getState(this.level, blockpos1));
                                 }
                             }
                         }
@@ -163,7 +163,7 @@ public class Death_Laser_Beam_Entity extends Entity {
                     }
                 }
             }
-            if (!level().isClientSide) {
+            if (!level.isClientSide) {
                 for (LivingEntity target : hit) {
                     if (caster != null) {
                     if (!this.caster.isAlliedTo(target) && target != caster) {
@@ -191,7 +191,7 @@ public class Death_Laser_Beam_Entity extends Entity {
             float motionY = random.nextFloat() * 0.08F;
             float motionX = velocity * Mth.cos(yaw);
             float motionZ = velocity * Mth.sin(yaw);
-            level().addParticle((new LightningParticle.OrbData(1.0f, 0.2f,  0.0f)), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
+            level.addParticle((new LightningParticle.OrbData(1.0f, 0.2f,  0.0f)), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
         }
 
     }
@@ -263,12 +263,12 @@ public class Death_Laser_Beam_Entity extends Entity {
     protected void addAdditionalSaveData(CompoundTag nbt) {}
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     private void calculateEndPos() {
-        if (level().isClientSide()) {
+        if (level.isClientSide()) {
             endPosX = getX() + RADIUS * Math.cos(renderYaw) * Math.cos(renderPitch);
             endPosZ = getZ() + RADIUS * Math.sin(renderYaw) * Math.cos(renderPitch);
             endPosY = getY() + RADIUS * Math.sin(renderPitch);

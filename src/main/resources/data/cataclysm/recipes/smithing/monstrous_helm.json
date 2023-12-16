@@ -1,15 +1,12 @@
 {
-    "type": "minecraft:smithing_transform",
-    "addition": {
-        "item": "cataclysm:monstrous_horn"
-    },
+    "type": "minecraft:smithing",
     "base": {
         "item": "minecraft:netherite_helmet"
     },
+    "addition": {
+        "item": "cataclysm:monstrous_horn"
+    },
     "result": {
         "item": "cataclysm:monstrous_helm"
-    },
-    "template": {
-        "item": "minecraft:netherite_upgrade_smithing_template"
     }
 }

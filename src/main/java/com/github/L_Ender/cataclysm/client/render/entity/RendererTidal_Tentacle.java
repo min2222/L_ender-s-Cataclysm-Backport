@@ -6,7 +6,7 @@ import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Tentacle_Entity;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexMultiConsumer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -144,10 +144,10 @@ public class RendererTidal_Tentacle extends EntityRenderer<Tidal_Tentacle_Entity
     }
 
     private int getLightColor(Entity head, Vec3 vec3) {
-        BlockPos blockpos = BlockPos.containing(vec3);
-        if(head.level().hasChunkAt(blockpos)){
-            int i = LevelRenderer.getLightColor(head.level(), blockpos);
-            int j = LevelRenderer.getLightColor(head.level(), blockpos.above());
+        BlockPos blockpos = new BlockPos(vec3);
+        if(head.level.hasChunkAt(blockpos)){
+            int i = LevelRenderer.getLightColor(head.level, blockpos);
+            int j = LevelRenderer.getLightColor(head.level, blockpos.above());
             int k = i & 255;
             int l = j & 255;
             int i1 = i >> 16 & 255;

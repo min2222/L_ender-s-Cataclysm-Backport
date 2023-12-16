@@ -1,15 +1,16 @@
 package com.github.L_Ender.cataclysm.entity.etc;
 
-import com.github.L_Ender.cataclysm.Cataclysm;
-import net.minecraft.server.level.ServerBossEvent;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.BossEvent;
-import net.minecraft.world.entity.Mob;
-
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
+
+import com.github.L_Ender.cataclysm.Cataclysm;
+
+import net.minecraft.server.level.ServerBossEvent;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.BossEvent;
+import net.minecraft.world.entity.Mob;
 
 public class CMBossInfoServer extends ServerBossEvent {
     private final Mob entity;
@@ -42,7 +43,7 @@ public class CMBossInfoServer extends ServerBossEvent {
             ServerPlayer player = it.next();
             if (this.entity.getSensing().hasLineOfSight(player)) {
                 super.addPlayer(player);
-                if (this.entity.level().isClientSide){
+                if (this.entity.level.isClientSide){
                     Cataclysm.PROXY.addBoss(this.entity);
                 }
                 it.remove();
@@ -54,7 +55,7 @@ public class CMBossInfoServer extends ServerBossEvent {
     public void addPlayer(ServerPlayer player) {
         if (this.entity.getSensing().hasLineOfSight(player)) {
             super.addPlayer(player);
-            if (this.entity.level().isClientSide){
+            if (this.entity.level.isClientSide){
                 Cataclysm.PROXY.addBoss(this.entity);
             }
         } else {
@@ -66,7 +67,7 @@ public class CMBossInfoServer extends ServerBossEvent {
     public void removePlayer(ServerPlayer player) {
         super.removePlayer(player);
         this.unseen.remove(player);
-        if (this.entity.level().isClientSide){
+        if (this.entity.level.isClientSide){
             Cataclysm.PROXY.removeBoss(this.entity);
         }
     }

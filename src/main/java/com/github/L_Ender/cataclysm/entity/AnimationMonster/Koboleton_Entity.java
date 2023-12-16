@@ -1,5 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
@@ -8,6 +12,7 @@ import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -19,7 +24,13 @@ import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -38,9 +49,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-
 
 public class Koboleton_Entity extends Animation_Monster {
 
@@ -53,9 +61,13 @@ public class Koboleton_Entity extends Animation_Monster {
     public Koboleton_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 8;
-        this.setMaxUpStep(1.25F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.25F;
     }
 
     @Override
@@ -170,7 +182,7 @@ public class Koboleton_Entity extends Animation_Monster {
                     if (target != null) {
                         if (this.distanceTo(target) < this.getBbWidth() * 2.5F * this.getBbWidth() * 2.5F + target.getBbWidth()) {
                             float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                            target.hurt(damageSources().mobAttack(this), damage);
+                            target.hurt(DamageSource.mobAttack(this), damage);
 
                             ItemStack offhand = target.getOffhandItem();
                             ItemStack mainhand = target.getMainHandItem();
@@ -178,14 +190,14 @@ public class Koboleton_Entity extends Animation_Monster {
                                 if (!offhand.isEmpty()) {
                                     if(!offhand.is(ModTag.STICKY_ITEM)) {
                                         int i = offhand.getCount();
-                                        this.koboletonstealdrop(offhand.copyWithCount(1), target);
+                                        this.koboletonstealdrop(copyWithCound(offhand, 1), target);
                                         target.setItemSlot(EquipmentSlot.OFFHAND, offhand.split(i - 1));
                                     }
                                 } else {
                                     if (!mainhand.isEmpty()) {
                                         if (!mainhand.is(ModTag.STICKY_ITEM)) {
                                             int i = mainhand.getCount();
-                                            this.koboletonstealdrop(mainhand.copyWithCount(1), target);
+                                            this.koboletonstealdrop(copyWithCound(mainhand, 1), target);
                                             target.setItemSlot(EquipmentSlot.MAINHAND, mainhand.split(i - 1));
                                         }
                                     }
@@ -197,15 +209,22 @@ public class Koboleton_Entity extends Animation_Monster {
             }
         }
     }
+    
+    public ItemStack copyWithCound(ItemStack stack, int count)
+    {
+    	ItemStack copy = stack.copy();
+    	copy.setCount(count);
+    	return copy;
+    }
 
     private ItemEntity koboletonstealdrop(ItemStack p_36179_, LivingEntity target) {
         if (p_36179_.isEmpty()) {
             return null;
-        } else if (this.level().isClientSide) {
+        } else if (this.level.isClientSide) {
             return null;
         } else {
             double d0 = target.getEyeY() - (double)0.3F;
-            ItemEntity itementity = new ItemEntity(target.level(), target.getX(), d0, target.getZ(), p_36179_);
+            ItemEntity itementity = new ItemEntity(target.level, target.getX(), d0, target.getZ(), p_36179_);
             itementity.setDefaultPickUpDelay();
             itementity.setExtendedLifetime();
             float f8 = Mth.sin(target.getXRot() * ((float)Math.PI / 180F));
@@ -215,7 +234,7 @@ public class Koboleton_Entity extends Animation_Monster {
             float f5 = target.getRandom().nextFloat() * ((float)Math.PI * 2F);
             float f6 = 0.02F * target.getRandom().nextFloat();
             itementity.setDeltaMovement((double)(-f3 * f2 * 0.3F) + Math.cos((double)f5) * (double)f6, (double)(-f8 * 0.3F + 0.1F + (target.getRandom().nextFloat() - target.getRandom().nextFloat()) * 0.1F), (double)(f4 * f2 * 0.3F) + Math.sin((double)f5) * (double)f6);
-            this.level().addFreshEntity(itementity);
+            this.level.addFreshEntity(itementity);
             return itementity;
         }
 

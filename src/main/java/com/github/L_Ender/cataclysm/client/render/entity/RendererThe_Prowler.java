@@ -4,6 +4,7 @@ import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Prowler;
 import com.github.L_Ender.cataclysm.client.render.layer.The_Prowler_Layer;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Prowler_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

@@ -2,17 +2,17 @@ package com.github.L_Ender.cataclysm.entity.BossMonsters.AI;
 
 
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Boss_monster;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.pathfinder.Path;
-
-import java.util.EnumSet;
 
 public class AttackMoveGoal extends Goal {
     private final Animation_Monster Boss_monster;

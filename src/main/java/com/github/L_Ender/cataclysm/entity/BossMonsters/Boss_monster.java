@@ -1,16 +1,21 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.client.sound.BossMusicPlayer;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,10 +33,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
 
 public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     protected boolean dropAfterDeathAnim = false;
@@ -56,7 +57,7 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     public boolean hurt(DamageSource source, float damage) {
 
 
-        if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (!source.isBypassInvul()) {
             damage = Math.min(DamageCap(), damage);
         }
 
@@ -98,7 +99,7 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     public static void disableShield(LivingEntity livingEntity, int ticks) {
         ((Player)livingEntity).getCooldowns().addCooldown(livingEntity.getUseItem().getItem(), ticks);
         livingEntity.stopUsingItem();
-        livingEntity.level().broadcastEntityEvent(livingEntity, (byte)30);
+        livingEntity.level.broadcastEntityEvent(livingEntity, (byte)30);
     }
 
     @Override
@@ -123,12 +124,12 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide && getBossMusic() != null) {
+        if (!level.isClientSide && getBossMusic() != null) {
             if (canPlayMusic()) {
-                this.level().broadcastEntityEvent(this, MUSIC_PLAY_ID);
+                this.level.broadcastEntityEvent(this, MUSIC_PLAY_ID);
             }
             else {
-                this.level().broadcastEntityEvent(this, MUSIC_STOP_ID);
+                this.level.broadcastEntityEvent(this, MUSIC_STOP_ID);
             }
         }
     }
@@ -167,7 +168,7 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
         if (this.deathTime == deathDuration) {
             lastHurtByPlayer = killDataAttackingPlayer;
             lastHurtByPlayerTime = killDataRecentlyHit;
-            if (!this.level().isClientSide && dropAfterDeathAnim && killDataCause != null) {
+            if (!this.level.isClientSide && dropAfterDeathAnim && killDataCause != null) {
                 dropAllDeathLoot(killDataCause);
             }
 
@@ -177,7 +178,7 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.POOF, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
+                this.level.addParticle(ParticleTypes.POOF, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
             }
         }
     }
@@ -199,8 +200,8 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
 
             this.dead = true;
             this.getCombatTracker().recheckStatus();
-            if (this.level() instanceof ServerLevel) {
-                if (entity == null || entity.killedEntity((ServerLevel)this.level(), this)) {
+            if (this.level instanceof ServerLevel) {
+                if (entity == null || entity.wasKilled((ServerLevel)this.level, this)) {
                     this.gameEvent(GameEvent.ENTITY_DIE);
                     this.createWitherRose(livingentity);
                     if (!dropAfterDeathAnim){
@@ -212,7 +213,7 @@ public class Boss_monster extends Animation_Monster implements IAnimatedEntity {
             killDataRecentlyHit = this.lastHurtByPlayerTime;
             killDataAttackingPlayer = lastHurtByPlayer;
 
-            this.level().broadcastEntityEvent(this, (byte)3);
+            this.level.broadcastEntityEvent(this, (byte)3);
             this.setPose(Pose.DYING);
         }
     }

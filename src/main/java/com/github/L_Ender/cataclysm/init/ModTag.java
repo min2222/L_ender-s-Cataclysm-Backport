@@ -1,7 +1,8 @@
 package com.github.L_Ender.cataclysm.init;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import net.minecraft.core.registries.Registries;
+
+import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
@@ -85,23 +86,23 @@ public class ModTag {
     public static final TagKey<Biome> REQUIRED_SUNKEN_CITY_SURROUNDING = registerBiomeTag("required_sunken_city_surrounding");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
-        return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(Cataclysm.MODID, name));
+        return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
 
     private static TagKey<Item> registerItemTag(String name) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(Cataclysm.MODID, name));
+        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
 
     private static TagKey<Block> registerBlockTag(String name) {
-        return TagKey.create(Registries.BLOCK, new ResourceLocation(Cataclysm.MODID, name));
+        return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
 
     private static TagKey<Structure> registerStructureTag(String name) {
-        return TagKey.create(Registries.STRUCTURE, new ResourceLocation(Cataclysm.MODID, name));
+        return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
 
     private static TagKey<Biome> registerBiomeTag(String name) {
-        return TagKey.create(Registries.BIOME, new ResourceLocation(Cataclysm.MODID, name));
+        return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
 
 }

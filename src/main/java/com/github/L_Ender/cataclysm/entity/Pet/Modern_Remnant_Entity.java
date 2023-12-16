@@ -1,5 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.Pet;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.Pet.AI.TameableAIFollowOwner;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
@@ -8,6 +12,8 @@ import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+import com.min01.archaeology.init.ArchaeologyItems;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -15,12 +21,22 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NonTameRandomTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
@@ -28,14 +44,10 @@ import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
 
 public class Modern_Remnant_Entity extends AnimationPet {
 
@@ -48,7 +60,11 @@ public class Modern_Remnant_Entity extends AnimationPet {
         super(type, world);
         this.xpReward = 0;
         setConfigattribute(this, CMConfig.ModernRemnantHealthMultiplier, CMConfig.ModernRemnantDamageMultiplier);
-        this.setMaxUpStep(1.0F);
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -93,7 +109,7 @@ public class Modern_Remnant_Entity extends AnimationPet {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
         this.goalSelector.addGoal(3, new ModernRemnantAIMelee(this));
         this.goalSelector.addGoal(6, new TameableAIFollowOwner(this, 1.3D, 6.0F, 2.0F, true));
-        this.goalSelector.addGoal(6, new TemptGoal(this, 1.0D, Ingredient.of(Items.SNIFFER_EGG), false));
+        this.goalSelector.addGoal(6, new TemptGoal(this, 1.0D, Ingredient.of(ArchaeologyItems.BRUSH.get()), false));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));
@@ -117,7 +133,7 @@ public class Modern_Remnant_Entity extends AnimationPet {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.FALLING_BLOCK) || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
     }
 
 
@@ -141,16 +157,9 @@ public class Modern_Remnant_Entity extends AnimationPet {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if (!isTame() && item == Items.SNIFFER_EGG) {
-            this.usePlayerItem(player, hand, itemstack);
-            this.gameEvent(GameEvent.EAT);
-            if (!net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-                this.tame(player);
-                this.level().broadcastEntityEvent(this, (byte) 7);
-            } else {
-                this.level().broadcastEntityEvent(this, (byte) 6);
-            }
-            return InteractionResult.SUCCESS;
+        if(item == ArchaeologyItems.BRUSH.get())
+        {
+        	player.startUsingItem(hand);
         }
         if (isTame() && itemstack.is(ModTag.BONE_ITEM)) {
             if (this.getHealth() < this.getMaxHealth()) {
@@ -163,7 +172,7 @@ public class Modern_Remnant_Entity extends AnimationPet {
 
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
-        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player)) {
+        if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && item != ArchaeologyItems.BRUSH.get()) {
             if (!player.isShiftKeyDown()) {
                 this.setCommand(this.getCommand() + 1);
                 if (this.getCommand() == 3) {
@@ -329,7 +338,7 @@ public class Modern_Remnant_Entity extends AnimationPet {
                     if (this.mob.getAnimationTick() == 5) {
                         if (this.mob.distanceTo(target) < this.mob.getBbWidth() * 2.5F * this.mob.getBbWidth() * 2.5F + target.getBbWidth()) {
                             float damage = (float) this.mob.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                            target.hurt(damageSources().mobAttack(this.mob), damage);
+                            target.hurt(DamageSource.mobAttack(this.mob), damage);
                         }
                     }
                 }

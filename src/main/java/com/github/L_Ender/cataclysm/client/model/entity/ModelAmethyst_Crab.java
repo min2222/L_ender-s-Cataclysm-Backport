@@ -4,14 +4,11 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 
 
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Amethyst_Crab_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Golem_Entity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.Minecraft;
-import net.minecraft.world.entity.Entity;
 
 public class ModelAmethyst_Crab extends AdvancedEntityModel<Amethyst_Crab_Entity> {
 	private final AdvancedModelBox root;

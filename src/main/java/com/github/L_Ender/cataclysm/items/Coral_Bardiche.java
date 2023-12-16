@@ -1,10 +1,12 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Bardiche_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -34,8 +36,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
-import java.util.UUID;
-
 public class Coral_Bardiche extends Item implements Vanishable {
     public static final int THROW_THRESHOLD_TIME = 10;
     public static final float BASE_DAMAGE = 8.0F;
@@ -47,7 +47,7 @@ public class Coral_Bardiche extends Item implements Vanishable {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 9.0D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double)-3.2F, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(UUID.fromString("8A189F9D-0CAD-4F4F-BE2D-EE7586DAA7D1"), "Tool modifier", 1.5F, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("8A189F9D-0CAD-4F4F-BE2D-EE7586DAA7D1"), "Tool modifier", 1.5F, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
     }
 
@@ -102,7 +102,7 @@ public class Coral_Bardiche extends Item implements Vanishable {
                         f3 *= f5 / f4;
                         player.push((double)f1, (double)f2, (double)f3);
                         player.startAutoSpinAttack(20);
-                        if (player.onGround()) {
+                        if (player.isOnGround()) {
                             float f6 = 1.1999999F;
                             player.move(MoverType.SELF, new Vec3(0.0D, (double)1.1999999F, 0.0D));
                         }

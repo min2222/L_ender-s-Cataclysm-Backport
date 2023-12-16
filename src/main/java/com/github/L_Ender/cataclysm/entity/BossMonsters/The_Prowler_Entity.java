@@ -1,5 +1,8 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import java.util.EnumSet;
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackAniamtionGoal3;
@@ -8,9 +11,9 @@ import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Wither_Homing_Missile_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -18,7 +21,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -40,9 +42,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 
-import java.util.EnumSet;
-import java.util.List;
-
 
 public class The_Prowler_Entity extends Boss_monster {
 
@@ -59,12 +58,16 @@ public class The_Prowler_Entity extends Boss_monster {
     public The_Prowler_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 20;
-        this.setMaxUpStep(1.25F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         setConfigattribute(this, CMConfig.ProwlerHealthMultiplier, CMConfig.ProwlerDamageMultiplier);
     }
-
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.25F;
+    }
+    
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{NO_ANIMATION, PROWLER_MISSILE,PROWLER_ATTACK,PROWLER_SPIN_ATTACK,PROWLER_STUN};
@@ -101,7 +104,7 @@ public class The_Prowler_Entity extends Boss_monster {
     @Override
     public boolean hurt(DamageSource source, float damage) {
 
-        if (source.is(CMDamageTypes.EMP) && this.getIsAwaken()) {
+        if ("cataclysm.emp".equals(source.getMsgId()) && this.getIsAwaken()) {
             AnimationHandler.INSTANCE.sendAnimationMessage(this, PROWLER_STUN);
         }
         double range = calculateRange(source);
@@ -109,7 +112,7 @@ public class The_Prowler_Entity extends Boss_monster {
             return false;
         }
         if (this.deactivateProgress > 0) {
-            if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            if (!source.isBypassInvul()) {
                 return false;
             }
         }
@@ -172,7 +175,7 @@ public class The_Prowler_Entity extends Boss_monster {
             }
         }
 
-        if (!level().isClientSide) {
+        if (!level.isClientSide) {
             timeWithoutTarget++;
             if (target != null) {
                 timeWithoutTarget = 0;
@@ -206,7 +209,7 @@ public class The_Prowler_Entity extends Boss_monster {
         }
         if(this.getAnimation() == PROWLER_SPIN_ATTACK){
             if(this.getAnimationTick() == 8) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.PROWLER_SAW_SPIN_ATTACK.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.PROWLER_SAW_SPIN_ATTACK.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             }
             if(this.getAnimationTick() == 19) {
                 AreaAttack(4f,4f,270,1.5F);
@@ -214,7 +217,7 @@ public class The_Prowler_Entity extends Boss_monster {
         }
         if(this.getAnimation() == PROWLER_ATTACK){
             if(this.getAnimationTick()== 1) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.PROWLER_SAW_ATTACK.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+                this.level.playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.PROWLER_SAW_ATTACK.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
             }
             if(this.getAnimationTick() >= 18 && this.getAnimationTick() <= 64) {
                 if (this.tickCount % 4 ==0) {
@@ -227,9 +230,9 @@ public class The_Prowler_Entity extends Boss_monster {
         }
 
         if (this.getAnimation() == PROWLER_STUN)
-            if (this.level().isClientSide) {
+            if (this.level.isClientSide) {
                 for (int i = 0; i < 2; ++i) {
-                    this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                    this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
                 }
             }
 
@@ -250,7 +253,7 @@ public class The_Prowler_Entity extends Boss_monster {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!isAlliedTo(entityHit) && !(entityHit instanceof The_Prowler_Entity) && entityHit != this) {
-                    entityHit.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage));
+                    entityHit.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage));
 
                 }
             }
@@ -260,7 +263,7 @@ public class The_Prowler_Entity extends Boss_monster {
 
     private void Missilelaunch(float y, float math, LivingEntity target) {
         if (!this.isSilent()) {
-            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ROCKET_LAUNCH.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+            this.level.playSound(null, this.getX(), this.getY(), this.getZ(), ModSounds.ROCKET_LAUNCH.get(), SoundSource.HOSTILE, 1.5f, 1F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
         }
         float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
         float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
@@ -277,9 +280,9 @@ public class The_Prowler_Entity extends Boss_monster {
 
 
 
-        Wither_Homing_Missile_Entity laserBeam = new Wither_Homing_Missile_Entity(this.level(),this,target);
+        Wither_Homing_Missile_Entity laserBeam = new Wither_Homing_Missile_Entity(this.level,this,target);
         laserBeam.setPosRaw(d0, d1, d2);
-        this.level().addFreshEntity(laserBeam);
+        this.level.addFreshEntity(laserBeam);
     }
 
     public boolean isAlliedTo(Entity entityIn) {

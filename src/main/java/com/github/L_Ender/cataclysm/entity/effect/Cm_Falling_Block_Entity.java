@@ -1,13 +1,13 @@
 package com.github.L_Ender.cataclysm.entity.effect;
 
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -23,7 +23,7 @@ import net.minecraftforge.network.NetworkHooks;
 public class Cm_Falling_Block_Entity extends Entity {
     public int duration;
     protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(Cm_Falling_Block_Entity.class, EntityDataSerializers.BLOCK_POS);
-    private static final EntityDataAccessor<BlockState> BLOCK_STATE = SynchedEntityData.defineId(Cm_Falling_Block_Entity.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Optional<BlockState>> BLOCK_STATE = SynchedEntityData.defineId(Cm_Falling_Block_Entity.class, EntityDataSerializers.BLOCK_STATE);
 
     public Cm_Falling_Block_Entity(EntityType<Cm_Falling_Block_Entity> type, Level level) {
         super(type, level);
@@ -53,15 +53,15 @@ public class Cm_Falling_Block_Entity extends Entity {
 
     protected void defineSynchedData() {
         this.entityData.define(DATA_START_POS, BlockPos.ZERO);
-        this.entityData.define(BLOCK_STATE, Blocks.AIR.defaultBlockState());
+        this.entityData.define(BLOCK_STATE, Optional.of(Blocks.AIR.defaultBlockState()));
     }
 
     public BlockState getBlockState() {
-        return this.entityData.get(BLOCK_STATE);
+        return this.entityData.get(BLOCK_STATE).get();
     }
 
     public void setBlockState(BlockState p_270267_) {
-        this.entityData.set(BLOCK_STATE, p_270267_);
+        this.entityData.set(BLOCK_STATE, Optional.of(p_270267_));
     }
 
     public void tick() {
@@ -71,7 +71,7 @@ public class Cm_Falling_Block_Entity extends Entity {
         this.move(MoverType.SELF, this.getDeltaMovement());
         this.setDeltaMovement(this.getDeltaMovement().scale(0.98D));
 
-        if (this.onGround() && tickCount > duration) {
+        if (this.isOnGround() && tickCount > duration) {
             discard();
         }
         if (tickCount > 300) {
@@ -88,7 +88,7 @@ public class Cm_Falling_Block_Entity extends Entity {
     }
 
     protected void readAdditionalSaveData(CompoundTag p_31964_) {
-        this.setBlockState(NbtUtils.readBlockState(this.level().holderLookup(Registries.BLOCK), p_31964_.getCompound("block_state")));
+        this.setBlockState(NbtUtils.readBlockState(p_31964_.getCompound("block_state")));
         this.duration = p_31964_.getInt("Time");
 
     }
@@ -98,7 +98,7 @@ public class Cm_Falling_Block_Entity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

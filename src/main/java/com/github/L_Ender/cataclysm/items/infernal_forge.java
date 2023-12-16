@@ -1,9 +1,14 @@
 package com.github.L_Ender.cataclysm.items;
 
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -12,6 +17,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -27,9 +33,6 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class infernal_forge extends PickaxeItem {
     public infernal_forge(Tiers toolMaterial, Properties props) {
 
@@ -38,7 +41,7 @@ public class infernal_forge extends PickaxeItem {
 
     @Override
     public boolean hurtEnemy(ItemStack heldItemStack, LivingEntity target, LivingEntity attacker) {
-        if (!target.level().isClientSide) {
+        if (!target.level.isClientSide) {
             target.playSound(ModSounds.HAMMERTIME.get(), 0.5F, 0.5F);
             target.knockback( 1F, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
         }
@@ -67,7 +70,7 @@ public class infernal_forge extends PickaxeItem {
         List<Entity> list = world.getEntities(player, player.getBoundingBox().inflate(radius, radius, radius));
         for (Entity entity : list) {
             if (entity instanceof LivingEntity) {
-                entity.hurt(world.damageSources().mobAttack(player), (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                entity.hurt(DamageSource.mobAttack(player), (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 entity.setDeltaMovement(entity.getDeltaMovement().multiply(0.0, 2.0, 0.0));
                 if (berserk) {
                     entity.setSecondsOnFire((int) 5.0);

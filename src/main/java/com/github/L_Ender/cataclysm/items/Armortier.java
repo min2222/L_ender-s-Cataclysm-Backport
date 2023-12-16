@@ -1,15 +1,15 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.function.Supplier;
+
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
-
-import java.util.function.Supplier;
 
 
  public enum Armortier implements ArmorMaterial {
@@ -35,13 +35,13 @@ import java.util.function.Supplier;
      }
 
      @Override
-     public int getDurabilityForType(ArmorItem.Type type) {
-         return DURABILITY_ARRAY[type.ordinal()] * this.durability;
+     public int getDurabilityForSlot(EquipmentSlot type) {
+         return DURABILITY_ARRAY[type.getIndex()] * this.durability;
      }
 
      @Override
-     public int getDefenseForType(ArmorItem.Type type) {
-         return this.dmgReduction[type.ordinal()];
+     public int getDefenseForSlot(EquipmentSlot type) {
+         return this.dmgReduction[type.getIndex()];
      }
 
      @Override

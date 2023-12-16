@@ -2,13 +2,12 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-import com.github.L_Ender.cataclysm.init.ModParticle;
+
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -145,7 +144,7 @@ public class Eye_Of_Dungeon_Entity extends Entity implements ItemSupplier {
             double d3 = vec3.horizontalDistance();
             this.setXRot(lerpRotation(this.xRotO, (float) (Mth.atan2(vec3.y, d3) * (double) (180F / (float) Math.PI))));
             this.setYRot(lerpRotation(this.yRotO, (float) (Mth.atan2(vec3.x, vec3.z) * (double) (180F / (float) Math.PI))));
-            if (!this.level().isClientSide) {
+            if (!this.level.isClientSide) {
                 double d4 = this.tx - d0;
                 double d5 = this.tz - d2;
                 float f = (float) Math.sqrt(d4 * d4 + d5 * d5);
@@ -165,21 +164,21 @@ public class Eye_Of_Dungeon_Entity extends Entity implements ItemSupplier {
             float f2 = 0.25F;
             if (this.isInWater()) {
                 for (int i = 0; i < 4; ++i) {
-                    this.level().addParticle(ParticleTypes.BUBBLE, d0 - vec3.x * 0.25D, d1 - vec3.y * 0.25D, d2 - vec3.z * 0.25D, vec3.x, vec3.y, vec3.z);
+                    this.level.addParticle(ParticleTypes.BUBBLE, d0 - vec3.x * 0.25D, d1 - vec3.y * 0.25D, d2 - vec3.z * 0.25D, vec3.x, vec3.y, vec3.z);
                 }
             } else {
-                this.level().addParticle((new LightningParticle.OrbData(this.getR(), this.getG(),  this.getB())), d0 - vec3.x * 0.25D + this.random.nextDouble() * 0.6D - 0.3D, d1 - vec3.y * 0.25D - 0.5D, d2 - vec3.z * 0.25D + this.random.nextDouble() * 0.6D - 0.3D, vec3.x, vec3.y, vec3.z);
+                this.level.addParticle((new LightningParticle.OrbData(this.getR(), this.getG(),  this.getB())), d0 - vec3.x * 0.25D + this.random.nextDouble() * 0.6D - 0.3D, d1 - vec3.y * 0.25D - 0.5D, d2 - vec3.z * 0.25D + this.random.nextDouble() * 0.6D - 0.3D, vec3.x, vec3.y, vec3.z);
             }
 
-            if (!this.level().isClientSide) {
+            if (!this.level.isClientSide) {
                 this.setPos(d0, d1, d2);
                 ++this.life;
-                if (this.life > 80 && !this.level().isClientSide) {
+                if (this.life > 80 && !this.level.isClientSide) {
                     this.playSound(SoundEvents.ENDER_EYE_DEATH, 1.0F, 1.0F);
                     this.discard();
-                    ItemEntity itemEntity = new ItemEntity(this.level(), this.getX(), this.getY(), this.getZ(), this.getItem());
+                    ItemEntity itemEntity = new ItemEntity(this.level, this.getX(), this.getY(), this.getZ(), this.getItem());
                     itemEntity.setGlowingTag(true);
-                    this.level().addFreshEntity(itemEntity);
+                    this.level.addFreshEntity(itemEntity);
                 }
             } else {
                 this.setPosRaw(d0, d1, d2);
@@ -226,7 +225,7 @@ public class Eye_Of_Dungeon_Entity extends Entity implements ItemSupplier {
         return false;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 

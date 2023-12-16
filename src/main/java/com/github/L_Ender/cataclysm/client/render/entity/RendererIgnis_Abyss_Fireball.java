@@ -4,7 +4,8 @@ import com.github.L_Ender.cataclysm.client.model.entity.ModelIgnis_Fireball;
 import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Abyss_Fireball_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -42,9 +43,9 @@ public class RendererIgnis_Abyss_Fireball extends EntityRenderer<Ignis_Abyss_Fir
 		float f1 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
 		float f2 = (float) entityIn.tickCount + partialTicks;
 		matrixStackIn.translate(0.0D, (double) 0.3F, 0.0D);
-		matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
-		matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.cos(f2 * 0.1F) * 180.0F));
-		matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.sin(f2 * 0.15F) * 360.0F));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
+		matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(Mth.cos(f2 * 0.1F) * 180.0F));
+		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f2 * 0.15F) * 360.0F));
 		this.model.setupAnim(entityIn, 0.0F, 0.0F, 0.0F, f, f1);
 		VertexConsumer VertexConsumer = bufferIn.getBuffer(this.model.renderType(getTextureLocation(entityIn)));
 		this.model.renderToBuffer(matrixStackIn, VertexConsumer, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);

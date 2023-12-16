@@ -2,9 +2,12 @@ package com.github.L_Ender.cataclysm.blocks;
 
 
 
+import javax.annotation.Nullable;
+
+import com.github.L_Ender.cataclysm.blockentities.TileEntityMechanical_fusion_Anvil;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 import com.github.L_Ender.cataclysm.inventory.WeaponfusionMenu;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityMechanical_fusion_Anvil;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -18,21 +21,24 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class Mechanical_fusion_Anvil extends BaseEntityBlock {
     private static final Component CONTAINER_TITLE = Component.translatable("cataclysm.container.weapon_fusion");
@@ -48,7 +54,7 @@ public class Mechanical_fusion_Anvil extends BaseEntityBlock {
     private static final VoxelShape Z_AXIS_AABB = Shapes.or(BASE, Z_LEG1, Z_LEG2, Z_TOP);
 
     public Mechanical_fusion_Anvil() {
-        super(Properties.of().mapColor(MapColor.METAL)
+        super(Properties.of(Material.HEAVY_METAL).color(MaterialColor.METAL)
                 .emissiveRendering((block, world, pos) -> true)
                 .strength(50.0F, 1200.0F)
                 .requiresCorrectToolForDrops()

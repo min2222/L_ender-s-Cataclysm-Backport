@@ -1,14 +1,18 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -23,14 +27,12 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class Abyss_Orb_Entity extends Projectile {
     public double xPower;
@@ -133,10 +135,10 @@ public class Abyss_Orb_Entity extends Projectile {
 
     public void tick() {
         Entity entity = this.getOwner();
-        if (this.level().isClientSide || (entity == null || !entity.isRemoved()) && this.level().hasChunkAt(this.blockPosition())) {
+        if (this.level.isClientSide || (entity == null || !entity.isRemoved()) && this.level.hasChunkAt(this.blockPosition())) {
             super.tick();
 
-            HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+            HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
             if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
                 this.onHit(hitresult);
             }
@@ -151,19 +153,19 @@ public class Abyss_Orb_Entity extends Projectile {
             if (this.isInWater()) {
                 for(int i = 0; i < 4; ++i) {
                     float f1 = 0.25F;
-                    this.level().addParticle(ParticleTypes.BUBBLE, d0 - vec3.x * 0.25D, d1 - vec3.y * 0.25D, d2 - vec3.z * 0.25D, vec3.x, vec3.y, vec3.z);
+                    this.level.addParticle(ParticleTypes.BUBBLE, d0 - vec3.x * 0.25D, d1 - vec3.y * 0.25D, d2 - vec3.z * 0.25D, vec3.x, vec3.y, vec3.z);
                 }
                 f = 0.8F;
             }
-            this.level().addParticle(ParticleTypes.REVERSE_PORTAL, this.getX() - vec3.x, this.getY() - vec3.y + 0.15D, this.getZ() - vec3.z, 0.0D, 0.0D, 0.0D);
-            this.level().addParticle((new LightningParticle.OrbData(0.4f, 0.1f, 0.8f)), d0 - vec3.x * 0.5D + this.random.nextDouble() * 0.6D - 0.3D, d1 - vec3.y * 0.5D, d2 - vec3.z * 0.5D + this.random.nextDouble() * 0.6D - 0.3D, vec3.x, vec3.y, vec3.z);
+            this.level.addParticle(ParticleTypes.REVERSE_PORTAL, this.getX() - vec3.x, this.getY() - vec3.y + 0.15D, this.getZ() - vec3.z, 0.0D, 0.0D, 0.0D);
+            this.level.addParticle((new LightningParticle.OrbData(0.4f, 0.1f, 0.8f)), d0 - vec3.x * 0.5D + this.random.nextDouble() * 0.6D - 0.3D, d1 - vec3.y * 0.5D, d2 - vec3.z * 0.5D + this.random.nextDouble() * 0.6D - 0.3D, vec3.x, vec3.y, vec3.z);
           //  this.level.addParticle(ParticleTypes.FLAME, this.getX() - vec3.x, this.getY() - vec3.y + 0.15D, this.getZ() - vec3.z, 0.0D, 0.0D, 0.0D);
             this.setDeltaMovement(vec3.add(this.xPower, this.yPower, this.zPower).scale((double)f));
             this.setPos(d0, d1, d2);
         } else {
             this.discard();
         }
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             timer--;
             lifetick++;
             if (timer <= 0) {
@@ -172,7 +174,7 @@ public class Abyss_Orb_Entity extends Projectile {
                 }
             }
             if (this.finalTarget == null && this.targetId != null) {
-                this.finalTarget = ((ServerLevel) this.level()).getEntity(this.targetId);
+                this.finalTarget = ((ServerLevel) this.level).getEntity(this.targetId);
                 if (this.finalTarget == null) {
                     this.targetId = null;
                 }
@@ -209,20 +211,20 @@ public class Abyss_Orb_Entity extends Projectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity entity1 = this.getOwner();
-        if (!this.level().isClientSide && !((result.getEntity() instanceof The_Leviathan_Part ||result.getEntity() instanceof The_Leviathan_Entity) && entity1 instanceof The_Leviathan_Entity)) {
+        if (!this.level.isClientSide && !((result.getEntity() instanceof The_Leviathan_Part ||result.getEntity() instanceof The_Leviathan_Entity) && entity1 instanceof The_Leviathan_Entity)) {
             Entity entity = result.getEntity();
             boolean flag;
             if (entity1 instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity1;
-                flag = entity.hurt(damageSources().mobProjectile(this, livingentity), (float) CMConfig.AbyssOrbdamage);
+                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), (float) CMConfig.AbyssOrbdamage);
             } else {
-                flag = entity.hurt(damageSources().magic(), (float) CMConfig.AbyssOrbdamage);
+                flag = entity.hurt(DamageSource.MAGIC, (float) CMConfig.AbyssOrbdamage);
             }
 
             if (flag && entity instanceof LivingEntity) {
                 ((LivingEntity)entity).addEffect(new MobEffectInstance(ModEffect.EFFECTABYSSAL_FEAR.get(), 100, 0), this.getEffectSource());
             }
-            this.level().explode(entity1, this.getX(), this.getY(), this.getZ(), 1.0F, false, Level.ExplosionInteraction.NONE);
+            this.level.explode(entity1, this.getX(), this.getY(), this.getZ(), 1.0F, false, Explosion.BlockInteraction.NONE);
             this.discard();
 
         }
@@ -233,8 +235,8 @@ public class Abyss_Orb_Entity extends Projectile {
         Entity entity1 = this.getOwner();
         if (this.getTracking()) {
             if (this.lifetick >= 200) {
-                if (!this.level().isClientSide) {
-                    this.level().explode(entity1, this.getX(), this.getY(), this.getZ(), 1.0F, false, Level.ExplosionInteraction.NONE);
+                if (!this.level.isClientSide) {
+                    this.level.explode(entity1, this.getX(), this.getY(), this.getZ(), 1.0F, false, Explosion.BlockInteraction.NONE);
                     this.discard();
                 }
             }
@@ -275,7 +277,7 @@ public class Abyss_Orb_Entity extends Projectile {
         return 1.0F;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         Entity entity = this.getOwner();
         int i = entity == null ? 0 : entity.getId();
         return new ClientboundAddEntityPacket(this.getId(), this.getUUID(), this.getX(), this.getY(), this.getZ(), this.getXRot(), this.getYRot(), this.getType(), i, new Vec3(this.xPower, this.yPower, this.zPower), 0.0D);

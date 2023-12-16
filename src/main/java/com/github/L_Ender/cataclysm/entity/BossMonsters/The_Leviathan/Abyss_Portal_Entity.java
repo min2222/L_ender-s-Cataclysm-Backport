@@ -1,12 +1,19 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,16 +23,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public class Abyss_Portal_Entity extends Entity {
 
@@ -52,7 +52,7 @@ public class Abyss_Portal_Entity extends Entity {
 
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -68,16 +68,16 @@ public class Abyss_Portal_Entity extends Entity {
             this.playSound(SoundEvents.END_PORTAL_SPAWN, 1.0F, 1 + random.nextFloat() * 0.2F);
             madeOpenNoise = true;
         }
-        if(random.nextFloat() < 0.5F && level().isClientSide && Math.min(tickCount, this.getLifespan()) >= 20){
+        if(random.nextFloat() < 0.5F && level.isClientSide && Math.min(tickCount, this.getLifespan()) >= 20){
             double particleX = this.getBoundingBox().minX + random.nextFloat() * (this.getBoundingBox().maxX - this.getBoundingBox().minX);
             double particleY = this.getBoundingBox().minY + random.nextFloat() * (this.getBoundingBox().maxY - this.getBoundingBox().minY);
             double particleZ = this.getBoundingBox().minZ + random.nextFloat() * (this.getBoundingBox().maxZ - this.getBoundingBox().minZ);
-            level().addParticle(ParticleTypes.PORTAL, particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
+            level.addParticle(ParticleTypes.PORTAL, particleX, particleY, particleZ, 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian(), 0.1 * random.nextGaussian());
         }
         List<Entity> entities = new ArrayList<>();
-        entities.addAll(this.level().getEntities(this, this.getBoundingBox().deflate(0.2F)));
-        entities.addAll(this.level().getEntitiesOfClass(The_Leviathan_Entity.class, this.getBoundingBox().inflate(3)));
-        if (!level().isClientSide) {
+        entities.addAll(this.level.getEntities(this, this.getBoundingBox().deflate(0.2F)));
+        entities.addAll(this.level.getEntitiesOfClass(The_Leviathan_Entity.class, this.getBoundingBox().inflate(3)));
+        if (!level.isClientSide) {
             if (this.getDestination() != null && this.getLifespan() > 20 && tickCount > 20 && this.getEntrance()) {
                 for (Entity e : entities) {
                     if(e.isOnPortalCooldown() || e.isShiftKeyDown() || e instanceof Abyss_Portal_Entity ){
@@ -133,7 +133,7 @@ public class Abyss_Portal_Entity extends Entity {
     public void setDestination(BlockPos destination) {
         this.entityData.set(DESTINATION, Optional.ofNullable(destination));
         if (this.getSisterId() == null) {
-            createAndSetSister(level(), null);
+            createAndSetSister(level, null);
         }
     }
 
@@ -149,7 +149,7 @@ public class Abyss_Portal_Entity extends Entity {
     public void setDestination(BlockPos destination, Direction dir) {
         this.entityData.set(DESTINATION, Optional.ofNullable(destination));
         if (this.getSisterId() == null ) {
-            createAndSetSister(level(), dir);
+            createAndSetSister(level, dir);
         }
     }
 
@@ -201,8 +201,8 @@ public class Abyss_Portal_Entity extends Entity {
 
     public Entity getSister() {
         UUID id = getSisterId();
-        if (id != null && !level().isClientSide) {
-            return ((ServerLevel) level()).getEntity(id);
+        if (id != null && !level.isClientSide) {
+            return ((ServerLevel) level).getEntity(id);
         }
         return null;
     }

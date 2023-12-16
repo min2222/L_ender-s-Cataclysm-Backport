@@ -3,7 +3,11 @@ package com.github.L_Ender.cataclysm.client.particle;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,10 +22,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 
 public class EM_PulseParticle extends Particle {
     private static final ResourceLocation TEXTURE = new ResourceLocation("cataclysm:textures/particle/em_pulse.png");
@@ -62,7 +62,7 @@ public class EM_PulseParticle extends Particle {
         float f = (float)(Mth.lerp((double)partialTick, this.xo, this.x) - vec3.x());
         float f1 = (float)(Mth.lerp((double)partialTick, this.yo, this.y) - vec3.y());
         float f2 = (float)(Mth.lerp((double)partialTick, this.zo, this.z) - vec3.z());
-        Quaternionf quaternion = Axis.XP.rotationDegrees(90F);
+        Quaternion quaternion = Vector3f.XP.rotationDegrees(90F);
         MultiBufferSource.BufferSource multibuffersource$buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
         VertexConsumer portalStatic = multibuffersource$buffersource.getBuffer(CMRenderTypes.getPulse());
         PoseStack posestack = new PoseStack();
@@ -74,7 +74,7 @@ public class EM_PulseParticle extends Particle {
         float alphaLerp = prevAlpha + partialTick * (alpha - prevAlpha);
         for(int i = 0; i < 4; ++i) {
             Vector3f vector3f = avector3f[i];
-            vector3f.rotate(quaternion);
+            vector3f.transform(quaternion);
             vector3f.mul(f4);
             vector3f.add(f, f1, f2);
         }

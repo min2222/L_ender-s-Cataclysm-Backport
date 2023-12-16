@@ -2,11 +2,10 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
-
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -19,6 +18,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -49,7 +49,7 @@ public class Ignis_Fireball_Entity extends AbstractHurtingProjectile {
 
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             timer--;
             if (timer <= 0) {
                 if (!getFired()){
@@ -96,16 +96,16 @@ public class Ignis_Fireball_Entity extends AbstractHurtingProjectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity shooter = this.getOwner();
-        if (!this.level().isClientSide && getFired() && !(result.getEntity() instanceof Ignis_Fireball_Entity || result.getEntity() instanceof Ignis_Abyss_Fireball_Entity || result.getEntity() instanceof Cm_Falling_Block_Entity || result.getEntity() instanceof Ignis_Entity && shooter instanceof Ignis_Entity)) {
+        if (!this.level.isClientSide && getFired() && !(result.getEntity() instanceof Ignis_Fireball_Entity || result.getEntity() instanceof Ignis_Abyss_Fireball_Entity || result.getEntity() instanceof Cm_Falling_Block_Entity || result.getEntity() instanceof Ignis_Entity && shooter instanceof Ignis_Entity)) {
             Entity entity = result.getEntity();
             boolean flag;
             if (shooter instanceof LivingEntity) {
                 LivingEntity owner = (LivingEntity)shooter;
                 float damage = this.isSoul() ? 8.0F : 6.0F;
                 if (entity instanceof LivingEntity) {
-                    flag = entity.hurt(damageSources().mobProjectile(this, owner), damage + ((LivingEntity) entity).getMaxHealth() * 0.07f);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), damage + ((LivingEntity) entity).getMaxHealth() * 0.07f);
                 }else{
-                    flag = entity.hurt(damageSources().mobProjectile(this, owner), damage);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), damage);
                 }
 
                 if (flag) {
@@ -118,9 +118,9 @@ public class Ignis_Fireball_Entity extends AbstractHurtingProjectile {
 
                 }
             } else {
-                flag = entity.hurt(this.damageSources().magic(), 6.0F);
+                flag = entity.hurt(DamageSource.MAGIC, 6.0F);
             }
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, true, Level.ExplosionInteraction.NONE);
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, true, Explosion.BlockInteraction.NONE);
             this.discard();
 
             if (flag && entity instanceof LivingEntity) {
@@ -144,8 +144,8 @@ public class Ignis_Fireball_Entity extends AbstractHurtingProjectile {
 
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if (!this.level().isClientSide && getFired()) {
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, true, Level.ExplosionInteraction.NONE);
+        if (!this.level.isClientSide && getFired()) {
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 1.0F, true, Explosion.BlockInteraction.NONE);
             this.discard();
         }
     }

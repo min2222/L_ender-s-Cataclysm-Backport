@@ -1,13 +1,17 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
+
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -21,9 +25,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class Void_Rune_Entity extends Entity {
     private int warmupDelayTicks;
@@ -59,8 +60,8 @@ public class Void_Rune_Entity extends Entity {
 
     @Nullable
     public LivingEntity getCaster() {
-        if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.casterUuid);
+        if (this.caster == null && this.casterUuid != null && this.level instanceof ServerLevel) {
+            Entity entity = ((ServerLevel)this.level).getEntity(this.casterUuid);
             if (entity instanceof LivingEntity) {
                 this.caster = (LivingEntity)entity;
             }
@@ -99,7 +100,7 @@ public class Void_Rune_Entity extends Entity {
             this.activateProgress--;
         }
 
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             if (this.clientSideAttackStarted) {
                 --this.lifeTicks;
                 if (!isActivate() && this.activateProgress < 10F) {
@@ -107,14 +108,14 @@ public class Void_Rune_Entity extends Entity {
                 }
                 if (this.lifeTicks == 33) {
                     for(int i = 0; i < 80; ++i) {
-                        BlockState block = level().getBlockState(blockPosition().below());
+                        BlockState block = level.getBlockState(blockPosition().below());
                         double d0 = this.getX() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
                         double d1 = this.getY() + 0.03D;
                         double d2 = this.getZ() + (this.random.nextDouble() * 2.0D - 1.0D) * (double) this.getBbWidth() * 0.5D;
                         double d3 = (this.random.nextGaussian() * 0.07D);
                         double d4 = (this.random.nextGaussian() * 0.07D);
                         double d5 = (this.random.nextGaussian() * 0.07D);
-                        this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), d0, d1, d2, d3, d4, d5);
+                        this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), d0, d1, d2, d3, d4, d5);
                     }
                 }
 
@@ -127,7 +128,7 @@ public class Void_Rune_Entity extends Entity {
                         double d3 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.3D;
                         double d4 = 0.3D + this.random.nextDouble() * 0.3D;
                         double d5 = (this.random.nextDouble() * 2.0D - 1.0D) * 0.3D;
-                        this.level().addParticle(ParticleTypes.REVERSE_PORTAL, d0, d1, d2, d3, d4, d5);
+                        this.level.addParticle(ParticleTypes.REVERSE_PORTAL, d0, d1, d2, d3, d4, d5);
                     }
                 }
             }
@@ -138,14 +139,14 @@ public class Void_Rune_Entity extends Entity {
                 }
             }
             if (this.warmupDelayTicks < -10 && this.warmupDelayTicks > -30) {
-                for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
+                for(LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
                     this.damage(livingentity);
                 }
             }
 
 
             if (!this.sentSpikeEvent) {
-                this.level().broadcastEntityEvent(this, (byte)4);
+                this.level.broadcastEntityEvent(this, (byte)4);
                 this.sentSpikeEvent = true;
             }
 
@@ -169,12 +170,12 @@ public class Void_Rune_Entity extends Entity {
         if (Hitentity.isAlive() && !Hitentity.isInvulnerable() && Hitentity != livingentity) {
             if (this.tickCount % 5 == 0) {
                 if (livingentity == null) {
-                    Hitentity.hurt(this.damageSources().magic(), (float) CMConfig.Voidrunedamage);
+                    Hitentity.hurt(DamageSource.MAGIC, (float) CMConfig.Voidrunedamage);
                 } else {
                     if (livingentity.isAlliedTo(Hitentity)) {
                         return;
                     }
-                    Hitentity.hurt(this.damageSources().indirectMagic(this, livingentity), (float) CMConfig.Voidrunedamage);
+                    Hitentity.hurt(DamageSource.indirectMagic(this, livingentity), (float) CMConfig.Voidrunedamage);
                 }
             }
         }
@@ -190,7 +191,7 @@ public class Void_Rune_Entity extends Entity {
         if (id == 4) {
             this.clientSideAttackStarted = true;
             if (!this.isSilent()) {
-                this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.VOID_RUNE_RISING.get(), this.getSoundSource(), 0.5F, this.random.nextFloat() * 0.2F + 0.85F, false);
+                this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.VOID_RUNE_RISING.get(), this.getSoundSource(), 0.5F, this.random.nextFloat() * 0.2F + 0.85F, false);
             }
         }
 
@@ -203,7 +204,7 @@ public class Void_Rune_Entity extends Entity {
 
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

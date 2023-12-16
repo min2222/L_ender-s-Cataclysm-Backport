@@ -6,6 +6,7 @@ import com.github.L_Ender.cataclysm.client.render.layer.LayerDeepling_PriestItem
 import com.github.L_Ender.cataclysm.client.render.layer.LayerDeepling_Priest_Light;
 import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Priest_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;

@@ -1,11 +1,12 @@
 package com.github.L_Ender.cataclysm.client.render.blockentity;
 
 
+import com.github.L_Ender.cataclysm.blockentities.TileEntityMechanical_fusion_Anvil;
 import com.github.L_Ender.cataclysm.blocks.Mechanical_fusion_Anvil;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Mechanical_Anvil;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityMechanical_fusion_Anvil;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -35,7 +36,7 @@ public class RendererMechanical_fusion_anvil<T extends TileEntityMechanical_fusi
             matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         }
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
-        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
         matrixStackIn.pushPose();
         MODEL.animate(tileEntityIn, partialTicks);;
         MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);

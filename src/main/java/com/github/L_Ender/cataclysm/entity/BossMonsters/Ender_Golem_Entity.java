@@ -1,5 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AI.CmAttackGoal;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
@@ -10,6 +14,7 @@ import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -20,11 +25,9 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,9 +51,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-
 
 
 public class Ender_Golem_Entity extends Boss_monster {
@@ -71,10 +71,14 @@ public class Ender_Golem_Entity extends Boss_monster {
     public Ender_Golem_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 15;
-        this.setMaxUpStep(1.5F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         setConfigattribute(this, CMConfig.EnderGolemHealthMultiplier, CMConfig.EnderGolemDamageMultiplier);
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.5F;
     }
 
     @Override
@@ -130,7 +134,7 @@ public class Ender_Golem_Entity extends Boss_monster {
     public boolean hurt(DamageSource source, float damage) {
         if (this.getAnimation() == VOID_RUNE_ATTACK
                 || !this.getIsAwaken()) {
-            if(source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)|| !source.is(DamageTypes.MAGIC)) {
+            if(source.isBypassInvul()|| !source.isMagic()) {
                 damage *= 0.5;
             }
         }
@@ -195,7 +199,7 @@ public class Ender_Golem_Entity extends Boss_monster {
 
         if (deactivateProgress == 0 && this.isAlive()) {
             if (target != null && target.isAlive()) {
-                if (void_rune_attack_cooldown <= 0 && !isNoAi() && this.getAnimation() == NO_ANIMATION && target.onGround() && (this.random.nextInt(45) == 0 && this.distanceTo(target) < 4 || this.random.nextInt(24) == 0 && this.distanceTo(target) < 10)) {
+                if (void_rune_attack_cooldown <= 0 && !isNoAi() && this.getAnimation() == NO_ANIMATION && target.isOnGround() && (this.random.nextInt(45) == 0 && this.distanceTo(target) < 4 || this.random.nextInt(24) == 0 && this.distanceTo(target) < 10)) {
                     void_rune_attack_cooldown = VOID_RUNE_ATTACK_COOLDOWN;
                     this.setAnimation(VOID_RUNE_ATTACK);
 
@@ -209,11 +213,11 @@ public class Ender_Golem_Entity extends Boss_monster {
                 if (this.getAnimationTick() == 19) {
                     EarthQuake(5,6);
                     EarthQuakeParticle();
-                    if (!this.level().isClientSide) {
+                    if (!this.level.isClientSide) {
                         if (Breaking) {
                             BlockBreaking(4, 4, 4);
                         } else {
-                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                                 BlockBreaking(4, 4, 4);
                             }
                         }
@@ -224,7 +228,7 @@ public class Ender_Golem_Entity extends Boss_monster {
                 this.playSound(ModSounds.GOLEMATTACK.get(), 1, 1);
                 if (target != null && target.isAlive()) {
                     if (this.distanceTo(target) < 4.75F) {
-                        target.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(4));
+                        target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(4));
                         target.knockback(1.25F, this.getX() - target.getX(), this.getZ() - target.getZ());
                     }
                 }
@@ -233,11 +237,11 @@ public class Ender_Golem_Entity extends Boss_monster {
                 if (this.getAnimationTick() == 22) {
                     EarthQuake(4.25f,4);
                     EarthQuakeParticle();
-                    if (!this.level().isClientSide) {
+                    if (!this.level.isClientSide) {
                         if (Breaking) {
                             BlockBreaking(4, 4, 4);
                         } else {
-                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                                 BlockBreaking(4, 4, 4);
                             }
                         }
@@ -249,7 +253,7 @@ public class Ender_Golem_Entity extends Boss_monster {
             }
         }
         if (void_rune_attack_cooldown > 0) void_rune_attack_cooldown--;
-        if (!level().isClientSide) {
+        if (!level.isClientSide) {
             timeWithoutTarget++;
             if (target != null) {
                 timeWithoutTarget = 0;
@@ -278,10 +282,10 @@ public class Ender_Golem_Entity extends Boss_monster {
                     int k = MthY + j;
                     int l = MthZ + l2;
                     BlockPos blockpos = new BlockPos(i3, k, l);
-                    BlockState block = this.level().getBlockState(blockpos);
+                    BlockState block = this.level.getBlockState(blockpos);
                     if (block != Blocks.AIR.defaultBlockState() && block.is(ModTag.ENDER_GOLEM_CAN_DESTROY)) {
-                        if (block.canEntityDestroy(this.level(), blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, block)) {
-                            flag = this.level().destroyBlock(blockpos, true, this) || flag;
+                        if (block.canEntityDestroy(this.level, blockpos, this) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, block)) {
+                            flag = this.level.destroyBlock(blockpos, true, this) || flag;
                         }
                     }
                 }
@@ -290,8 +294,8 @@ public class Ender_Golem_Entity extends Boss_monster {
     }
 
     private void EarthQuakeParticle() {
-        if (this.level().isClientSide) {
-            BlockState block = level().getBlockState(blockPosition().below());
+        if (this.level.isClientSide) {
+            BlockState block = level.getBlockState(blockPosition().below());
             for (int i1 = 0; i1 < 20 + random.nextInt(12); i1++) {
                 double DeltaMovementX = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementY = getRandom().nextGaussian() * 0.07D;
@@ -300,16 +304,16 @@ public class Ender_Golem_Entity extends Boss_monster {
                 double extraX = 4F * Mth.sin((float) (Math.PI + angle));
                 double extraY = 0.3F;
                 double extraZ = 4F * Mth.cos(angle);
-                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), this.getX() + extraX, this.getY() + extraY, this.getZ() + extraZ, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
             }
         }
     }
 
     private void EarthQuake(float grow, int damage) {
         this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5f, 1F + this.getRandom().nextFloat() * 0.1F);
-        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(grow))) {
+        for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(grow))) {
             if (!isAlliedTo(entity) && !(entity instanceof Ender_Golem_Entity) && entity != this) {
-                entity.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(damage));
+                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(damage));
                 launch(entity, true);
 
             }
@@ -344,17 +348,17 @@ public class Ender_Golem_Entity extends Boss_monster {
 
 
     private void spawnFangs(double x, double z, double minY, double maxY, float rotation, int delay) {
-        BlockPos blockpos = BlockPos.containing(x, maxY, z);
+        BlockPos blockpos = new BlockPos(x, maxY, z);
         boolean flag = false;
         double d0 = 0.0D;
 
         do {
             BlockPos blockpos1 = blockpos.below();
-            BlockState blockstate = this.level().getBlockState(blockpos1);
-            if (blockstate.isFaceSturdy(this.level(), blockpos1, Direction.UP)) {
-                if (!this.level().isEmptyBlock(blockpos)) {
-                    BlockState blockstate1 = this.level().getBlockState(blockpos);
-                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level(), blockpos);
+            BlockState blockstate = this.level.getBlockState(blockpos1);
+            if (blockstate.isFaceSturdy(this.level, blockpos1, Direction.UP)) {
+                if (!this.level.isEmptyBlock(blockpos)) {
+                    BlockState blockstate1 = this.level.getBlockState(blockpos);
+                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level, blockpos);
                     if (!voxelshape.isEmpty()) {
                         d0 = voxelshape.max(Direction.Axis.Y);
                     }
@@ -368,7 +372,7 @@ public class Ender_Golem_Entity extends Boss_monster {
         } while (blockpos.getY() >= Mth.floor(minY) - 1);
 
         if (flag) {
-            this.level().addFreshEntity(new Void_Rune_Entity(this.level(), x, (double) blockpos.getY() + d0, z, rotation, delay, this));
+            this.level.addFreshEntity(new Void_Rune_Entity(this.level, x, (double) blockpos.getY() + d0, z, rotation, delay, this));
         }
     }
 

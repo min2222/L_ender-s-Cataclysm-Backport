@@ -8,20 +8,21 @@ import com.github.L_Ender.cataclysm.client.render.layer.The_Harbinger_Shield_Lay
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class RendererThe_Harbinger extends MobRenderer<The_Harbinger_Entity, ModelThe_Harbinger> {
@@ -34,7 +35,7 @@ public class RendererThe_Harbinger extends MobRenderer<The_Harbinger_Entity, Mod
         super(renderManagerIn, new ModelThe_Harbinger(), 1.0F);
         this.addLayer(new The_Harbinger_Layer(this));
         this.addLayer(new The_Harbinger_Shield_Layer(this));
-        this.addLayer(new The_Harbinger_Item_Layer(this, getModel().nether_star, Items.NETHER_STAR.getDefaultInstance(), ItemDisplayContext.GROUND));
+        this.addLayer(new The_Harbinger_Item_Layer(this, getModel().nether_star, Items.NETHER_STAR.getDefaultInstance(), ItemTransforms.TransformType.GROUND));
     }
 
     @Override
@@ -66,12 +67,12 @@ public class RendererThe_Harbinger extends MobRenderer<The_Harbinger_Entity, Mod
             matrixStackIn.translate(0.0D, 1.8D, 0.0D);
 
             for(int i = 0; (float)i < (f5 + f5 * f5) / 2.0F * 30.0F; ++i) {
-                matrixStackIn.mulPose(Axis.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F + f5 * 90.0F));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F + f5 * 90.0F));
                 float f3 = randomsource.nextFloat() * 5.0F + 5F + f7 * 10.0F;
                 float f4 = randomsource.nextFloat() * 0.5F + 1F + f7 * 2.0F;
                 Matrix4f matrix4f = matrixStackIn.last().pose();

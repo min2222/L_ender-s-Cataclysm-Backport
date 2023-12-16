@@ -3,22 +3,22 @@ package com.github.L_Ender.cataclysm.client.render.layer;
 import com.github.L_Ender.cataclysm.client.render.RenderUtils;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class Item_Layer<T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
     private AdvancedModelBox AdvancedModelBox;
     private ItemStack itemstack;
-    private ItemDisplayContext transformType;
+    private TransformType transformType;
 
-    public Item_Layer(RenderLayerParent<T, M> renderer, AdvancedModelBox AdvancedModelBox, ItemStack itemstack, ItemDisplayContext transformType) {
+    public Item_Layer(RenderLayerParent<T, M> renderer, AdvancedModelBox AdvancedModelBox, ItemStack itemstack, TransformType transformType) {
         super(renderer);
         this.itemstack = itemstack;
         this.AdvancedModelBox = AdvancedModelBox;

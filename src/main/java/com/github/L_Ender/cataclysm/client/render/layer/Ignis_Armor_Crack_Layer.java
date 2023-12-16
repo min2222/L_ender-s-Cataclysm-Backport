@@ -1,17 +1,18 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
+import java.util.Map;
+
 import com.github.L_Ender.cataclysm.client.model.entity.ModelIgnis;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Map;
 
 
 @OnlyIn(Dist.CLIENT)

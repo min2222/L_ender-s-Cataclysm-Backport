@@ -1,5 +1,10 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.config.CMConfig;
@@ -8,6 +13,7 @@ import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -35,10 +41,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
 
 public class Gauntlet_of_Bulwark extends Item {
     private final Multimap<Attribute, AttributeModifier> guantletAttributes;
@@ -76,7 +78,7 @@ public class Gauntlet_of_Bulwark extends Item {
 
     public void onUseTick(Level worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
         double radius = 4.5D;
-        Level world = livingEntityIn.level();
+        Level world = livingEntityIn.level;
         List<Entity> list = world.getEntities(livingEntityIn, livingEntityIn.getBoundingBox().inflate(radius));
         int c = this.getUseDuration(stack) - count;
         if (c == 20) {
@@ -85,7 +87,7 @@ public class Gauntlet_of_Bulwark extends Item {
                 if (entity instanceof LivingEntity) {
                     if (entity instanceof Player && ((Player) entity).getAbilities().invulnerable) continue;
                     ((LivingEntity) entity).addEffect(new MobEffectInstance(ModEffect.EFFECTBLAZING_BRAND.get(), 40));
-                    if (entity.onGround()) {
+                    if (entity.isOnGround()) {
                         double d0 = entity.getX() - livingEntityIn.getX();
                         double d1 = entity.getZ() - livingEntityIn.getZ();
                         double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
@@ -127,7 +129,7 @@ public class Gauntlet_of_Bulwark extends Item {
                 f1 *= f5 / f4;
                 f3 *= f5 / f4;
                 entityLiving.push((double) f1, (double) 0, (double) f3);
-                if (entityLiving.onGround()) {
+                if (entityLiving.isOnGround()) {
                     float f6 = 1.1999999F;
                     entityLiving.move(MoverType.SELF, new Vec3(0.0D, (double) f6 / 2, 0.0D));
                 }

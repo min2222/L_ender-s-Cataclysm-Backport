@@ -1,18 +1,23 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -31,9 +36,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class Ancient_Desert_Stele_Entity extends Projectile {
     private int warmupDelayTicks;
@@ -66,8 +68,8 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
 
     @Nullable
     public LivingEntity getCaster() {
-        if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.casterUuid);
+        if (this.caster == null && this.casterUuid != null && this.level instanceof ServerLevel) {
+            Entity entity = ((ServerLevel)this.level).getEntity(this.casterUuid);
             if (entity instanceof LivingEntity) {
                 this.caster = (LivingEntity)entity;
             }
@@ -101,18 +103,18 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
     public void tick() {
         super.tick();
 
-        HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
         boolean flag = false;
         if (hitresult.getType() == HitResult.Type.BLOCK) {
             BlockPos blockpos = ((BlockHitResult)hitresult).getBlockPos();
-            BlockState blockstate = this.level().getBlockState(blockpos);
+            BlockState blockstate = this.level.getBlockState(blockpos);
             if (blockstate.is(Blocks.NETHER_PORTAL)) {
                 this.handleInsidePortal(blockpos);
                 flag = true;
             } else if (blockstate.is(Blocks.END_GATEWAY)) {
-                BlockEntity blockentity = this.level().getBlockEntity(blockpos);
+                BlockEntity blockentity = this.level.getBlockEntity(blockpos);
                 if (blockentity instanceof TheEndGatewayBlockEntity && TheEndGatewayBlockEntity.canEntityTeleport(this)) {
-                    TheEndGatewayBlockEntity.teleportEntity(this.level(), blockpos, blockstate, this, (TheEndGatewayBlockEntity)blockentity);
+                    TheEndGatewayBlockEntity.teleportEntity(this.level, blockpos, blockstate, this, (TheEndGatewayBlockEntity)blockentity);
                 }
 
                 flag = true;
@@ -125,7 +127,7 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
 
         this.checkInsideBlocks();
 
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             --this.lifeTicks;
 
         } else if (--this.warmupDelayTicks < 0) {
@@ -155,10 +157,10 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
     protected void onHit(HitResult ray) {
         super.onHit(ray);
         BlockState state = Blocks.SANDSTONE.defaultBlockState();
-        SoundType soundtype = state.getSoundType(this.level(), this.blockPosition(), null);
+        SoundType soundtype = state.getSoundType(this.level, this.blockPosition(), null);
         this.playSound(soundtype.getBreakSound(), (soundtype.getVolume() + 1.0F) / 2.0F, soundtype.getPitch() * 0.8F);
-        if (!this.level().isClientSide) {
-            ((ServerLevel) this.level()).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), this.getX(), this.getY() + this.getBbHeight() / 2.0, this.getZ(), 256, this.getBbWidth() / 2.0, this.getBbHeight() / 2.0, this.getBbWidth() / 2.0, 1);
+        if (!this.level.isClientSide) {
+            ((ServerLevel) this.level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, state), this.getX(), this.getY() + this.getBbHeight() / 2.0, this.getZ(), 256, this.getBbWidth() / 2.0, this.getBbHeight() / 2.0, this.getBbWidth() / 2.0, 1);
             this.discard();
         }
 
@@ -172,13 +174,13 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
         if (shooter != null) {
             LivingEntity owner = shooter;
             if (owner != entity) {
-                flag = entity.hurt(damageSources().mobProjectile(this, owner), (float) CMConfig.AncientDesertSteledamage);
+                flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), (float) CMConfig.AncientDesertSteledamage);
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
                 }
             }
         } else {
-            flag = entity.hurt(this.damageSources().magic(), (float) CMConfig.AncientDesertSteledamage);
+            flag = entity.hurt(DamageSource.MAGIC, (float) CMConfig.AncientDesertSteledamage);
         }
         if (flag && entity instanceof LivingEntity) {
             MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 200, 0);
@@ -200,7 +202,7 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
 
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

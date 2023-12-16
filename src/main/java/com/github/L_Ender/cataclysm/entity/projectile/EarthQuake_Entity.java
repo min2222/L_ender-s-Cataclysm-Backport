@@ -1,19 +1,19 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
@@ -63,7 +63,7 @@ public class EarthQuake_Entity extends ThrowableProjectile {
         float f2 = Mth.cos(pY * ((float) Math.PI / 180F)) * Mth.cos(pX * ((float) Math.PI / 180F));
         this.shoot((double) f, (double) f1, (double) f2, pVelocity, pInaccuracy);
         Vec3 vector3d = pShooter.getDeltaMovement();
-        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, pShooter.onGround() ? 0.0D : vector3d.y, vector3d.z));
+        this.setDeltaMovement(this.getDeltaMovement().add(vector3d.x, pShooter.isOnGround() ? 0.0D : vector3d.y, vector3d.z));
     }
 
     @Override
@@ -104,15 +104,15 @@ public class EarthQuake_Entity extends ThrowableProjectile {
         if (this.lifeTime <= 0) {
             this.discard();
         }
-        BlockPos pos =  BlockPos.containing(this.getX(), this.getY() - 1, this.getZ());
-        BlockState iblockstate = this.level().getBlockState(pos);
+        BlockPos pos =  new BlockPos(this.getX(), this.getY() - 1, this.getZ());
+        BlockState iblockstate = this.level.getBlockState(pos);
 
-        for (LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.5,0.5,0.5))) {
+        for (LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.5,0.5,0.5))) {
             if (this.getOwner() != null) {
                 if (this.tickCount % 5 == 0) {
-                    if (livingentity != this.getOwner() && livingentity.onGround() && !this.getOwner().isAlliedTo(livingentity)) {
+                    if (livingentity != this.getOwner() && livingentity.isOnGround() && !this.getOwner().isAlliedTo(livingentity)) {
                         // entity.motionY += this.getEntityThrowDistance();
-                        if(livingentity.hurt(damageSources().mobProjectile(this, (LivingEntity) this.getOwner()), 5.0F)) {
+                        if(livingentity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()), 5.0F)) {
                             this.strongKnockback(livingentity, 0.5);
                         }
                     }
@@ -120,9 +120,9 @@ public class EarthQuake_Entity extends ThrowableProjectile {
             }
         }
 
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             for (int i = 0; i < 3; i++) {
-                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, iblockstate), this.getX() + this.random.nextFloat() - 0.5D, this.getY() + this.random.nextFloat() - 0.5D, this.getZ() + this.random.nextFloat()
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, iblockstate), this.getX() + this.random.nextFloat() - 0.5D, this.getY() + this.random.nextFloat() - 0.5D, this.getZ() + this.random.nextFloat()
                         - 0.5D, 4.0D * ((double) this.random.nextFloat() - 0.5D), (double) this.random.nextFloat() * 5 + 0.5D,
                         ((double) this.random.nextFloat() - 0.5D) * 4.0D);
             }
@@ -143,7 +143,7 @@ public class EarthQuake_Entity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

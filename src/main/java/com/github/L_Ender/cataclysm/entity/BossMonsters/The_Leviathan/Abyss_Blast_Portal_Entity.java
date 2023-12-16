@@ -1,9 +1,13 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
+import java.util.UUID;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -16,9 +20,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.UUID;
 
 public class Abyss_Blast_Portal_Entity extends Entity {
 	private int warmupDelayTicks;
@@ -48,7 +49,7 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 	}
 
 	@Override
-	public Packet<ClientGamePacketListener> getAddEntityPacket() {
+	public Packet<?> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
@@ -60,8 +61,8 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 
 	@Nullable
 	public LivingEntity getCaster() {
-		if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel) {
-			Entity entity = ((ServerLevel)this.level()).getEntity(this.casterUuid);
+		if (this.caster == null && this.casterUuid != null && this.level instanceof ServerLevel) {
+			Entity entity = ((ServerLevel)this.level).getEntity(this.casterUuid);
 			if (entity instanceof LivingEntity) {
 				this.caster = (LivingEntity)entity;
 			}
@@ -79,7 +80,7 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 			this.activateProgress--;
 		}
 
-		if (this.level().isClientSide) {
+		if (this.level.isClientSide) {
 			if (this.clientSideAttackStarted) {
 				--this.lifeTicks;
 				if (!isActivate() && this.activateProgress < 10F) {
@@ -97,17 +98,17 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 			}
 			if (this.warmupDelayTicks == -22) {
 				if (caster != null) {
-					Portal_Abyss_Blast_Entity DeathBeam1 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level(), this.getCaster(), this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90);
-					this.level().addFreshEntity(DeathBeam1);
+					Portal_Abyss_Blast_Entity DeathBeam1 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level, this.getCaster(), this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90);
+					this.level.addFreshEntity(DeathBeam1);
 				}else{
-					Portal_Abyss_Blast_Entity DeathBeam2 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level(), this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90);
-					this.level().addFreshEntity(DeathBeam2);
+					Portal_Abyss_Blast_Entity DeathBeam2 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level, this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90);
+					this.level.addFreshEntity(DeathBeam2);
 				}
 			}
 
 
 			if (!this.sentSpikeEvent) {
-				this.level().broadcastEntityEvent(this, (byte)4);
+				this.level.broadcastEntityEvent(this, (byte)4);
 				this.clientSideAttackStarted = true;
 				this.sentSpikeEvent = true;
 			}

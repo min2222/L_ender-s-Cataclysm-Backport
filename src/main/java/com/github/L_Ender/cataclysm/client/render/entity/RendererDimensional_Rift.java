@@ -4,7 +4,10 @@ import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.Dimensional_Rift_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -12,8 +15,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class RendererDimensional_Rift extends EntityRenderer<Dimensional_Rift_Entity> {
@@ -39,7 +40,7 @@ public class RendererDimensional_Rift extends EntityRenderer<Dimensional_Rift_En
         ResourceLocation tex = entityIn.getStage() <1 ? TEXTURE_GROW_1 : entityIn.getStage() < 2 ? TEXTURE_GROW_2 : entityIn.getStage() < 3 ? TEXTURE_GROW_3 : entityIn.getStage() < 4 ? TEXTURE_GROW_4 : this.getIdleTexture(entityIn.tickCount % 9);
 
         matrixStackIn.mulPose(this.entityRenderDispatcher.cameraOrientation());
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180.0F));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180.0F));
         matrixStackIn.scale(7, 7, 7);
         PoseStack.Pose posestack$pose = matrixStackIn.last();
         Matrix4f matrix4f = posestack$pose.pose();

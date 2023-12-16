@@ -7,6 +7,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.world.entity.LivingEntity;
 
 public class Model_PlayerSandstorm extends AdvancedEntityModel<LivingEntity> {

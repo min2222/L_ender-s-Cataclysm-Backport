@@ -1,18 +1,43 @@
 package com.github.L_Ender.cataclysm;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.github.L_Ender.cataclysm.client.model.armor.CMModelLayers;
 import com.github.L_Ender.cataclysm.config.BiomeConfig;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.config.ConfigHolder;
 import com.github.L_Ender.cataclysm.event.ServerEventHandler;
-import com.github.L_Ender.cataclysm.init.*;
-import com.github.L_Ender.cataclysm.message.*;
+import com.github.L_Ender.cataclysm.init.ModBlocks;
+import com.github.L_Ender.cataclysm.init.ModCapabilities;
+import com.github.L_Ender.cataclysm.init.ModEffect;
+import com.github.L_Ender.cataclysm.init.ModEntities;
+import com.github.L_Ender.cataclysm.init.ModGroup;
+import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModMenu;
+import com.github.L_Ender.cataclysm.init.ModParticle;
+import com.github.L_Ender.cataclysm.init.ModRecipeSerializers;
+import com.github.L_Ender.cataclysm.init.ModRecipeTypes;
+import com.github.L_Ender.cataclysm.init.ModSounds;
+import com.github.L_Ender.cataclysm.init.ModStructurePlacementType;
+import com.github.L_Ender.cataclysm.init.ModStructureProcessor;
+import com.github.L_Ender.cataclysm.init.ModStructures;
+import com.github.L_Ender.cataclysm.init.ModTileentites;
+import com.github.L_Ender.cataclysm.message.MessageCMMultipart;
+import com.github.L_Ender.cataclysm.message.MessageCharge;
+import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
+import com.github.L_Ender.cataclysm.message.MessageHoldEntity;
+import com.github.L_Ender.cataclysm.message.MessageHookFalling;
+import com.github.L_Ender.cataclysm.message.MessageSwingArm;
+import com.github.L_Ender.cataclysm.message.MessageUpdateblockentity;
 import com.github.L_Ender.cataclysm.world.CMMobSpawnBiomeModifier;
 import com.mojang.serialization.Codec;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
@@ -32,8 +57,6 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 //import com.github.L_Ender.cataclysm.init.ModStructures;
 
@@ -44,6 +67,7 @@ public class Cataclysm {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
+    public static final CreativeModeTab TAB = new ModGroup();
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     private static int packetsRegistered;
 
@@ -65,7 +89,6 @@ public class Cataclysm {
         bus.addListener(this::setup);
         bus.addListener(this::setupClient);
         bus.addListener(this::onModConfigEvent);
-        ModGroup.DEF_REG.register(bus);
         bus.addListener(this::setupEntityModelLayers);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.COMMON_SPEC, "cataclysm.toml");
         ModItems.ITEMS.register(bus);

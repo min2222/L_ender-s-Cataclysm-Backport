@@ -1,12 +1,18 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignited_Revenant_Entity;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -15,10 +21,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
 
 public class Ashen_Breath_Entity extends Entity {
     private static final int RANGE = 7;
@@ -64,18 +66,18 @@ public class Ashen_Breath_Entity extends Entity {
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
         double vec = 0.9;
-        if (level().isClientSide) {
+        if (level.isClientSide) {
             for (int i = 0; i < 80; i++) {
                 double xSpeed = speed * xComp + (spread * 1 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - xComp * xComp)));
                 double ySpeed = speed * yComp + (spread * 1 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - yComp * yComp)));
                 double zSpeed = speed * zComp + (spread * 1 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - zComp * zComp)));
-                level().addParticle(ParticleTypes.SMOKE, getX() + vec * vecX, getY(), getZ() + vec * vecZ, xSpeed, ySpeed, zSpeed);
+                level.addParticle(ParticleTypes.SMOKE, getX() + vec * vecX, getY(), getZ() + vec * vecZ, xSpeed, ySpeed, zSpeed);
             }
             for (int i = 0; i < 2; i++) {
                 double xSpeed = speed * xComp + (spread * 0.7 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - xComp * xComp)));
                 double ySpeed = speed * yComp + (spread * 0.7 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - yComp * yComp)));
                 double zSpeed = speed * zComp + (spread * 0.7 * (random.nextFloat() * 2 - 1) * (Math.sqrt(1 - zComp * zComp)));
-                level().addParticle(ParticleTypes.FLAME, getX() + vec * vecX, getY(), getZ() + vec * vecZ, xSpeed, ySpeed, zSpeed);
+                level.addParticle(ParticleTypes.FLAME, getX() + vec * vecX, getY(), getZ() + vec * vecZ, xSpeed, ySpeed, zSpeed);
             }
         }
         if (tickCount > 2 && caster != null) {
@@ -118,7 +120,7 @@ public class Ashen_Breath_Entity extends Entity {
             if (inRange && yawCheck && pitchCheck || CloseCheck) {
                 if (this.tickCount % 3 == 0) {
                     if (!isAlliedTo(entityHit) && entityHit != caster) {
-                        boolean flag = entityHit.hurt(this.damageSources().indirectMagic(this, caster), (float) CMConfig.Ashenbreathdamage);
+                        boolean flag = entityHit.hurt(DamageSource.indirectMagic(this, caster), (float) CMConfig.Ashenbreathdamage);
                         if (flag) {
                             //entityHit.setDeltaMovement(entityHit.getDeltaMovement().multiply(0.25, 1, 0.25));
                             MobEffectInstance effectinstance = new MobEffectInstance(MobEffects.BLINDNESS, 60, 0, false, false, true);
@@ -142,8 +144,8 @@ public class Ashen_Breath_Entity extends Entity {
 
     @Nullable
     public LivingEntity getCaster() {
-        if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.casterUuid);
+        if (this.caster == null && this.casterUuid != null && this.level instanceof ServerLevel) {
+            Entity entity = ((ServerLevel)this.level).getEntity(this.casterUuid);
             if (entity instanceof LivingEntity) {
                 this.caster = (LivingEntity)entity;
             }
@@ -178,7 +180,7 @@ public class Ashen_Breath_Entity extends Entity {
 
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -197,7 +199,7 @@ public class Ashen_Breath_Entity extends Entity {
     }
 
     public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double dX, double dY, double dZ, double r) {
-        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
+        return level.getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
     }
 
     @Override

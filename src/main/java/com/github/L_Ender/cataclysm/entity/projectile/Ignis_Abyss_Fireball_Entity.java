@@ -2,10 +2,10 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
-
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -52,7 +53,7 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
 
     public void tick() {
         super.tick();
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             timer--;
             if (timer <= 0) {
                 if (!getFired()){
@@ -93,15 +94,15 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
     protected void onHitEntity(EntityHitResult p_37626_) {
         super.onHitEntity(p_37626_);
         Entity shooter = this.getOwner();
-        if (!this.level().isClientSide && !(p_37626_.getEntity() instanceof Ignis_Fireball_Entity ||  p_37626_.getEntity() instanceof Ignis_Abyss_Fireball_Entity || p_37626_.getEntity() instanceof Cm_Falling_Block_Entity || p_37626_.getEntity() instanceof Ignis_Entity && shooter instanceof Ignis_Entity) && getFired()) {
+        if (!this.level.isClientSide && !(p_37626_.getEntity() instanceof Ignis_Fireball_Entity ||  p_37626_.getEntity() instanceof Ignis_Abyss_Fireball_Entity || p_37626_.getEntity() instanceof Cm_Falling_Block_Entity || p_37626_.getEntity() instanceof Ignis_Entity && shooter instanceof Ignis_Entity) && getFired()) {
             Entity entity = p_37626_.getEntity();
             boolean flag;
             if (shooter instanceof LivingEntity) {
                 LivingEntity owner = (LivingEntity)shooter;
                 if (entity instanceof LivingEntity) {
-                    flag = entity.hurt(damageSources().mobProjectile(this, owner), 10.0F + ((LivingEntity) entity).getMaxHealth() * 0.2f);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), 10.0F + ((LivingEntity) entity).getMaxHealth() * 0.2f);
                 }else{
-                    flag = entity.hurt(damageSources().mobProjectile(this, owner), 10.0F);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), 10.0F);
                 }
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
@@ -112,9 +113,9 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
                     }
                 }
             } else {
-                flag = entity.hurt(this.damageSources().magic(), 5.0F );
+                flag = entity.hurt(DamageSource.MAGIC, 5.0F );
             }
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, true, Level.ExplosionInteraction.NONE);
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, true, Explosion.BlockInteraction.NONE);
             this.discard();
 
             if (flag && entity instanceof LivingEntity) {
@@ -140,10 +141,10 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         BlockHitResult traceResult = result;
-        BlockState blockstate = this.level().getBlockState(traceResult.getBlockPos());
-        if (!blockstate.getCollisionShape(this.level(), traceResult.getBlockPos()).isEmpty() && getFired()) {
+        BlockState blockstate = this.level.getBlockState(traceResult.getBlockPos());
+        if (!blockstate.getCollisionShape(this.level, traceResult.getBlockPos()).isEmpty() && getFired()) {
             Direction face = traceResult.getDirection();
-            blockstate.onProjectileHit(this.level(), blockstate, traceResult, this);
+            blockstate.onProjectileHit(this.level, blockstate, traceResult, this);
 
             Vec3 motion = this.getDeltaMovement();
 
@@ -170,8 +171,8 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
             this.zPower = motionZ * 0.05D;
 
             if (this.tickCount > 500 || this.getTotalBounces() > 5) {
-                if (!this.level().isClientSide) {
-                    this.level().explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, true, Level.ExplosionInteraction.NONE);
+                if (!this.level.isClientSide) {
+                    this.level.explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, true, Explosion.BlockInteraction.NONE);
                     this.discard();
                 }
             } else {
@@ -186,12 +187,12 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
         HitResult.Type hitresult$type = ray.getType();
         if (hitresult$type == HitResult.Type.ENTITY) {
             this.onHitEntity((EntityHitResult)ray);
-            this.level().gameEvent(GameEvent.PROJECTILE_LAND, ray.getLocation(), GameEvent.Context.of(this, (BlockState)null));
+            this.level.gameEvent(GameEvent.PROJECTILE_LAND, ray.getLocation(), GameEvent.Context.of(this, (BlockState)null));
         } else if (hitresult$type == HitResult.Type.BLOCK) {
             BlockHitResult blockhitresult = (BlockHitResult)ray;
             this.onHitBlock(blockhitresult);
             BlockPos blockpos = blockhitresult.getBlockPos();
-            this.level().gameEvent(GameEvent.PROJECTILE_LAND, blockpos, GameEvent.Context.of(this, this.level().getBlockState(blockpos)));
+            this.level.gameEvent(GameEvent.PROJECTILE_LAND, blockpos, GameEvent.Context.of(this, this.level.getBlockState(blockpos)));
         }
     }
 
@@ -241,7 +242,7 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
             this.markHurt();
             Entity entity = p_36839_.getEntity();
             if (entity != null && this.getFired()) {
-                if (!this.level().isClientSide) {
+                if (!this.level.isClientSide) {
                     Vec3 vec3 = entity.getLookAngle();
                     this.setDeltaMovement(vec3);
                     this.xPower = vec3.x * 0.1D;

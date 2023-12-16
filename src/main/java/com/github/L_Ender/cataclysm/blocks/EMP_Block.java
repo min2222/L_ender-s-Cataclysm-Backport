@@ -1,9 +1,11 @@
 package com.github.L_Ender.cataclysm.blocks;
 
-import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
+import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.init.ModTileentites;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityEMP;
+import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
+import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
@@ -22,8 +24,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-
-import javax.annotation.Nullable;
+import net.minecraft.world.level.material.Material;
 
 public class EMP_Block extends BaseEntityBlock {
     public static final DirectionProperty TIP_DIRECTION = BlockStateProperties.VERTICAL_DIRECTION;
@@ -31,7 +32,7 @@ public class EMP_Block extends BaseEntityBlock {
     public static final BooleanProperty OVERLOAD = BooleanProperty.create("overload");
 
     public EMP_Block() {
-        super(Properties.of()
+        super(Properties.of(Material.HEAVY_METAL)
                 .noOcclusion()
                 .lightLevel((block) -> 7)
                 .noLootTable()

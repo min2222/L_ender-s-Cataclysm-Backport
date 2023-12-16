@@ -5,10 +5,12 @@ import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAbyss;
 import com.github.L_Ender.cataclysm.blocks.Altar_Of_Abyss_Block;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Abyss;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -16,7 +18,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RendererAltar_of_Abyss<T extends TileEntityAltarOfAbyss> implements BlockEntityRenderer<T> {
@@ -41,7 +42,7 @@ public class RendererAltar_of_Abyss<T extends TileEntityAltarOfAbyss> implements
             matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         }
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
-        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
         matrixStackIn.pushPose();
         MODEL.animate(tileEntityIn, partialTicks);
         MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
@@ -57,13 +58,13 @@ public class RendererAltar_of_Abyss<T extends TileEntityAltarOfAbyss> implements
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.9F, 0.5F);
 
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(f2));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f2));
             BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(stack, tileEntityIn.getLevel(), (LivingEntity) null, 0);
             boolean flag = ibakedmodel.isGui3d();
             if (!flag) {
                 matrixStackIn.translate(0.0F, 0.0F, 0.0F);
             }
-            Minecraft.getInstance().getItemRenderer().render(stack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, combinedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+            Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, combinedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
             matrixStackIn.popPose();
         }
     }

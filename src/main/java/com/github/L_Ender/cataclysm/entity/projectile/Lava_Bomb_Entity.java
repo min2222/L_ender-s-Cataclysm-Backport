@@ -3,16 +3,17 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Netherite_Monstrosity_Entity;
 import com.github.L_Ender.cataclysm.entity.partentity.Netherite_Monstrosity_Part;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -53,9 +54,9 @@ public class Lava_Bomb_Entity extends ThrowableProjectile {
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
         Entity shooter = this.getOwner();
-        if (!this.level().isClientSide && !(result.getEntity() instanceof Lava_Bomb_Entity || result.getEntity() instanceof Netherite_Monstrosity_Part || result.getEntity() instanceof Netherite_Monstrosity_Entity)) {
+        if (!this.level.isClientSide && !(result.getEntity() instanceof Lava_Bomb_Entity || result.getEntity() instanceof Netherite_Monstrosity_Part || result.getEntity() instanceof Netherite_Monstrosity_Entity)) {
             this.playSound(SoundEvents.GENERIC_BURN, 1.5f, 0.75f);
-            this.level().explode(shooter, this.getX(), this.getY(), this.getZ(), CMConfig.Lavabombradius, Level.ExplosionInteraction.NONE);
+            this.level.explode(shooter, this.getX(), this.getY(), this.getZ(), CMConfig.Lavabombradius, Explosion.BlockInteraction.NONE);
             this.doTerrainEffects();
             discard();
 
@@ -64,9 +65,9 @@ public class Lava_Bomb_Entity extends ThrowableProjectile {
 
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
-        if (!this.level().isClientSide()) {
+        if (!this.level.isClientSide()) {
             this.playSound(SoundEvents.GENERIC_BURN, 1.5f, 0.75f);
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), CMConfig.Lavabombradius, Level.ExplosionInteraction.NONE);
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), CMConfig.Lavabombradius, Explosion.BlockInteraction.NONE);
             this.doTerrainEffects();
             discard();
         }
@@ -92,12 +93,12 @@ public class Lava_Bomb_Entity extends ThrowableProjectile {
     }
 
     private void doTerrainEffect(BlockPos pos) {
-        BlockState state = level().getBlockState(pos);
+        BlockState state = level.getBlockState(pos);
         if (state == Blocks.WATER.defaultBlockState()) {
-            this.level().setBlockAndUpdate(pos, Blocks.STONE.defaultBlockState());
+            this.level.setBlockAndUpdate(pos, Blocks.STONE.defaultBlockState());
         }
-        if (this.level().isEmptyBlock(pos) && Blocks.LAVA.defaultBlockState().canSurvive(this.level(), pos)) {
-            this.level().setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
+        if (this.level.isEmptyBlock(pos) && Blocks.LAVA.defaultBlockState().canSurvive(this.level, pos)) {
+            this.level.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
         }
     }
 
@@ -116,13 +117,13 @@ public class Lava_Bomb_Entity extends ThrowableProjectile {
     }
 
     public void makeTrail() {
-        if (this.level().isClientSide){
+        if (this.level.isClientSide){
             for (int i = 0; i < 5; i++) {
                 double dx = getX() + 1.5F * (random.nextFloat() - 0.5F);
                 double dy = getY() + 1.5F * (random.nextFloat() - 0.5F);
                 double dz = getZ() + 1.5F * (random.nextFloat() - 0.5F);
 
-                level().addParticle(ParticleTypes.FLAME, dx, dy, dz, -getDeltaMovement().x(), -getDeltaMovement().y(), -getDeltaMovement().z());
+                level.addParticle(ParticleTypes.FLAME, dx, dy, dz, -getDeltaMovement().x(), -getDeltaMovement().y(), -getDeltaMovement().z());
             }
         }
     }
@@ -137,7 +138,7 @@ public class Lava_Bomb_Entity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

@@ -4,7 +4,10 @@ import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.entity.effect.Flame_Strike_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -12,8 +15,6 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class RendererFlame_Strike extends EntityRenderer<Flame_Strike_Entity> {
@@ -37,9 +38,9 @@ public class RendererFlame_Strike extends EntityRenderer<Flame_Strike_Entity> {
         matrixStackIn.scale(flameStrike.getRadius(), flameStrike.getRadius(), flameStrike.getRadius());
         matrixStackIn.translate(0.0D, 0.001D, 0.0D);
         if(flameStrike.isSoul()) {
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(f2));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f2));
         }else{
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F - flameStrike.getYRot() + f2));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F - flameStrike.getYRot() + f2));
         }
         PoseStack.Pose lvt_19_1_ = matrixStackIn.last();
         Matrix4f lvt_20_1_ = lvt_19_1_.pose();

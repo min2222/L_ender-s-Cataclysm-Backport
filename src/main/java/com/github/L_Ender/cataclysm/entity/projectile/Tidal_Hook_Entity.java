@@ -5,6 +5,7 @@ import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.items.Tidal_Claws;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -64,9 +65,9 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 		if(getOwner() instanceof Player owner) {
 			if (hookCapability != null) {
 				if (isPulling && tickCount % 3 == 0) {
-					level().playSound(null, getOwner().blockPosition(), ModSounds.TIDAL_HOOK_LOOP.get(), SoundSource.PLAYERS, 0.4F, 1F);
+					level.playSound(null, getOwner().blockPosition(), ModSounds.TIDAL_HOOK_LOOP.get(), SoundSource.PLAYERS, 0.4F, 1F);
 				}
-				if (!level().isClientSide) {
+				if (!level.isClientSide) {
 					if (owner.isDeadOrDying() || !hookCapability.hasHook() || owner.distanceTo(this) > maxRange || !(owner.getMainHandItem().getItem() instanceof Tidal_Claws || owner.getOffhandItem().getItem() instanceof Tidal_Claws))
 						kill();
 					if (this.hookedEntity != null) {
@@ -115,7 +116,7 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 	@Override
 	public void kill() {
 		HookCapability.IHookCapability hookCapability = ModCapabilities.getCapability(	getOwner(), ModCapabilities.HOOK_CAPABILITY);
-		if(!level().isClientSide && getOwner() instanceof Player owner) {
+		if(!level.isClientSide && getOwner() instanceof Player owner) {
 			if (hookCapability != null) {
 				hookCapability.setHasHook(false);
 				owner.setNoGravity(false);
@@ -144,7 +145,7 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 		super.onHitBlock(blockHitResult);
 		isPulling = true;
 
-		if(!level().isClientSide && getOwner() instanceof Player owner && hookedEntity == null) {
+		if(!level.isClientSide && getOwner() instanceof Player owner && hookedEntity == null) {
 			owner.setNoGravity(true);
 		}
 	}
@@ -159,7 +160,7 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 
 	@Override
 	protected void onHitEntity(EntityHitResult entityHitResult) {
-		if(!level().isClientSide && getOwner() instanceof Player owner && entityHitResult.getEntity() != owner) {
+		if(!level.isClientSide && getOwner() instanceof Player owner && entityHitResult.getEntity() != owner) {
 			if((entityHitResult.getEntity() instanceof LivingEntity || entityHitResult.getEntity() instanceof EnderDragonPart) && hookedEntity == null) {
 				hookedEntity = entityHitResult.getEntity();
 				this.getEntityData().set(HOOKED_ENTITY_ID, hookedEntity.getId() + 1);

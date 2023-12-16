@@ -1,44 +1,52 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.UUID;
+
+import org.jetbrains.annotations.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackMoveGoal;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMEntityMoveHelper;
 import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Amethyst_Cluster_Projectile_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Blazing_Bone_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.EarthQuake_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -47,11 +55,6 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.EnumSet;
-import java.util.List;
-import java.util.UUID;
 
 
 public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
@@ -72,11 +75,15 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
     public Amethyst_Crab_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 50;
-        this.setMaxUpStep(1.5F);
         moveControl = new CMEntityMoveHelper(this, 45);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         setConfigattribute(this, CMConfig.AmethystCrabHealthMultiplier, CMConfig.AmethystCrabDamageMultiplier);
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.5F;
     }
 
     @Override
@@ -139,7 +146,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
         if (this.getAnimation() == CRAB_BURROW) {
 
             if(this.getAnimationTick() > 9 && this.getAnimationTick() < 52) {
-                if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                if (!source.isBypassInvul()) {
                     this.playSound(SoundEvents.ANVIL_LAND, 0.4F, 2.0F);
                     return false;
                 }
@@ -168,7 +175,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
                 AreaAttack(4.0f,4.0f,70,1.25f,120);
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.0f, 1F + this.getRandom().nextFloat() * 0.1F);
                 Attackparticle(2.4f,-0.4f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.1f, 0, 20);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 20);
             }
         }
         if (this.getAnimation() == CRAB_SMASH_THREE) {
@@ -176,19 +183,19 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
                 Attackparticle(2.2f,-0.2f);
                 EarthQuakeSummon(2.2f,-0.2f);
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.0f, 1F + this.getRandom().nextFloat() * 0.1F);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.1f, 0, 20);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 20);
             }
             if(this.getAnimationTick() == 36){
                 Attackparticle(1.8f,-1.5f);
                 EarthQuakeSummon(1.8f,-1.5f);
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.0f, 1F + this.getRandom().nextFloat() * 0.1F);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.1f, 0, 20);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 20);
             }
             if(this.getAnimationTick() == 56){
                 Attackparticle(1.7f,1.3f);
                 EarthQuakeSummon(1.7f,1.3f);
                 this.playSound(SoundEvents.GENERIC_EXPLODE, 1.0f, 1F + this.getRandom().nextFloat() * 0.1F);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 15, 0.1f, 0, 20);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 20);
             }
         }
         if (this.getAnimation() == CRAB_BURROW) {
@@ -231,7 +238,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!(entityHit instanceof Amethyst_Crab_Entity)) {
-                 entityHit.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage ));
+                 entityHit.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage ));
                     if (entityHit instanceof Player && entityHit.isBlocking() && shieldbreakticks > 0) {
                         disableShield(entityHit, shieldbreakticks);
                     }
@@ -241,7 +248,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
     }
 
     private void Attackparticle(float vec, float math) {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 double DeltaMovementX = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementY = getRandom().nextGaussian() * 0.07D;
@@ -260,15 +267,15 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
                 int hitY = Mth.floor(getY());
                 int hitZ = Mth.floor(getZ() + vec * vecZ + extraZ);
                 BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-                BlockState block = level().getBlockState(hit.below());
-                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
+                BlockState block = level.getBlockState(hit.below());
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
 
             }
         }
     }
 
     private void BurrowParticle(float vec, float math, float size) {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 double DeltaMovementX = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementY = getRandom().nextGaussian() * 0.1D;
@@ -287,8 +294,8 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
                 int hitY = Mth.floor(getY());
                 int hitZ = Mth.floor(getZ() + vec * vecZ + extraZ);
                 BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-                BlockState block = level().getBlockState(hit.below());
-                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
+                BlockState block = level.getBlockState(hit.below());
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
             }
         }
     }
@@ -301,9 +308,9 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
         int hitY = Mth.floor(getY());
         int hitZ = Mth.floor(getZ() + extraZ);
         BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-        BlockState block = level().getBlockState(hit.below());
-        SoundType soundtype = block.getSoundType(level(), hit, this);
-        this.level().playSound((Player) null, this, soundtype.getBreakSound(), SoundSource.HOSTILE, 3.0f, 0.8F + this.getRandom().nextFloat() * 0.1F);
+        BlockState block = level.getBlockState(hit.below());
+        SoundType soundtype = block.getSoundType(level, hit, this);
+        this.level.playSound((Player) null, this, soundtype.getBreakSound(), SoundSource.HOSTILE, 3.0f, 0.8F + this.getRandom().nextFloat() * 0.1F);
     }
 
     private void EarthQuakeSummon(float vec, float math) {
@@ -316,10 +323,10 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
         final int quakeCount = 16;
         float angle = 360.0F / quakeCount;
         for (int i = 0; i < quakeCount; i++) {
-            EarthQuake_Entity peq = new EarthQuake_Entity(this.level(), this);
+            EarthQuake_Entity peq = new EarthQuake_Entity(this.level, this);
             peq.shootFromRotation(this, 0, angle * i, 0.0F, 0.25F, 0.0F);
             peq.setPos(this.getX() + vec * vecX + f * math, this.getY(), getZ() + vec * vecZ + f1 * math);
-            this.level().addFreshEntity(peq);
+            this.level.addFreshEntity(peq);
 
         }
     }
@@ -465,7 +472,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
                             }else{
                                 this.crab.setAnimation(CRAB_SMASH);
                             }
-                        } else if (this.crab.getRandom().nextFloat() * 100.0F < 16f && this.crab.distanceTo(target) <= 3.75D && target.onGround()) {
+                        } else if (this.crab.getRandom().nextFloat() * 100.0F < 16f && this.crab.distanceTo(target) <= 3.75D && target.isOnGround()) {
                             this.crab.setAnimation(CRAB_SMASH_THREE);
                         }
                     }
@@ -571,12 +578,12 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
                     double vy = 0 + entity.random.nextFloat() * 0.3F;
                     double vz = Mth.sin(throwAngle);
                     double v3 = Mth.sqrt((float) (vx * vx + vz * vz));
-                    Amethyst_Cluster_Projectile_Entity projectile = new Amethyst_Cluster_Projectile_Entity(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), entity.level(), entity);
+                    Amethyst_Cluster_Projectile_Entity projectile = new Amethyst_Cluster_Projectile_Entity(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), entity.level, entity);
 
                     projectile.moveTo(sx, sy, sz, i * 11.25F, entity.getXRot());
                     float speed = 0.8F;
                     projectile.shoot(vx, vy + v3 * 0.20000000298023224D, vz, speed, 1.0F);
-                    entity.level().addFreshEntity(projectile);
+                    entity.level.addFreshEntity(projectile);
                 }
             }
         }

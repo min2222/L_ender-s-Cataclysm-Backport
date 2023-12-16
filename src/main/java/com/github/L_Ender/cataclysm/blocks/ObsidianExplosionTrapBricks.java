@@ -1,9 +1,11 @@
 package com.github.L_Ender.cataclysm.blocks;
 
-import com.github.L_Ender.cataclysm.init.ModTag;
+import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.init.ModTileentites;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityObsidianExplosionTrapBricks;
+import com.github.L_Ender.cataclysm.init.ModTag;
+import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,8 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-
-import javax.annotation.Nullable;
 
 public class ObsidianExplosionTrapBricks extends BaseEntityBlock {
     public static final BooleanProperty LIT = BlockStateProperties.LIT;

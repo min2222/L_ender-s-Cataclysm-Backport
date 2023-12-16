@@ -1,5 +1,13 @@
 package com.github.L_Ender.cataclysm.entity.Pet;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
@@ -20,6 +28,7 @@ import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -34,13 +43,24 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
@@ -55,13 +75,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
 
 public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAquatic, Bucketable {
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(The_Baby_Leviathan_Entity.class, EntityDataSerializers.BOOLEAN);
@@ -87,7 +100,11 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
         this.setPathfindingMalus(BlockPathTypes.WATER_BORDER, 0.0F);
         switchNavigator(false);
         setConfigattribute(this, CMConfig.BabyLeviathanHealthMultiplier, CMConfig.BabyLeviathanDamageMultiplier);
-        this.setMaxUpStep(1.0F);
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1;
     }
 
     protected SoundEvent getAmbientSound() {
@@ -154,11 +171,11 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
     private void switchNavigator(boolean onLand) {
         if (onLand) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new GroundPathNavigatorWide(this, level());
+            this.navigation = new GroundPathNavigatorWide(this, level);
             this.isLandNavigator = true;
         } else {
             this.moveControl = new BabyLeviathanMoveController(this, 3F, 1F, 10f);
-            this.navigation = new SemiAquaticPathNavigator(this, level());
+            this.navigation = new SemiAquaticPathNavigator(this, level);
             this.isLandNavigator = false;
         }
     }
@@ -186,7 +203,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.FALLING_BLOCK) || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
     }
 
     public boolean canBreatheUnderwater() {
@@ -262,9 +279,9 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
             fishFeedings++;
             if ((fishFeedings > 10 && getRandom().nextInt(6) == 0 || fishFeedings > 30) && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
                 this.tame(player);
-                this.level().broadcastEntityEvent(this, (byte) 7);
+                this.level.broadcastEntityEvent(this, (byte) 7);
             } else {
-                this.level().broadcastEntityEvent(this, (byte) 6);
+                this.level.broadcastEntityEvent(this, (byte) 6);
             }
             return InteractionResult.SUCCESS;
         }
@@ -355,11 +372,11 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
         endPosX = getX() + radius * Math.cos(renderYaw) * Math.cos(renderPitch);
         endPosZ = getZ() + radius * Math.sin(renderYaw) * Math.cos(renderPitch);
         endPosY = getY() + radius * Math.sin(renderPitch);
-        if (!level().isClientSide) {
-            List<LivingEntity> hit = raytraceEntities(level(), inflateX, inflateY, inflateZ, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
+        if (!level.isClientSide) {
+            List<LivingEntity> hit = raytraceEntities(level, inflateX, inflateY, inflateZ, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
             for (LivingEntity target : hit) {
                 if (!isAlliedTo(target) && !(target instanceof The_Baby_Leviathan_Entity) && target != this) {
-                    target.hurt(damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                    target.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 }
             }
         }
@@ -506,7 +523,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
 
         public void start() {
             entity.getNavigation().stop();
-            entity.level().playSound((Player) null, entity, ModSounds.ABYSS_BLAST.get(), SoundSource.NEUTRAL, 1.0f, 2.0f);
+            entity.level.playSound((Player) null, entity, ModSounds.ABYSS_BLAST.get(), SoundSource.NEUTRAL, 1.0f, 2.0f);
             LivingEntity target = entity.getTarget();
             if (target != null) {
                 entity.getLookControl().setLookAt(target, 30, 90);
@@ -529,9 +546,9 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
             }
             float dir = 90.0f;
             if (this.entity.getAnimationTick() == 37) {
-                if (!entity.level().isClientSide) {
-                    Mini_Abyss_Blast_Entity DeathBeam = new Mini_Abyss_Blast_Entity(ModEntities.MINI_ABYSS_BLAST.get(), entity.level(), entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 80, dir);
-                    entity.level().addFreshEntity(DeathBeam);
+                if (!entity.level.isClientSide) {
+                    Mini_Abyss_Blast_Entity DeathBeam = new Mini_Abyss_Blast_Entity(ModEntities.MINI_ABYSS_BLAST.get(), entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 80, dir);
+                    entity.level.addFreshEntity(DeathBeam);
                 }
             }
         }

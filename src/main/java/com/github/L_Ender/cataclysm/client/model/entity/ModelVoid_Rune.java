@@ -5,6 +5,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.Minecraft;
 
 public class ModelVoid_Rune extends AdvancedEntityModel<Void_Rune_Entity> {

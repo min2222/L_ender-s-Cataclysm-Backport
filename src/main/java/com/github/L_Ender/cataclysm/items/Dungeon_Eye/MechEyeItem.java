@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.items.Dungeon_Eye;
 
 import com.github.L_Ender.cataclysm.entity.projectile.Eye_Of_Dungeon_Entity;
 import com.github.L_Ender.cataclysm.init.ModTag;
+
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

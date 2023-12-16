@@ -1,6 +1,11 @@
 package com.github.L_Ender.cataclysm.message;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Supplier;
+
 import com.github.L_Ender.cataclysm.entity.partentity.Cm_Part_Entity;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -8,10 +13,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.entity.PartEntity;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Supplier;
 
 public class MessageCMMultipart {
 
@@ -92,7 +93,7 @@ public class MessageCMMultipart {
                                  float height,
                                  boolean fixed,
                                  boolean dirty,
-                                 List<SynchedEntityData.DataValue<?>> data) {
+                                 List<SynchedEntityData.DataItem<?>> data) {
 
 
         public void encode(FriendlyByteBuf buffer) {
@@ -105,12 +106,8 @@ public class MessageCMMultipart {
             buffer.writeFloat(height);
             buffer.writeBoolean(fixed);
             buffer.writeBoolean(dirty);
-            if (this.dirty) {
-                for(SynchedEntityData.DataValue<?> datavalue : this.data) {
-                    datavalue.write(buffer);
-                }
-
-                buffer.writeByte(255);
+            if (dirty) {
+                SynchedEntityData.pack(data, buffer);
             }
         }
 
@@ -126,22 +123,9 @@ public class MessageCMMultipart {
                     buffer.readFloat(),
                     buffer.readBoolean(),
                     dirty = buffer.readBoolean(),
-                    dirty ? unpack(buffer) : null
+                    dirty ? SynchedEntityData.unpack(buffer) : null
             );
-        }
-
-
-        private static List<SynchedEntityData.DataValue<?>> unpack(FriendlyByteBuf buf) {
-            List<SynchedEntityData.DataValue<?>> list = new ArrayList<>();
-
-            int i;
-            while((i = buf.readUnsignedByte()) != 255) {
-                list.add(SynchedEntityData.DataValue.read(buf, i));
-            }
-
-            return list;
         }
 
     }
 }
-

@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.item;
 
 
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
+
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 

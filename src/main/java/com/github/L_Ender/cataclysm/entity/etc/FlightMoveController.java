@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.etc;
 
 import com.github.alexthe666.citadel.server.entity.collision.MovementControllerCustomCollisions;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.AABB;
@@ -63,7 +64,7 @@ public class FlightMoveController extends MovementControllerCustomCollisions {
 
         for (int i = 1; i < p_220673_2_; ++i) {
             axisalignedbb = axisalignedbb.move(p_220673_1_);
-            if (!this.parentEntity.level().noCollision(this.parentEntity, axisalignedbb)) {
+            if (!this.parentEntity.level.noCollision(this.parentEntity, axisalignedbb)) {
                 return false;
             }
         }

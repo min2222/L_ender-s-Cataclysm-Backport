@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.client.event;
 
+import java.util.Random;
+
 import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.client.model.entity.Model_PlayerSandstorm;
@@ -15,10 +17,13 @@ import com.github.alexthe666.citadel.client.event.EventGetFluidRenderType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -37,17 +42,18 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.event.MovementInputUpdateEvent;
+import net.minecraftforge.client.event.RenderGuiOverlayEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLivingEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.ViewportEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
-
-import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEvent {
@@ -72,7 +78,7 @@ public class ClientEvent {
         if (CMConfig.ScreenShake && !Minecraft.getInstance().isPaused()) {
             if (player != null) {
                 float shakeAmplitude = 0;
-                for (ScreenShake_Entity ScreenShake : player.level().getEntitiesOfClass(ScreenShake_Entity.class, player.getBoundingBox().inflate(20, 20, 20))) {
+                for (ScreenShake_Entity ScreenShake : player.level.getEntitiesOfClass(ScreenShake_Entity.class, player.getBoundingBox().inflate(20, 20, 20))) {
                     if (ScreenShake.distanceTo(player) < ScreenShake.getRadius()) {
                         shakeAmplitude += ScreenShake.getShakeAmount(player, delta);
                     }
@@ -99,7 +105,7 @@ public class ClientEvent {
     public void onFogDensity(ViewportEvent.RenderFog event) {
         FogType fogType = event.getCamera().getFluidInCamera();
         ItemStack itemstack = Minecraft.getInstance().player.getInventory().getArmor(3);
-        if (itemstack.is(ModItems.IGNITIUM_HELMET.get()) && fogType == FogType.LAVA) {
+        if (itemstack.is(ModItems.IGNITIUM_HEAD.get()) && fogType == FogType.LAVA) {
             RenderSystem.setShaderFogStart(-8.0F);
             RenderSystem.setShaderFogEnd(50.0F);
         }
@@ -164,11 +170,11 @@ public class ClientEvent {
             if(SandstormCapability.isSandstorm()){
                 event.setCanceled(true);
                 event.getPoseStack().pushPose();
-                float limbSwing = event.getEntity().walkAnimation.position() - event.getEntity().walkAnimation.speed() * (1.0F - event.getPartialTick());
-                float limbSwingAmount = event.getEntity().walkAnimation.speed(event.getPackedLight());
+                float limbSwing = event.getEntity().animationPosition - event.getEntity().animationSpeed * (1.0F - event.getPartialTick());
+                float limbSwingAmount = event.getEntity().animationSpeedOld + (event.getEntity().animationSpeed - event.getEntity().animationSpeedOld) * event.getPackedLight();
                 VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(event.getMultiBufferSource(), RenderType.armorCutoutNoCull(SANDSTORM_TEXTURE), false, event.getEntity().getItemBySlot(EquipmentSlot.CHEST).hasFoil());
                 event.getPoseStack().translate(0.0D, event.getEntity().getBbHeight(), 0.0D);
-                event.getPoseStack().mulPose(Axis.ZP.rotationDegrees(180.0F));
+                event.getPoseStack().mulPose(Vector3f.ZP.rotationDegrees(180.0F));
                 SANDSTORM_MODEL.setupAnim(event.getEntity(), limbSwing, limbSwingAmount, event.getEntity().tickCount + event.getPartialTick(), 0, 0);
                 SANDSTORM_MODEL.renderToBuffer(event.getPoseStack(), vertexconsumer, event.getPackedLight(), OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
                 event.getPoseStack().popPose();
@@ -185,8 +191,8 @@ public class ClientEvent {
             VertexConsumer ivertexbuilder = ItemRenderer.getArmorFoilBuffer(event.getMultiBufferSource(),CMRenderTypes.getGlowingEffect(FLAME_STRIKE),false, true);
             matrixStackIn.translate(0.0D, 0.001, 0.0D);
             matrixStackIn.scale(f3 * 0.05f, f3 * 0.05f, f3 * 0.05f);
-            matrixStackIn.mulPose(Axis.ZP.rotationDegrees(180.0F));
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F + f2));
+            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F + f2));
             PoseStack.Pose lvt_19_1_ = matrixStackIn.last();
             Matrix4f lvt_20_1_ = lvt_19_1_.pose();
             Matrix3f lvt_21_1_ = lvt_19_1_.normal();
@@ -257,7 +263,7 @@ public class ClientEvent {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             if (!CMConfig.shadersCompat) {
                 ItemStack itemstack = Minecraft.getInstance().player.getInventory().getArmor(3);
-                if (itemstack.is(ModItems.IGNITIUM_HELMET.get())) {
+                if (itemstack.is(ModItems.IGNITIUM_HEAD.get())) {
                     if (!previousLavaVision) {
                         previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
                         Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
@@ -271,7 +277,7 @@ public class ClientEvent {
                         updateAllChunks();
                     }
                 }
-                previousLavaVision = itemstack.is(ModItems.IGNITIUM_HELMET.get());
+                previousLavaVision = itemstack.is(ModItems.IGNITIUM_HEAD.get());
             }
         }
     }
@@ -279,7 +285,7 @@ public class ClientEvent {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onGetFluidRenderType(EventGetFluidRenderType event) {
-        if (Minecraft.getInstance().player.getInventory().getArmor(3).is(ModItems.IGNITIUM_HELMET.get()) && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
+        if (Minecraft.getInstance().player.getInventory().getArmor(3).is(ModItems.IGNITIUM_HEAD.get()) && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
             event.setRenderType(RenderType.translucent());
             event.setResult(Event.Result.ALLOW);
         }
@@ -289,7 +295,7 @@ public class ClientEvent {
         Player player = Minecraft.getInstance().player;
         Minecraft mc = Minecraft.getInstance();
         ForgeGui gui = (ForgeGui)mc.gui;
-        GuiGraphics stack = event.getGuiGraphics();
+        PoseStack stack = event.getPoseStack();
         gui.setupOverlayRenderState(true, false);
         int width = event.getWindow().getGuiScaledWidth();
         int height = event.getWindow().getGuiScaledHeight();
@@ -333,7 +339,7 @@ public class ClientEvent {
             regen = tickCount % Mth.ceil(healthMax + 5.0F);
         }
 
-        int TOP = player.level().getLevelData().isHardcore() ? 9 : 0;
+        int TOP = player.level.getLevelData().isHardcore() ? 9 : 0;
         int BACKGROUND = highlight ? back : 16;
         int margin = 34;
         float absorbtionRemaining = (float) absorbtion;
@@ -349,28 +355,28 @@ public class ClientEvent {
             if (i == regen) {
                 y -= 2;
             }
-
-            stack.blit(EFFECT_HEART, x, y, BACKGROUND, TOP, 9, 9);
+            
+            gui.blit(stack, x, y, BACKGROUND, TOP, 9, 9);
             if (highlight) {
                 if (i * 2 + 1 < healthLast) {
-                    stack.blit(EFFECT_HEART, x, y, margin, TOP, 9, 9);
+                	gui.blit(stack, x, y, margin, TOP, 9, 9);
                 } else if (i * 2 + 1 == healthLast) {
-                    stack.blit(EFFECT_HEART, x, y, margin + 9, TOP, 9, 9);
+                	gui.blit(stack, x, y, margin + 9, TOP, 9, 9);
                 }
             }
 
             if (absorbtionRemaining > 0.0F) {
                 if (absorbtionRemaining == (float) absorbtion && (float) absorbtion % 2.0F == 1.0F) {
-                    stack.blit(EFFECT_HEART, x, y, margin + 9, TOP, 9, 9);
+                	gui.blit(stack, x, y, margin + 9, TOP, 9, 9);
                     --absorbtionRemaining;
                 } else {
-                    stack.blit(EFFECT_HEART, x, y, margin, TOP, 9, 9);
+                	gui.blit(stack, x, y, margin, TOP, 9, 9);
                     absorbtionRemaining -= 2.0F;
                 }
             } else if (i * 2 + 1 < health) {
-                stack.blit(EFFECT_HEART, x, y, margin, TOP, 9, 9);
+            	gui.blit(stack, x, y, margin, TOP, 9, 9);
             } else if (i * 2 + 1 == health) {
-                stack.blit(EFFECT_HEART, x, y, margin + 9, TOP, 9, 9);
+            	gui.blit(stack, x, y, margin + 9, TOP, 9, 9);
             }
         }
 
@@ -382,7 +388,7 @@ public class ClientEvent {
         Minecraft minecraft = Minecraft.getInstance();
         Minecraft mc = Minecraft.getInstance();
         ForgeGui gui = (ForgeGui) mc.gui;
-        GuiGraphics stack = event.getGuiGraphics();
+        PoseStack stack = event.getPoseStack();
         gui.setupOverlayRenderState(true, false);
         int width = event.getWindow().getGuiScaledWidth();
         int height = event.getWindow().getGuiScaledHeight();
@@ -405,7 +411,8 @@ public class ClientEvent {
                 int partial = Mth.ceil(progress * 10) - full;
 
                 for (int i = 0; i < full + partial; ++i) {
-                    stack.blit(SANDSTORM_ICON, left - i * 8 - 9, top, -90, (i < full ? 0 : 9), 0, 9, 9, 32, 16);
+                	RenderSystem.setShaderTexture(0, SANDSTORM_ICON);
+                    GuiComponent.blit(stack, left - i * 8 - 9, top, -90, (i < full ? 0 : 9), 0, 9, 9, 32, 16);
                 }
                 gui.rightHeight += 10;
 

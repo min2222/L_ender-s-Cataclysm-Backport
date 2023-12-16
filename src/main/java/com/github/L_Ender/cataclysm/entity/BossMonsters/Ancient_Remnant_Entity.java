@@ -1,5 +1,10 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import java.util.EnumSet;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
@@ -12,10 +17,15 @@ import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.projectile.Ancient_Desert_Stele_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.EarthQuake_Entity;
-import com.github.L_Ender.cataclysm.init.*;
+import com.github.L_Ender.cataclysm.init.ModEffect;
+import com.github.L_Ender.cataclysm.init.ModEntities;
+import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModSounds;
+import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.LegSolver;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,7 +37,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
@@ -35,7 +44,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -62,10 +75,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.common.ToolActions;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
 
 
 public class Ancient_Remnant_Entity extends Boss_monster {
@@ -111,13 +120,17 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     public Ancient_Remnant_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 500;
-        this.setMaxUpStep(1.5F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         setConfigattribute(this, CMConfig.AncientRemnantHealthMultiplier, CMConfig.AncientRemnantDamageMultiplier);
-        if (this.level().isClientSide){
+        if (this.level.isClientSide){
             Cataclysm.PROXY.addBoss(this);
         }
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.5F;
     }
 
     @Override
@@ -201,7 +214,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     @Override
     public boolean hurt(DamageSource source, float damage) {
         double range = calculateRange(source);
-        if (this.getAnimation() == REMNANT_PHASE_ROAR && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+        if (this.getAnimation() == REMNANT_PHASE_ROAR && !source.isBypassInvul()) {
             return false;
         }
         if (range > CMConfig.AncientRemnantLongRangelimit * CMConfig.AncientRemnantLongRangelimit) {
@@ -212,7 +225,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             return false;
         }
         if (this.activeProgress > 0) {
-            if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            if (!source.isBypassInvul()) {
                 return false;
             }
         }
@@ -283,7 +296,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     private void floatRemnant() {
         if (this.isInWater()) {
             CollisionContext collisioncontext = CollisionContext.of(this);
-            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level().getFluidState(this.blockPosition().above()).is(FluidTags.WATER)) {
+            if (collisioncontext.isAbove(LiquidBlock.STABLE_SHAPE, this.blockPosition(), true) && !this.level.getFluidState(this.blockPosition().above()).is(FluidTags.WATER)) {
                 this.setOnGround(true);
             } else {
                 this.setDeltaMovement(this.getDeltaMovement().scale(0.5D).add(0.0D, 0.05D, 0.0D));
@@ -340,9 +353,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         float moveX = (float) (getX() - xo);
         float moveZ = (float) (getZ() - zo);
         float speed = Mth.sqrt(moveX * moveX + moveZ * moveZ);
-        if (!this.isSilent() && frame % 8 == 1 && speed > 0.05 && this.getIsCharge() && this.onGround()) {
+        if (!this.isSilent() && frame % 8 == 1 && speed > 0.05 && this.getIsCharge() && this.isOnGround()) {
             this.playSound(ModSounds.REMNANT_CHARGE_STEP.get(), 1F, 1.0f);
-            ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+            ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
         }
 
        if(this.isAlive() && this.getIsAct()) {
@@ -353,7 +366,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
        // if (!this.isSilent() && frame % 16 == 1 && speed > 0.05 && !this.getIsCharge()) {
        //     this.playSound(ModSounds.REMNANT_CHARGE_STEP.get(), 1F, 1.0f);
-        //    ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.02f, 0, 10);
+        //    ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.02f, 0, 10);
        // }
     }
 
@@ -363,21 +376,21 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
     private void Charge() {
         if (getIsCharge()) {
-            if (!this.level().isClientSide) {
+            if (!this.level.isClientSide) {
                 if(CMConfig.AncientRemnantBlockBreaking) {
                     ChargeBlockBreaking();
                 }else{
-                    if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+                    if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                         ChargeBlockBreaking();
                     }
                 }
             }
             if (this.tickCount % 4 == 0) {
-                for (LivingEntity Lentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5D))) {
+                for (LivingEntity Lentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5D))) {
                     if (!isAlliedTo(Lentity) && !(Lentity instanceof Ancient_Remnant_Entity) && Lentity != this) {
-                        boolean flag = Lentity.hurt(this.damageSources().mobAttack(this), (float) ((float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5f + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5f, Lentity.getMaxHealth() * CMConfig.RemnantChargeHpDamage)));
+                        boolean flag = Lentity.hurt(DamageSource.mobAttack(this), (float) ((float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5f + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5f, Lentity.getMaxHealth() * CMConfig.RemnantChargeHpDamage)));
                         if (flag) {
-                            if (Lentity.onGround()) {
+                            if (Lentity.isOnGround()) {
                                 double d0 = Lentity.getX() - this.getX();
                                 double d1 = Lentity.getZ() - this.getZ();
                                 double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
@@ -396,15 +409,15 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         boolean flag = false;
         AABB aabb = this.getBoundingBox().inflate(0.5D, 0.2D, 0.5D);
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-            BlockState blockstate = this.level().getBlockState(blockpos);
-            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level(), blockpos, this) && !blockstate.is(ModTag.REMNANT_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+            BlockState blockstate = this.level.getBlockState(blockpos);
+            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.REMNANT_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                 if (random.nextInt(6) == 0 && !blockstate.hasBlockEntity()) {
-                    Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level(), blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
-                    flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                    Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
+                    flag = this.level.destroyBlock(blockpos, false, this) || flag;
                     fallingBlockEntity.setDeltaMovement(fallingBlockEntity.getDeltaMovement().add(this.position().subtract(fallingBlockEntity.position()).multiply((-1.2D + random.nextDouble()) / 3, 0.2D + getRandom().nextGaussian() * 0.15D, (-1.2D + random.nextDouble()) / 3)));
-                    level().addFreshEntity(fallingBlockEntity);
+                    level.addFreshEntity(fallingBlockEntity);
                 } else {
-                    flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                    flag = this.level.destroyBlock(blockpos, false, this) || flag;
                 }
             }
 
@@ -417,7 +430,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
         if(this.getAnimation() == REMNANT_BITE1){
             if(this.getAnimationTick() == 5){
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_BITE.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_BITE.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
             }
             if(this.getAnimationTick() == 28){
                 AreaAttack(8,8,70,1.0f,(float) CMConfig.RemnantHpDamage,160,0);
@@ -426,7 +439,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
         if(this.getAnimation() == REMNANT_BITE2){
             if(this.getAnimationTick() == 1){
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_BITE.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_BITE.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
             }
             if(this.getAnimationTick() == 24){
                 AreaAttack(8,8,70,1.0f,(float) CMConfig.RemnantHpDamage,160,0);
@@ -436,7 +449,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
         if(this.getAnimation() == REMNANT_TAIL_ATTACK1){
             if(this.getAnimationTick() == 3) {
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_TAIL_SWING.get(), SoundSource.HOSTILE, 2.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_TAIL_SWING.get(), SoundSource.HOSTILE, 2.0f, 1.0f);
             }
             if(this.getAnimationTick() == 16){
                 TailAreaAttack(8,8,1.05F,120,1.0f,(float) CMConfig.RemnantHpDamage,200,100);
@@ -445,7 +458,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
         if(this.getAnimation() == REMNANT_TAIL_ATTACK2){
             if(this.getAnimationTick() == 1) {
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_TAIL_SWING.get(), SoundSource.HOSTILE, 2.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_TAIL_SWING.get(), SoundSource.HOSTILE, 2.0f, 1.0f);
             }
             if(this.getAnimationTick() == 14){
                 TailAreaAttack(8,8,1.05F,120,1.0f,(float) CMConfig.RemnantHpDamage,200,100);
@@ -454,31 +467,31 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
         if(this.getAnimation() == REMNANT_CHARGE_PREPARE){
             if(this.getAnimationTick() == 1){
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_CHARGE_PREPARE.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_CHARGE_PREPARE.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
             }
 
             if(this.getAnimationTick() == 15){
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 StompParticle(-0.1f,-0.75f);
             }
 
             if(this.getAnimationTick() == 41){
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 StompParticle(-0.1f,0.75f);
             }
 
             if(this.getAnimationTick() == 62){
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_CHARGE_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_CHARGE_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
             }
             if(this.getAnimationTick() == 132) {
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_BREATHING.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_BREATHING.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
             }
         }
 
         if(this.getAnimation() == REMNANT_ROAR){
             if(this.getAnimationTick() == 14){
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 60);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 60);
             }
             if(this.getAnimationTick() == 55) {
                 for (int i = 0; i < 4; i++) {
@@ -486,43 +499,43 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                     double sx = this.getX() + (Mth.cos(angle) * 8);
                     double sy = this.getY();
                     double sz = this.getZ() + (Mth.sin(angle) * 8);
-                    Sandstorm_Entity projectile = new Sandstorm_Entity(this.level(), sx,sy,sz,300,angle,this.getUUID());
-                    this.level().addFreshEntity(projectile);
+                    Sandstorm_Entity projectile = new Sandstorm_Entity(this.level, sx,sy,sz,300,angle,this.getUUID());
+                    this.level.addFreshEntity(projectile);
                 }
             }
         }
         if(this.getAnimation() == REMNANT_ROAR2){
             if(this.getAnimationTick() == 23){
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 60);
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 60);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
             }
         }
 
         if(this.getAnimation() == REMNANT_PHASE_ROAR){
             if(this.getAnimationTick() == 23){
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 60);
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 60);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_ROAR.get(), SoundSource.HOSTILE, 3.0f, 1.0f);
                 setIsPower(true);
             }
         }
 
         if(this.getAnimation() == REMNANT_TAIL_THREE){
             if(this.getAnimationTick() == 1) {
-                this.level().playSound((Player) null, this, ModSounds.REMNANT_TAIL_SLAM.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.REMNANT_TAIL_SLAM.get(), SoundSource.HOSTILE, 1.0f, 1.0f);
             }
             if(this.getAnimationTick() == 37) {
                 AreaAttack(10,10,50,1.0f,(float) CMConfig.RemnantHpDamage,160,0);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
             }
             if(this.getAnimationTick() == 55) {
                 AreaAttack(10,10,50,1.0f,(float) CMConfig.RemnantHpDamage,160,0);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
             }
             if(this.getAnimationTick() == 73) {
                 AreaAttack(10,10,50,1.0f,(float) CMConfig.RemnantHpDamage,160,0);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 EarthQuakeSummon(5.5f, 20 + random.nextInt(10), -0.75f);
             }
 
@@ -530,7 +543,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if(this.getAnimation() == REMNANT_LEFT_STOMP){
             if(this.getAnimationTick() == 28) {
                 StompParticle(0.9f,1.3f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
                 if(this.getIsPower()){
                     AnimationHandler.INSTANCE.sendAnimationMessage(this, REMNANT_LEFT_STOMP_EXTRA);
@@ -560,7 +573,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             }
             if(this.getAnimationTick() == 19) {
                 StompParticle(0.9f, 1.3f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
             }
             for (int l = 19; l <= 36; l = l + 2) {
@@ -578,7 +591,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         if(this.getAnimation() == REMNANT_RIGHT_STOMP){
             if(this.getAnimationTick() == 28) {
                 StompParticle(0.9f,-1.3f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
                 if(this.getIsPower()){
                     AnimationHandler.INSTANCE.sendAnimationMessage(this, REMNANT_RIGHT_STOMP_EXTRA);
@@ -607,7 +620,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             }
             if(this.getAnimationTick() == 19) {
                 StompParticle(0.9f, -1.3f);
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.1f, 0, 10);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.1f, 0, 10);
                 this.playSound(ModSounds.REMNANT_STOMP.get(), 1F, 1.0f);
             }
             for (int l = 19; l <= 36; l = l + 2) {
@@ -623,7 +636,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
         if(this.getAnimation() == REMNANT_DEATH){
             if(this.getAnimationTick() == 52 || this.getAnimationTick() == 62 || this.getAnimationTick() == 77) {
-                ScreenShake_Entity.ScreenShake(level(), this.position(), 30, 0.05f, 0, 8);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 30, 0.05f, 0, 8);
             }
         }
     }
@@ -656,7 +669,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!isAlliedTo(entityHit) && !(entityHit instanceof Ancient_Remnant_Entity) && entityHit != this) {
-                    boolean flag = entityHit.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
+                    boolean flag = entityHit.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
                     if (entityHit instanceof Player && entityHit.isBlocking() && shieldbreakticks > 0) {
                         disableShield(entityHit, shieldbreakticks);
                     }
@@ -688,7 +701,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!isAlliedTo(entityHit) && !(entityHit instanceof Ancient_Remnant_Entity) && entityHit != this) {
-                    boolean flag = entityHit.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
+                    boolean flag = entityHit.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
                     if (entityHit instanceof Player && entityHit.isBlocking() && shieldbreakticks > 0) {
                         disableShield(entityHit, shieldbreakticks);
                     }
@@ -729,15 +742,15 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             int hitZ = Mth.floor(pz);
             BlockPos pos = new BlockPos(hitX, hitY, hitZ);
             BlockPos abovePos = new BlockPos(pos).above();
-            BlockState block = level().getBlockState(pos);
-            BlockState blockAbove = level().getBlockState(abovePos);
-            if (block != Blocks.AIR.defaultBlockState() && !block.hasBlockEntity() && !blockAbove.blocksMotion()) {
-                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level(), hitX + 0.5D, hitY + 1.0D, hitZ + 0.5D, block, 10);
+            BlockState block = level.getBlockState(pos);
+            BlockState blockAbove = level.getBlockState(abovePos);
+            if (block != Blocks.AIR.defaultBlockState() && !block.hasBlockEntity() && !blockAbove.getMaterial().blocksMotion()) {
+                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, hitX + 0.5D, hitY + 1.0D, hitZ + 0.5D, block, 10);
                 fallingBlockEntity.push(0, 0.2D + getRandom().nextGaussian() * 0.04D, 0);
-                level().addFreshEntity(fallingBlockEntity);
+                level.addFreshEntity(fallingBlockEntity);
             }
             AABB selection = new AABB(px - 0.5, minY, pz - 0.5, px + 0.5, maxY, pz + 0.5);
-            List<LivingEntity> hit = level().getEntitiesOfClass(LivingEntity.class, selection);
+            List<LivingEntity> hit = level.getEntitiesOfClass(LivingEntity.class, selection);
             for (LivingEntity entity : hit) {
                 if (!isAlliedTo(entity) && !(entity instanceof Ancient_Remnant_Entity) && entity != this) {
                     if (entity instanceof Player) {
@@ -745,12 +758,12 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                             disableShield(entity, shieldbreakticks);
                         }
                     }
-                    boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));
+                    boolean flag = entity.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));
                     if (flag) {
                         double magnitude = -4;
                         double x = vx * (1 - factor) * magnitude;
                         double y = 0;
-                        if (entity.onGround()) {
+                        if (entity.isOnGround()) {
                             y += 0.15;
                         }
                         double z = vz * (1 - factor) * magnitude;
@@ -768,7 +781,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         double vecZ = Math.sin(theta);
         float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
         float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
-        this.level().playLocalSound(this.getX() + distance * vecX + f * math, this.getY(), this.getZ() + distance * vecZ + f1 * math, ModSounds.REMNANT_SHOCKWAVE.get(), this.getSoundSource(), 1.5f, 0.8F + this.getRandom().nextFloat() * 0.1F, false);
+        this.level.playLocalSound(this.getX() + distance * vecX + f * math, this.getY(), this.getZ() + distance * vecZ + f1 * math, ModSounds.REMNANT_SHOCKWAVE.get(), this.getSoundSource(), 1.5f, 0.8F + this.getRandom().nextFloat() * 0.1F, false);
     }
 
     public  List<LivingEntity> getTailEntityLivingBaseNearby(double distanceX, double distanceMinY, double distanceMaxY,double distanceZ, double radius) {
@@ -776,11 +789,11 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     }
 
     public <T extends Entity> List<T> getTailEntitiesNearby(Class<T> entityClass, double dX, double dY, double pY,double dZ, double r) {
-        return level().getEntitiesOfClass(entityClass, new AABB(this.getX() - dX, this.getY() - dY, this.getZ() - dZ, this.getX() + dX, this.getY() + pY, this.getZ() + dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
+        return level.getEntitiesOfClass(entityClass, new AABB(this.getX() - dX, this.getY() - dY, this.getZ() - dZ, this.getX() + dX, this.getY() + pY, this.getZ() + dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
     }
 
     private void StompParticle(float vec, float math) {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 double DeltaMovementX = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementY = getRandom().nextGaussian() * 0.07D;
@@ -799,8 +812,8 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                 int hitY = Mth.floor(getY());
                 int hitZ = Mth.floor(getZ() + vec * vecZ + extraZ);
                 BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-                BlockState block = level().getBlockState(hit.below());
-                this.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
+                BlockState block = level.getBlockState(hit.below());
+                this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
 
             }
         }
@@ -816,10 +829,10 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         double vecZ = Math.sin(theta);
         float angle = 360.0F / quake;
         for (int i = 0; i < quake; i++) {
-            EarthQuake_Entity peq = new EarthQuake_Entity(this.level(), this);
+            EarthQuake_Entity peq = new EarthQuake_Entity(this.level, this);
             peq.shootFromRotation(this, 0, angle * i, 0.0F, 0.45F, 0.0F);
             peq.setPos(this.getX() + vec * vecX + f * math, this.getY(), getZ() + vec * vecZ + f1 * math);
-            this.level().addFreshEntity(peq);
+            this.level.addFreshEntity(peq);
 
         }
     }
@@ -961,7 +974,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
             }else{
                 entity.setYRot(entity.yRotO);
             }
-            if(this.entity.getAnimationTick() < 122 && this.entity.getAnimationTick() > 62 && this.entity.onGround()){
+            if(this.entity.getAnimationTick() < 122 && this.entity.getAnimationTick() > 62 && this.entity.isOnGround()){
                 Vec3 vector3d = entity.getDeltaMovement();
                 float f = entity.getYRot() * ((float)Math.PI / 180F);
                 Vec3 vector3d1 = new Vec3(-Mth.sin(f), entity.getDeltaMovement().y, Mth.cos(f)).scale(1.0D).add(vector3d.scale(0.5D));
@@ -1066,9 +1079,9 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
 
         private void spawnSpikeLine(double posX, double posZ, double posY, float rotation, int delay) {
-            BlockPos blockpos = BlockPos.containing(posX, posY, posZ);
+            BlockPos blockpos = new BlockPos(posX, posY, posZ);
             double d0 = 0.0;
-            this.entity.level().addFreshEntity(new Ancient_Desert_Stele_Entity(this.entity.level(), posX, (double)blockpos.getY() + d0 + 3.0, posZ, rotation, delay, this.entity));
+            this.entity.level.addFreshEntity(new Ancient_Desert_Stele_Entity(this.entity.level, posX, (double)blockpos.getY() + d0 + 3.0, posZ, rotation, delay, this.entity));
 
 
         }
@@ -1151,7 +1164,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
                     }else if (this.mob.roar_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 3f) {
                         this.mob.setAnimation(REMNANT_ROAR);
                         this.mob.roar_cooldown = ROAR_COOLDOWN;
-                    }else if (this.mob.earthquake_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 7f && this.mob.distanceTo(target) < 12.0D && target.onGround()) {
+                    }else if (this.mob.earthquake_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 7f && this.mob.distanceTo(target) < 12.0D && target.isOnGround()) {
                         this.mob.setAnimation(REMNANT_TAIL_THREE);
                         this.mob.earthquake_cooldown = EARTHQUAKE_COOLDOWN;
                     }else if (this.mob.charge_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 9f && this.mob.distanceTo(target) > 7.0D && this.mob.distanceTo(target) < 20D && target.getY() <= this.mob.getY() + 1) {

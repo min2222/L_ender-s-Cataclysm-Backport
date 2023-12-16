@@ -1,8 +1,13 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -10,17 +15,12 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class Ignitium_Armor extends ArmorItem {
 
-    public Ignitium_Armor(Armortier material, ArmorItem.Type slot, Properties properties) {
+    public Ignitium_Armor(Armortier material, EquipmentSlot slot, Properties properties) {
         super(material, slot, properties);
 
     }
@@ -51,16 +51,16 @@ public class Ignitium_Armor extends ArmorItem {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-        if (this.type == Type.HELMET) {
+        if (this.slot == EquipmentSlot.HEAD) {
             tooltip.add(Component.translatable("item.cataclysm.ignitium_helmet.desc").withStyle(ChatFormatting.DARK_GREEN));
         }
-        if (this.type == Type.CHESTPLATE) {
+        if (this.slot == EquipmentSlot.CHEST) {
             tooltip.add(Component.translatable("item.cataclysm.ignitium_chestplate.desc").withStyle(ChatFormatting.DARK_GREEN));
         }
-        if (this.type == Type.LEGGINGS) {
+        if (this.slot == EquipmentSlot.LEGS) {
             tooltip.add(Component.translatable("item.cataclysm.ignitium_leggings.desc").withStyle(ChatFormatting.DARK_GREEN));
         }
-        if (this.type ==  Type.BOOTS) {
+        if (this.slot ==  EquipmentSlot.FEET) {
             tooltip.add(Component.translatable("item.cataclysm.ignitium_boots.desc").withStyle(ChatFormatting.DARK_GREEN));
         }
     }

@@ -3,7 +3,7 @@ package com.github.L_Ender.cataclysm.client.gui;
 import com.github.L_Ender.cataclysm.inventory.WeaponfusionMenu;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.gui.GuiGraphics;
+
 import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -18,9 +18,11 @@ public class GUIWeponfusion extends ItemCombinerScreen<WeaponfusionMenu> {
         this.titleLabelY = 18;
     }
 
-    protected void renderErrorIcon(GuiGraphics p_282905_, int p_283237_, int p_282237_) {
-        if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(this.menu.getResultSlot()).hasItem()) {
-            p_282905_.blit(SMITHING_LOCATION, p_283237_ + 99, p_282237_ + 45, this.imageWidth, 0, 28, 21);
+    protected void renderErrorIcon(PoseStack p_282905_, int p_283237_, int p_282237_) {
+    	RenderSystem.enableTexture();
+    	RenderSystem.setShaderTexture(0, SMITHING_LOCATION);
+        if ((this.menu.getSlot(0).hasItem() || this.menu.getSlot(1).hasItem()) && !this.menu.getSlot(WeaponfusionMenu.RESULT_SLOT).hasItem()) {
+            blit(p_282905_, p_283237_ + 99, p_282237_ + 45, this.imageWidth, 0, 28, 21);
         }
 
     }

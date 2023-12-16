@@ -2,17 +2,18 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 
 import com.github.L_Ender.cataclysm.client.model.entity.ModelTidal_Hook;
 import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Hook_Entity;
-
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -21,8 +22,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 
 public class RendererTidal_Hook extends EntityRenderer<Tidal_Hook_Entity> {
@@ -38,8 +37,8 @@ public class RendererTidal_Hook extends EntityRenderer<Tidal_Hook_Entity> {
 	@Override
 	public void render(Tidal_Hook_Entity entity, float yaw, float tickDelta, PoseStack matrices, MultiBufferSource provider, int light) {
 		matrices.pushPose();
-		matrices.mulPose(Axis.YP.rotationDegrees(Mth.lerp(tickDelta, entity.yRotO, entity.getYRot()) - 90.0F));
-		matrices.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(tickDelta, entity.xRotO, entity.getXRot()) + 90.0F));
+		matrices.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(tickDelta, entity.yRotO, entity.getYRot()) - 90.0F));
+		matrices.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(tickDelta, entity.xRotO, entity.getXRot()) + 90.0F));
 
 		VertexConsumer vertexConsumer = provider.getBuffer(this.model.renderType(getTextureLocation(entity)));
 		model.renderToBuffer(matrices, vertexConsumer, light, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
@@ -108,9 +107,9 @@ public class RendererTidal_Hook extends EntityRenderer<Tidal_Hook_Entity> {
 		float length = Mth.sqrt(squaredLength);
 
 		stack.pushPose();
-		stack.mulPose(Axis.YP.rotation((float) (-Math.atan2(from.z, from.x)) - 1.5707964F));
-		stack.mulPose(Axis.XP.rotation((float) (-Math.atan2(lengthXY, from.y)) - 1.5707964F));
-		stack.mulPose(Axis.ZP.rotationDegrees(25));
+		stack.mulPose(Vector3f.YP.rotation((float) (-Math.atan2(from.z, from.x)) - 1.5707964F));
+		stack.mulPose(Vector3f.XP.rotation((float) (-Math.atan2(lengthXY, from.y)) - 1.5707964F));
+		stack.mulPose(Vector3f.ZP.rotationDegrees(25));
 		stack.pushPose();
 		stack.translate(0.015, -0.2, 0);
 
@@ -133,7 +132,7 @@ public class RendererTidal_Hook extends EntityRenderer<Tidal_Hook_Entity> {
 		vertexConsumer.vertex(matrix4f, vertX2, vertY2, 0F).color(0, 0, 0, 255).uv(maxU, minV).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, 0.0F, -1.0F, 0.0F).endVertex();
 
 		stack.popPose();
-		stack.mulPose(Axis.ZP.rotationDegrees(90));
+		stack.mulPose(Vector3f.ZP.rotationDegrees(90));
 		stack.translate(-0.015, -0.2, 0);
 
 		entry = stack.last();

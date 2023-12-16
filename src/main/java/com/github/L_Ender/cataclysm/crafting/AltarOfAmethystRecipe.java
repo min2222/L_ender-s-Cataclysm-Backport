@@ -1,15 +1,21 @@
 package com.github.L_Ender.cataclysm.crafting;
 
+import java.lang.reflect.Type;
+
 import com.github.alexthe666.citadel.client.model.container.JsonUtils;
-import com.google.gson.*;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.ShapedRecipe;
-
-import java.lang.reflect.Type;
 
 public class AltarOfAmethystRecipe {
     private final NonNullList<Ingredient> ingredients;

@@ -4,10 +4,10 @@ import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Wither_Smoke_Effect_Entity;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -45,7 +46,7 @@ public class Wither_Howitzer_Entity extends ThrowableProjectile {
 
 
     public void setRadius(float p_19713_) {
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             this.getEntityData().set(RADIUS, Mth.clamp(p_19713_, 0.0F, 32.0F));
         }
     }
@@ -56,13 +57,13 @@ public class Wither_Howitzer_Entity extends ThrowableProjectile {
 
     protected void onHitEntity(EntityHitResult p_37626_) {
         super.onHitEntity(p_37626_);
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             Entity entity = p_37626_.getEntity();
             Entity entity1 = this.getOwner();
             boolean flag;
             if (entity1 instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity1;
-                flag = entity.hurt(this.damageSources().mobProjectile(this, livingentity), (float) CMConfig.WitherHowizterdamage);
+                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), (float) CMConfig.WitherHowizterdamage);
                 if (flag) {
                     if (entity.isAlive()) {
                         this.doEnchantDamageEffects(livingentity, entity);
@@ -75,14 +76,14 @@ public class Wither_Howitzer_Entity extends ThrowableProjectile {
                     }
                 }
             } else {
-                flag = entity.hurt(this.damageSources().magic(), 5.0F);
+                flag = entity.hurt(DamageSource.MAGIC, 5.0F);
             }
 
             if (flag && entity instanceof LivingEntity) {
                 int i = 10;
-                if (this.level().getDifficulty() == Difficulty.NORMAL) {
+                if (this.level.getDifficulty() == Difficulty.NORMAL) {
                     i = 20;
-                } else if (this.level().getDifficulty() == Difficulty.HARD) {
+                } else if (this.level.getDifficulty() == Difficulty.HARD) {
                     i = 30;
                 }
 
@@ -94,9 +95,9 @@ public class Wither_Howitzer_Entity extends ThrowableProjectile {
 
     protected void onHit(HitResult p_37628_) {
         super.onHit(p_37628_);
-        if (!this.level().isClientSide) {
-            this.level().explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, false, Level.ExplosionInteraction.NONE);
-            Wither_Smoke_Effect_Entity areaeffectcloud = new Wither_Smoke_Effect_Entity(this.level(), this.getX(), this.getY(), this.getZ());
+        if (!this.level.isClientSide) {
+            this.level.explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, false, Explosion.BlockInteraction.NONE);
+            Wither_Smoke_Effect_Entity areaeffectcloud = new Wither_Smoke_Effect_Entity(this.level, this.getX(), this.getY(), this.getZ());
             areaeffectcloud.setRadius(this.getRadius());
             LivingEntity entity1 = (LivingEntity) this.getOwner();
             areaeffectcloud.setOwner(entity1);
@@ -104,8 +105,8 @@ public class Wither_Howitzer_Entity extends ThrowableProjectile {
             areaeffectcloud.setWaitTime(10);
             areaeffectcloud.setDuration(areaeffectcloud.getDuration() / 2);
             areaeffectcloud.setRadiusPerTick(-areaeffectcloud.getRadius() / (float)areaeffectcloud.getDuration());
-            this.level().addFreshEntity(areaeffectcloud);
-            ScreenShake_Entity.ScreenShake(level(), this.position(), 40, 0.05f, 0, 20);
+            this.level.addFreshEntity(areaeffectcloud);
+            ScreenShake_Entity.ScreenShake(level, this.position(), 40, 0.05f, 0, 20);
             this.discard();
         }
     }
@@ -125,10 +126,10 @@ public class Wither_Howitzer_Entity extends ThrowableProjectile {
     public void tick() {
         super.tick();
 
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             Vec3 vec3 = this.getDeltaMovement();
-            level().addParticle(ParticleTypes.FLAME, this.getX() - vec3.x, this.getY() - vec3.y, this.getZ() - vec3.z, 0, 0, 0);
-            level().addParticle(ParticleTypes.SMOKE, this.getX() - vec3.x, this.getY() - vec3.y, this.getZ() - vec3.z, 0, 0, 0);
+            level.addParticle(ParticleTypes.FLAME, this.getX() - vec3.x, this.getY() - vec3.y, this.getZ() - vec3.z, 0, 0, 0);
+            level.addParticle(ParticleTypes.SMOKE, this.getX() - vec3.x, this.getY() - vec3.y, this.getZ() - vec3.z, 0, 0, 0);
         }
 
     }
@@ -140,7 +141,7 @@ public class Wither_Howitzer_Entity extends ThrowableProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

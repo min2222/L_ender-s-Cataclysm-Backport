@@ -1,9 +1,14 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,10 +32,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
 
 public class Gauntlet_of_Guard extends Item {
     private final Multimap<Attribute, AttributeModifier> guantletAttributes;
@@ -71,7 +72,7 @@ public class Gauntlet_of_Guard extends Item {
 
     public void onUseTick(Level worldIn, LivingEntity livingEntityIn, ItemStack stack, int count) {
         double radius = 11.0D;
-        Level world = livingEntityIn.level();
+        Level world = livingEntityIn.level;
         List<LivingEntity> list = world.getEntitiesOfClass(LivingEntity.class, livingEntityIn.getBoundingBox().inflate(radius));
         for (LivingEntity entity : list) {
             if (entity instanceof Player && ((Player) entity).getAbilities().invulnerable) continue;

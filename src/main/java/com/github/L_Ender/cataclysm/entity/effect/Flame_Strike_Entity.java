@@ -1,13 +1,17 @@
 package com.github.L_Ender.cataclysm.entity.effect;
 
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -17,13 +21,15 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class Flame_Strike_Entity extends Entity {
     private static final EntityDataAccessor<Float> DATA_RADIUS = SynchedEntityData.defineId(Flame_Strike_Entity.class, EntityDataSerializers.FLOAT);
@@ -65,7 +71,7 @@ public class Flame_Strike_Entity extends Entity {
     }
 
     public void setRadius(float p_19713_) {
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             this.getEntityData().set(DATA_RADIUS, Mth.clamp(p_19713_, 0.0F, 32.0F));
         }
 
@@ -123,7 +129,7 @@ public class Flame_Strike_Entity extends Entity {
         super.tick();
         boolean flag = this.isWaiting();
         float f = this.getRadius();
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             if (flag && this.random.nextBoolean()) {
                 return;
             }
@@ -139,11 +145,11 @@ public class Flame_Strike_Entity extends Entity {
                         double d0 = this.getX() + (double) (Mth.cos(f2) * f1) * 0.9;
                         double d2 = this.getY();
                         double d4 = this.getZ() + (double) (Mth.sin(f2) * f1) * 0.9;
-                        this.level().addParticle(particleoptions, d0, d2, d4, random.nextGaussian() * 0.07D, 0.125D * this.getRadius() + 0.4D, random.nextGaussian() * 0.07D);
+                        this.level.addParticle(particleoptions, d0, d2, d4, random.nextGaussian() * 0.07D, 0.125D * this.getRadius() + 0.4D, random.nextGaussian() * 0.07D);
                     }
                 }
                 if (this.random.nextInt(24) == 0) {
-                    this.level().playLocalSound(this.getX() + 0.5D, this.getY() + 0.5D, this.getZ() + 0.5D, SoundEvents.BLAZE_BURN, this.getSoundSource(), 1.0F + this.random.nextFloat(), this.random.nextFloat() * 0.7F + 0.3F, false);
+                    this.level.playLocalSound(this.getX() + 0.5D, this.getY() + 0.5D, this.getZ() + 0.5D, SoundEvents.BLAZE_BURN, this.getSoundSource(), 1.0F + this.random.nextFloat(), this.random.nextFloat() * 0.7F + 0.3F, false);
                 }
             }
         } else {
@@ -153,7 +159,7 @@ public class Flame_Strike_Entity extends Entity {
                 }else{
                     if(!this.isSoul()) {
                         int explosionradius = this.owner instanceof Player ? 1 : 2;
-                        this.level().explode(this.owner, this.getX(), this.getY(), this.getZ(), explosionradius, Level.ExplosionInteraction.NONE);
+                        this.level.explode(this.owner, this.getX(), this.getY(), this.getZ(), explosionradius, Explosion.BlockInteraction.NONE);
                     }
                     this.discard();
                 }
@@ -178,7 +184,7 @@ public class Flame_Strike_Entity extends Entity {
 
         if(!flag) {
             if (this.tickCount % 5 == 0) {
-                for (LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
+                for (LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
                     this.damage(livingentity);
                 }
             }
@@ -191,7 +197,7 @@ public class Flame_Strike_Entity extends Entity {
             if (this.tickCount % 2 == 0) {
                 float damage = this.isSoul() ? 8.0F : 6.0F;
                 if (caster == null) {
-                    boolean flag = Hitentity.hurt(this.damageSources().magic(), damage + Hitentity.getMaxHealth() * 0.06f);
+                    boolean flag = Hitentity.hurt(DamageSource.MAGIC, damage + Hitentity.getMaxHealth() * 0.06f);
                     if (flag) {
                         MobEffectInstance effectinstance1 = Hitentity.getEffect(ModEffect.EFFECTBLAZING_BRAND.get());
                         int i = 1;
@@ -211,7 +217,7 @@ public class Flame_Strike_Entity extends Entity {
                         return;
                     }
                     float hpDmg = (float) (caster instanceof Player ? 0.02 : 0.06);
-                    boolean flag = Hitentity.hurt(this.damageSources().indirectMagic(this, caster), damage + Hitentity.getMaxHealth() * hpDmg);
+                    boolean flag = Hitentity.hurt(DamageSource.indirectMagic(this, caster), damage + Hitentity.getMaxHealth() * hpDmg);
                     if (flag) {
                         MobEffectInstance effectinstance1 = Hitentity.getEffect(ModEffect.EFFECTBLAZING_BRAND.get());
                         int i = 1;
@@ -248,8 +254,8 @@ public class Flame_Strike_Entity extends Entity {
 
     @Nullable
     public LivingEntity getOwner() {
-        if (this.owner == null && this.ownerUUID != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.ownerUUID);
+        if (this.owner == null && this.ownerUUID != null && this.level instanceof ServerLevel) {
+            Entity entity = ((ServerLevel)this.level).getEntity(this.ownerUUID);
             if (entity instanceof LivingEntity) {
                 this.owner = (LivingEntity)entity;
             }
@@ -297,7 +303,7 @@ public class Flame_Strike_Entity extends Entity {
         return PushReaction.IGNORE;
     }
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 

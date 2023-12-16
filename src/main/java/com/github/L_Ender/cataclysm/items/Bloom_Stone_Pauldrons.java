@@ -1,6 +1,11 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
@@ -11,12 +16,9 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class Bloom_Stone_Pauldrons extends ArmorItem {
 
-    public Bloom_Stone_Pauldrons(Armortier material, ArmorItem.Type slot, Properties properties) {
+    public Bloom_Stone_Pauldrons(Armortier material, EquipmentSlot slot, Properties properties) {
         super(material, slot, properties);
 
     }

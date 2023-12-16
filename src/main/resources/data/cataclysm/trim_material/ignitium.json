@@ -1,9 +1,0 @@
-{
-  "asset_name": "ignitium",
-  "description": {
-    "color": "#fc9600",
-    "translate": "trim_material.cataclysm.ignitium"
-  },
-  "ingredient": "cataclysm:ignitium_ingot",
-  "item_model_index": 0.61337
-}

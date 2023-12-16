@@ -1,10 +1,15 @@
 package com.github.L_Ender.cataclysm.capabilities;
 
+import java.util.UUID;
+
+import javax.annotation.Nonnull;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.entity.projectile.Amethyst_Cluster_Projectile_Entity;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -27,9 +32,6 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.TickEvent;
-
-import javax.annotation.Nonnull;
-import java.util.UUID;
 
 public class Bloom_Stone_PauldronsCapability {
     public static ResourceLocation ID = new ResourceLocation(Cataclysm.MODID, "pauldrons_cap");
@@ -62,7 +64,7 @@ public class Bloom_Stone_PauldronsCapability {
             AttributeInstance attributeinstance2 = player.getAttribute(Attributes.ARMOR);
             AttributeInstance attributeinstance3 = player.getAttribute(Attributes.ARMOR_TOUGHNESS);
 
-            if (!player.getCooldowns().isOnCooldown(ModItems.BLOOM_STONE_PAULDRONS.get()) && !player.getItemBySlot(EquipmentSlot.CHEST).isEmpty() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == ModItems.BLOOM_STONE_PAULDRONS.get() && player.onGround()) {
+            if (!player.getCooldowns().isOnCooldown(ModItems.BLOOM_STONE_PAULDRONS.get()) && !player.getItemBySlot(EquipmentSlot.CHEST).isEmpty() && player.getItemBySlot(EquipmentSlot.CHEST).getItem() == ModItems.BLOOM_STONE_PAULDRONS.get() && player.isOnGround()) {
                 if(player.isShiftKeyDown()) {
                     player.setPose(Pose.SWIMMING);
                     if (!attributeinstance.hasModifier(BURROW_KNOCKBACK_RESISTANCE)) {
@@ -76,7 +78,7 @@ public class Bloom_Stone_PauldronsCapability {
                     }
                     if (!burrow) {
                         setBurrow(true);
-                        if (player.level().isClientSide) {
+                        if (player.level.isClientSide) {
                             for (int i1 = 0; i1 < 80 + player.getRandom().nextInt(12); i1++) {
                                 double DeltaMovementX = player.getRandom().nextGaussian() * 0.07D;
                                 double DeltaMovementY = player.getRandom().nextGaussian() * 0.1D;
@@ -89,8 +91,8 @@ public class Bloom_Stone_PauldronsCapability {
                                 int hitY = Mth.floor(player.getY());
                                 int hitZ = Mth.floor(player.getZ() );
                                 BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-                                BlockState block = player.level().getBlockState(hit.below());
-                                player.level().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), player.getX() + extraX, player.getY() + extraY, player.getZ() + extraZ , DeltaMovementX, DeltaMovementY, DeltaMovementZ);
+                                BlockState block = player.level.getBlockState(hit.below());
+                                player.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), player.getX() + extraX, player.getY() + extraY, player.getZ() + extraZ , DeltaMovementX, DeltaMovementY, DeltaMovementZ);
                             }
 
                         }
@@ -98,9 +100,9 @@ public class Bloom_Stone_PauldronsCapability {
                         int hitY = Mth.floor(player.getY());
                         int hitZ = Mth.floor(player.getZ());
                         BlockPos hit = new BlockPos(hitX, hitY, hitZ);
-                        BlockState block = player.level().getBlockState(hit.below());
-                        SoundType soundtype = block.getSoundType(player.level(), hit, player);
-                        player.level().playSound((Player) null, player, soundtype.getBreakSound(), SoundSource.PLAYERS, 3.0f, 0.8F + player.getRandom().nextFloat() * 0.1F);
+                        BlockState block = player.level.getBlockState(hit.below());
+                        SoundType soundtype = block.getSoundType(player.level, hit, player);
+                        player.level.playSound((Player) null, player, soundtype.getBreakSound(), SoundSource.PLAYERS, 3.0f, 0.8F + player.getRandom().nextFloat() * 0.1F);
 
                     }
                 }else{
@@ -115,12 +117,12 @@ public class Bloom_Stone_PauldronsCapability {
                             double vy = 0 + player.getRandom().nextFloat() * 0.3F;
                             double vz = Mth.sin(throwAngle);
                             double v3 = Mth.sqrt((float) (vx * vx + vz * vz));
-                            Amethyst_Cluster_Projectile_Entity projectile = new Amethyst_Cluster_Projectile_Entity(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), player.level(), player);
+                            Amethyst_Cluster_Projectile_Entity projectile = new Amethyst_Cluster_Projectile_Entity(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), player.level, player);
 
                             projectile.moveTo(sx, sy, sz, i * 11.25F, player.getXRot());
                             float speed = 0.8F;
                             projectile.shoot(vx, vy + v3 * 0.20000000298023224D, vz, speed, 1.0F);
-                            player.level().addFreshEntity(projectile);
+                            player.level.addFreshEntity(projectile);
                         }
                         player.getCooldowns().addCooldown(ModItems.BLOOM_STONE_PAULDRONS.get(), 240);
                         setBurrow(false);

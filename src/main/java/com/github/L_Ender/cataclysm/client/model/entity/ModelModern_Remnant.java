@@ -9,6 +9,7 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.Minecraft;
 
 public class ModelModern_Remnant extends AdvancedEntityModel<Modern_Remnant_Entity> {

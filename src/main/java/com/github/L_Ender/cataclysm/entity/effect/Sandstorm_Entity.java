@@ -1,14 +1,17 @@
 package com.github.L_Ender.cataclysm.entity.effect;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModParticle;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -16,6 +19,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,9 +27,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Optional;
-import java.util.UUID;
 
 public class Sandstorm_Entity extends Entity {
 
@@ -47,7 +48,7 @@ public class Sandstorm_Entity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
@@ -56,7 +57,7 @@ public class Sandstorm_Entity extends Entity {
         updateMotion();
         Entity owner = getCreatorEntity();
         if (owner != null && !owner.isAlive()) discard();
-        if(level().isClientSide) {
+        if(level.isClientSide) {
             float spawnPercent = 2.0f;
             float maxY = 2.5F * spawnPercent * 1.25F;
             float y = 0;
@@ -69,16 +70,16 @@ public class Sandstorm_Entity extends Entity {
                 float radius = y * 0.35F;
                 float cosA = Mth.cos(a) * radius;
                 float sinA = Mth.sin(a) * radius;
-                level().addParticle(ModParticle.SANDSTORM.get(), posX + cosA, posY + y - (maxY * 0.15), posZ + sinA, 0.0D, 0D, 0.0D);
+                level.addParticle(ModParticle.SANDSTORM.get(), posX + cosA, posY + y - (maxY * 0.15), posZ + sinA, 0.0D, 0D, 0.0D);
                 y += dY;
             }
         }
 
-        if (!this.isSilent() && level().isClientSide) {
+        if (!this.isSilent() && level.isClientSide) {
             Cataclysm.PROXY.playWorldSound(this, (byte) 2);
         }
 
-        for(LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
+        for(LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
             if (entity instanceof Player && ((Player) entity).getAbilities().invulnerable) continue;
             if(entity != owner) {
                 MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 200, 0);
@@ -86,12 +87,12 @@ public class Sandstorm_Entity extends Entity {
                 if (entity.isAlive() && !entity.isInvulnerable() ) {
                     if (this.tickCount % 3 == 0) {
                         if (owner == null) {
-                            entity.hurt(this.damageSources().magic(), (float) CMConfig.Sandstormdamage);
+                            entity.hurt(DamageSource.MAGIC, (float) CMConfig.Sandstormdamage);
                         } else {
                             if (entity.isAlliedTo(entity)) {
                                 return;
                             }
-                            entity.hurt(this.damageSources().indirectMagic(this, owner), (float) CMConfig.Sandstormdamage);
+                            entity.hurt(DamageSource.indirectMagic(this, owner), (float) CMConfig.Sandstormdamage);
                         }
                     }
                 }
@@ -133,8 +134,8 @@ public class Sandstorm_Entity extends Entity {
 
     public Entity getCreatorEntity() {
         UUID uuid = getCreatorEntityUUID();
-        if(uuid != null && !this.level().isClientSide){
-            return ((ServerLevel) level()).getEntity(uuid);
+        if(uuid != null && !this.level.isClientSide){
+            return ((ServerLevel) level).getEntity(uuid);
         }
         return null;
     }

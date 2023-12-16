@@ -5,7 +5,8 @@ import com.github.L_Ender.cataclysm.client.render.layer.AbstractDeepling_Layer;
 import com.github.L_Ender.cataclysm.client.render.layer.LayerDeeplingBruteItem;
 import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Brute_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.Direction;
@@ -42,7 +43,7 @@ public class RendererDeepling_Brute extends MobRenderer<Deepling_Brute_Entity, M
         }
 
         if (!p_115317_.hasPose(Pose.SLEEPING)) {
-            p_115318_.mulPose(Axis.YP.rotationDegrees(180.0F - p_115320_));
+            p_115318_.mulPose(Vector3f.YP.rotationDegrees(180.0F - p_115320_));
         }
 
         if (p_115317_.deathTime > 0) {
@@ -52,19 +53,19 @@ public class RendererDeepling_Brute extends MobRenderer<Deepling_Brute_Entity, M
                 f = 1.0F;
             }
 
-            p_115318_.mulPose(Axis.ZP.rotationDegrees(f * this.getFlipDegrees(p_115317_)));
+            p_115318_.mulPose(Vector3f.ZP.rotationDegrees(f * this.getFlipDegrees(p_115317_)));
         } else if (p_115317_.isAutoSpinAttack()|| p_115317_.getSpinAttack()) {
-            p_115318_.mulPose(Axis.XP.rotationDegrees(-90.0F - p_115317_.getXRot()));
-            p_115318_.mulPose(Axis.YP.rotationDegrees(((float)p_115317_.tickCount + p_115321_) * -75.0F));
+            p_115318_.mulPose(Vector3f.XP.rotationDegrees(-90.0F - p_115317_.getXRot()));
+            p_115318_.mulPose(Vector3f.YP.rotationDegrees(((float)p_115317_.tickCount + p_115321_) * -75.0F));
         } else if (p_115317_.hasPose(Pose.SLEEPING)) {
             Direction direction = p_115317_.getBedOrientation();
             float f1 = direction != null ? sleepDirectionToRotation(direction) : p_115320_;
-            p_115318_.mulPose(Axis.YP.rotationDegrees(f1));
-            p_115318_.mulPose(Axis.ZP.rotationDegrees(this.getFlipDegrees(p_115317_)));
-            p_115318_.mulPose(Axis.YP.rotationDegrees(270.0F));
+            p_115318_.mulPose(Vector3f.YP.rotationDegrees(f1));
+            p_115318_.mulPose(Vector3f.ZP.rotationDegrees(this.getFlipDegrees(p_115317_)));
+            p_115318_.mulPose(Vector3f.YP.rotationDegrees(270.0F));
         } else if (isEntityUpsideDown(p_115317_)) {
             p_115318_.translate(0.0F, p_115317_.getBbHeight() + 0.1F, 0.0F);
-            p_115318_.mulPose(Axis.ZP.rotationDegrees(180.0F));
+            p_115318_.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
         }
 
     }

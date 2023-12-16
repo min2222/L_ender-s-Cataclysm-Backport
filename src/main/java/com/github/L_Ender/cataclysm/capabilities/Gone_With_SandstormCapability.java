@@ -4,6 +4,7 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -63,7 +64,7 @@ public class Gone_With_SandstormCapability {
         }
 
         private void toggleFlight(LivingEntity living, boolean flight) {
-            if (!living.level().isClientSide && living instanceof ServerPlayer player) {
+            if (!living.level.isClientSide && living instanceof ServerPlayer player) {
                 boolean prevFlying = player.getAbilities().flying;
                 boolean trueFlight = isCreativePlayer(living) || flight;
                 player.getAbilities().mayfly = trueFlight;

@@ -1,20 +1,20 @@
 package com.github.L_Ender.cataclysm.entity.Pet.AI;
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.Pet.AnimationPet;
 import com.github.L_Ender.cataclysm.entity.etc.IFollower;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
-
-import java.util.EnumSet;
 
 public class TameableAIFollowOwnerWater extends Goal {
     private final AnimationPet tameable;
@@ -29,7 +29,7 @@ public class TameableAIFollowOwnerWater extends Goal {
 
     public TameableAIFollowOwnerWater(AnimationPet tamed, double speed, float minDist, float maxDist, boolean leaves) {
         this.tameable = tamed;
-        this.world = tamed.level();
+        this.world = tamed.level;
         this.followSpeed = speed;
         this.minDist = minDist;
         this.maxDist = maxDist;

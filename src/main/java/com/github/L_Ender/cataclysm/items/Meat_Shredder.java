@@ -1,10 +1,16 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,10 +39,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Optional;
 
 public class Meat_Shredder extends Item {
 	private final Multimap<Attribute, AttributeModifier> whirligigsawAttributes;
@@ -108,6 +110,7 @@ public class Meat_Shredder extends Item {
 						if (j > 0 && !entity.isOnFire()) {
 							entity.setSecondsOnFire(j * 4);
 						}
+						entity.invulnerableTime = 0;
 					}
 					double d0 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().x;
 					double d1 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().y;
@@ -116,7 +119,7 @@ public class Meat_Shredder extends Item {
 					double d3 = d0 * dist;
 					double d4 = d1 * dist;
 					double d5 = d2 * dist;
-					entity.level().addParticle(ParticleTypes.LAVA, entity.getX(), living.getEyeY() - 0.1D + (entity.getEyePosition().y - living.getEyeY()), entity.getZ(), d3, d4, d5);
+					entity.level.addParticle(ParticleTypes.LAVA, entity.getX(), living.getEyeY() - 0.1D + (entity.getEyePosition().y - living.getEyeY()), entity.getZ(), d3, d4, d5);
 				}
 			}
 		}

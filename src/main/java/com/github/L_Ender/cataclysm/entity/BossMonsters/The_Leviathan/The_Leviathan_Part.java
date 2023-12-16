@@ -1,9 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
 import com.github.L_Ender.cataclysm.entity.partentity.Cm_Part_Entity;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -97,7 +97,7 @@ public class The_Leviathan_Part extends Cm_Part_Entity<The_Leviathan_Entity> {
 
 
 
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         throw new UnsupportedOperationException();
     }
 

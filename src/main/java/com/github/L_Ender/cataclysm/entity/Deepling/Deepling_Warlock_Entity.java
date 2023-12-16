@@ -1,17 +1,29 @@
 package com.github.L_Ender.cataclysm.entity.Deepling;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.effect.Abyss_Mark_Entity;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.alexthe666.citadel.animation.Animation;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -23,9 +35,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
 
 public class Deepling_Warlock_Entity extends AbstractDeepling {
     public static final Animation DEEPLING_MELEE = Animation.create(20);
@@ -124,7 +133,7 @@ public class Deepling_Warlock_Entity extends AbstractDeepling {
                     if (target != null) {
                         if (this.distanceTo(target) < 3.0F) {
                             float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                            target.hurt(damageSources().mobAttack(this), damage);
+                            target.hurt(DamageSource.mobAttack(this), damage);
                         }
                     }
                 }
@@ -211,8 +220,8 @@ public class Deepling_Warlock_Entity extends AbstractDeepling {
                     double sx = this.warlock.getX();
                     double sy = this.warlock.getY();
                     double sz = this.warlock.getZ();
-                    Abyss_Mark_Entity fireball = new Abyss_Mark_Entity(this.warlock.level(), sx,sy,sz,80,this.warlock.getUUID(),target);
-                    this.warlock.level().addFreshEntity(fireball);
+                    Abyss_Mark_Entity fireball = new Abyss_Mark_Entity(this.warlock.level, sx,sy,sz,80,this.warlock.getUUID(),target);
+                    this.warlock.level.addFreshEntity(fireball);
                 }
 
             }

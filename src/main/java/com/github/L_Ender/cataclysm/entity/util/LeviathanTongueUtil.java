@@ -1,15 +1,16 @@
 package com.github.L_Ender.cataclysm.entity.util;
 
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
 import com.github.alexthe666.citadel.Citadel;
 import com.github.alexthe666.citadel.server.entity.CitadelEntityData;
 import com.github.alexthe666.citadel.server.message.PropertiesMessage;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-
-import java.util.UUID;
 
 public class LeviathanTongueUtil {
 
@@ -18,7 +19,7 @@ public class LeviathanTongueUtil {
 
     private static void sync(LivingEntity enchanted, CompoundTag tag) {
         CitadelEntityData.setCitadelTag(enchanted, tag);
-        if (!enchanted.level().isClientSide) {
+        if (!enchanted.level.isClientSide) {
             Citadel.sendMSGToAll(new PropertiesMessage("CataclysmTagUpdate", tag, enchanted.getId()));
         } else {
             Citadel.sendMSGToServer(new PropertiesMessage("CataclysmTagUpdate", tag, enchanted.getId()));
@@ -74,14 +75,14 @@ public class LeviathanTongueUtil {
     public static The_Leviathan_Tongue_Entity getLastTendon(LivingEntity livingEntity) {
         UUID uuid = getLastTongueUUID(livingEntity);
         int id = getLastTongueId(livingEntity);
-        if (!livingEntity.level().isClientSide) {
+        if (!livingEntity.level.isClientSide) {
             if (uuid != null) {
-                Entity e = livingEntity.level().getEntity(id);
+                Entity e = livingEntity.level.getEntity(id);
                 return e instanceof The_Leviathan_Tongue_Entity ? (The_Leviathan_Tongue_Entity) e : null;
             }
         } else {
             if (id != -1) {
-                Entity e = livingEntity.level().getEntity(id);
+                Entity e = livingEntity.level.getEntity(id);
                 return e instanceof The_Leviathan_Tongue_Entity ? (The_Leviathan_Tongue_Entity) e : null;
             }
         }

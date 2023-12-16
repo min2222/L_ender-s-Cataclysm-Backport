@@ -1,20 +1,20 @@
 package com.github.L_Ender.cataclysm.blockentities;
 
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.blocks.Sandstone_Ignite_Trap;
-import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-
-import java.util.List;
 
 public class TileEntitySandstoneIgniteTrap extends BlockEntity {
 
@@ -55,7 +55,7 @@ public class TileEntitySandstoneIgniteTrap extends BlockEntity {
 
                     for (LivingEntity entity : entitiesInRange) {
                         if (!entity.fireImmune()) {
-                            entity.hurt(entity.level().damageSources().inFire(), 5);
+                            entity.hurt(DamageSource.IN_FIRE, 5);
                             entity.setSecondsOnFire(5);
                         }
                     }

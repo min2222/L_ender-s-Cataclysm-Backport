@@ -1,13 +1,18 @@
 package com.github.L_Ender.cataclysm.event;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.capabilities.*;
+import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
+import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
+import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
+import com.github.L_Ender.cataclysm.capabilities.HoldAttackCapability;
+import com.github.L_Ender.cataclysm.capabilities.HookCapability;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.items.ILeftClick;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -24,7 +29,11 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHealEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -42,20 +51,20 @@ public class ServerEventHandler {
         final BlockPos p_45021_ = event.getEntity().blockPosition();
         if (!event.getEntity().getItemBySlot(EquipmentSlot.FEET).isEmpty() && event.getEntity().getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.IGNITIUM_BOOTS.get()) {
             if(!event.getEntity().isShiftKeyDown()){
-            if (event.getEntity().onGround()) {
+            if (event.getEntity().isOnGround()) {
                 BlockState blockstate = ModBlocks.MELTING_NETHERRACK.get().defaultBlockState();
                 int f = Math.min(16, 2 + p_45022_);
                 BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
                 for(BlockPos blockpos : BlockPos.betweenClosed(p_45021_.offset(-f, -1, -f), p_45021_.offset(f, -1, f))) {
                     if (blockpos.closerToCenterThan(event.getEntity().position(), (double) f)) {
                         blockpos$mutableblockpos.set(blockpos.getX(), blockpos.getY() + 1, blockpos.getZ());
-                        BlockState blockstate1 = event.getEntity().level().getBlockState(blockpos$mutableblockpos);
+                        BlockState blockstate1 = event.getEntity().level.getBlockState(blockpos$mutableblockpos);
                         if (blockstate1.isAir()) {
-                            BlockState blockstate2 = event.getEntity().level().getBlockState(blockpos);
+                            BlockState blockstate2 = event.getEntity().level.getBlockState(blockpos);
                             boolean isFull = blockstate2.getBlock() == Blocks.LAVA && blockstate2.getValue(LiquidBlock.LEVEL) == 0; //TODO: Forge, modded waters?
-                            if (blockstate2 == Blocks.LAVA.defaultBlockState() && isFull && blockstate.canSurvive(event.getEntity().level(), blockpos) && event.getEntity().level().isUnobstructed(blockstate, blockpos, CollisionContext.empty()) && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(event.getEntity(), net.minecraftforge.common.util.BlockSnapshot.create(event.getEntity().level().dimension(), event.getEntity().level(), blockpos), net.minecraft.core.Direction.UP)) {
-                                event.getEntity().level().setBlockAndUpdate(blockpos, blockstate);
-                                event.getEntity().level().scheduleTick(blockpos, ModBlocks.MELTING_NETHERRACK.get(), Mth.nextInt(event.getEntity().getRandom(), 60, 120));
+                            if (blockstate2 == Blocks.LAVA.defaultBlockState() && isFull && blockstate.canSurvive(event.getEntity().level, blockpos) && event.getEntity().level.isUnobstructed(blockstate, blockpos, CollisionContext.empty()) && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(event.getEntity(), net.minecraftforge.common.util.BlockSnapshot.create(event.getEntity().level.dimension(), event.getEntity().level, blockpos), net.minecraft.core.Direction.UP)) {
+                                event.getEntity().level.setBlockAndUpdate(blockpos, blockstate);
+                                event.getEntity().level.scheduleTick(blockpos, ModBlocks.MELTING_NETHERRACK.get(), Mth.nextInt(event.getEntity().getRandom(), 60, 120));
                             }
 
                         }
@@ -98,7 +107,7 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onLivingDamage(LivingHurtEvent event) {
         LivingEntity target = event.getEntity();
-        if (!target.level().isClientSide() && event.getSource().getDirectEntity() instanceof LivingEntity living) {
+        if (!target.level.isClientSide() && event.getSource().getDirectEntity() instanceof LivingEntity living) {
             ItemStack weapon = living.getMainHandItem();
 
             if (!weapon.isEmpty()) {

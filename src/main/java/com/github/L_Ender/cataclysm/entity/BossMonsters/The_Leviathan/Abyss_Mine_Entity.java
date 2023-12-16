@@ -1,11 +1,15 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -14,13 +18,11 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public class Abyss_Mine_Entity extends Entity {
     private int warmupDelayTicks;
@@ -58,8 +60,8 @@ public class Abyss_Mine_Entity extends Entity {
 
     @Nullable
     public LivingEntity getCaster() {
-        if (this.caster == null && this.casterUuid != null && this.level() instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level()).getEntity(this.casterUuid);
+        if (this.caster == null && this.casterUuid != null && this.level instanceof ServerLevel) {
+            Entity entity = ((ServerLevel)this.level).getEntity(this.casterUuid);
             if (entity instanceof LivingEntity) {
                 this.caster = (LivingEntity)entity;
             }
@@ -99,7 +101,7 @@ public class Abyss_Mine_Entity extends Entity {
             this.activateProgress--;
         }
 
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             if (this.clientSideAttackStarted) {
                 --this.lifeTicks;
                 if (!isActivate() && this.activateProgress < 10F) {
@@ -112,7 +114,7 @@ public class Abyss_Mine_Entity extends Entity {
                     double d3 = (this.random.nextGaussian() * 0.3D);
                     double d4 = (this.random.nextGaussian() * 0.3D);
                     double d5 = (this.random.nextGaussian() * 0.3D);
-                    this.level().addParticle(new LightningParticle.OrbData(0.4f, 0.1f,  0.8f), d0, d1, d2, d3, d4, d5);
+                    this.level.addParticle(new LightningParticle.OrbData(0.4f, 0.1f,  0.8f), d0, d1, d2, d3, d4, d5);
                 }
 
                 if (this.lifeTicks == 14) {
@@ -126,7 +128,7 @@ public class Abyss_Mine_Entity extends Entity {
                 }
             }
             if (this.warmupDelayTicks < -20) {
-                for(LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
+                for(LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
                     if(!livingentity.isAlliedTo(livingentity) && livingentity != caster && livingentity.isAlive() && !livingentity.isInvulnerable()) {
                         this.explode(livingentity);
                     }
@@ -135,7 +137,7 @@ public class Abyss_Mine_Entity extends Entity {
 
 
             if (!this.sentSpikeEvent) {
-                this.level().broadcastEntityEvent(this, (byte)4);
+                this.level.broadcastEntityEvent(this, (byte)4);
                 this.clientSideAttackStarted = true;
                 this.sentSpikeEvent = true;
             }
@@ -158,11 +160,11 @@ public class Abyss_Mine_Entity extends Entity {
     private void explode(LivingEntity livingentity) {
         LivingEntity Caster = this.getCaster();
         if (Caster != null) {
-            this.level().explode(Caster, this.getX(), this.getY(0.0625D), this.getZ(), 1.0f, Level.ExplosionInteraction.NONE);
+            this.level.explode(Caster, this.getX(), this.getY(0.0625D), this.getZ(), 1.0f, Explosion.BlockInteraction.NONE);
             livingentity.addEffect(new MobEffectInstance(ModEffect.EFFECTABYSSAL_FEAR.get(), 200, 0));
             this.remove(RemovalReason.DISCARDED);
         } else {
-            this.level().explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 1.0f, Level.ExplosionInteraction.NONE);
+            this.level.explode(this, this.getX(), this.getY(0.0625D), this.getZ(), 1.0f, Explosion.BlockInteraction.NONE);
             livingentity.addEffect(new MobEffectInstance(ModEffect.EFFECTABYSSAL_FEAR.get(), 200, 0));
             this.remove(RemovalReason.DISCARDED);
         }
@@ -191,7 +193,7 @@ public class Abyss_Mine_Entity extends Entity {
 
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 }

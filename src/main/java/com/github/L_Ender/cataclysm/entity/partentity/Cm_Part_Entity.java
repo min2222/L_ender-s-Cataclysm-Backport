@@ -1,6 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.partentity;
 
+import java.util.Objects;
+
 import com.github.L_Ender.cataclysm.message.MessageCMMultipart;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityDimensions;
@@ -9,8 +12,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.entity.PartEntity;
-
-import java.util.Objects;
 
 public abstract class Cm_Part_Entity<T extends Entity> extends PartEntity<T> {
 

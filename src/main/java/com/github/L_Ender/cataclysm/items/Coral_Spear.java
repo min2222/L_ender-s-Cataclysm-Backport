@@ -4,6 +4,7 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -97,7 +98,7 @@ public class Coral_Spear extends Item implements Vanishable {
                         f3 *= f5 / f4;
                         player.push((double)f1, (double)f2, (double)f3);
                         player.startAutoSpinAttack(20);
-                        if (player.onGround()) {
+                        if (player.isOnGround()) {
                             float f6 = 1.1999999F;
                             player.move(MoverType.SELF, new Vec3(0.0D, (double)1.1999999F, 0.0D));
                         }

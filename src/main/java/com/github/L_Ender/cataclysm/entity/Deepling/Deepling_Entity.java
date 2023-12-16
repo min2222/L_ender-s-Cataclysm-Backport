@@ -1,11 +1,16 @@
 package com.github.L_Ender.cataclysm.entity.Deepling;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.alexthe666.citadel.animation.Animation;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -17,7 +22,14 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
@@ -38,9 +50,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
 
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-
 public class Deepling_Entity extends AbstractDeepling {
     boolean searchingForLand;
     public static final Animation DEEPLING_TRIDENT_THROW = Animation.create(40);
@@ -58,7 +67,7 @@ public class Deepling_Entity extends AbstractDeepling {
         super.registerGoals();
         this.goalSelector.addGoal(2, new DeeplingTridentShoot(this, 0.8D, 10.0F));
         this.goalSelector.addGoal(5, new DeeplingGoToBeachGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new DeeplingSwimUpGoal(this, 1.0D, this.level().getSeaLevel()));
+        this.goalSelector.addGoal(6, new DeeplingSwimUpGoal(this, 1.0D, this.level.getSeaLevel()));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.goalSelector.addGoal(3, new AnimationMeleeAttackGoal(this, 1.0f, false));
     }
@@ -141,14 +150,14 @@ public class Deepling_Entity extends AbstractDeepling {
             if (this.getAnimation() == DEEPLING_TRIDENT_THROW) {
                 if (target != null) {
                     if (this.getAnimationTick() == 11) {
-                        ThrownCoral_Spear_Entity throwntrident = new ThrownCoral_Spear_Entity(this.level(), this, new ItemStack(ModItems.CORAL_SPEAR.get()));
+                        ThrownCoral_Spear_Entity throwntrident = new ThrownCoral_Spear_Entity(this.level, this, new ItemStack(ModItems.CORAL_SPEAR.get()));
                         double p0 = target.getX() - this.getX();
                         double p1 = target.getY(0.3333333333333333D) - throwntrident.getY();
                         double p2 = target.getZ() - this.getZ();
                         double p3 = Math.sqrt(p0 * p0 + p2 * p2);
-                        throwntrident.shoot(p0, p1 + p3 * (double) 0.2F, p2, 1.6F, (float) (14 - this.level().getDifficulty().getId() * 4));
+                        throwntrident.shoot(p0, p1 + p3 * (double) 0.2F, p2, 1.6F, (float) (14 - this.level.getDifficulty().getId() * 4));
                         this.playSound(SoundEvents.DROWNED_SHOOT, 1.0F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
-                        this.level().addFreshEntity(throwntrident);
+                        this.level.addFreshEntity(throwntrident);
                     }
                 }
             }
@@ -158,7 +167,7 @@ public class Deepling_Entity extends AbstractDeepling {
                     if (target != null) {
                         if (this.distanceTo(target) < 3.0F) {
                             float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
-                            target.hurt(damageSources().mobAttack(this), damage);
+                            target.hurt(DamageSource.mobAttack(this), damage);
                         }
                     }
                 }
@@ -224,7 +233,7 @@ public class Deepling_Entity extends AbstractDeepling {
         }
 
         public boolean canUse() {
-            return super.canUse() && this.drowned.level().isRaining() && this.drowned.isInWater() && this.drowned.getY() >= (double)(this.drowned.level().getSeaLevel() - 3);
+            return super.canUse() && this.drowned.level.isRaining() && this.drowned.isInWater() && this.drowned.getY() >= (double)(this.drowned.level.getSeaLevel() - 3);
         }
 
         public boolean canContinueToUse() {
@@ -259,7 +268,7 @@ public class Deepling_Entity extends AbstractDeepling {
         }
 
         public boolean canUse() {
-            return (this.drowned.level().isRaining() || this.drowned.isInWater())&& this.drowned.getY() < (double)(this.seaLevel - 2);
+            return (this.drowned.level.isRaining() || this.drowned.isInWater())&& this.drowned.getY() < (double)(this.seaLevel - 2);
         }
 
         public boolean canContinueToUse() {
@@ -459,7 +468,7 @@ public class Deepling_Entity extends AbstractDeepling {
                 this.drowned.setSpeed(f2);
                 this.drowned.setDeltaMovement(this.drowned.getDeltaMovement().add((double)f2 * d0 * 0.005D, (double)f2 * d1 * 0.1D, (double)f2 * d2 * 0.005D));
             } else {
-                if (!this.drowned.onGround()) {
+                if (!this.drowned.isOnGround()) {
                     this.drowned.setDeltaMovement(this.drowned.getDeltaMovement().add(0.0D, -0.008D, 0.0D));
                 }
 

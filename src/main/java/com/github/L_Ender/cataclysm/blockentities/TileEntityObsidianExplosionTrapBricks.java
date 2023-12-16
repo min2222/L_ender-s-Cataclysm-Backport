@@ -2,12 +2,13 @@ package com.github.L_Ender.cataclysm.blockentities;
 
 import com.github.L_Ender.cataclysm.blocks.ObsidianExplosionTrapBricks;
 import com.github.L_Ender.cataclysm.init.ModTag;
-
 import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -62,7 +63,7 @@ public class TileEntityObsidianExplosionTrapBricks extends BlockEntity {
             }
             if(tickCount == 80) {
                 if (!level.isClientSide) {
-                    level.explode(null, x, y + 1, z, 3.0F, Level.ExplosionInteraction.NONE);
+                    level.explode(null, x, y + 1, z, 3.0F, Explosion.BlockInteraction.NONE);
                 }
             }
 

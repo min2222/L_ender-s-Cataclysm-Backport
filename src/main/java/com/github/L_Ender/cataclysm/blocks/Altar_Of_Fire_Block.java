@@ -1,13 +1,17 @@
 package com.github.L_Ender.cataclysm.blocks;
 
 
-import com.github.L_Ender.cataclysm.init.ModTileentites;
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfFire;
+import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,14 +24,13 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
-
-import javax.annotation.Nullable;
 
 public class Altar_Of_Fire_Block extends BaseEntityBlock {
 
     public Altar_Of_Fire_Block() {
-        super(Properties.of()
+        super(Properties.of(Material.HEAVY_METAL)
                 .noOcclusion()
                 .lightLevel((block) -> 7)
                 .emissiveRendering((block, world, pos) -> true)
@@ -48,7 +51,7 @@ public class Altar_Of_Fire_Block extends BaseEntityBlock {
 
     public void entityInside(BlockState p_51269_, Level p_51270_, BlockPos p_51271_, Entity p_51272_) {
         if ( p_51272_ instanceof LivingEntity && !EnchantmentHelper.hasFrostWalker((LivingEntity)p_51272_)) {
-            p_51272_.hurt(p_51270_.damageSources().inFire(), 3);
+            p_51272_.hurt(DamageSource.IN_FIRE, 3);
         }
 
         super.entityInside(p_51269_, p_51270_, p_51271_, p_51272_);

@@ -1,14 +1,15 @@
 package com.github.L_Ender.cataclysm.message;
 
+import java.util.function.Supplier;
+
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class MessageHookFalling {
 	private final int entityID;

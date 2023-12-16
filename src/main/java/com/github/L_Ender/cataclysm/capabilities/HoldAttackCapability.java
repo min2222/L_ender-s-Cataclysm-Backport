@@ -1,7 +1,10 @@
 package com.github.L_Ender.cataclysm.capabilities;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.message.MessageHoldEntity;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -9,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.network.PacketDistributor;
-import org.jetbrains.annotations.Nullable;
 
 public class HoldAttackCapability {
     public static ResourceLocation ID = new ResourceLocation(Cataclysm.MODID, "hold_attack_cap");
@@ -56,7 +58,7 @@ public class HoldAttackCapability {
                         this.target.setPos(this.PosVector.x(), this.PosVector.y(), this.PosVector.z());
                         this.target.setDeltaMovement(Vec3.ZERO);
                     }else{
-                        if (!this.target.level().isClientSide()) {
+                        if (!this.target.level.isClientSide()) {
                             this.target.setPos(this.PosVector.x(), this.PosVector.y(), this.PosVector.z());
                             this.target.setDeltaMovement(Vec3.ZERO);
                         }
@@ -97,7 +99,7 @@ public class HoldAttackCapability {
         }
 
         private void sendUpdatePacket() {
-            if (!this.target.level().isClientSide()) {
+            if (!this.target.level.isClientSide()) {
                 Cataclysm.NETWORK_WRAPPER.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> this.target), new MessageHoldEntity(this.target, this));
             }
         }

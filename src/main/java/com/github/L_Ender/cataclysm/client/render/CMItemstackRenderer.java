@@ -1,22 +1,37 @@
 package com.github.L_Ender.cataclysm.client.render;
 
-import com.github.L_Ender.cataclysm.client.model.block.*;
+import com.github.L_Ender.cataclysm.client.model.block.Model_Abyssal_Egg;
+import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Abyss;
+import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Amethyst;
+import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Fire;
+import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Void;
+import com.github.L_Ender.cataclysm.client.model.block.Model_EMP;
+import com.github.L_Ender.cataclysm.client.model.block.Model_Mechanical_Anvil;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelCoral_Bardiche;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelCoral_Spear;
-import com.github.L_Ender.cataclysm.client.model.item.*;
+import com.github.L_Ender.cataclysm.client.model.item.ModelBulwark_of_the_flame;
+import com.github.L_Ender.cataclysm.client.model.item.ModelGauntlet_of_Bulwark;
+import com.github.L_Ender.cataclysm.client.model.item.ModelGauntlet_of_Guard;
+import com.github.L_Ender.cataclysm.client.model.item.ModelIncinerator;
+import com.github.L_Ender.cataclysm.client.model.item.ModelLaser_Gatling;
+import com.github.L_Ender.cataclysm.client.model.item.ModelMeat_Shredder;
+import com.github.L_Ender.cataclysm.client.model.item.ModelTidal_Claws;
+import com.github.L_Ender.cataclysm.client.model.item.ModelVoid_Forge;
+import com.github.L_Ender.cataclysm.client.model.item.ModelWither_Assault_SHoulder_Weapon;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.items.Laser_Gatling;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -77,9 +92,9 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     @Override
-    public void renderByItem(ItemStack itemStackIn, ItemDisplayContext transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void renderByItem(ItemStack itemStackIn, ItemTransforms.TransformType transformType, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         float partialTick = Minecraft.getInstance().getPartialTick();
-        boolean left = transformType == ItemDisplayContext.THIRD_PERSON_LEFT_HAND || transformType == ItemDisplayContext.FIRST_PERSON_LEFT_HAND;
+        boolean left = transformType == ItemTransforms.TransformType.THIRD_PERSON_LEFT_HAND || transformType == ItemTransforms.TransformType.FIRST_PERSON_LEFT_HAND;
         int tick;
         if(Minecraft.getInstance().player == null || Minecraft.getInstance().isPaused()){
             tick = ticksExisted;

@@ -4,13 +4,14 @@ import com.github.L_Ender.cataclysm.client.model.entity.ModelDeepling_Priest;
 import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Priest_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.util.RandomSource;
-import org.joml.Matrix4f;
 
 public class LayerDeepling_Priest_Light extends RenderLayer<Deepling_Priest_Entity, ModelDeepling_Priest> {
     private static final float HALF_SQRT_3 = (float)(Math.sqrt(3.0D) / 2.0D);
@@ -30,12 +31,12 @@ public class LayerDeepling_Priest_Light extends RenderLayer<Deepling_Priest_Enti
             translateToLight(matrixStackIn);
 
             for(int i = 0; (float)i < 4; ++i) {
-                matrixStackIn.mulPose(Axis.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
-                matrixStackIn.mulPose(Axis.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F + f5 * 90.0F));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(randomsource.nextFloat() * 360.0F));
+                matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(randomsource.nextFloat() * 360.0F + f5 * 90.0F));
                 float f3 = 2.75F;
                 float f4 = 2.75F;
                 Matrix4f matrix4f = matrixStackIn.last().pose();

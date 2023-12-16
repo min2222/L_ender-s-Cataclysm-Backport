@@ -1,12 +1,15 @@
 package com.github.L_Ender.cataclysm.entity.effect;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -18,9 +21,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkHooks;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class Wall_Watcher_Entity extends Entity {
@@ -67,7 +67,7 @@ public class Wall_Watcher_Entity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (!level().isClientSide()) {
+        if (!level.isClientSide()) {
             int temp = entityData.get(TIMER);
             if (watchedEntities != null && source != null) {
                 if (!watchedEntities.isEmpty()) {
@@ -77,7 +77,7 @@ public class Wall_Watcher_Entity extends Entity {
                             if (!entity.livingEntity.isAlliedTo(source)) {
                                 entity.livingEntity.invulnerableTime = 0;
                                 float realDamageApplied = damagePerEffectiveCharge * effectiveChargeTime + 1;
-                                boolean flag = entity.livingEntity.hurt(this.damageSources().mobProjectile(this, source), realDamageApplied);
+                                boolean flag = entity.livingEntity.hurt(DamageSource.indirectMobAttack(this, source), realDamageApplied);
                                 if (flag) {
                                     entity.livingEntity.playSound(SoundEvents.GENERIC_EXPLODE, 0.3F, 1);
                                     entity.livingEntity.addEffect(new MobEffectInstance(ModEffect.EFFECTSTUN.get(), 50));
@@ -129,7 +129,7 @@ public class Wall_Watcher_Entity extends Entity {
 
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

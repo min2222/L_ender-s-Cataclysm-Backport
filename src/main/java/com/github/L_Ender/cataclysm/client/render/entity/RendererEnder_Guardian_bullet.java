@@ -4,7 +4,8 @@ import com.github.L_Ender.cataclysm.client.model.entity.ModelEnder_Guardian_Bull
 import com.github.L_Ender.cataclysm.entity.projectile.Ender_Guardian_Bullet_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -43,9 +44,9 @@ public class RendererEnder_Guardian_bullet extends EntityRenderer<Ender_Guardian
 		float f1 = Mth.lerp(partialTicks, entityIn.xRotO, entityIn.getXRot());
 		float f2 = (float) entityIn.tickCount + partialTicks;
 		matrixStackIn.translate(0.0D, (double) 0.15F, 0.0D);
-		matrixStackIn.mulPose(Axis.YP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
-		matrixStackIn.mulPose(Axis.XP.rotationDegrees(Mth.cos(f2 * 0.1F) * 180.0F));
-		matrixStackIn.mulPose(Axis.ZP.rotationDegrees(Mth.sin(f2 * 0.15F) * 360.0F));
+		matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(Mth.sin(f2 * 0.1F) * 180.0F));
+		matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(Mth.cos(f2 * 0.1F) * 180.0F));
+		matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(Mth.sin(f2 * 0.15F) * 360.0F));
 		matrixStackIn.scale(-0.5F, -0.5F, 0.5F);
 		this.model.setupAnim(entityIn, 0.0F, 0.0F, 0.0F, f, f1);
 		VertexConsumer VertexConsumer = bufferIn.getBuffer(this.model.renderType(ENDER_GUARDIAN_TEXTURE));

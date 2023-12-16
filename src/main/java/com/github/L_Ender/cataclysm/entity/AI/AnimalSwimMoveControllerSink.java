@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.AI;
 
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.Attributes;

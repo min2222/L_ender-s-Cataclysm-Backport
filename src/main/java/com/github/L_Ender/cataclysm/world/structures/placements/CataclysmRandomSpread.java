@@ -1,24 +1,26 @@
 package com.github.L_Ender.cataclysm.world.structures.placements;
 
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.init.ModStructurePlacementType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
+import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryCodecs;
 import net.minecraft.core.Vec3i;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.chunk.ChunkGeneratorStructureState;
+import net.minecraft.world.level.chunk.ChunkGenerator;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
+import net.minecraft.world.level.levelgen.RandomState;
 import net.minecraft.world.level.levelgen.WorldgenRandom;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.placement.StructurePlacementType;
-
-import java.util.Optional;
 
 public class CataclysmRandomSpread extends RandomSpreadStructurePlacement {
     public static final Codec<CataclysmRandomSpread> CODEC = RecordCodecBuilder.create((instance) -> instance.group(
@@ -92,12 +94,12 @@ public class CataclysmRandomSpread extends RandomSpreadStructurePlacement {
     }
 
     @Override
-    public boolean isStructureChunk(ChunkGeneratorStructureState chunkGeneratorStructureState, int i, int j) {
-        if (!super.isStructureChunk(chunkGeneratorStructureState, i, j)) {
+    public boolean isStructureChunk(ChunkGenerator chunkGenerator, RandomState randomState, long seed, int i, int j) {
+        if (!super.isStructureChunk(chunkGenerator, randomState, seed, i, j)) {
             return false;
         }
         else {
-            return this.superExclusionZone.isEmpty() || !this.superExclusionZone.get().isPlacementForbidden(chunkGeneratorStructureState, i, j);
+            return this.superExclusionZone.isEmpty() || !this.superExclusionZone.get().isPlacementForbidden(chunkGenerator, randomState, i, j, j);
         }
     }
 
@@ -114,7 +116,7 @@ public class CataclysmRandomSpread extends RandomSpreadStructurePlacement {
     }
 
     @Override
-    protected boolean isPlacementChunk(ChunkGeneratorStructureState chunkGeneratorStructureState, int x, int z) {
+    protected boolean isPlacementChunk(ChunkGenerator ChunkGenerator, RandomState randomState, long seed, int x, int z) {
         if (minDistanceFromWorldOrigin.isPresent()) {
             int xBlockPos = x * 16;
             int zBlockPos = z * 16;
@@ -125,7 +127,7 @@ public class CataclysmRandomSpread extends RandomSpreadStructurePlacement {
             }
         }
 
-        ChunkPos chunkpos = this.getPotentialStructureChunk(chunkGeneratorStructureState.getLevelSeed(), x, z);
+        ChunkPos chunkpos = this.getPotentialStructureChunk(seed, x, z);
         return chunkpos.x == x && chunkpos.z == z;
     }
 
@@ -136,13 +138,13 @@ public class CataclysmRandomSpread extends RandomSpreadStructurePlacement {
 
     public record SuperExclusionZone(HolderSet<StructureSet> otherSet, int chunkCount) {
         public static final Codec<SuperExclusionZone> CODEC = RecordCodecBuilder.create(builder -> builder.group(
-                RegistryCodecs.homogeneousList(Registries.STRUCTURE_SET, StructureSet.DIRECT_CODEC).fieldOf("other_set").forGetter(SuperExclusionZone::otherSet),
+                RegistryCodecs.homogeneousList(Registry.STRUCTURE_SET_REGISTRY, StructureSet.DIRECT_CODEC).fieldOf("other_set").forGetter(SuperExclusionZone::otherSet),
                 Codec.intRange(1, 16).fieldOf("chunk_count").forGetter(SuperExclusionZone::chunkCount)
         ).apply(builder, SuperExclusionZone::new));
 
-        boolean isPlacementForbidden(ChunkGeneratorStructureState chunkGeneratorStructureState, int l, int j) {
+        boolean isPlacementForbidden(ChunkGenerator chunkGenerator, RandomState randomState, long l, int i, int j) {
             for (Holder<StructureSet> holder : this.otherSet) {
-                if (chunkGeneratorStructureState.hasStructureChunkInRange(holder, l, j, this.chunkCount)) {
+                if (chunkGenerator.hasStructureChunkInRange(holder, randomState, l, i, j, this.chunkCount)) {
                     return true;
                 }
             }

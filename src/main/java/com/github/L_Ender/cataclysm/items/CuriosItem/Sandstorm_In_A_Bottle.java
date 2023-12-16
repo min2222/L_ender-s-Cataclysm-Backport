@@ -1,9 +1,14 @@
 package com.github.L_Ender.cataclysm.items.CuriosItem;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModKeybind;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,9 +20,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class Sandstorm_In_A_Bottle extends CuriosItem {
 
@@ -37,7 +39,7 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
         if (livingEntity instanceof Player) {
             if (SandstormCapability != null) {
-                if (!livingEntity.level().isClientSide()) {
+                if (!livingEntity.level.isClientSide()) {
                     if (!SandstormCapability.isSandstorm() && SandstormCapability.getSandstormTimer() <= 0) {
                         if (Cataclysm.PROXY.isKeyDown(2)) {
                             SandstormCapability.setSandstorm(true);
@@ -59,7 +61,7 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
         LivingEntity livingEntity = slotContext.entity();
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
         if (livingEntity instanceof Player) {
-        if (!livingEntity.level().isClientSide()) {
+        if (!livingEntity.level.isClientSide()) {
             if (SandstormCapability != null) {
                 SandstormCapability.setSandstorm(false);
                 toggleFlight(livingEntity, false);
@@ -70,7 +72,7 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
 
 
     private void toggleFlight(LivingEntity living, boolean flight) {
-        if (!living.level().isClientSide && living instanceof ServerPlayer player) {
+        if (!living.level.isClientSide && living instanceof ServerPlayer player) {
             boolean prevFlying = player.getAbilities().flying;
             boolean trueFlight = isCreativePlayer(living) || flight;
             player.getAbilities().mayfly = trueFlight;

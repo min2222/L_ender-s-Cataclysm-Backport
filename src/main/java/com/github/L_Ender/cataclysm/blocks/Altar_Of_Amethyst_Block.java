@@ -1,8 +1,11 @@
 package com.github.L_Ender.cataclysm.blocks;
 
 
-import com.github.L_Ender.cataclysm.init.ModTileentites;
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
+import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.InteractionHand;
@@ -12,19 +15,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
 
 public class Altar_Of_Amethyst_Block extends BaseEntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -34,7 +40,7 @@ public class Altar_Of_Amethyst_Block extends BaseEntityBlock {
     private static final VoxelShape AXIS_AABB = Shapes.or(BASE,MID, TOP);
 
     public Altar_Of_Amethyst_Block() {
-        super(Properties.of()
+        super(Properties.of(Material.STONE)
                 .noOcclusion()
                 .lightLevel((block) -> 7)
                 .emissiveRendering((block, world, pos) -> true)

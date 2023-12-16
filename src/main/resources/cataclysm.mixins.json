@@ -15,7 +15,8 @@
     "NoOreInStructuresMixin",
     "StructureProcessorAccessor",
     "StructureTemplateMixin",
-    "WorldGenRegionAccessor"
+    "WorldGenRegionAccessor",
+    "BrushItemMixin"
   ],
   "client": [
   ],

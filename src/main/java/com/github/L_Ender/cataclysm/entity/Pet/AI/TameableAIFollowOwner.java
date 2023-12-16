@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.Pet.AI;
 
 import com.github.L_Ender.cataclysm.entity.etc.IFollower;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;

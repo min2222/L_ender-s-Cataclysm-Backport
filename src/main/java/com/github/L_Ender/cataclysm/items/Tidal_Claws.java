@@ -1,5 +1,9 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
 import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Hook_Entity;
@@ -10,6 +14,7 @@ import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -23,7 +28,10 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -34,9 +42,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class Tidal_Claws extends Item implements ILeftClick {
     private final Multimap<Attribute, AttributeModifier> ClawsAttributes;
@@ -71,7 +76,7 @@ public class Tidal_Claws extends Item implements ILeftClick {
 
     public boolean onLeftClick(ItemStack stack, LivingEntity playerIn){
         if(stack.is(ModItems.TIDAL_CLAWS.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn, stack))){
-            Level worldIn = playerIn.level();
+            Level worldIn = playerIn.level;
             Entity closestValid = null;
             Vec3 playerEyes = playerIn.getEyePosition(1.0F);
             HitResult hitresult = worldIn.clip(new ClipContext(playerEyes, playerEyes.add(playerIn.getLookAngle().scale(16.0D)), ClipContext.Block.VISUAL, ClipContext.Fluid.NONE, playerIn));
@@ -95,7 +100,7 @@ public class Tidal_Claws extends Item implements ILeftClick {
     }
 
     public boolean launchTendonsAt(ItemStack stack, LivingEntity playerIn, Entity closestValid) {
-        Level worldIn = playerIn.level();
+        Level worldIn = playerIn.level;
         if (TidalTentacleUtil.canLaunchTentacles(worldIn, playerIn)) {
             TidalTentacleUtil.retractFarTentacles(worldIn, playerIn);
             if (!worldIn.isClientSide) {

@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Golem_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Guardian_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.DirectPathNavigator;
@@ -11,6 +13,7 @@ import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -24,11 +27,19 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.MoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
@@ -41,8 +52,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
 
 public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
     public static final ResourceLocation HAS_JAWS_LOOT = new ResourceLocation("cataclysm", "entities/endermaptera_has_jaws");
@@ -82,11 +91,11 @@ public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
     private void switchNavigator(boolean rightsideUp) {
         if (rightsideUp) {
             this.moveControl = new MoveControl(this);
-            this.navigation = new WallClimberNavigation(this, level());
+            this.navigation = new WallClimberNavigation(this, level);
             this.isUpsideDownNavigator = false;
         } else {
             this.moveControl = new FlightMoveController(this, 0.6F, false);
-            this.navigation = new DirectPathNavigator(this, level());
+            this.navigation = new DirectPathNavigator(this, level);
             this.isUpsideDownNavigator = true;
         }
     }
@@ -202,9 +211,9 @@ public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
             attachChangeProgress -= 0.25F;
         }
         Vec3 Vec3 = this.getDeltaMovement();
-        if (!this.level().isClientSide) {
-            this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.onGround());
-            if (this.onGround() || this.isInWaterOrBubble() || this.isInLava()) {
+        if (!this.level.isClientSide) {
+            this.setBesideClimbableBlock(this.horizontalCollision || this.verticalCollision && !this.isOnGround());
+            if (this.isOnGround() || this.isInWaterOrBubble() || this.isInLava()) {
                 this.entityData.set(ATTACHED_FACE, Direction.DOWN);
             } else if (this.verticalCollision) {
                 this.entityData.set(ATTACHED_FACE, Direction.UP);
@@ -215,7 +224,7 @@ public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
                     BlockPos antPos = new BlockPos(Mth.floor(this.getX()), Mth.floor(this.getY()), Mth.floor(this.getZ()));
                     BlockPos offsetPos = antPos.relative(dir);
                     Vec3 offset = Vec3.atCenterOf(offsetPos);
-                    if (closestDistance > this.position().distanceTo(offset) && level().loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
+                    if (closestDistance > this.position().distanceTo(offset) && level.loadedAndEntityCanStandOnFace(offsetPos, this, dir.getOpposite())) {
                         closestDistance = this.position().distanceTo(offset);
                         closestDirection = dir;
                     }
@@ -232,7 +241,7 @@ public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
                     Vec3 vec = Vec3.atLowerCornerOf(this.getAttachmentFacing().getNormal());
                     this.setDeltaMovement(this.getDeltaMovement().add(vec.normalize().multiply(0.1F, 0.1F, 0.1F)));
                 }
-                if (!this.onGround() && Vec3.y < 0.0D) {
+                if (!this.isOnGround() && Vec3.y < 0.0D) {
                     this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.5D, 1.0D));
                     flag = true;
                 }
@@ -253,7 +262,7 @@ public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
             attachChangeProgress = 1F;
         }
         this.prevAttachDir = this.getAttachmentFacing();
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             if (this.getAttachmentFacing() == Direction.UP && !this.isUpsideDownNavigator) {
                 switchNavigator(false);
             }
@@ -264,18 +273,18 @@ public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
             if (target != null && distanceTo(target) < target.getBbWidth() + this.getBbWidth() && this.hasLineOfSight(target)) {
                 float damage = (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                 if (this.getAnimation() == JAW_ATTACK && this.getAnimationTick() == 11) {
-                    target.hurt(this.damageSources().mobAttack(this), damage);
+                    target.hurt(DamageSource.mobAttack(this), damage);
                     if (this.random.nextInt(6) == 0) {
                         BrokenJaws();
                     }
                 }
                 if (this.getAnimation() == HEADBUTT_ATTACK && this.getAnimationTick() == 6) {
-                    target.hurt(this.damageSources().mobAttack(this), damage * 0.75f);
+                    target.hurt(DamageSource.mobAttack(this), damage * 0.75f);
                 }
             }
         } else {
             for (int i = 0; i < 2; ++i) {
-                this.level().addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
+                this.level.addParticle(ParticleTypes.PORTAL, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(), (this.random.nextDouble() - 0.5D) * 2.0D);
             }
         }
 
@@ -285,12 +294,12 @@ public class Endermaptera_Entity extends Monster implements IAnimatedEntity {
         this.playSound(SoundEvents.ITEM_BREAK, 0.5f, 1F + this.getRandom().nextFloat() * 0.1F);
         this.setHasJaw(false);
         int shardCount = 8 + random.nextInt(4);
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             for (int i = 0; i < shardCount; i++) {
                 float f = ((i + 1) / (float) shardCount) * 360F;
-                Void_Shard_Entity shard = new Void_Shard_Entity(ModEntities.VOID_SHARD.get(), this.level(), this);
+                Void_Shard_Entity shard = new Void_Shard_Entity(ModEntities.VOID_SHARD.get(), this.level, this);
                 shard.shootFromRotation(this, this.getXRot() - random.nextInt(40), f, 0.0F, 0.15F + random.nextFloat() * 0.2F, 1.0F);
-                level().addFreshEntity(shard);
+                level.addFreshEntity(shard);
             }
         }
     }

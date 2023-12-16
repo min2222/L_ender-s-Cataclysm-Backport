@@ -1,12 +1,17 @@
 package com.github.L_Ender.cataclysm.entity.effect;
 
+import java.util.Optional;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.Abyss_Blast_Portal_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,10 +27,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
-import java.util.Optional;
-import java.util.UUID;
 
 public class Abyss_Mark_Entity extends Entity {
 
@@ -52,7 +53,7 @@ public class Abyss_Mark_Entity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
@@ -64,9 +65,9 @@ public class Abyss_Mark_Entity extends Entity {
 
         this.setLifespan(this.getLifespan() - 1);
 
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             if (this.finalTarget == null && this.targetId != null) {
-                this.finalTarget = ((ServerLevel) this.level()).getEntity(this.targetId);
+                this.finalTarget = ((ServerLevel) this.level).getEntity(this.targetId);
                 if (this.finalTarget == null) {
                     this.targetId = null;
                 }
@@ -75,7 +76,7 @@ public class Abyss_Mark_Entity extends Entity {
 
         if (this.getLifespan() <= 0) {
             if (owner != null){
-                this.level().addFreshEntity(new Abyss_Blast_Portal_Entity(this.level(), this.getX(),  this.getY(),  this.getZ(), this.getYRot(), 0, (LivingEntity) owner));
+                this.level.addFreshEntity(new Abyss_Blast_Portal_Entity(this.level, this.getX(),  this.getY(),  this.getZ(), this.getYRot(), 0, (LivingEntity) owner));
             }
             this.remove(RemovalReason.DISCARDED);
         }
@@ -100,8 +101,8 @@ public class Abyss_Mark_Entity extends Entity {
 
     public Entity getCreatorEntity() {
         UUID uuid = getCreatorEntityUUID();
-        if(uuid != null && !this.level().isClientSide){
-            return ((ServerLevel) level()).getEntity(uuid);
+        if(uuid != null && !this.level.isClientSide){
+            return ((ServerLevel) level).getEntity(uuid);
         }
         return null;
     }
@@ -119,15 +120,15 @@ public class Abyss_Mark_Entity extends Entity {
 
             double p0 = Math.min(finalTarget.getY(), this.getY() - 50);
             double p1 = Math.max(finalTarget.getY() , this.getY());
-            BlockPos blockpos = BlockPos.containing(finalTarget.getX(), p1, finalTarget.getZ());
+            BlockPos blockpos = new BlockPos(finalTarget.getX(), p1, finalTarget.getZ());
             double d0 = 0.0D;
             do {
                 BlockPos blockpos1 = blockpos.below();
-                BlockState blockstate = this.level().getBlockState(blockpos1);
-                if (blockstate.isFaceSturdy(this.level(), blockpos1, Direction.UP)) {
-                    if (!this.level().isEmptyBlock(blockpos)) {
-                        BlockState blockstate1 = this.level().getBlockState(blockpos);
-                        VoxelShape voxelshape = blockstate1.getCollisionShape(this.level(), blockpos);
+                BlockState blockstate = this.level.getBlockState(blockpos1);
+                if (blockstate.isFaceSturdy(this.level, blockpos1, Direction.UP)) {
+                    if (!this.level.isEmptyBlock(blockpos)) {
+                        BlockState blockstate1 = this.level.getBlockState(blockpos);
+                        VoxelShape voxelshape = blockstate1.getCollisionShape(this.level, blockpos);
                         if (!voxelshape.isEmpty()) {
                             d0 = voxelshape.max(Direction.Axis.Y);
                         }

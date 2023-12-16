@@ -1,7 +1,12 @@
 package com.github.L_Ender.cataclysm.client.render.item;
 
-import com.github.L_Ender.cataclysm.client.model.armor.*;
+import com.github.L_Ender.cataclysm.client.model.armor.CMModelLayers;
+import com.github.L_Ender.cataclysm.client.model.armor.ModelBloom_Stone_Pauldrons;
+import com.github.L_Ender.cataclysm.client.model.armor.ModelIgnitium_Armor;
+import com.github.L_Ender.cataclysm.client.model.armor.ModelMonstrousHelm;
+import com.github.L_Ender.cataclysm.client.model.armor.Modelignitium_Elytra_chestplate;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -38,7 +43,7 @@ public class CustomArmorRenderProperties implements IClientItemExtensions {
             return MONSTROUS_HELM_MODEL;
         }
 
-        if(itemStack.getItem() == ModItems.IGNITIUM_HELMET.get()){
+        if(itemStack.getItem() == ModItems.IGNITIUM_HEAD.get()){
             return IGNITIUM_ARMOR_MODEL;
         }
 

@@ -1,5 +1,11 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import java.util.EnumSet;
+import java.util.List;
+import java.util.function.Predicate;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
@@ -7,14 +13,18 @@ import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackAniamtionGoal3;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;
-import com.github.L_Ender.cataclysm.entity.projectile.*;
+import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Wither_Homing_Missile_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Wither_Howitzer_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Wither_Missile_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
-import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -24,7 +34,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.InteractionHand;
@@ -32,11 +41,19 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.PowerableMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RangedAttackGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
@@ -50,16 +67,12 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.function.Predicate;
 
 
 public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMob, PowerableMob {
@@ -108,7 +121,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         this.xpReward = 300;
         this.moveControl = new FlyingMoveControl(this, 10, false);
         setConfigattribute(this, CMConfig.HarbingerHealthMultiplier, CMConfig.HarbingerDamageMultiplier);
-        if (this.level().isClientSide){
+        if (this.level.isClientSide){
             Cataclysm.PROXY.addBoss(this);
         }
     }
@@ -216,12 +229,12 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
             if (this.destroyBlocksTick <= 0) {
                 this.destroyBlocksTick = 20;
             }
-            if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+            if (!source.isBypassInvul()) {
                 damage = Math.min(CMConfig.HarbingerDamageCap, damage);
             }
 
             if (this.getAnimation() != STUN_ANIAMATION && this.getAnimation() != DEATHLASER_ANIMATION) {
-                if (source.is(CMDamageTypes.EMP)) {
+                if ("cataclysm.emp".equals(source.getMsgId())) {
                     AnimationHandler.INSTANCE.sendAnimationMessage(this, STUN_ANIAMATION);
                 }
             }
@@ -233,7 +246,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
             }
 
             if (this.deactivateProgress > 0) {
-                if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                if (!source.isBypassInvul()) {
                     return false;
                 }
             }
@@ -284,8 +297,8 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         }
 
 
-        Entity entity = this.level().getEntity(this.getAlternativeTarget(0));
-        if (!this.level().isClientSide && this.getAlternativeTarget(0) > 0 && this.isAlive() && !this.getIsCharge() && this.getAnimation() != STUN_ANIAMATION) {
+        Entity entity = this.level.getEntity(this.getAlternativeTarget(0));
+        if (!this.level.isClientSide && this.getAlternativeTarget(0) > 0 && this.isAlive() && !this.getIsCharge() && this.getAnimation() != STUN_ANIAMATION) {
             if (entity != null) {
                 double d0 = vec3.y;
                 double l0 = (this.getAnimation() == MISSILE_FIRE_FAST_ANIAMATION || this.getAnimation() == MISSILE_FIRE_ANIAMATION || this.getAnimation() == LAUNCH_ANIAMATION) ? 1.0D : 2.25d;
@@ -343,23 +356,23 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         //setInvulnerable(!getIsAct());
         if (this.getAnimation() == STUN_ANIAMATION) {
             if (this.getAnimationTick() == 15) {
-                this.level().playSound((Player) null, this, ModSounds.HARBINGER_STUN.get(), SoundSource.HOSTILE, 4F, level().random.nextFloat() * 0.2F + 1.0F);
+                this.level.playSound((Player) null, this, ModSounds.HARBINGER_STUN.get(), SoundSource.HOSTILE, 4F, level.random.nextFloat() * 0.2F + 1.0F);
             }
         }
         if (this.getAnimation() == DEATHLASER_ANIMATION) {
             if (this.getAnimationTick() == 33) {
-                this.level().playSound((Player) null, this, ModSounds.DEATH_LASER.get(), SoundSource.HOSTILE, 4.0f, 0.75f);
+                this.level.playSound((Player) null, this, ModSounds.DEATH_LASER.get(), SoundSource.HOSTILE, 4.0f, 0.75f);
             }
         }
 
         if (this.getAnimation() == CHARGE_ANIMATION) {
             if (this.getAnimationTick() == 24) {
-                this.level().playSound((Player) null, this, ModSounds.HARBINGER_CHARGE.get(), SoundSource.HOSTILE, 4.0f, 0.65f);
+                this.level.playSound((Player) null, this, ModSounds.HARBINGER_CHARGE.get(), SoundSource.HOSTILE, 4.0f, 0.65f);
             }
         }
         if (this.getAnimation() == MISSILE_FIRE_ANIAMATION || this.getAnimation() == MISSILE_FIRE_FAST_ANIAMATION) {
             if (this.getAnimationTick() == 24) {
-                this.level().playSound((Player) null, this, ModSounds.HARBINGER_PREPARE.get(), SoundSource.HOSTILE, 4.0f, 1.0f);
+                this.level.playSound((Player) null, this, ModSounds.HARBINGER_PREPARE.get(), SoundSource.HOSTILE, 4.0f, 1.0f);
             }
         }
 
@@ -368,7 +381,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
             int k = this.getAlternativeTarget(j + 1);
             Entity entity1 = null;
             if (k > 0) {
-                entity1 = this.level().getEntity(k);
+                entity1 = this.level.getEntity(k);
             }
 
             if (entity1 != null) {
@@ -387,7 +400,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                 this.yRotHeads[j] = this.m_31442_(this.yRotHeads[j], this.yBodyRot, 10.0F);
             }
         }
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             if (this.getIsAct()) {
                 double d0 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().x;
                 double d1 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().y;
@@ -396,7 +409,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                 double d3 = d0 * dist;
                 double d4 = d1 * dist;
                 double d5 = d2 * dist;
-                this.level().addParticle(new LightningParticle.OrbData(1.0f, 0.2f,  0.0f), this.getX() + d0, this.getY() + 2, this.getZ() + d2, d3, d4, d5);
+                this.level.addParticle(new LightningParticle.OrbData(1.0f, 0.2f,  0.0f), this.getX() + d0, this.getY() + 2, this.getZ() + d2, d3, d4, d5);
 
                 if (entity != null && this.getAnimation() != MISSILE_FIRE_ANIAMATION) {
                     float f = Mth.cos((yBodyRot) * ((float) Math.PI / 180F));
@@ -412,21 +425,21 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                         double extraX = 0.2F * Mth.sin((float) (Math.PI + angle));
                         double extraY = 2.75F;
                         double extraZ = 0.2F * Mth.cos(angle);
-                        this.level().addParticle(ParticleTypes.FLAME, getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, 0, -0.07, 0);
-                        this.level().addParticle(ParticleTypes.FLAME, getX() + vec * vecX + extraX + f * -math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * -math, 0, -0.07, 0);
+                        this.level.addParticle(ParticleTypes.FLAME, getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, 0, -0.07, 0);
+                        this.level.addParticle(ParticleTypes.FLAME, getX() + vec * vecX + extraX + f * -math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * -math, 0, -0.07, 0);
                     }
                     for (int i1 = 0; i1 < 5; i1++) {
                         float angle = (0.01745329251F * this.yBodyRot) + i1;
                         double extraX = 0.2F * Mth.sin((float) (Math.PI + angle));
                         double extraY = 2.75F;
                         double extraZ = 0.2F * Mth.cos(angle);
-                        this.level().addParticle(ParticleTypes.SMOKE, getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, 0, -0.07, 0);
-                        this.level().addParticle(ParticleTypes.SMOKE, getX() + vec * vecX + extraX + f * -math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * -math, 0, -0.07, 0);
+                        this.level.addParticle(ParticleTypes.SMOKE, getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, 0, -0.07, 0);
+                        this.level.addParticle(ParticleTypes.SMOKE, getX() + vec * vecX + extraX + f * -math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * -math, 0, -0.07, 0);
                     }
                 }
                 if (this.getAnimation() == STUN_ANIAMATION)
                     for (int i = 0; i < 2; ++i) {
-                        this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(1.5D), this.getRandomY(), this.getRandomZ(1.5D), 0.0D, 0.0D, 0.0D);
+                        this.level.addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(1.5D), this.getRandomY(), this.getRandomZ(1.5D), 0.0D, 0.0D, 0.0D);
                     }
             }
         }
@@ -436,37 +449,37 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
 
     private void blockbreak() {
         if (getIsCharge()) {
-            if (!this.level().isClientSide) {
-                if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+            if (!this.level.isClientSide) {
+                if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                     boolean flag = false;
                     AABB aabb = this.getBoundingBox().inflate(1.5D, 0.2D, 1.5D);
                     for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-                        BlockState blockstate = this.level().getBlockState(blockpos);
-                        if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level(), blockpos, this) && !blockstate.is(ModTag.HARBINGER_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                        BlockState blockstate = this.level.getBlockState(blockpos);
+                        if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.HARBINGER_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                             if (random.nextInt(3) == 0 && !blockstate.hasBlockEntity()) {
-                                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level(), blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
-                                flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
+                                flag = this.level.destroyBlock(blockpos, false, this) || flag;
                                 fallingBlockEntity.setDeltaMovement(fallingBlockEntity.getDeltaMovement().add(this.position().subtract(fallingBlockEntity.position()).multiply((-1.2D + random.nextDouble()) / 3, 0.2D + getRandom().nextGaussian() * 0.15D, (-1.2D + random.nextDouble()) / 3)));
-                                level().addFreshEntity(fallingBlockEntity);
+                                level.addFreshEntity(fallingBlockEntity);
                             } else {
-                                flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                                flag = this.level.destroyBlock(blockpos, false, this) || flag;
                             }
                         }
 
 
                     }
                     if (flag) {
-                        this.level().levelEvent((Player) null, 1022, this.blockPosition(), 0);
+                        this.level.levelEvent((Player) null, 1022, this.blockPosition(), 0);
 
                     }
                 }
             }
             if (this.tickCount % 4 == 0) {
-                for (LivingEntity Lentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5D))) {
+                for (LivingEntity Lentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.5D))) {
                     if (!isAlliedTo(Lentity) && !(Lentity instanceof The_Harbinger_Entity) && Lentity != this) {
-                        boolean flag = Lentity.hurt(this.damageSources().mobAttack(this), (float) ((float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(5) + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE), Lentity.getMaxHealth() * CMConfig.HarbingerChargeHpDamage)));
+                        boolean flag = Lentity.hurt(DamageSource.mobAttack(this), (float) ((float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(5) + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE), Lentity.getMaxHealth() * CMConfig.HarbingerChargeHpDamage)));
                         if (flag) {
-                            if (Lentity.onGround()) {
+                            if (Lentity.isOnGround()) {
                                 double d0 = Lentity.getX() - this.getX();
                                 double d1 = Lentity.getZ() - this.getZ();
                                 double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
@@ -489,18 +502,18 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         boolean flag = false;
         if (this.getAnimation() == NO_ANIMATION) {
             if (!getIsCharge()) {
-                if (!level().isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level(), this)) {
+                if (!level.isClientSide && this.blockBreakCounter == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(level, this)) {
                     AABB aabb = this.getBoundingBox().inflate(0.2D);
                     for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-                        BlockState blockstate = level().getBlockState(pos);
-                        if (blockstate != Blocks.AIR.defaultBlockState()  && blockstate.canEntityDestroy(this.level(), pos, this) && !blockstate.is(ModTag.HARBINGER_IMMUNE)) {
+                        BlockState blockstate = level.getBlockState(pos);
+                        if (blockstate != Blocks.AIR.defaultBlockState()  && blockstate.canEntityDestroy(this.level, pos, this) && !blockstate.is(ModTag.HARBINGER_IMMUNE)) {
                             if (random.nextInt(5) == 0 && !blockstate.hasBlockEntity()) {
-                                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level(), pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, blockstate, 20);
-                                flag = this.level().destroyBlock(pos, false, this) || flag;
+                                Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, blockstate, 20);
+                                flag = this.level.destroyBlock(pos, false, this) || flag;
                                 fallingBlockEntity.setDeltaMovement(fallingBlockEntity.getDeltaMovement().add(this.position().subtract(fallingBlockEntity.position()).multiply((-1.2D + random.nextDouble()) / 3, 0.2D + getRandom().nextGaussian() * 0.15D, (-1.2D + random.nextDouble()) / 3)));
-                                level().addFreshEntity(fallingBlockEntity);
+                                level.addFreshEntity(fallingBlockEntity);
                             } else {
-                                flag = this.level().destroyBlock(pos, false, this) || flag;
+                                flag = this.level.destroyBlock(pos, false, this) || flag;
                                 this.setDeltaMovement(this.getDeltaMovement().multiply(0.6F, 1, 0.6F));
                             }
                         }
@@ -510,16 +523,16 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         }
         if (flag) {
             blockBreakCounter = 20;
-            this.level().levelEvent((Player) null, 1022, this.blockPosition(), 0);
+            this.level.levelEvent((Player) null, 1022, this.blockPosition(), 0);
         }
     }
 
     private void destroyBlock(){
         if(this.getAnimation() != STUN_ANIAMATION) {
-            if (!this.level().isClientSide){
+            if (!this.level.isClientSide){
                 if (this.destroyBlocksTick > 0) {
                     --this.destroyBlocksTick;
-                    if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
+                    if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
                         int j1 = Mth.floor(this.getY());
                         int i2 = Mth.floor(this.getX());
                         int j2 = Mth.floor(this.getZ());
@@ -532,15 +545,15 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                                     int l = j1 + k;
                                     int i1 = j2 + k2;
                                     BlockPos blockpos = new BlockPos(l2, l, i1);
-                                    BlockState blockstate = this.level().getBlockState(blockpos);
-                                    if (blockstate != Blocks.AIR.defaultBlockState()  && blockstate.canEntityDestroy(this.level(), blockpos, this) && !blockstate.is(ModTag.HARBINGER_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                                    BlockState blockstate = this.level.getBlockState(blockpos);
+                                    if (blockstate != Blocks.AIR.defaultBlockState()  && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.HARBINGER_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                                         if (random.nextInt(5) == 0 && !blockstate.hasBlockEntity()) {
-                                            Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level(), blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
-                                            flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                                            Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
+                                            flag = this.level.destroyBlock(blockpos, false, this) || flag;
                                             fallingBlockEntity.setDeltaMovement(fallingBlockEntity.getDeltaMovement().add(this.position().subtract(fallingBlockEntity.position()).multiply((-1.2D + random.nextDouble()) / 3, 0.2D + getRandom().nextGaussian() * 0.15D, (-1.2D + random.nextDouble()) / 3)));
-                                            level().addFreshEntity(fallingBlockEntity);
+                                            level.addFreshEntity(fallingBlockEntity);
                                         } else {
-                                            flag = this.level().destroyBlock(blockpos, false, this) || flag;
+                                            flag = this.level.destroyBlock(blockpos, false, this) || flag;
                                         }
                                     }
                                 }
@@ -548,7 +561,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                         }
 
                         if (flag) {
-                            this.level().levelEvent((Player) null, 1022, this.blockPosition(), 0);
+                            this.level.levelEvent((Player) null, 1022, this.blockPosition(), 0);
                         }
                     }
                 }
@@ -575,7 +588,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                 float k1 = deactivateProgress - 1;
                 if (k1 <= 0) {
                     if (!this.isSilent()) {
-                        this.level().globalLevelEvent(1023, this.blockPosition(), 0);
+                        this.level.globalLevelEvent(1023, this.blockPosition(), 0);
                     }
                 }
             }else{
@@ -585,7 +598,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                         this.nextHeadUpdate[i - 1] = this.tickCount + 10 + this.random.nextInt(10);
                         int l1 = this.getAlternativeTarget(i);
                         if (l1 > 0) {
-                            LivingEntity livingentity = (LivingEntity) this.level().getEntity(l1);
+                            LivingEntity livingentity = (LivingEntity) this.level.getEntity(l1);
                             if (livingentity != null && this.canAttack(livingentity) && !(this.distanceToSqr(livingentity) > 1600.0D) && this.hasLineOfSight(livingentity) && (Laser_Mode_Progress == 30 || Laser_Mode_Progress == 0) && this.getAnimation() == NO_ANIMATION) {
                                 this.performRangedAttack(i + 1, livingentity);
                                 int f = this.getIsLaserMode() ? 15 + this.random.nextInt(5) : 30 + this.random.nextInt(20);
@@ -595,7 +608,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
                                 this.setAlternativeTarget(i, 0);
                             }
                         } else {
-                            List<LivingEntity> list = this.level().getNearbyEntities(LivingEntity.class, TARGETING_CONDITIONS, this, this.getBoundingBox().inflate(20.0D, 8.0D, 20.0D));
+                            List<LivingEntity> list = this.level.getNearbyEntities(LivingEntity.class, TARGETING_CONDITIONS, this, this.getBoundingBox().inflate(20.0D, 8.0D, 20.0D));
                             if (!list.isEmpty()) {
                                 LivingEntity livingentity1 = list.get(this.random.nextInt(list.size()));
                                 this.setAlternativeTarget(i, livingentity1.getId());
@@ -663,8 +676,9 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         this.yBodyRot = this.getYRot();
         this.yHeadRot = this.getYRot();
         if (this.deathTime == 123) {
-            if(!level().isClientSide){
-                this.level().explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, Level.ExplosionInteraction.MOB);
+            if(!level.isClientSide){
+                Explosion.BlockInteraction explosion$blockinteraction = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this) ? Explosion.BlockInteraction.DESTROY : Explosion.BlockInteraction.NONE;
+                this.level.explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, explosion$blockinteraction);
             }
         }
 
@@ -725,17 +739,17 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
             if (!this.isSilent()) {
                 this.playSound(ModSounds.HARBINGER_LASER.get(),1,1.0F);
             }
-          Laser_Beam_Entity laserBeam = new Laser_Beam_Entity(this.level(), this);
+          Laser_Beam_Entity laserBeam = new Laser_Beam_Entity(this.level, this);
             laserBeam.shoot(d3, d4, d5, 1F, 1F);
             laserBeam.setPosRaw(d0, d1, d2);
-            this.level().addFreshEntity(laserBeam);
+            this.level.addFreshEntity(laserBeam);
         }else{
             if (!this.isSilent()) {
-                this.level().levelEvent((Player)null, 1024, this.blockPosition(), 0);
+                this.level.levelEvent((Player)null, 1024, this.blockPosition(), 0);
             }
-            Wither_Missile_Entity witherskull = new Wither_Missile_Entity(this, d3, d4, d5, this.level(),(float) CMConfig.HarbingerWitherMissiledamage);
+            Wither_Missile_Entity witherskull = new Wither_Missile_Entity(this, d3, d4, d5, this.level,(float) CMConfig.HarbingerWitherMissiledamage);
             witherskull.setPosRaw(d0, d1, d2);
-            this.level().addFreshEntity(witherskull);
+            this.level.addFreshEntity(witherskull);
         }
     }
 
@@ -841,20 +855,20 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
 
         public void start() {
             super.start();
-            entity.level().playSound((Player) null, entity, ModSounds.HARBINGER_DEATHLASER_PREPARE.get(), SoundSource.HOSTILE, 8.0f, 1.2f);
+            entity.level.playSound((Player) null, entity, ModSounds.HARBINGER_DEATHLASER_PREPARE.get(), SoundSource.HOSTILE, 8.0f, 1.2f);
             entity.setOverload(0);
         }
 
         public void tick() {
             LivingEntity target = entity.getTarget();
             entity.setDeltaMovement(0, entity.getDeltaMovement().y, 0);
-            if (entity.getAnimationTick() == 18 && !entity.level().isClientSide) {
-                //Death_Laser_Beam_Entity DeathBeam = new Death_Laser_Beam_Entity(ModEntities.DEATH_LASER_BEAM.get(), entity.level(), entity, entity.getX() + radius1 * Math.sin(-entity.getYRot() * Math.PI / 180), entity.getY() + 2.9, entity.getZ() + radius1 * Math.cos(-entity.getYRot() * Math.PI / 180), (float) ((entity.yHeadRot + 90) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 20);
-                Death_Laser_Beam_Entity DeathBeam = new Death_Laser_Beam_Entity(ModEntities.DEATH_LASER_BEAM.get(), entity.level(), entity, entity.getX(), entity.getY() + 2.9, entity.getZ(), (float) ((entity.yHeadRot + 90) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 60);
+            if (entity.getAnimationTick() == 18 && !entity.level.isClientSide) {
+                //Death_Laser_Beam_Entity DeathBeam = new Death_Laser_Beam_Entity(ModEntities.DEATH_LASER_BEAM.get(), entity.level, entity, entity.getX() + radius1 * Math.sin(-entity.getYRot() * Math.PI / 180), entity.getY() + 2.9, entity.getZ() + radius1 * Math.cos(-entity.getYRot() * Math.PI / 180), (float) ((entity.yHeadRot + 90) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 20);
+                Death_Laser_Beam_Entity DeathBeam = new Death_Laser_Beam_Entity(ModEntities.DEATH_LASER_BEAM.get(), entity.level, entity, entity.getX(), entity.getY() + 2.9, entity.getZ(), (float) ((entity.yHeadRot + 90) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 60);
                 if(entity.isPowered()){
                     DeathBeam.setFire(true);
                 }
-                entity.level().addFreshEntity(DeathBeam);
+                entity.level.addFreshEntity(DeathBeam);
             }
 
             if (entity.getAnimationTick() >= 35) {
@@ -876,7 +890,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         public void start() {
             super.start();
             entity.setOverload(entity.getOverload() + 1);
-            entity.level().playSound((Player) null, entity, ModSounds.HARBINGER_CHARGE_PREPARE.get(), SoundSource.HOSTILE, 4.0f, 1.0f);
+            entity.level.playSound((Player) null, entity, ModSounds.HARBINGER_CHARGE_PREPARE.get(), SoundSource.HOSTILE, 4.0f, 1.0f);
         }
 
         public void tick() {
@@ -956,7 +970,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
 
         private void launch(int head, double p_31450_, double p_31451_, double p_31452_) {
             if (!entity.isSilent()) {
-                entity.level().levelEvent((Player)null, 1024, entity.blockPosition(), 0);
+                entity.level.levelEvent((Player)null, 1024, entity.blockPosition(), 0);
             }
             double d0 = entity.getHeadX(head);
             double d1 = entity.getHeadY(head);
@@ -968,11 +982,11 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
 
             int b = entity.isPowered() ? 7 : 5;
             for (int i = 0; i < b; ++i) {
-                Wither_Howitzer_Entity lava = new Wither_Howitzer_Entity(ModEntities.WITHER_HOWITZER.get(), entity.level(), entity);
+                Wither_Howitzer_Entity lava = new Wither_Howitzer_Entity(ModEntities.WITHER_HOWITZER.get(), entity.level, entity);
                 lava.setPosRaw(d0, d1, d2);
                 lava.setRadius(3.0F);
                 lava.shoot(d3, d4 + d6 * 6F, d5, 0.6F, 60);
-                entity.level().addFreshEntity(lava);
+                entity.level.addFreshEntity(lava);
             }
         }
     }
@@ -1008,15 +1022,15 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
 
         private void mlaunch(int head, LivingEntity target) {
             if (!entity.isSilent()) {
-                entity.level().levelEvent((Player)null, 1024, entity.blockPosition(), 0);
+                entity.level.levelEvent((Player)null, 1024, entity.blockPosition(), 0);
             }
             double d0 = this.getLauncherX(head);
             double d1 = this.getLauncherY(head);
             double d2 = this.getLauncherZ(head);
 
-            Wither_Homing_Missile_Entity laserBeam = new Wither_Homing_Missile_Entity(entity.level(),entity,target);
+            Wither_Homing_Missile_Entity laserBeam = new Wither_Homing_Missile_Entity(entity.level,entity,target);
             laserBeam.setPosRaw(d0, d1, d2);
-            entity.level().addFreshEntity(laserBeam);
+            entity.level.addFreshEntity(laserBeam);
         }
 
 
@@ -1099,15 +1113,15 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
 
         private void mlaunch(int head, LivingEntity target) {
             if (!entity.isSilent()) {
-                entity.level().levelEvent((Player) null, 1024, entity.blockPosition(), 0);
+                entity.level.levelEvent((Player) null, 1024, entity.blockPosition(), 0);
             }
             double d0 = this.getLauncherX(head);
             double d1 = this.getLauncherY(head);
             double d2 = this.getLauncherZ(head);
 
-            Wither_Homing_Missile_Entity laserBeam = new Wither_Homing_Missile_Entity(entity.level(), entity, target);
+            Wither_Homing_Missile_Entity laserBeam = new Wither_Homing_Missile_Entity(entity.level, entity, target);
             laserBeam.setPosRaw(d0, d1, d2);
-            entity.level().addFreshEntity(laserBeam);
+            entity.level.addFreshEntity(laserBeam);
         }
 
 

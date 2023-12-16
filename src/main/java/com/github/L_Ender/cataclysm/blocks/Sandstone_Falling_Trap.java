@@ -3,14 +3,10 @@ package com.github.L_Ender.cataclysm.blocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-
-import java.util.List;
 
 public class Sandstone_Falling_Trap extends SandStoneTrapBlock implements Fallable {
 
@@ -34,7 +30,7 @@ public class Sandstone_Falling_Trap extends SandStoneTrapBlock implements Fallab
     }
 
     public static boolean isFree(BlockState p_53242_) {
-        return p_53242_.isAir() || p_53242_.is(BlockTags.FIRE) || p_53242_.liquid() || p_53242_.canBeReplaced();
+        return p_53242_.isAir() || p_53242_.is(BlockTags.FIRE) || p_53242_.getMaterial().isLiquid() || p_53242_.getMaterial().isReplaceable();
     }
 
     protected void falling(FallingBlockEntity p_53206_) {

@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.AttackMoveGoal;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
@@ -11,13 +13,13 @@ import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -42,8 +44,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.EnumSet;
-
 
 public class Ignited_Revenant_Entity extends Boss_monster {
 
@@ -65,10 +65,14 @@ public class Ignited_Revenant_Entity extends Boss_monster {
     public Ignited_Revenant_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 15;
-        this.setMaxUpStep(1.5F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
         setConfigattribute(this, CMConfig.RevenantHealthMultiplier, CMConfig.RevenantDamageMultiplier);
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.5F;
     }
 
     @Override
@@ -126,7 +130,7 @@ public class Ignited_Revenant_Entity extends Boss_monster {
     @Override
     public boolean hurt(DamageSource source, float damage) {
         Entity entity = source.getDirectEntity();
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             if(this.getIsAnger()) {
                 if (entity instanceof LivingEntity) {
                     // Shield disabling on critical axe hit
@@ -146,7 +150,7 @@ public class Ignited_Revenant_Entity extends Boss_monster {
         }
         if (damage > 0.0F && canBlockDamageSource(source)) {
             this.hurtCurrentlyUsedShield(damage);
-            if (!source.is(DamageTypeTags.IS_PROJECTILE)) {
+            if (!source.isProjectile()) {
                 if (entity instanceof LivingEntity) {
                     this.blockUsingShield((LivingEntity) entity);
                 }
@@ -166,7 +170,7 @@ public class Ignited_Revenant_Entity extends Boss_monster {
                flag = true;
           }
         }
-        if (!damageSourceIn.is(DamageTypeTags.BYPASSES_SHIELD)&& !flag && this.getIsAnger() && this.getShieldDurability() < 4) {
+        if (!damageSourceIn.isBypassArmor() && !flag && this.getIsAnger() && this.getShieldDurability() < 4) {
             Vec3 vector3d2 = damageSourceIn.getSourcePosition();
             if (vector3d2 != null) {
                 Vec3 vector3d = this.getViewVector(1.0F);
@@ -214,7 +218,7 @@ public class Ignited_Revenant_Entity extends Boss_monster {
        // setYRot(yBodyRot);
         AnimationHandler.INSTANCE.updateAnimations(this);
         LivingEntity target = this.getTarget();
-        if (!this.onGround() && this.getDeltaMovement().y < 0.0D) {
+        if (!this.isOnGround() && this.getDeltaMovement().y < 0.0D) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.6D, 1.0D));
         }
         prevangerProgress = angerProgress;
@@ -240,9 +244,9 @@ public class Ignited_Revenant_Entity extends Boss_monster {
             }
             if(this.getAnimation() == NO_ANIMATION && this.getIsAnger() && this.getShieldDurability() < 4){
                 if(this.tickCount % (6 + this.getShieldDurability() * 2) == 0){
-                    for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.25D))) {
+                    for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.25D))) {
                         if (!isAlliedTo(entity) && !(entity instanceof Ignited_Revenant_Entity) && entity != this) {
-                            boolean flag = entity.hurt(this.damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                            boolean flag = entity.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
                             if (flag) {
                                 double d0 = entity.getX() - this.getX();
                                 double d1 = entity.getZ() - this.getZ();
@@ -368,10 +372,10 @@ public class Ignited_Revenant_Entity extends Boss_monster {
             mouthPos = mouthPos.yRot((float) Math.toRadians(-getYRot() - 90));
             mouthPos = mouthPos.add(position());
             mouthPos = mouthPos.add(new Vec3(0, 0, 0).xRot((float) Math.toRadians(-getXRot())).yRot((float) Math.toRadians(-yHeadRot)));
-            Ashen_Breath_Entity breath = new Ashen_Breath_Entity(ModEntities.ASHEN_BREATH.get(), Ignited_Revenant_Entity.this.level(), Ignited_Revenant_Entity.this);
+            Ashen_Breath_Entity breath = new Ashen_Breath_Entity(ModEntities.ASHEN_BREATH.get(), Ignited_Revenant_Entity.this.level, Ignited_Revenant_Entity.this);
             if (Ignited_Revenant_Entity.this.getAnimationTick() == 27) {
                 breath.absMoveTo(mouthPos.x, mouthPos.y, mouthPos.z, Ignited_Revenant_Entity.this.yHeadRot, Ignited_Revenant_Entity.this.getXRot());
-                Ignited_Revenant_Entity.this.level().addFreshEntity(breath);
+                Ignited_Revenant_Entity.this.level.addFreshEntity(breath);
             }
         }
     }
@@ -454,12 +458,12 @@ public class Ignited_Revenant_Entity extends Boss_monster {
             double vy = 0;
             double vz = Mth.sin(throwAngle);
 
-            Blazing_Bone_Entity projectile = new Blazing_Bone_Entity(this.level(), this);
+            Blazing_Bone_Entity projectile = new Blazing_Bone_Entity(this.level, this);
 
             projectile.moveTo(sx, sy, sz, i * 45F, this.getXRot());
             float speed = 0.5F;
             projectile.shoot(vx, vy, vz, speed, 1.0F);
-            this.level().addFreshEntity(projectile);
+            this.level.addFreshEntity(projectile);
         }
 
     }
@@ -477,12 +481,12 @@ public class Ignited_Revenant_Entity extends Boss_monster {
             double vy = 0;
             double vz = Mth.sin(throwAngle);
 
-            Blazing_Bone_Entity projectile = new Blazing_Bone_Entity(this.level(), this);
+            Blazing_Bone_Entity projectile = new Blazing_Bone_Entity(this.level, this);
 
             projectile.moveTo(sx, sy, sz, i * 60F, this.getXRot());
             float speed = 0.6F;
             projectile.shoot(vx, vy, vz, speed, 1.0F);
-            this.level().addFreshEntity(projectile);
+            this.level.addFreshEntity(projectile);
         }
 
     }
@@ -500,12 +504,12 @@ public class Ignited_Revenant_Entity extends Boss_monster {
             double vy = 0;
             double vz = Mth.sin(throwAngle);
 
-            Blazing_Bone_Entity projectile = new Blazing_Bone_Entity(this.level(), this);
+            Blazing_Bone_Entity projectile = new Blazing_Bone_Entity(this.level, this);
 
             projectile.moveTo(sx, sy, sz, i * 36F, this.getXRot());
             float speed = 0.4F;
             projectile.shoot(vx, vy, vz, speed, 1.0F);
-            this.level().addFreshEntity(projectile);
+            this.level.addFreshEntity(projectile);
         }
 
     }

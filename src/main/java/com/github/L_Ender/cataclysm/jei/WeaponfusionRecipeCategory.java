@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.jei;
 
 import com.github.L_Ender.cataclysm.crafting.WeaponfusionRecipe;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
+
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -9,7 +10,6 @@ import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -54,7 +54,7 @@ public class WeaponfusionRecipeCategory implements IRecipeCategory<WeaponfusionR
                 .addIngredients(recipe.getAdditionIngredient());
 
         builder.addSlot(RecipeIngredientRole.OUTPUT, 108, 1)
-                .addItemStack(recipe.getResultItem(RegistryAccess.EMPTY));
+                .addItemStack(recipe.getResultItem());
     }
 
     @Override

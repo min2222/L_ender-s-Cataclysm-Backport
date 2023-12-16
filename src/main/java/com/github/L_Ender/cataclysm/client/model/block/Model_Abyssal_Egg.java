@@ -4,15 +4,12 @@ package com.github.L_Ender.cataclysm.client.model.block;// Made with Blockbench 
 
 
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAbyssal_Egg;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfFire;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.Mth;
+
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
 
 public class Model_Abyssal_Egg extends AdvancedEntityModel<Entity> {
 	public final AdvancedModelBox root;

@@ -46,7 +46,7 @@ public class CMEntityMoveHelper extends MoveControl
             {
                 NodeEvaluator nodeprocessor = pathnavigate.getNodeEvaluator();
 
-                if (nodeprocessor != null && nodeprocessor.getBlockPathType(this.mob.level(), Mth.floor(this.mob.getX() + (double)f7), Mth.floor(this.mob.getY()), Mth.floor(this.mob.getZ() + (double)f8)) != BlockPathTypes.WALKABLE)
+                if (nodeprocessor != null && nodeprocessor.getBlockPathType(this.mob.level, Mth.floor(this.mob.getX() + (double)f7), Mth.floor(this.mob.getY()), Mth.floor(this.mob.getZ() + (double)f8)) != BlockPathTypes.WALKABLE)
                 {
                     this.strafeForwards = 1.0F;
                     this.strafeRight = 0.0F;
@@ -77,7 +77,7 @@ public class CMEntityMoveHelper extends MoveControl
             this.mob.setYRot(this.rotlerp(this.mob.getYRot(), f9, maxRotate));
             this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
 
-            if (d2 > (double)this.mob.maxUpStep() && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getBbWidth()))
+            if (d2 > (double)this.mob.getStepHeight() && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getBbWidth()))
             {
                 this.mob.getJumpControl().jump();
                 this.operation = CMEntityMoveHelper.Operation.JUMPING;
@@ -87,7 +87,7 @@ public class CMEntityMoveHelper extends MoveControl
         {
             this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
 
-            if (this.mob.onGround())
+            if (this.mob.isOnGround())
             {
                 this.operation = CMEntityMoveHelper.Operation.WAIT;
             }

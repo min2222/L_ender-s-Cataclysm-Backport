@@ -1,20 +1,22 @@
 package com.github.L_Ender.cataclysm.inventory;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.crafting.WeaponfusionRecipe;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModMenu;
 import com.github.L_Ender.cataclysm.init.ModRecipeTypes;
+
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.*;
+import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.ItemCombinerMenu;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class WeaponfusionMenu extends ItemCombinerMenu {
     private final Level level;
@@ -28,16 +30,8 @@ public class WeaponfusionMenu extends ItemCombinerMenu {
 
     public WeaponfusionMenu(int p_40248_, Inventory p_40249_, ContainerLevelAccess p_40250_) {
         super(ModMenu.WEAPON_FUSION.get(), p_40248_, p_40249_, p_40250_);
-        this.level = p_40249_.player.level();
+        this.level = p_40249_.player.level;
         this.recipes = this.level.getRecipeManager().getAllRecipesFor(ModRecipeTypes.WEAPON_FUSION.get());
-    }
-
-    protected ItemCombinerMenuSlotDefinition createInputSlotDefinitions() {
-        return ItemCombinerMenuSlotDefinition.create().withSlot(0, 27, 47, (p_266883_) -> {
-            return true;
-        }).withSlot(1, 76, 47, (p_267323_) -> {
-            return true;
-        }).withResultSlot(2, 134, 47).build();
     }
 
     protected boolean isValidBlock(BlockState p_266887_) {
@@ -49,8 +43,8 @@ public class WeaponfusionMenu extends ItemCombinerMenu {
     }
 
     protected void onTake(Player p_267006_, ItemStack p_266731_) {
-        p_266731_.onCraftedBy(p_267006_.level(), p_267006_, p_266731_.getCount());
-        this.resultSlots.awardUsedRecipes(p_267006_, this.getRelevantItems());
+        p_266731_.onCraftedBy(p_267006_.level, p_267006_, p_266731_.getCount());
+        this.resultSlots.awardUsedRecipes(p_267006_);
         this.shrinkStackInSlot(0);
         this.shrinkStackInSlot(1);
         this.access.execute((p_267191_, p_267098_) -> {
@@ -79,12 +73,10 @@ public class WeaponfusionMenu extends ItemCombinerMenu {
             this.resultSlots.setItem(0, ItemStack.EMPTY);
         } else {
             WeaponfusionRecipe legacyupgraderecipe = list.get(0);
-            ItemStack itemstack = legacyupgraderecipe.assemble(this.inputSlots, this.level.registryAccess());
-            if (itemstack.isItemEnabled(this.level.enabledFeatures())) {
-                this.selectedRecipe = legacyupgraderecipe;
-                this.resultSlots.setRecipeUsed(legacyupgraderecipe);
-                this.resultSlots.setItem(0, itemstack);
-            }
+            ItemStack itemstack = legacyupgraderecipe.assemble(this.inputSlots);
+            this.selectedRecipe = legacyupgraderecipe;
+            this.resultSlots.setRecipeUsed(legacyupgraderecipe);
+            this.resultSlots.setItem(0, itemstack);
         }
 
     }

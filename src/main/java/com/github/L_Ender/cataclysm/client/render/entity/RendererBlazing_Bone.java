@@ -2,7 +2,8 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 
 import com.github.L_Ender.cataclysm.entity.projectile.Blazing_Bone_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
@@ -11,8 +12,6 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -31,11 +30,11 @@ public class RendererBlazing_Bone extends EntityRenderer<Blazing_Bone_Entity> {
         stack.scale(1.25F, 1.25F, 1.25F);
 
         stack.pushPose();
-        stack.mulPose(Axis.YP.rotationDegrees(yaw + 90));
-        stack.mulPose(Axis.ZP.rotationDegrees(spin));
+        stack.mulPose(Vector3f.YP.rotationDegrees(yaw + 90));
+        stack.mulPose(Vector3f.ZP.rotationDegrees(spin));
         stack.translate(0f, 0f, 0);
 
-        Minecraft.getInstance().getItemRenderer().renderStatic(entity.getItem(), ItemDisplayContext.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, entity.level(), entity.getId());
+        Minecraft.getInstance().getItemRenderer().renderStatic(entity.getItem(), ItemTransforms.TransformType.GROUND, light, OverlayTexture.NO_OVERLAY, stack, buffer, entity.getId());
         stack.popPose();
         stack.popPose();
     }

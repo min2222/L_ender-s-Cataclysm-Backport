@@ -1,11 +1,16 @@
 package com.github.L_Ender.cataclysm.items;
 
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Void_Rune_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -30,9 +35,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import javax.annotation.Nullable;
-import java.util.List;
-
 public class void_forge extends PickaxeItem {
     public void_forge(Tiers toolMaterial, Properties props) {
 
@@ -41,7 +43,7 @@ public class void_forge extends PickaxeItem {
 
     @Override
     public boolean hurtEnemy(ItemStack heldItemStack, LivingEntity target, LivingEntity attacker) {
-        if (!target.level().isClientSide) {
+        if (!target.level.isClientSide) {
             target.playSound(ModSounds.HAMMERTIME.get(), 0.5F, 0.5F);
             target.knockback( 1F, attacker.getX() - target.getX(), attacker.getZ() - target.getZ());
         }
@@ -104,7 +106,7 @@ public class void_forge extends PickaxeItem {
     }
 
     private boolean spawnFangs(double x, double y, double z, int lowestYCheck, float yRot, int warmupDelayTicks, Level world, Player player) {
-        BlockPos blockpos = BlockPos.containing(x, y, z);
+        BlockPos blockpos = new BlockPos(x, y, z);
         boolean flag = false;
         double d0 = 0.0D;
 

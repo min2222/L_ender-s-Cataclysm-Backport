@@ -1,8 +1,11 @@
 package com.github.L_Ender.cataclysm.items;
 
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,12 +14,10 @@ import net.minecraft.world.item.ElytraItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-import javax.annotation.Nullable;
-
 public class Ignitium_Elytra_ChestPlate extends ArmorItem {
 
     public Ignitium_Elytra_ChestPlate(Properties props, Armortier mat) {
-        super(mat, Type.CHESTPLATE, props);
+        super(mat, EquipmentSlot.CHEST, props);
     }
 
     @Override

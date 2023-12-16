@@ -1,12 +1,15 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -24,9 +27,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Void_Scatter_Arrow_Entity extends Arrow {
 
@@ -52,7 +52,7 @@ public class Void_Scatter_Arrow_Entity extends Arrow {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -68,9 +68,9 @@ public class Void_Scatter_Arrow_Entity extends Arrow {
         double x = this.getX();
         double y = this.getY();
         double z = this.getZ();
-        if (this.level().isClientSide){
+        if (this.level.isClientSide){
             for (int l2 = 0; l2 < 8; ++l2) {
-                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.VOID_SCATTER_ARROW.get())), x, y, z, random.nextGaussian() * 0.1D, random.nextDouble() * 0.15D, random.nextGaussian() * 0.1D);
+                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.VOID_SCATTER_ARROW.get())), x, y, z, random.nextGaussian() * 0.1D, random.nextDouble() * 0.15D, random.nextGaussian() * 0.1D);
             }
         }
         else {
@@ -85,9 +85,9 @@ public class Void_Scatter_Arrow_Entity extends Arrow {
                 }
                 vec = vec.scale(0.35f);
                 vec = this.mulPoseVector(vec,dir);
-                Void_Shard_Entity shard = new Void_Shard_Entity(level(), (LivingEntity) this.getOwner(),
+                Void_Shard_Entity shard = new Void_Shard_Entity(level, (LivingEntity) this.getOwner(),
                         x+vec.x,y+vec.y+0.25, vec.z+z, vec, target);
-                level().addFreshEntity(shard);
+                level.addFreshEntity(shard);
             }
 
             this.playSound(SoundEvents.GLASS_BREAK, 1.1F, 0.8F);

@@ -1,14 +1,18 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.entity.util.LeviathanTongueUtil;
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,9 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-
-import java.util.Optional;
-import java.util.UUID;
 
 public class The_Leviathan_Tongue_Entity extends Entity {
 
@@ -45,8 +46,8 @@ public class The_Leviathan_Tongue_Entity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+    public Packet<?> getAddEntityPacket() {
+        return (Packet<?>) NetworkHooks.getEntitySpawningPacket(this);
     }
 
     public boolean shouldRender(double p_37588_, double p_37589_, double p_37590_) {
@@ -100,12 +101,12 @@ public class The_Leviathan_Tongue_Entity extends Entity {
                     Vec3 target = new Vec3(current.getX(), current.getY(0.4F), current.getZ());
                     Vec3 lerp = target.subtract(this.position());
                     this.setDeltaMovement(lerp.scale(0.5F));
-                    if (!level().isClientSide) {
+                    if (!level.isClientSide) {
                         if (!hasTouched && progress >= MAX_EXTEND_TIME) {
                             hasTouched = true;
                             Entity entity = getCreatorEntity();
                             if (entity instanceof LivingEntity) {
-                                if (current.hurt(damageSources().mobProjectile(this, (LivingEntity) creator), 6)) {
+                                if (current.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) creator), 6)) {
                                     Vec3 vec3 = (new Vec3(entity.getX() - current.getX(), entity.getY() - current.getY(), entity.getZ()  - current.getZ())).scale(0.6D);
                                     current.setDeltaMovement(current.getDeltaMovement().add(vec3));
                                 }
@@ -119,7 +120,7 @@ public class The_Leviathan_Tongue_Entity extends Entity {
         }
 
         Vec3 vector3d = this.getDeltaMovement();
-        if(!level().isClientSide){
+        if(!level.isClientSide){
             if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) {
                 this.setRetracting(true);
             }
@@ -134,7 +135,7 @@ public class The_Leviathan_Tongue_Entity extends Entity {
     private void updateLastTongue(The_Leviathan_Tongue_Entity lastTendon){
         Entity creator = getCreatorEntity();
         if(creator == null){
-            creator = level().getPlayerByUUID(this.getCreatorEntityUUID());
+            creator = level.getPlayerByUUID(this.getCreatorEntityUUID());
         }
         if(creator instanceof LivingEntity){
             LeviathanTongueUtil.setLastTongue((LivingEntity)creator, lastTendon);
@@ -152,8 +153,8 @@ public class The_Leviathan_Tongue_Entity extends Entity {
 
     public Entity getCreatorEntity() {
         UUID uuid = getCreatorEntityUUID();
-        if(uuid != null && !level().isClientSide){
-            return ((ServerLevel) level()).getEntity(uuid);
+        if(uuid != null && !level.isClientSide){
+            return ((ServerLevel) level).getEntity(uuid);
         }
         return null;
     }
@@ -167,7 +168,7 @@ public class The_Leviathan_Tongue_Entity extends Entity {
     }
 
     public Entity getFromEntity() {
-        return getFromEntityID() == -1 ? null : this.level().getEntity(getFromEntityID());
+        return getFromEntityID() == -1 ? null : this.level.getEntity(getFromEntityID());
     }
 
     public int getToEntityID() {
@@ -179,7 +180,7 @@ public class The_Leviathan_Tongue_Entity extends Entity {
     }
 
     public Entity getToEntity() {
-        return getToEntityID() == -1 ? null : this.level().getEntity(getToEntityID());
+        return getToEntityID() == -1 ? null : this.level.getEntity(getToEntityID());
     }
 
     public float getProgress() {

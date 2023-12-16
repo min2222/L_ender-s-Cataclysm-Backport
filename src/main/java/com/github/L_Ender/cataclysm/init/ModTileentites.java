@@ -1,7 +1,16 @@
 package com.github.L_Ender.cataclysm.init;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.blockentities.*;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityAbyssal_Egg;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAbyss;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfFire;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfVoid;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityEMP;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityMechanical_fusion_Anvil;
+import com.github.L_Ender.cataclysm.blockentities.TileEntityObsidianExplosionTrapBricks;
+import com.github.L_Ender.cataclysm.blockentities.TileEntitySandstoneIgniteTrap;
+
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;

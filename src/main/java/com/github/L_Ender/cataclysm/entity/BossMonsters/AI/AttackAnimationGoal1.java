@@ -1,11 +1,12 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.AI;
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
-import net.minecraft.world.entity.LivingEntity;
 
-import java.util.EnumSet;
+import net.minecraft.world.entity.LivingEntity;
 
 public class AttackAnimationGoal1<T extends Animation_Monster & IAnimatedEntity> extends SimpleAnimationGoal<T> {
     private final int look1;

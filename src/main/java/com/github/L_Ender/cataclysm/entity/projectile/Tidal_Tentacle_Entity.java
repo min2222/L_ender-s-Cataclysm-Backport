@@ -1,39 +1,40 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.entity.util.TidalTentacleUtil;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.google.common.collect.Multimap;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
-import net.minecraft.world.InteractionHand;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public class Tidal_Tentacle_Entity extends Entity {
 
@@ -60,8 +61,8 @@ public class Tidal_Tentacle_Entity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        return (Packet<ClientGamePacketListener>) NetworkHooks.getEntitySpawningPacket(this);
+    public Packet<?> getAddEntityPacket() {
+        return (Packet<?>) NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class Tidal_Tentacle_Entity extends Entity {
         Entity creator = getCreatorEntity();
         Entity current = getToEntity();
         if(tickCount == 1){
-            if(!this.level().isClientSide){
+            if(!this.level.isClientSide){
                 this.playSound(ModSounds.TIDAL_TENTACLE.get(),1.0F, 0.8F + this.random.nextFloat() * 0.4F);
             }
         }
@@ -111,12 +112,12 @@ public class Tidal_Tentacle_Entity extends Entity {
                 Vec3 target = new Vec3(current.getX(), current.getY(0.4F), current.getZ());
                 Vec3 lerp = target.subtract(this.position());
                 this.setDeltaMovement(lerp.scale(0.5F));
-                if(!this.level().isClientSide){
+                if(!this.level.isClientSide){
                     if(progress >= MAX_EXTEND_TIME){
                         if (this.tickCount % 2 == 0) {
                             Entity entity = getCreatorEntity();
                             if(entity instanceof LivingEntity) {
-                                if (current != creator && current.hurt(damageSources().mobProjectile(this, (LivingEntity) entity), this.getBaseDamage())) {
+                                if (current != creator && current.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) entity), this.getBaseDamage())) {
                                     MobEffectInstance effectinstance1 = ((LivingEntity)current).getEffect(ModEffect.EFFECTABYSSAL_CURSE.get());
                                     int i = 1;
                                     if (effectinstance1 != null) {
@@ -139,13 +140,13 @@ public class Tidal_Tentacle_Entity extends Entity {
             }
         }
         Vec3 vector3d = this.getDeltaMovement();
-        if(!this.level().isClientSide){
+        if(!this.level.isClientSide){
             if(!hasChained){
                 if(this.getTargetsHit() > 5){
                     this.setRetracting(true);
                 }else if(creator instanceof LivingEntity && this.getProgress() >= MAX_EXTEND_TIME) {
                     Entity closestValid = null;
-                    for (Entity entity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(12.0D))) {
+                    for (Entity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(12.0D))) {
                         if (!entity.equals(creator) && !previouslyTouched.contains(entity) && isValidTarget((LivingEntity) creator, entity) && this.hasLineOfSight(entity)) {
                             if (closestValid == null || this.distanceTo(entity) < this.distanceTo(closestValid)) {
                                 closestValid = entity;
@@ -189,7 +190,7 @@ public class Tidal_Tentacle_Entity extends Entity {
     }
 
     private boolean hasLineOfSight(Entity entity) {
-        if (entity.level() != this.level()) {
+        if (entity.level != this.level) {
             return false;
         } else {
             Vec3 vec3 = new Vec3(this.getX(), this.getEyeY(), this.getZ());
@@ -197,7 +198,7 @@ public class Tidal_Tentacle_Entity extends Entity {
             if (vec31.distanceTo(vec3) > 128.0D) {
                 return false;
             } else {
-                return this.level().clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
+                return this.level.clip(new ClipContext(vec3, vec31, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)).getType() == HitResult.Type.MISS;
             }
         }
     }
@@ -205,7 +206,7 @@ public class Tidal_Tentacle_Entity extends Entity {
     private void updateLastTendon(Tidal_Tentacle_Entity lastTendon){
         Entity creator = getCreatorEntity();
         if(creator == null){
-            creator = level().getPlayerByUUID(this.getCreatorEntityUUID());
+            creator = level.getPlayerByUUID(this.getCreatorEntityUUID());
         }
         if(creator instanceof LivingEntity){
             TidalTentacleUtil.setLastTentacle((LivingEntity)creator, lastTendon);
@@ -214,7 +215,7 @@ public class Tidal_Tentacle_Entity extends Entity {
 
     private void createChain(Entity closestValid) {
         this.entityData.set(HAS_CLAW, false);
-        Tidal_Tentacle_Entity child = ModEntities.TIDAL_TENTACLE.get().create(this.level());
+        Tidal_Tentacle_Entity child = ModEntities.TIDAL_TENTACLE.get().create(this.level);
         child.previouslyTouched = new ArrayList<>(previouslyTouched);
         child.previouslyTouched.add(closestValid);
         child.setCreatorEntityUUID(this.getCreatorEntityUUID());
@@ -223,7 +224,7 @@ public class Tidal_Tentacle_Entity extends Entity {
         child.setPos(closestValid.getX(), closestValid.getY(0.4F), closestValid.getZ());
         child.setTargetsHit(this.getTargetsHit() + 1);
         updateLastTendon(child);
-        this.level().addFreshEntity(child);
+        this.level.addFreshEntity(child);
     }
 
 
@@ -241,8 +242,8 @@ public class Tidal_Tentacle_Entity extends Entity {
 
     public Entity getCreatorEntity() {
         UUID uuid = getCreatorEntityUUID();
-        if(uuid != null && !this.level().isClientSide){
-            return ((ServerLevel) level()).getEntity(uuid);
+        if(uuid != null && !this.level.isClientSide){
+            return ((ServerLevel) level).getEntity(uuid);
         }
         return null;
     }
@@ -256,7 +257,7 @@ public class Tidal_Tentacle_Entity extends Entity {
     }
 
     public Entity getFromEntity() {
-        return getFromEntityID() == -1 ? null : this.level().getEntity(getFromEntityID());
+        return getFromEntityID() == -1 ? null : this.level.getEntity(getFromEntityID());
     }
 
     public int getToEntityID() {
@@ -268,7 +269,7 @@ public class Tidal_Tentacle_Entity extends Entity {
     }
 
     public Entity getToEntity() {
-        return getToEntityID() == -1 ? null : this.level().getEntity(getToEntityID());
+        return getToEntityID() == -1 ? null : this.level.getEntity(getToEntityID());
     }
 
     public int getTargetsHit() {

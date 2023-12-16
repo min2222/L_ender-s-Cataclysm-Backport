@@ -5,7 +5,9 @@ import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.Abyss_Mine_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -14,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import org.joml.Quaternionf;
 
 @OnlyIn(Dist.CLIENT)
 public class RendererAbyss_Mine extends EntityRenderer<Abyss_Mine_Entity>
@@ -48,18 +49,18 @@ public class RendererAbyss_Mine extends EntityRenderer<Abyss_Mine_Entity>
 		p_114165_.scale(e, e, e);
 		p_114165_.translate(0.0D, -0.5D, 0.0D);
 		int i = OverlayTexture.NO_OVERLAY;
-		p_114165_.mulPose(Axis.YP.rotationDegrees(f1));
+		p_114165_.mulPose(Vector3f.YP.rotationDegrees(f1));
 		p_114165_.translate(0.0D, 0.75D, 0.0D);
-		p_114165_.mulPose((new Quaternionf()).setAngleAxis(((float)Math.PI / 3F), SIN_45, 0.0F, SIN_45));
+		p_114165_.mulPose(new Quaternion(new Vector3f(SIN_45, 0.0F, SIN_45), 60.0F, true));
 		this.model.glass.render(p_114165_, vertexconsumer, p_114167_, i);
 		float f2 = 0.875F;
 		p_114165_.scale(d, d, d);
-		p_114165_.mulPose((new Quaternionf()).setAngleAxis(((float)Math.PI / 3F), SIN_45, 0.0F, SIN_45));
-		p_114165_.mulPose(Axis.YP.rotationDegrees(f1));
+		p_114165_.mulPose(new Quaternion(new Vector3f(SIN_45, 0.0F, SIN_45), 60.0F, true));
+		p_114165_.mulPose(Vector3f.YP.rotationDegrees(f1));
 		this.model.glass2.render(p_114165_, vertexconsumer, p_114167_, i);
 		p_114165_.scale(d, d, d);
-		p_114165_.mulPose((new Quaternionf()).setAngleAxis(((float)Math.PI / 3F), SIN_45, 0.0F, SIN_45));
-		p_114165_.mulPose(Axis.YP.rotationDegrees(f1));
+		p_114165_.mulPose(new Quaternion(new Vector3f(SIN_45, 0.0F, SIN_45), 60.0F, true));
+		p_114165_.mulPose(Vector3f.YP.rotationDegrees(f1));
 		this.model.root.render(p_114165_, vertexconsumer, p_114167_, i);
 		p_114165_.popPose();
 		p_114165_.popPose();

@@ -6,10 +6,11 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Harbinger;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -18,9 +19,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class The_Harbinger_Item_Layer extends RenderLayer<The_Harbinger_Entity, ModelThe_Harbinger> {
     private AdvancedModelBox AdvancedModelBox;
     private ItemStack itemstack;
-    private ItemDisplayContext transformType;
+    private ItemTransforms.TransformType transformType;
 
-    public The_Harbinger_Item_Layer(RendererThe_Harbinger renderIn, AdvancedModelBox AdvancedModelBox, ItemStack itemstack, ItemDisplayContext transformType) {
+    public The_Harbinger_Item_Layer(RendererThe_Harbinger renderIn, AdvancedModelBox AdvancedModelBox, ItemStack itemstack, ItemTransforms.TransformType transformType) {
         super(renderIn);
         this.itemstack = itemstack;
         this.AdvancedModelBox = AdvancedModelBox;

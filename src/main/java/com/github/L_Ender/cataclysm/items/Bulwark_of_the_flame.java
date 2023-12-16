@@ -1,11 +1,15 @@
 package com.github.L_Ender.cataclysm.items;
 
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
-import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -23,9 +27,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class Bulwark_of_the_flame extends Item {
     public Bulwark_of_the_flame(Properties group) {
@@ -62,7 +63,7 @@ public class Bulwark_of_the_flame extends Item {
                 f1 *= f5 / f4;
                 f3 *= f5 / f4;
                 entityLiving.push((double) f1, (double) 0, (double) f3);
-                if (entityLiving.onGround()) {
+                if (entityLiving.isOnGround()) {
                     float f6 = 1.1999999F;
                     entityLiving.move(MoverType.SELF, new Vec3(0.0D, (double) f6 / 2, 0.0D));
                 }

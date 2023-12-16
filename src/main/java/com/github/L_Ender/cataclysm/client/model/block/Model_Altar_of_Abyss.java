@@ -4,11 +4,11 @@ package com.github.L_Ender.cataclysm.client.model.block;// Made with Blockbench 
 
 
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAbyss;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityEMP;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.world.entity.Entity;
 
 public class Model_Altar_of_Abyss extends AdvancedEntityModel<Entity> {

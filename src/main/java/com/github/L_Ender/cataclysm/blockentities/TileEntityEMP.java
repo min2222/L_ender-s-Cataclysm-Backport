@@ -4,9 +4,9 @@ import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -60,7 +60,7 @@ public class TileEntityEMP extends BlockEntity {
             level.setBlockAndUpdate(this.getBlockPos(), getBlockState().setValue(EMP_Block.OVERLOAD, true));
             AABB screamBox = new AABB(this.getBlockPos().getX() - 5f, this.getBlockPos().getY() - 5F, this.getBlockPos().getZ() - 5, this.getBlockPos().getX() + 5, this.getBlockPos().getY() + 5F, this.getBlockPos().getZ() + 5F);
             for(LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, screamBox)){
-               entity.hurt(CMDamageTypes.getDamageSource(level, CMDamageTypes.EMP), 3 + entity.getRandom().nextInt(3));
+               entity.hurt(CMDamageTypes.EMP, 3 + entity.getRandom().nextInt(3));
 
             }
         }

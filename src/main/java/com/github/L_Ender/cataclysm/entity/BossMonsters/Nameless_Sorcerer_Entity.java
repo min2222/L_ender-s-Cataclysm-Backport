@@ -1,8 +1,13 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters;
 
+import java.util.EnumSet;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -15,10 +20,20 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -34,9 +49,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
-import java.util.EnumSet;
 
 public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimatedEntity {
     private static final EntityDataAccessor<Byte> SPELL = SynchedEntityData.defineId(Nameless_Sorcerer_Entity.class, EntityDataSerializers.BYTE);
@@ -172,7 +184,7 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
                 double d0 = this.random.nextGaussian() * 0.02D;
                 double d1 = this.random.nextGaussian() * 0.02D;
                 double d2 = this.random.nextGaussian() * 0.02D;
-                this.level().addParticle(ParticleTypes.POOF, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
+                this.level.addParticle(ParticleTypes.POOF, this.getRandomX(1.0D), this.getRandomY(), this.getRandomZ(1.0D), d0, d1, d2);
             }
             this.remove(RemovalReason.KILLED);
             return false;
@@ -182,7 +194,7 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
 
 
     public boolean isSpellcasting() {
-        if (this.level().isClientSide) {
+        if (this.level.isClientSide) {
             return this.entityData.get(SPELL) > 0;
         } else {
             return this.spellTicks > 0;
@@ -195,7 +207,7 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
     }
 
     protected SpellType getSpellType() {
-        return !this.level().isClientSide ? this.activeSpell : SpellType.getFromId(this.entityData.get(SPELL));
+        return !this.level.isClientSide ? this.activeSpell : SpellType.getFromId(this.entityData.get(SPELL));
     }
 
     protected void customServerAiStep() {
@@ -235,7 +247,7 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
      */
     public void tick() {
         super.tick();
-        if (this.level().isClientSide && this.isSpellcasting()) {
+        if (this.level.isClientSide && this.isSpellcasting()) {
             SpellType Nameless_Sorcerer_Entity$spelltype = this.getSpellType();
             double d0 = getRandom().nextGaussian() * 0.07D;
             double d1 = getRandom().nextGaussian() * 0.07D;
@@ -244,17 +256,17 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
             float f1 = Mth.cos(f);
             float f2 = Mth.sin(f);
             if (Nameless_Sorcerer_Entity$spelltype == SpellType.TELEPORTSPELL) {
-                this.level().addParticle(ParticleTypes.PORTAL, this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
-                this.level().addParticle(ParticleTypes.PORTAL, this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
+                this.level.addParticle(ParticleTypes.PORTAL, this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
+                this.level.addParticle(ParticleTypes.PORTAL, this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
             }
             if (Nameless_Sorcerer_Entity$spelltype == SpellType.FANGS) {
-                this.level().addParticle(ParticleTypes.CRIT, this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
-                this.level().addParticle(ParticleTypes.CRIT, this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
+                this.level.addParticle(ParticleTypes.CRIT, this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
+                this.level.addParticle(ParticleTypes.CRIT, this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
             }
 
             if (Nameless_Sorcerer_Entity$spelltype == SpellType.ILLUSION) {
-                this.level().addParticle(ParticleTypes.SMOKE, this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
-                this.level().addParticle(ParticleTypes.SMOKE, this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
+                this.level.addParticle(ParticleTypes.SMOKE, this.getX() + (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() + (double) f2 * 0.6D, d0, d1, d2);
+                this.level.addParticle(ParticleTypes.SMOKE, this.getX() - (double) f1 * 0.6D, this.getY() + 1.8D, this.getZ() - (double) f2 * 0.6D, d0, d1, d2);
             }
         }
 
@@ -460,17 +472,17 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
         }
 
         private void spawnFangs(double p_190876_1_, double p_190876_3_, double p_190876_5_, double p_190876_7_, float p_190876_9_, int p_190876_10_) {
-            BlockPos blockpos = BlockPos.containing(p_190876_1_, p_190876_7_, p_190876_3_);
+            BlockPos blockpos = new BlockPos(p_190876_1_, p_190876_7_, p_190876_3_);
             boolean flag = false;
             double d0 = 0.0D;
 
             do {
                 BlockPos blockpos1 = blockpos.below();
-                BlockState blockstate = Nameless_Sorcerer_Entity.this.level().getBlockState(blockpos1);
-                if (blockstate.isFaceSturdy(Nameless_Sorcerer_Entity.this.level(), blockpos1, Direction.UP)) {
-                    if (!Nameless_Sorcerer_Entity.this.level().isEmptyBlock(blockpos)) {
-                        BlockState blockstate1 = Nameless_Sorcerer_Entity.this.level().getBlockState(blockpos);
-                        VoxelShape voxelshape = blockstate1.getCollisionShape(Nameless_Sorcerer_Entity.this.level(), blockpos);
+                BlockState blockstate = Nameless_Sorcerer_Entity.this.level.getBlockState(blockpos1);
+                if (blockstate.isFaceSturdy(Nameless_Sorcerer_Entity.this.level, blockpos1, Direction.UP)) {
+                    if (!Nameless_Sorcerer_Entity.this.level.isEmptyBlock(blockpos)) {
+                        BlockState blockstate1 = Nameless_Sorcerer_Entity.this.level.getBlockState(blockpos);
+                        VoxelShape voxelshape = blockstate1.getCollisionShape(Nameless_Sorcerer_Entity.this.level, blockpos);
                         if (!voxelshape.isEmpty()) {
                             d0 = voxelshape.max(Direction.Axis.Y);
                         }
@@ -484,7 +496,7 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
             } while(blockpos.getY() >= Mth.floor(p_190876_5_) - 1);
 
             if (flag) {
-                Nameless_Sorcerer_Entity.this.level().addFreshEntity(new EvokerFangs(Nameless_Sorcerer_Entity.this.level(), p_190876_1_, (double)blockpos.getY() + d0, p_190876_3_, p_190876_9_, p_190876_10_, Nameless_Sorcerer_Entity.this));
+                Nameless_Sorcerer_Entity.this.level.addFreshEntity(new EvokerFangs(Nameless_Sorcerer_Entity.this.level, p_190876_1_, (double)blockpos.getY() + d0, p_190876_3_, p_190876_9_, p_190876_10_, Nameless_Sorcerer_Entity.this));
             }
 
         }
@@ -634,17 +646,17 @@ public class Nameless_Sorcerer_Entity extends AbstractIllager implements IAnimat
 
         @Override
         protected void castSpell() {
-            ServerLevel serverLevel = (ServerLevel)Nameless_Sorcerer_Entity.this.level();
+            ServerLevel serverLevel = (ServerLevel)Nameless_Sorcerer_Entity.this.level;
 
             for (int i = 0; i < 2; ++i) {
                 LivingEntity target = Nameless_Sorcerer_Entity.this.getTarget();
                 BlockPos blockpos = Nameless_Sorcerer_Entity.this.blockPosition().offset(-2 + Nameless_Sorcerer_Entity.this.random.nextInt(5), 0, -2 + Nameless_Sorcerer_Entity.this.random.nextInt(5));
-                Nameless_Sorcerer_Entity illusion = ModEntities.NAMELESS_SORCERER.get().create(Nameless_Sorcerer_Entity.this.level());
+                Nameless_Sorcerer_Entity illusion = ModEntities.NAMELESS_SORCERER.get().create(Nameless_Sorcerer_Entity.this.level);
                 illusion.moveTo(blockpos, 0.0F, 0.0F);
                 if(target != null ) {
                     illusion.setTarget(target);
                 }
-                illusion.finalizeSpawn(serverLevel, Nameless_Sorcerer_Entity.this.level().getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
+                illusion.finalizeSpawn(serverLevel, Nameless_Sorcerer_Entity.this.level.getCurrentDifficultyAt(blockpos), MobSpawnType.MOB_SUMMONED, (SpawnGroupData)null, (CompoundTag)null);
                 illusion.setIsIllusion(true);
                 serverLevel.addFreshEntityWithPassengers(illusion);
 

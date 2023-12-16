@@ -1,11 +1,14 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
+import java.util.Random;
+
 import com.github.L_Ender.cataclysm.client.model.entity.ModelVoid_Rune;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.entity.projectile.Void_Rune_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -15,8 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public class RendererVoid_Rune extends EntityRenderer<Void_Rune_Entity> {
@@ -33,7 +34,7 @@ public class RendererVoid_Rune extends EntityRenderer<Void_Rune_Entity> {
         matrixStackIn.translate(0.0D, -1.5F, 0.0D);
         matrixStackIn.scale(1.0F, 1.0F, 1.0F);
         matrixStackIn.pushPose();
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(90.0F - entityIn.getYRot()));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(90.0F - entityIn.getYRot()));
         VertexConsumer VertexConsumer = bufferIn.getBuffer(CMRenderTypes.getfullBright(this.getTextureLocation(entityIn)));
         model.setupAnim(entityIn, 0, 0, entityIn.tickCount + partialTicks, 0, 0);
         model.renderToBuffer(matrixStackIn, VertexConsumer, 210, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);

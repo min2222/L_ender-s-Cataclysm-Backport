@@ -5,6 +5,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererNetherite_Monst
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Netherite_Monstrosity_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;

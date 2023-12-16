@@ -1,20 +1,24 @@
 package com.github.L_Ender.cataclysm.crafting;
 
+import java.util.stream.Stream;
+
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModRecipeSerializers;
 import com.github.L_Ender.cataclysm.init.ModRecipeTypes;
 import com.google.gson.JsonObject;
-import net.minecraft.core.RegistryAccess;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
-
-import java.util.stream.Stream;
 
 public class WeaponfusionRecipe implements Recipe<Container> {
     final Ingredient base;
@@ -35,7 +39,7 @@ public class WeaponfusionRecipe implements Recipe<Container> {
 
 
 
-    public ItemStack assemble(Container p_44531_, RegistryAccess p_267165_) {
+    public ItemStack assemble(Container p_44531_) {
         ItemStack itemstack = this.result.copy();
         CompoundTag compoundtag = p_44531_.getItem(0).getTag();
         if (compoundtag != null) {
@@ -49,7 +53,7 @@ public class WeaponfusionRecipe implements Recipe<Container> {
         return p_44528_ * p_44529_ >= 2;
     }
 
-    public ItemStack getResultItem(RegistryAccess p_267052_) {
+    public ItemStack getResultItem() {
         return this.result;
     }
 

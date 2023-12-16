@@ -1,14 +1,14 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.Deepling.Lionfish_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -53,7 +53,7 @@ public class Lionfish_Spike_Entity extends ThrowableItemProjectile {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -66,14 +66,14 @@ public class Lionfish_Spike_Entity extends ThrowableItemProjectile {
         float i = (float) CMConfig.BlazingBonedamage;
         if (shooter instanceof LivingEntity) {
             if (!((entity == shooter) || (shooter.isAlliedTo(entity)))) {
-                if(entity.hurt(this.damageSources().mobProjectile(this, (LivingEntity) shooter), i)) {
+                if(entity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) shooter), i)) {
                     if (entity instanceof LivingEntity) {
                         ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0), this);
                     }
                 }
             }
         }else{
-            entity.hurt(this.damageSources().mobProjectile(this, null), i);
+            entity.hurt(DamageSource.indirectMobAttack(this, null), i);
         }
     }
 
@@ -84,8 +84,8 @@ public class Lionfish_Spike_Entity extends ThrowableItemProjectile {
 
     protected void onHit(HitResult result) {
         super.onHit(result);
-        if (!this.level().isClientSide) {
-            this.level().broadcastEntityEvent(this, (byte)3);
+        if (!this.level.isClientSide) {
+            this.level.broadcastEntityEvent(this, (byte)3);
             this.discard();
         }
     }
@@ -94,7 +94,7 @@ public class Lionfish_Spike_Entity extends ThrowableItemProjectile {
     public void handleEntityEvent(byte id) {
         if (id == 3) {
             for(int i = 0; i < 8; ++i) {
-                this.level().addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.LIONFISH_SPIKE.get())), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.2D, random.nextGaussian() * 0.2D, random.nextGaussian() * 0.2D);
+                this.level.addParticle(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(ModItems.LIONFISH_SPIKE.get())), this.getX(), this.getY(), this.getZ(), random.nextGaussian() * 0.2D, random.nextGaussian() * 0.2D, random.nextGaussian() * 0.2D);
             }
         }
     }

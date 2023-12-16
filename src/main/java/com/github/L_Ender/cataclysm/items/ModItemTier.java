@@ -1,11 +1,12 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.function.Supplier;
+
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
-
-import java.util.function.Supplier;
 
 public enum ModItemTier implements Tier {
 

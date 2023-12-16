@@ -1,13 +1,15 @@
 package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Prowler_Entity;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.AnimationHandler;
+
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,8 +31,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 
-import java.util.EnumSet;
-
 
 public class The_Watcher_Entity extends Animation_Monster {
 
@@ -41,9 +41,13 @@ public class The_Watcher_Entity extends Animation_Monster {
     public The_Watcher_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 8;
-        this.setMaxUpStep(1.25F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+    }
+    
+    @Override
+    public float getStepHeight() {
+    	return 1.25F;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class The_Watcher_Entity extends Animation_Monster {
     @Override
     public boolean hurt(DamageSource source, float damage) {
 
-        if (source.is(CMDamageTypes.EMP)) {
+        if ("cataclysm.emp".equals(source.getMsgId())) {
             super.hurt(source, 1000);
             return true;
         }
@@ -120,7 +124,7 @@ public class The_Watcher_Entity extends Animation_Monster {
                 if (target != null) {
                     if (distanceTo(target) < 3 && this.hasLineOfSight(target)) {
                         float damage = (float) ((int) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
-                        target.hurt(this.damageSources().mobAttack(this), damage);
+                        target.hurt(DamageSource.mobAttack(this), damage);
                     }
                 }
             }
@@ -138,10 +142,10 @@ public class The_Watcher_Entity extends Animation_Monster {
                     double d4 = target.getY() + target.getBbHeight() * 1 / 2 - d1;
                     double d5 = target.getZ() - d2;
 
-                    Laser_Beam_Entity laserBeam = new Laser_Beam_Entity(this.level(), this);
+                    Laser_Beam_Entity laserBeam = new Laser_Beam_Entity(this.level, this);
                     laserBeam.shoot(d3, d4, d5, 1F, 1F);
                     laserBeam.setPosRaw(d0, d1, d2);
-                    this.level().addFreshEntity(laserBeam);
+                    this.level.addFreshEntity(laserBeam);
                 }
             }
 

@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.etc;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -150,8 +151,8 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
 
                         float f49 = (f18 + f19 + f20 + f21) / 4.0F;
                         float f50 = (f22 + f23 + f24 + f25) / 4.0F;
-                        float f51 = (float)atextureatlassprite[0].contents().width() / (atextureatlassprite[0].getU1() - atextureatlassprite[0].getU0());
-                        float f52 = (float)atextureatlassprite[0].contents().height() / (atextureatlassprite[0].getV1() - atextureatlassprite[0].getV0());
+                        float f51 = (float)atextureatlassprite[0].getWidth() / (atextureatlassprite[0].getU1() - atextureatlassprite[0].getU0());
+                        float f52 = (float)atextureatlassprite[0].getHeight() / (atextureatlassprite[0].getV1() - atextureatlassprite[0].getV0());
                         float f53 = 4.0F / Math.max(f52, f51);
                         f18 = Mth.lerp(f53, f18, f49);
                         f19 = Mth.lerp(f53, f19, f49);
@@ -319,7 +320,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
                     f += f1;
                     ++i;
                 }
-            } else if (!reader.getBlockState(blockpos).isSolid()) {
+            } else if (!reader.getBlockState(blockpos).getMaterial().isSolid()) {
                 ++i;
             }
         }
@@ -391,7 +392,7 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
             BlockState blockstate = p_203161_.getBlockState(p_203163_.above());
             return p_203162_.isSame(blockstate.getFluidState().getType()) ? 1.0F : p_203165_.getOwnHeight();
         } else {
-            return !p_203164_.isSolid() ? 0.0F : -1.0F;
+            return !p_203164_.getMaterial().isSolid() ? 0.0F : -1.0F;
         }
     }
 }

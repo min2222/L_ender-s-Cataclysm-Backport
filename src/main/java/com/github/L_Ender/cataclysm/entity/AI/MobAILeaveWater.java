@@ -1,6 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.AI;
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -8,8 +11,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.EnumSet;
 
 public class MobAILeaveWater extends Goal {
     private final PathfinderMob creature;
@@ -22,7 +23,7 @@ public class MobAILeaveWater extends Goal {
     }
 
     public boolean canUse() {
-        if (this.creature.level().getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)) {
+        if (this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) && (this.creature.getTarget() != null || this.creature.getRandom().nextInt(executionChance) == 0)) {
             if (this.creature instanceof ISemiAquatic && ((ISemiAquatic) this.creature).shouldLeaveWater()) {
                 targetPos = generateTarget();
                 return targetPos != null;
@@ -53,7 +54,7 @@ public class MobAILeaveWater extends Goal {
             this.creature.getNavigation().stop();
             return false;
         }
-        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level().getFluidState(targetPos).is(FluidTags.WATER);
+        return !this.creature.getNavigation().isDone() && targetPos != null && !this.creature.level.getFluidState(targetPos).is(FluidTags.WATER);
     }
 
     public BlockPos generateTarget() {
@@ -62,7 +63,7 @@ public class MobAILeaveWater extends Goal {
         while(vector3d != null && tries < 8) {
             boolean waterDetected = false;
             for(BlockPos blockpos1 : BlockPos.betweenClosed(Mth.floor(vector3d.x - 2.0D), Mth.floor(vector3d.y - 1.0D), Mth.floor(vector3d.z - 2.0D), Mth.floor(vector3d.x + 2.0D), Mth.floor(vector3d.y), Mth.floor(vector3d.z + 2.0D))) {
-                if (this.creature.level().getFluidState(blockpos1).is(FluidTags.WATER)) {
+                if (this.creature.level.getFluidState(blockpos1).is(FluidTags.WATER)) {
                     waterDetected = true;
                     break;
                 }
@@ -70,7 +71,7 @@ public class MobAILeaveWater extends Goal {
             if (waterDetected) {
                 vector3d = LandRandomPos.getPos(this.creature, 23, 7);
             } else {
-                return BlockPos.containing(vector3d);
+                return new BlockPos(vector3d);
             }
             tries++;
         }

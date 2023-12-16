@@ -1,12 +1,13 @@
 package com.github.L_Ender.cataclysm.jei;
 
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.crafting.WeaponfusionRecipe;
 import com.github.L_Ender.cataclysm.init.ModRecipeTypes;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.item.crafting.RecipeManager;
-
-import java.util.List;
 
 public class CMRecipes
 {

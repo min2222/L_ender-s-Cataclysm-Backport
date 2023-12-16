@@ -4,7 +4,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -90,8 +94,8 @@ public class Modelignitium_Elytra_chestplate extends HumanoidModel {
 
     public Modelignitium_Elytra_chestplate withAnimations(LivingEntity entity){
         float partialTick = Minecraft.getInstance().getFrameTime();
-        float limbSwingAmount = entity.walkAnimation.speed(partialTick);
-        float limbSwing = entity.walkAnimation.position() + partialTick;
+        float limbSwingAmount = entity.animationSpeedOld + (entity.animationSpeed - entity.animationSpeedOld) * partialTick;
+        float limbSwing = entity.animationPosition + partialTick;
         setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
         return  this;
     }

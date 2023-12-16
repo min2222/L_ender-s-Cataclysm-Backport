@@ -1,6 +1,10 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.tool.ControlledAnimation;
 import com.github.L_Ender.cataclysm.config.CMConfig;
@@ -8,11 +12,11 @@ import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,10 +36,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class Portal_Abyss_Blast_Entity extends Entity {
     public static final double RADIUS = 50;
@@ -109,8 +109,8 @@ public class Portal_Abyss_Blast_Entity extends Entity {
         xo = getX();
         yo = getY();
         zo = getZ();
-        if (tickCount == 1 && level().isClientSide) {
-            caster = (LivingEntity) level().getEntity(getCasterID());
+        if (tickCount == 1 && level.isClientSide) {
+            caster = (LivingEntity) level.getEntity(getCasterID());
         }
 
         if (!on && appear.getTimer() == 0) {
@@ -123,26 +123,26 @@ public class Portal_Abyss_Blast_Entity extends Entity {
         }
 
         if(tickCount ==20){
-            this.level().playSound((Player) null, this, ModSounds.PORTAL_ABYSS_BLAST.get(), SoundSource.HOSTILE, 0.5f, 1.0f);
+            this.level.playSound((Player) null, this, ModSounds.PORTAL_ABYSS_BLAST.get(), SoundSource.HOSTILE, 0.5f, 1.0f);
         }
 
         if (caster != null && !caster.isAlive()) discard();
 
         if (tickCount > 20) {
             this.calculateEndPos();
-            List<LivingEntity> hit = raytraceEntities(level(), new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
+            List<LivingEntity> hit = raytraceEntities(level, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
             if (blockSide != null) {
                 spawnExplosionParticles(3);
-                if (!this.level().isClientSide) {
+                if (!this.level.isClientSide) {
                     for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(collidePosX - 0.5F), Mth.floor(collidePosY - 0.5F), Mth.floor(collidePosZ - 0.5F), Mth.floor(collidePosX + 0.5F), Mth.floor(collidePosY + 0.5F), Mth.floor(collidePosZ + 0.5F))) {
-                        BlockState block = level().getBlockState(pos);
-                        if (!block.isAir() && !block.is(ModTag.LEVIATHAN_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level(), this)) {
-                            level().destroyBlock(pos, false);
+                        BlockState block = level.getBlockState(pos);
+                        if (!block.isAir() && !block.is(ModTag.LEVIATHAN_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                            level.destroyBlock(pos, false);
                         }
                     }
                 }
             }
-            if (!level().isClientSide) {
+            if (!level.isClientSide) {
                 for (LivingEntity target : hit) {
                     if (caster != null) {
                         if (!this.caster.isAlliedTo(target) && target != caster) {
@@ -179,7 +179,7 @@ public class Portal_Abyss_Blast_Entity extends Entity {
             float motionY = random.nextFloat() * 0.08F;
             float motionX = velocity * Mth.cos(yaw);
             float motionZ = velocity * Mth.sin(yaw);
-            level().addParticle((new LightningParticle.OrbData(0.4f, 0.1f,  0.8f)), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
+            level.addParticle((new LightningParticle.OrbData(0.4f, 0.1f,  0.8f)), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
         }
 
     }
@@ -251,12 +251,12 @@ public class Portal_Abyss_Blast_Entity extends Entity {
     }
 
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     private void calculateEndPos() {
-        if (level().isClientSide()) {
+        if (level.isClientSide()) {
             endPosX = getX() + RADIUS * Math.cos(renderYaw) * Math.cos(renderPitch);
             endPosZ = getZ() + RADIUS * Math.sin(renderYaw) * Math.cos(renderPitch);
             endPosY = getY() + RADIUS * Math.sin(renderPitch);

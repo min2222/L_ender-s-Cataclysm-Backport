@@ -1,21 +1,22 @@
 package com.github.L_Ender.cataclysm.crafting;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.logging.log4j.Level;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimpleJsonResourceReloadListener;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.ItemStack;
-import org.apache.logging.log4j.Level;
-
-import java.util.List;
-import java.util.Map;
 
 public class AltarOfAmethystRecipeManager extends SimpleJsonResourceReloadListener {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().registerTypeAdapter(AltarOfAmethystRecipe.class, new AltarOfAmethystRecipe.Deserializer()).create();

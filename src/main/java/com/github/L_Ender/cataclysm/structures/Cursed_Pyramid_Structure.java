@@ -1,5 +1,8 @@
 package com.github.L_Ender.cataclysm.structures;
 
+import java.util.Map;
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
@@ -7,7 +10,10 @@ import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.world.structures.Processor.WaterLoggingFixProcessor;
 import com.google.common.collect.ImmutableMap;
+import com.min01.archaeology.init.ArchaeologyBlockEntityType;
+import com.min01.archaeology.init.ArchaeologyBlocks;
 import com.mojang.serialization.Codec;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -19,19 +25,19 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
-import net.minecraft.world.level.levelgen.structure.*;
+import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructurePieceAccessor;
+import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.TemplateStructurePiece;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.ProtectedBlockProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-
-import java.util.Map;
-import java.util.Optional;
 
 public class Cursed_Pyramid_Structure extends Structure {
 
@@ -181,15 +187,15 @@ public class Cursed_Pyramid_Structure extends Structure {
         protected void handleDataMarker(String function, BlockPos pos, ServerLevelAccessor worldIn, RandomSource rand, BoundingBox sbb) {
             switch (function) {
                 case "necklace" -> {
-                    worldIn.setBlock(pos, Blocks.SUSPICIOUS_SAND.defaultBlockState(), 2);
-                    worldIn.getBlockEntity(pos, BlockEntityType.BRUSHABLE_BLOCK).ifPresent((blockEntity) -> {
+                    worldIn.setBlock(pos, ArchaeologyBlocks.SUSPICIOUS_SAND.get().defaultBlockState(), 2);
+                    worldIn.getBlockEntity(pos, ArchaeologyBlockEntityType.BRUSHABLE_BLOCK.get()).ifPresent((blockEntity) -> {
                         ResourceLocation lootTableLocation = new ResourceLocation(Cataclysm.MODID, "archaeology/cursed_pyramid_necklace");
                         blockEntity.setLootTable(lootTableLocation, pos.asLong());
                     });
                 }
                 case "sus" -> {
-                    worldIn.setBlock(pos, Blocks.SUSPICIOUS_SAND.defaultBlockState(), 2);
-                    worldIn.getBlockEntity(pos, BlockEntityType.BRUSHABLE_BLOCK).ifPresent((blockEntity) -> {
+                    worldIn.setBlock(pos, ArchaeologyBlocks.SUSPICIOUS_SAND.get().defaultBlockState(), 2);
+                    worldIn.getBlockEntity(pos, ArchaeologyBlockEntityType.BRUSHABLE_BLOCK.get()).ifPresent((blockEntity) -> {
                         ResourceLocation lootTableLocation = new ResourceLocation(Cataclysm.MODID, "archaeology/cursed_pyramid");
                         blockEntity.setLootTable(lootTableLocation, pos.asLong());
                     });

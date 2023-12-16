@@ -3,14 +3,15 @@ package com.github.L_Ender.cataclysm.client.render.layer;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelKoboleton;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class LayerKoboletonItem extends RenderLayer<Koboleton_Entity, ModelKoboleton> {
@@ -28,11 +29,11 @@ public class LayerKoboletonItem extends RenderLayer<Koboleton_Entity, ModelKobol
         matrixStackIn.pushPose();
         translateToHand(matrixStackIn, left);
         matrixStackIn.translate(0.0F, -0.1F, -0.1F);
-        matrixStackIn.mulPose(Axis.XP.rotationDegrees(-190F));
-        matrixStackIn.mulPose(Axis.YP.rotationDegrees(180F));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-190F));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(180F));
         matrixStackIn.scale(1.0F, 1.0F, 1.0F);
         ItemInHandRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer();
-        renderer.renderItem(entitylivingbaseIn, itemstack, ItemDisplayContext.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);
+        renderer.renderItem(entitylivingbaseIn, itemstack, ItemTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

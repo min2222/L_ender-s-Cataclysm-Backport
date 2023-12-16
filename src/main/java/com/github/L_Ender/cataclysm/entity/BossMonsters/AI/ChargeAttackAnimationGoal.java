@@ -1,9 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.BossMonsters.AI;
 
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Boss_monster;
 import com.github.alexthe666.citadel.animation.Animation;
 import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+
 import net.minecraft.world.entity.LivingEntity;
 
 public class ChargeAttackAnimationGoal<T extends Animation_Monster & IAnimatedEntity> extends SimpleAnimationGoal<T> {

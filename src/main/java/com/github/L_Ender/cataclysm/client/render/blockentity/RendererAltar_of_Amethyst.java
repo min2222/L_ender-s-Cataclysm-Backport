@@ -1,15 +1,19 @@
 package com.github.L_Ender.cataclysm.client.render.blockentity;
 
 
+import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
 import com.github.L_Ender.cataclysm.blocks.Altar_Of_Amethyst_Block;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Amethyst;
-import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
+import com.mojang.math.Matrix3f;
+import com.mojang.math.Matrix4f;
+import com.mojang.math.Vector3f;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -18,10 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 public class RendererAltar_of_Amethyst<T extends TileEntityAltarOfAmethyst> implements BlockEntityRenderer<T> {
 
@@ -46,7 +47,7 @@ public class RendererAltar_of_Amethyst<T extends TileEntityAltarOfAmethyst> impl
             matrixStackIn.translate(0.5F, 1.5F, 0.5F);
         }
         matrixStackIn.mulPose(dir.getOpposite().getRotation());
-        matrixStackIn.mulPose(Axis.XP.rotationDegrees(90.0F));
+        matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(90.0F));
         matrixStackIn.pushPose();
         MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(TEXTURE)), combinedLightIn, combinedOverlayIn, 1, 1F, 1, 1);
         matrixStackIn.popPose();
@@ -61,14 +62,14 @@ public class RendererAltar_of_Amethyst<T extends TileEntityAltarOfAmethyst> impl
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 1.15F, 0.5F);
 
-            matrixStackIn.mulPose(Axis.YP.rotationDegrees(f2));
+            matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f2));
             BakedModel ibakedmodel = Minecraft.getInstance().getItemRenderer().getModel(stack, tileEntityIn.getLevel(), (LivingEntity) null, 0);
             boolean flag = ibakedmodel.isGui3d();
             if (!flag) {
                 matrixStackIn.translate(0.0F, 0.0F, 0.0F);
             }
 
-            Minecraft.getInstance().getItemRenderer().render(stack, ItemDisplayContext.GROUND, false, matrixStackIn, bufferIn, combinedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
+            Minecraft.getInstance().getItemRenderer().render(stack, ItemTransforms.TransformType.GROUND, false, matrixStackIn, bufferIn, combinedLightIn, OverlayTexture.NO_OVERLAY, ibakedmodel);
             matrixStackIn.popPose();
 
             if(tileEntityIn.brightThisTick && tileEntityIn.getLevel() != null){
@@ -97,7 +98,7 @@ public class RendererAltar_of_Amethyst<T extends TileEntityAltarOfAmethyst> impl
         float f2 = Mth.frac(f1 * 0.2F - (float)Mth.floor(f1 * 0.1F));
 
         p_112185_.pushPose();
-        p_112185_.mulPose(Axis.YP.rotationDegrees(f * 2.25F - 45.0F));
+        p_112185_.mulPose(Vector3f.YP.rotationDegrees(f * 2.25F - 45.0F));
         float f6 = 0.0F;
         float f8 = 0.0F;
         float f9 = -p_112194_;

@@ -1,7 +1,12 @@
 package com.github.L_Ender.cataclysm.items;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.projectile.Void_Rune_Entity;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,9 +21,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class void_core extends Item {
 
@@ -63,7 +65,7 @@ public class void_core extends Item {
     }
 
     private boolean spawnFangs(double x, double y, double z, int lowestYCheck, float yRot, int warmupDelayTicks, Level world, Player player) {
-        BlockPos blockpos = BlockPos.containing(x, y, z);
+        BlockPos blockpos = new BlockPos(x, y, z);
         boolean flag = false;
         double d0 = 0.0D;
 

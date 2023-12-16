@@ -1,10 +1,12 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import javax.annotation.Nonnull;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -22,8 +24,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nonnull;
 
 public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
     //Projectile goes to a point over a set duration, then activates and accelerates in a given straight line
@@ -48,11 +48,11 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
     @Override
     protected void onHitEntity(EntityHitResult result) {
         super.onHitEntity(result);
-        if (!level().isClientSide && fired) {
+        if (!level.isClientSide && fired) {
             Entity entity = result.getEntity();
             Entity Shooter = this.getOwner();
             LivingEntity livingentity = Shooter instanceof LivingEntity ? (LivingEntity)Shooter : null;
-            boolean flag = entity.hurt(damageSources().mobProjectile(this, livingentity), 6.0F);
+            boolean flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), 6.0F);
             if (flag) {
                 this.doEnchantDamageEffects(livingentity, entity);
                 if (entity instanceof LivingEntity) {
@@ -65,7 +65,7 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
     protected void onHitBlock(BlockHitResult result) {
         super.onHitBlock(result);
         if(fired) {
-            ((ServerLevel) this.level()).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 2, 0.2D, 0.2D, 0.2D, 0.0D);
+            ((ServerLevel) this.level).sendParticles(ParticleTypes.EXPLOSION, this.getX(), this.getY(), this.getZ(), 2, 0.2D, 0.2D, 0.2D, 0.0D);
             this.playSound(SoundEvents.SHULKER_BULLET_HIT, 1.0F, 1.0F);
         }
     }
@@ -95,7 +95,7 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
     }
 
     public void tick() {
-        if (!this.level().isClientSide) {
+        if (!this.level.isClientSide) {
             timer--;
             if (timer <= 0) {
                 if (fired) discard();
@@ -119,8 +119,8 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
 
         // Started from copy of the above tick
         Entity shooter = this.getOwner();
-        if (level().isClientSide || (shooter == null || !shooter.isRemoved()) && level().hasChunkAt(this.blockPosition())) {
-            HitResult HitResult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        if (level.isClientSide || (shooter == null || !shooter.isRemoved()) && level.hasChunkAt(this.blockPosition())) {
+            HitResult HitResult = ProjectileUtil.getHitResult(this, this::canHitEntity);
             if (HitResult.getType() != net.minecraft.world.phys.HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, HitResult)) {
                 onHit(HitResult);
             }
@@ -131,7 +131,7 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
             double d1 = getY() + Vec3.y;
             double d2 = getZ() + Vec3.z;
             ProjectileUtil.rotateTowardsMovement(this, 0.2F);
-            this.level().addParticle(ParticleTypes.END_ROD, this.getX() - Vec3.x, this.getY() - Vec3.y + 0.15D, this.getZ() - Vec3.z, 0.0D, 0.0D, 0.0D);
+            this.level.addParticle(ParticleTypes.END_ROD, this.getX() - Vec3.x, this.getY() - Vec3.y + 0.15D, this.getZ() - Vec3.z, 0.0D, 0.0D, 0.0D);
             setPos(d0, d1, d2);
         } else {
             discard();
@@ -177,10 +177,10 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
     @Override
     public boolean hurt(DamageSource source, float amount)
     {
-        if(!this.level().isClientSide && fired)
+        if(!this.level.isClientSide && fired)
         {
             this.playSound(SoundEvents.SHULKER_BULLET_HURT, 1.0F, 1.0F);
-            ((ServerLevel)this.level()).sendParticles(ParticleTypes.CRIT, this.getX(), this.getY(), this.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
+            ((ServerLevel)this.level).sendParticles(ParticleTypes.CRIT, this.getX(), this.getY(), this.getZ(), 15, 0.2D, 0.2D, 0.2D, 0.0D);
             this.discard();
         }
 
@@ -190,7 +190,7 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
 
     @Nonnull
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 

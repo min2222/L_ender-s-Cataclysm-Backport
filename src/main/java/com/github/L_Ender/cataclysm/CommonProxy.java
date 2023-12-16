@@ -1,15 +1,16 @@
 package com.github.L_Ender.cataclysm;
 
+import static com.github.L_Ender.cataclysm.Cataclysm.MODID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.crafting.AltarOfAmethystRecipeManager;
+
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.common.Mod;
-
-import javax.annotation.Nullable;
-
-import static com.github.L_Ender.cataclysm.Cataclysm.MODID;
 
 
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)

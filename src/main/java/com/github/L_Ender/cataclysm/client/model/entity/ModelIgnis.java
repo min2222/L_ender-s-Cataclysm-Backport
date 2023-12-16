@@ -1,14 +1,30 @@
 package com.github.L_Ender.cataclysm.client.model.entity;
 
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.EARTH_SHUDDERS_ATTACK;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.MAGIC_ATTACK;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.REINFORCED_SMASH;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.REINFORCED_SMASH_IN_AIR;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.REINFORCED_SMASH_IN_AIR_SOUL;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.REINFORCED_SMASH_SOUL;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SHIELD_BREAK_COUNTER;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SHIELD_BREAK_STRIKE;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SPIN_ATTACK;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.STRIKE;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SWING_ATTACK;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SWING_ATTACK_BERSERK;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SWING_ATTACK_SOUL;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SWING_UPPERCUT;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.SWING_UPPERSLASH;
+import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.ULTIMATE_ATTACK;
+
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.Minecraft;
 
-import static com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity.*;
+import net.minecraft.client.Minecraft;
 
 
 public class ModelIgnis extends AdvancedEntityModel<Ignis_Entity> {

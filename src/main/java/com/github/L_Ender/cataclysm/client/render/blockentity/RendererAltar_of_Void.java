@@ -1,9 +1,9 @@
 package com.github.L_Ender.cataclysm.client.render.blockentity;
 
-import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Void;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfVoid;
+import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Void;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
+
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;

@@ -1,19 +1,99 @@
 package com.github.L_Ender.cataclysm;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.client.event.BossBarEvent;
 import com.github.L_Ender.cataclysm.client.event.ClientEvent;
 import com.github.L_Ender.cataclysm.client.gui.GUIWeponfusion;
-import com.github.L_Ender.cataclysm.client.particle.*;
+import com.github.L_Ender.cataclysm.client.particle.EM_PulseParticle;
+import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
+import com.github.L_Ender.cataclysm.client.particle.SandStormParticle;
+import com.github.L_Ender.cataclysm.client.particle.Shock_WaveParticle;
+import com.github.L_Ender.cataclysm.client.particle.SoulLavaParticle;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
-import com.github.L_Ender.cataclysm.client.render.blockentity.*;
-import com.github.L_Ender.cataclysm.client.render.entity.*;
+import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAbyssal_Egg;
+import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_Abyss;
+import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_Amethyst;
+import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_Fire;
+import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_Void;
+import com.github.L_Ender.cataclysm.client.render.blockentity.RendererEMP;
+import com.github.L_Ender.cataclysm.client.render.blockentity.RendererMechanical_fusion_anvil;
+import com.github.L_Ender.cataclysm.client.render.entity.RenderSandstorm;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Blast;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Blast_Portal;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Mark;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Mine;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Orb;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Portal;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAmethyst_Cluster_Projectile;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAmethyst_Crab;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Desert_Stele;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Remnant;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererBlazing_Bone;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererCm_Falling_Block;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererCoralssus;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererDeath_Laser_beam;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererDeepling;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererDeepling_Angler;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererDeepling_Brute;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererDeepling_Priest;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererDeepling_Warlock;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererDimensional_Rift;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererEnder_Golem;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererEnder_Guardian;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererEnder_Guardian_bullet;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererEndermaptera;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererFlame_Strike;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis_Abyss_Fireball;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis_Fireball;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnited_Revenant;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererKoboleton;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererLaser_Beam;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererLava_Bomb;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererLionfish;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererLionfish_Spike;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererMini_Abyss_Blast;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererModern_Remnant;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererNameless_Sorcerer;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererNetherite_Monstrosity;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererNull;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererPoison_Dart;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererPortal_Abyss_Blast;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Baby_Leviathan;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Harbinger;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Leviathan;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Leviathan_Tongue;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Prowler;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Watcher;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThrown_Coral_Bardiche;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererThrown_Coral_Spear;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererTidal_Hook;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererTidal_Tentacle;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Howitzer;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Rune;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Scatter_Arrow;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Vortex;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Homing_Missile;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Howitzer;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Missile;
 import com.github.L_Ender.cataclysm.client.render.item.CMItemRenderProperties;
-import com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer.RendererSandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.client.render.item.CustomArmorRenderProperties;
+import com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer.RendererSandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.client.sound.MeatShredderSound;
 import com.github.L_Ender.cataclysm.client.sound.SandstormSound;
 import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
-import com.github.L_Ender.cataclysm.init.*;
+import com.github.L_Ender.cataclysm.init.ModEntities;
+import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModKeybind;
+import com.github.L_Ender.cataclysm.init.ModMenu;
+import com.github.L_Ender.cataclysm.init.ModParticle;
+import com.github.L_Ender.cataclysm.init.ModTileentites;
+
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
@@ -42,11 +122,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
-import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
-
 @OnlyIn(Dist.CLIENT)
 @Mod.EventBusSubscriber(modid = Cataclysm.MODID, value = Dist.CLIENT)
 public class ClientProxy extends CommonProxy {
@@ -62,11 +137,11 @@ public class ClientProxy extends CommonProxy {
 
     public void setupParticles(RegisterParticleProvidersEvent registry) {
         Cataclysm.LOGGER.debug("Registered particle factories");
-        registry.registerSpriteSet(ModParticle.SOUL_LAVA.get(), SoulLavaParticle.Factory::new);
-        registry.registerSpecial(ModParticle.EM_PULSE.get(), new EM_PulseParticle.Factory());
-        registry.registerSpecial(ModParticle.SHOCK_WAVE.get(), new Shock_WaveParticle.Factory());
-        registry.registerSpecial(ModParticle.LIGHTNING.get(), new LightningParticle.OrbFactory());
-        registry.registerSpriteSet(ModParticle.SANDSTORM.get(), SandStormParticle.Factory::new);
+        registry.register(ModParticle.SOUL_LAVA.get(), SoulLavaParticle.Factory::new);
+        registry.register(ModParticle.EM_PULSE.get(), new EM_PulseParticle.Factory());
+        registry.register(ModParticle.SHOCK_WAVE.get(), new Shock_WaveParticle.Factory());
+        registry.register(ModParticle.LIGHTNING.get(), new LightningParticle.OrbFactory());
+        registry.register(ModParticle.SANDSTORM.get(), SandStormParticle.Factory::new);
     }
 
     public void clientInit() {
@@ -218,7 +293,7 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public void playWorldSound(@Nullable Object soundEmitter, byte type) {
-        if (soundEmitter instanceof Entity entity && !entity.level().isClientSide) {
+        if (soundEmitter instanceof Entity entity && !entity.level.isClientSide) {
             return;
         }
         switch (type) {
