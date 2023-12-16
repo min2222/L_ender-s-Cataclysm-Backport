@@ -440,7 +440,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             melee_cooldown--;
         }
 
-
         AnimationHandler.INSTANCE.updateAnimations(this);
 
         if (!this.isNoAi()) {
@@ -1065,19 +1064,21 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         if (!level().isClientSide) {
             List<LivingEntity> hit = raytraceEntities(level(), inflateX, inflateY, inflateZ, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
             for (LivingEntity target : hit) {
-                boolean flag = target.hurt(damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + target.getMaxHealth() * 0.1f);
-                if (target instanceof Player) {
-                    if (target.isBlocking() && shieldbreakticks > 0) {
-                        disableShield(target, shieldbreakticks);
+                if (!isAlliedTo(target) && !(target instanceof The_Leviathan_Entity) && target != this) {
+                    boolean flag = target.hurt(damageSources().mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + target.getMaxHealth() * 0.1f);
+                    if (target instanceof Player) {
+                        if (target.isBlocking() && shieldbreakticks > 0) {
+                            disableShield(target, shieldbreakticks);
+                        }
                     }
-                }
-                if (flag && !target.getType().is(ModTag.IGNIS_CANT_POKE) && target.isAlive()) {
-                    target.stopRiding();
-                    //entityHit.startRiding(this, true);
-                    if (this.getHeldEntity() == null) {
-                        this.setheldEntity(target.getId());
+                    if (flag && !target.getType().is(ModTag.IGNIS_CANT_POKE) && target.isAlive()) {
+                        target.stopRiding();
+                        //entityHit.startRiding(this, true);
+                        if (this.getHeldEntity() == null) {
+                            this.setheldEntity(target.getId());
+                        }
+                        AnimationHandler.INSTANCE.sendAnimationMessage(this, LEVIATHAN_TENTACLE_HOLD_BLAST);
                     }
-                    AnimationHandler.INSTANCE.sendAnimationMessage(this, LEVIATHAN_TENTACLE_HOLD_BLAST);
                 }
             }
         }

@@ -13,6 +13,8 @@
     "NoGeodeInStructuresMixin",
     "NoLakesInStructuresMixin",
     "NoOreInStructuresMixin",
+    "StructureProcessorAccessor",
+    "StructureTemplateMixin",
     "WorldGenRegionAccessor"
   ],
   "client": [

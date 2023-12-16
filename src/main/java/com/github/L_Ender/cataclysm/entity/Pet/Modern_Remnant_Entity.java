@@ -60,7 +60,7 @@ public class Modern_Remnant_Entity extends AnimationPet {
     }
 
     protected SoundEvent getDeathSound() {
-        return ModSounds.REMNANT_DEATH.get();
+        return ModSounds.MODERN_REMNANT_DEATH.get();
     }
 
     @Override

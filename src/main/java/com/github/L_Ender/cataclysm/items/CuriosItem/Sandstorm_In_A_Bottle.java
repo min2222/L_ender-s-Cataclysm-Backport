@@ -5,8 +5,10 @@ import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModKeybind;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -37,10 +39,12 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
                 if (!SandstormCapability.isSandstorm() && SandstormCapability.getSandstormTimer() <= 0) {
                     if (ModKeybind.KEY_ABILITY.consumeClick()) {
                         SandstormCapability.setSandstorm(true);
+                        toggleFlight(livingEntity, true);
                     }
                 } else {
                     if (ModKeybind.KEY_ABILITY.consumeClick()) {
                         SandstormCapability.setSandstorm(false);
+                        toggleFlight(livingEntity, false);
                     }
                 }
             }
@@ -54,8 +58,38 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
         if (!livingEntity.level().isClientSide()) {
             if (SandstormCapability != null) {
                 SandstormCapability.setSandstorm(false);
+                toggleFlight(livingEntity, false);
             }
         }
+    }
+
+
+    private void toggleFlight(LivingEntity living, boolean flight) {
+        if (!living.level().isClientSide && living instanceof ServerPlayer player) {
+            boolean prevFlying = player.getAbilities().flying;
+            boolean trueFlight = isCreativePlayer(living) || flight;
+            player.getAbilities().mayfly = trueFlight;
+            player.getAbilities().flying = trueFlight;
+            float defaultFlightSpeed = 0.05F;
+            if (flight) {
+                player.getAbilities().setFlyingSpeed(defaultFlightSpeed * 0.5F);
+            } else {
+                player.getAbilities().setFlyingSpeed(defaultFlightSpeed);
+                if (!player.isSpectator()) {
+                    player.getAbilities().flying = false;
+                    if(!player.isCreative()){
+                        player.getAbilities().mayfly = false;
+                    }
+                }
+            }
+            if (prevFlying != flight) {
+                player.onUpdateAbilities();
+            }
+        }
+    }
+
+    private boolean isCreativePlayer(LivingEntity living) {
+        return living instanceof Player player && player.isCreative();
     }
 
     @Override

@@ -335,6 +335,8 @@
   "advancements.cataclysm.ancient_factory.description": "Find the Ancient Factory",
   "advancements.cataclysm.sunken_city.title": "Sunken City",
   "advancements.cataclysm.sunken_city.description": "Find the Sunken City",
+  "advancements.cataclysm.cursed_pyramid.title": "Cursed Pyramid",
+  "advancements.cataclysm.cursed_pyramid.description": "Find the Cursed Pyramid",
   "advancements.cataclysm.kill_ender_golem.title": "Palette Swap",
   "advancements.cataclysm.kill_ender_golem.description": "Kill the Ender Golem",
   "advancements.cataclysm.kill_ender_guardian.title": "Was that a Shulker?",
@@ -349,7 +351,8 @@
   "advancements.cataclysm.kill_harbinger.description": "Wake and Defeat the Harbinger",
   "advancements.cataclysm.kill_leviathan.title": "A Multidimensional Predator",
   "advancements.cataclysm.kill_leviathan.description": "Summon and Defeat the Leviathan",
-
+  "advancements.cataclysm.kill_remnant.title": "Death finds a Way",
+  "advancements.cataclysm.kill_remnant.description": "Excavate from the suspicious sand within the cursed pyramid to wake up and knock down the Ancient Remnant",
 
   "trim_material.cataclysm.witherite": "Witherite Material",
   "trim_material.cataclysm.ignitium" : "Ignitium Material",
@@ -363,6 +366,7 @@
   "death.attack.cataclysm.shredder": "%s was shattered by %s",
   "cataclysm.gui.altar_of_amethyst_blessing": "Blessing",
   "key.categories.cataclysm": "Cataclysm Key Category",
-  "key.cataclysm.ability": "Cataclysm Ability"
-
+  "key.cataclysm.ability": "Cataclysm Ability",
+  "curios.identifier.feet": "Feet",
+  "curios.modifiers.feet": "When on feet:"
 }

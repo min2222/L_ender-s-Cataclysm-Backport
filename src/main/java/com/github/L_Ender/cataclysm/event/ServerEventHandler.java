@@ -8,8 +8,6 @@ import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.items.ILeftClick;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -29,7 +27,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -280,27 +277,6 @@ public class ServerEventHandler {
     public void onPlayerInteract(PlayerInteractEvent.RightClickItem event) {
         if (event.isCancelable() && event.getEntity().hasEffect(ModEffect.EFFECTSTUN.get())) {
             event.setCanceled(true);
-        }
-    }
-
-    @SubscribeEvent
-    public void MovementInput(PlayerEvent event) {
-        LocalPlayer player = Minecraft.getInstance().player;
-        if (player != null) {
-            if (player.hasEffect(ModEffect.EFFECTCURSE_OF_DESERT.get())) {
-                if (Minecraft.getInstance().options.keyDown.isDown()) {
-                    player.input.forwardImpulse += 2F;
-                }
-                if (Minecraft.getInstance().options.keyLeft.isDown()) {
-                    player.input.leftImpulse -= 2F;
-                }
-                if (Minecraft.getInstance().options.keyRight.isDown()) {
-                    player.input.leftImpulse += 2F;
-                }
-                if (Minecraft.getInstance().options.keyUp.isDown()) {
-                    player.input.forwardImpulse -= 2F;
-                }
-            }
         }
     }
 

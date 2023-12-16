@@ -48,8 +48,10 @@ public class Gone_With_SandstormCapability {
                 if(handler.isSandstorm()){
                     if(getSandstormTimer() < CMConfig.Sandstorm_In_A_Bottle_Timer){
                         setSandstormTimer(getSandstormTimer() + 1);
+                        toggleFlight(player, true);
                     }else{
                         setSandstorm(false);
+                        toggleFlight(player, false);
                     }
                 }else{
                     if(getSandstormTimer() >0) {

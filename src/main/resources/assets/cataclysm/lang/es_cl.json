@@ -347,5 +347,6 @@
   "death.attack.cataclysm.shredder": "%s was shattered by %s",
   "cataclysm.gui.altar_of_amethyst_blessing": "Blessing",
 
-  "entity.cataclysm.smoke_effect": "Ceniza"
+  "curios.identifier.feet": "Feet",
+  "curios.modifiers.feet": "When on feet:"
 }

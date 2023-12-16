@@ -767,6 +767,14 @@
       }
     ]
   },
+  "modern_remnant_death": {
+    "subtitle": "modern_remnant_death.sub",
+    "sounds": [
+      {
+        "name": "cataclysm:entity/modern_remnant_death"
+      }
+    ]
+  },
   "flame_trap": {
     "subtitle": "flame_trap.sub",
     "sounds": [
@@ -967,13 +975,29 @@
   "koboleton_ambient": {
     "subtitle": "koboleton_ambient.sub",
     "sounds": [
-      {"name": "mob/skeleton/say1", "pitch": 1.1}
+      {
+        "name": "cataclysm:entity/koboleton_idle1"
+      },
+      {
+        "name": "cataclysm:entity/koboleton_idle2"
+      },
+      {
+        "name": "cataclysm:entity/koboleton_idle3"
+      }
     ]
   },
   "koboleton_hurt": {
     "subtitle": "koboleton_hurt.sub",
     "sounds": [
-      {"name": "mob/skeleton/hurt1","pitch": 1.1}
+      {
+        "name": "cataclysm:entity/koboleton_hurt1"
+      },
+      {
+        "name": "cataclysm:entity/koboleton_hurt2"
+      },
+      {
+        "name": "cataclysm:entity/koboleton_hurt3"
+      }
     ]
   },
   "koboleton_step": {
@@ -985,7 +1009,9 @@
   "koboleton_death": {
     "subtitle": "koboleton_death.sub",
     "sounds": [
-      {"name": "mob/skeleton/death", "pitch" : 1.1}
+      {
+        "name": "cataclysm:entity/koboleton_death"
+      }
     ]
   }
 }

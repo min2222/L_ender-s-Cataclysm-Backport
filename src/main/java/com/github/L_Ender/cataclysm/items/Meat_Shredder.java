@@ -89,7 +89,7 @@ public class Meat_Shredder extends Item {
 		List<Entity> possibleList = level.getEntities(living, living.getBoundingBox().expandTowards(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range).inflate(var9, var9, var9));
 
 		boolean flag = false;
-
+		Cataclysm.PROXY.playWorldSound(living, (byte) 1);
 		for (Entity entity : possibleList) {
 			if (entity instanceof LivingEntity) {
 				float borderSize = 0.5F;
@@ -109,7 +109,6 @@ public class Meat_Shredder extends Item {
 							entity.setSecondsOnFire(j * 4);
 						}
 					}
-					Cataclysm.PROXY.playWorldSound(living, (byte) 1);
 					double d0 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().x;
 					double d1 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().y;
 					double d2 = (level.getRandom().nextFloat() - 0.5F) + entity.getDeltaMovement().z;

@@ -107,6 +107,27 @@ public class ClientEvent {
     }
 
     @SubscribeEvent
+    public void MovementInput(MovementInputUpdateEvent event) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            if (player.hasEffect(ModEffect.EFFECTCURSE_OF_DESERT.get())) {
+                if (Minecraft.getInstance().options.keyDown.isDown()) {
+                    event.getInput().forwardImpulse += 2F;
+                }
+                if (Minecraft.getInstance().options.keyLeft.isDown()) {
+                    event.getInput().leftImpulse -= 2F;
+                }
+                if (Minecraft.getInstance().options.keyRight.isDown()) {
+                    event.getInput().leftImpulse += 2F;
+                }
+                if (Minecraft.getInstance().options.keyUp.isDown()) {
+                    event.getInput().forwardImpulse -= 2F;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onPreRenderHUD(RenderGuiOverlayEvent.Pre event) {
         Player player = Minecraft.getInstance().player;
         if (player != null) {

@@ -110,7 +110,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
     public static final int MINE_COOLDOWN = 100;
     public Ancient_Remnant_Entity(EntityType entity, Level world) {
         super(entity, world);
-        this.xpReward = 15;
+        this.xpReward = 500;
         this.setMaxUpStep(1.5F);
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);

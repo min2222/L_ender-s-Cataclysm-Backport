@@ -12,7 +12,7 @@ public class MeatShredderSound extends ItemTickableSound {
     }
 
     public void tickVolume(ItemStack itemStack) {
-        this.volume = 1.0f;
+        this.volume = 0.6f;
         this.pitch = 1.0f;
     }
 
