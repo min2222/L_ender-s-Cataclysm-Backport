@@ -11,19 +11,17 @@ import net.minecraft.world.entity.LivingEntity;
 public class CMDamageTypes {
     public static final DamageSource EMP = new DamageSource("cataclysm.emp").bypassArmor();
     public static final DamageSource ABYSSAL_BURN = new DamageSource("cataclysm.abyssal_burn").bypassArmor();
-    public static final DamageSource DEATHLASER = new DamageSource("cataclysm.deathlaser").setProjectile().bypassArmor();
-    public static final DamageSource SHREDDER = new DamageSource("cataclysm.shredder").setExplosion();
 
     public static DamageSource causeLaserDamage(Entity entity, @Nullable LivingEntity livingentity) {
         return new IndirectEntityDamageSource("cataclysm.laser", entity, livingentity).setProjectile();
     }
     
     public static DamageSource causeDeathLaserDamage(Entity entity, @Nullable LivingEntity livingentity) {
-        return new IndirectEntityDamageSource("cataclysm.deathlaser", entity, livingentity);
+        return new IndirectEntityDamageSource("cataclysm.deathlaser", entity, livingentity).setProjectile().bypassArmor();
     }
 
     public static DamageSource causeShredderDamage(LivingEntity attacker) {
-        return new EntityDamageSource("cataclysm.shredder", attacker);
+        return new EntityDamageSource("cataclysm.shredder", attacker).setExplosion();
     }
 
 }
