@@ -79,7 +79,6 @@ import net.minecraft.world.item.crafting.Ingredient;
      {
          return knockbackResistance;
      }
-
  }
 
 
