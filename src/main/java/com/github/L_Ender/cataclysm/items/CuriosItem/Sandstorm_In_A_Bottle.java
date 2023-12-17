@@ -37,23 +37,26 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity livingEntity = slotContext.entity();
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
+        Player player = Cataclysm.PROXY.getClientSidePlayer();
         if (livingEntity instanceof Player) {
-            if (SandstormCapability != null) {
-                if (!livingEntity.level.isClientSide()) {
-                    if (!SandstormCapability.isSandstorm() && SandstormCapability.getSandstormTimer() <= 0) {
-                        if (Cataclysm.PROXY.isKeyDown(2)) {
-                            SandstormCapability.setSandstorm(true);
-                            toggleFlight(livingEntity, true);
-                        }
-                    } else {
-                        if (Cataclysm.PROXY.isKeyDown(2)) {
-                            SandstormCapability.setSandstorm(false);
-                            toggleFlight(livingEntity, false);
+            if(player !=null){
+                if (SandstormCapability != null) {
+                    if (!livingEntity.level.isClientSide()) {
+                        if (!SandstormCapability.isSandstorm() && SandstormCapability.getSandstormTimer() <= 0) {
+                            if (Cataclysm.PROXY.isKeyDown(2)) {
+                                SandstormCapability.setSandstorm(true);
+                                toggleFlight(livingEntity, true);
+                            }
+                        } else {
+                            if (Cataclysm.PROXY.isKeyDown(2)) {
+                                SandstormCapability.setSandstorm(false);
+                                toggleFlight(livingEntity, false);
+                            }
                         }
                     }
                 }
             }
-        }
+    }
     }
 
     @Override

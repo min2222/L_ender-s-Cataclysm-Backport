@@ -10,6 +10,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import top.theillusivec4.curios.api.CuriosApi;
 
 
 public class ModTag {
@@ -85,6 +86,8 @@ public class ModTag {
 
     public static final TagKey<Biome> REQUIRED_SUNKEN_CITY_SURROUNDING = registerBiomeTag("required_sunken_city_surrounding");
 
+    public static final TagKey<Item> BELT = registerItemTag("belt");
+
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
         return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
@@ -103,6 +106,10 @@ public class ModTag {
 
     private static TagKey<Biome> registerBiomeTag(String name) {
         return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
+    }
+
+    private static TagKey<Item> registerCuriosItemTag(String name) {
+        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(CuriosApi.MODID, name));
     }
 
 }
