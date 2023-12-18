@@ -4,6 +4,7 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelAncient_Remnant;
 import com.github.L_Ender.cataclysm.client.render.layer.Ancient_Remnant_Layer;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
+import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
@@ -32,6 +33,11 @@ public class RendererAncient_Remnant extends MobRenderer<Ancient_Remnant_Entity,
             }
         }
         return super.getRenderOffset(entityIn, partialTicks);
+    }
+    
+    @Override
+    protected void scale(Ancient_Remnant_Entity p_115314_, PoseStack p_115315_, float p_115316_) {
+    	p_115315_.translate(0, -1F, 0);
     }
 
     @Override
