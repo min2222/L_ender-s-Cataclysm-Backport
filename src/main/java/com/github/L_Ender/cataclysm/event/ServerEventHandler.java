@@ -34,6 +34,7 @@ import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -44,6 +45,16 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = Cataclysm.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEventHandler {
 
+    @SubscribeEvent
+    public void onLivingKnockBackEvent(LivingKnockBackEvent event) {
+    	if(event.getEntity().getCombatTracker() != null) {
+    		if(event.getEntity().getCombatTracker().getLastEntry() != null) {
+    			if(event.getEntity().getCombatTracker().getLastEntry().getSource().getMsgId().equals("cataclysm.shredder")) {
+    	    		event.setCanceled(true);
+    			}
+    		}
+    	}
+    }
 
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
