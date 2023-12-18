@@ -78,9 +78,8 @@ public class CMRenderTypes extends RenderType {
     }
 
     public static RenderType CMEyes(ResourceLocation locationIn) {
-        RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(locationIn, false, false);
-        return create("cm_eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, RenderType
-                .CompositeState.builder()
+        TextureStateShard renderstateshard$texturestateshard = new TextureStateShard(locationIn, false, false);
+        return create("cm_eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, CompositeState.builder()
                 .setShaderState(RENDERTYPE_EYES_SHADER)
                 .setTextureState(renderstateshard$texturestateshard)
                 .setTransparencyState(ADDITIVE_TRANSPARENCY)

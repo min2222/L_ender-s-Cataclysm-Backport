@@ -6,20 +6,20 @@ import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.capabilities.HoldAttackCapability;
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
-import com.github.L_Ender.cataclysm.init.ModBlocks;
-import com.github.L_Ender.cataclysm.init.ModCapabilities;
-import com.github.L_Ender.cataclysm.init.ModEffect;
-import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.*;
 import com.github.L_Ender.cataclysm.items.ILeftClick;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
 
+import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Witch;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
@@ -29,12 +29,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -45,16 +40,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = Cataclysm.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEventHandler {
 
-    @SubscribeEvent
-    public void onLivingKnockBackEvent(LivingKnockBackEvent event) {
-    	if(event.getEntity().getCombatTracker() != null) {
-    		if(event.getEntity().getCombatTracker().getLastEntry() != null) {
-    			if(event.getEntity().getCombatTracker().getLastEntry().getSource().getMsgId().equals("cataclysm.shredder")) {
-    	    		event.setCanceled(true);
-    			}
-    		}
-    	}
-    }
 
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
@@ -142,6 +127,15 @@ public class ServerEventHandler {
 
     }
 
+    @SubscribeEvent
+    public void Knockbackevent(LivingKnockBackEvent event) {
+        if(event.getEntity().getCombatTracker().getLastEntry() != null) {
+            if(event.getEntity().getCombatTracker().getLastEntry().getSource().getMsgId().equals("cataclysm.shredder")) {
+                event.setCanceled(true);
+            }
+
+        }
+    }
 
     @SubscribeEvent
     public void onPlayerAttack(AttackEntityEvent event) {
@@ -299,6 +293,8 @@ public class ServerEventHandler {
             event.setCanceled(true);
         }
     }
+
+
 
     @SubscribeEvent
     public void onAddReloadListener(AddReloadListenerEvent event){

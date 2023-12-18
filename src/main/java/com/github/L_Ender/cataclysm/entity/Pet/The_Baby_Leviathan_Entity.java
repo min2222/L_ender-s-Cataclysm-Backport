@@ -584,7 +584,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
         }
 
         public void start() {
-            this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.CIRCLE;
+            this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
             circleDistance = 8 + this.mob.random.nextInt(2);
@@ -593,7 +593,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
         }
 
         public void stop() {
-            this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.CIRCLE;
+            this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             MeleeModeTime = 0;
             circleDistance = 8 + this.mob.random.nextInt(2);
@@ -614,24 +614,24 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
         public void tick() {
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
-                if (this.mob.mode == The_Baby_Leviathan_Entity.AttackMode.CIRCLE) {
+                if (this.mob.mode == AttackMode.CIRCLE) {
                     circlingTime++;
                     circleEntity(target, circleDistance, 1.0f, clockwise, circlingTime, 0, 1);
                     if (0 >= this.mob.blast_cooldown) {
-                        this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.RANGE;
+                        this.mob.mode = AttackMode.RANGE;
                     } else {
-                        this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.MELEE;
+                        this.mob.mode = AttackMode.MELEE;
                     }
-                } else if (this.mob.mode == The_Baby_Leviathan_Entity.AttackMode.RANGE) {
+                } else if (this.mob.mode == AttackMode.RANGE) {
                     if (this.mob.getRandom().nextFloat() * 100.0F < 3f) {
                         this.mob.setAnimation(BABY_LEVIATHAN_ABYSS_BLAST);
                     }
-                } else if (this.mob.mode == The_Baby_Leviathan_Entity.AttackMode.MELEE) {
+                } else if (this.mob.mode == AttackMode.MELEE) {
                     MeleeModeTime++;
                     this.mob.getNavigation().moveTo(target, 1.0D);
                     this.mob.getLookControl().setLookAt(target, 30, 90);
                     if(MeleeModeTime >= MELEE_MODE_TIME) {
-                        this.mob.mode = The_Baby_Leviathan_Entity.AttackMode.RANGE;
+                        this.mob.mode = AttackMode.RANGE;
                     }else if (this.mob.distanceToSqr(target) <= 4D) {
                         this.mob.setAnimation(BABY_LEVIATHAN_BITE);
                     }

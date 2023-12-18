@@ -179,7 +179,7 @@ public class The_Watcher_Entity extends Animation_Monster {
 
         public ShotPrepare(The_Watcher_Entity entity, Animation animation) {
             super(entity, animation);
-            this.setFlags(EnumSet.of(Flag.MOVE,Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
 
         }
 
@@ -215,7 +215,7 @@ public class The_Watcher_Entity extends Animation_Monster {
 
         public Shot(The_Watcher_Entity entity, Animation animation) {
             super(entity, animation);
-            this.setFlags(EnumSet.of(Flag.MOVE,Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
 
         }
 

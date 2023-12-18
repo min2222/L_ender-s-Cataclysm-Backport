@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm;
 
 
+import com.github.L_Ender.cataclysm.message.*;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -27,13 +28,6 @@ import com.github.L_Ender.cataclysm.init.ModStructurePlacementType;
 import com.github.L_Ender.cataclysm.init.ModStructureProcessor;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
-import com.github.L_Ender.cataclysm.message.MessageCMMultipart;
-import com.github.L_Ender.cataclysm.message.MessageCharge;
-import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
-import com.github.L_Ender.cataclysm.message.MessageHoldEntity;
-import com.github.L_Ender.cataclysm.message.MessageHookFalling;
-import com.github.L_Ender.cataclysm.message.MessageSwingArm;
-import com.github.L_Ender.cataclysm.message.MessageUpdateblockentity;
 import com.github.L_Ender.cataclysm.world.CMMobSpawnBiomeModifier;
 import com.mojang.serialization.Codec;
 
@@ -172,6 +166,7 @@ public class Cataclysm {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageGoneWithSandstorm.class, MessageGoneWithSandstorm::encode, MessageGoneWithSandstorm::new, MessageGoneWithSandstorm.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCharge.class, MessageCharge::encode, MessageCharge::new, MessageCharge.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageHoldEntity.class, MessageHoldEntity::write, MessageHoldEntity::new, MessageHoldEntity.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateItemTag.class, MessageUpdateItemTag::write, MessageUpdateItemTag::read, MessageUpdateItemTag::handle);
         event.enqueueWork(ModItems::initDispenser);
     }
 }

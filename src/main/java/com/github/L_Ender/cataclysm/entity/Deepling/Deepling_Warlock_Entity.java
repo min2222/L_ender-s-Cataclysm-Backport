@@ -199,7 +199,7 @@ public class Deepling_Warlock_Entity extends AbstractDeepling {
         public MagicTrackingGoal(Deepling_Warlock_Entity entity, Animation animation) {
             super(entity, animation);
             this.warlock = entity;
-            this.setFlags(EnumSet.of(Flag.MOVE,Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
 
         }
 

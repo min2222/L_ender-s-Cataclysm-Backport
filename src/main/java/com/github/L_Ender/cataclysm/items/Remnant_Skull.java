@@ -29,7 +29,7 @@ import net.minecraft.world.phys.Vec3;
 public class Remnant_Skull extends Item {
     private static final Predicate<Entity> ENTITY_PREDICATE = EntitySelector.NO_SPECTATORS.and(Entity::isPickable);
 
-    public Remnant_Skull(Item.Properties properties) {
+    public Remnant_Skull(Properties properties) {
         super(properties);
     }
 

@@ -1,15 +1,14 @@
 package com.github.L_Ender.cataclysm.items.CuriosItem;
 
-import java.util.List;
-
-import javax.annotation.Nullable;
-
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
+import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModKeybind;
-
+import com.github.L_Ender.cataclysm.items.UpdatesStackTags;
+import com.github.L_Ender.cataclysm.message.MessageUpdateItemTag;
 import net.minecraft.ChatFormatting;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -21,7 +20,10 @@ import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
 
-public class Sandstorm_In_A_Bottle extends CuriosItem {
+import javax.annotation.Nullable;
+import java.util.List;
+
+public class Sandstorm_In_A_Bottle extends CuriosItem implements UpdatesStackTags {
 
     public Sandstorm_In_A_Bottle(Properties group) {
         super(group);
@@ -36,27 +38,39 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
     @Override
     public void curioTick(SlotContext slotContext, ItemStack stack) {
         LivingEntity livingEntity = slotContext.entity();
-        Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
-        Player player = Cataclysm.PROXY.getClientSidePlayer();
         if (livingEntity instanceof Player) {
-            if(player !=null){
+                Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
                 if (SandstormCapability != null) {
                     if (!livingEntity.level.isClientSide()) {
-                        if (!SandstormCapability.isSandstorm() && SandstormCapability.getSandstormTimer() <= 0) {
+                        if (!isActivated(stack) && SandstormCapability.getSandstormTimer() <= 0) {
                             if (Cataclysm.PROXY.isKeyDown(2)) {
-                                SandstormCapability.setSandstorm(true);
+                                Cataclysm.sendMSGToAll(new MessageUpdateItemTag(livingEntity.getId(), stack));
+                                setActivated(stack, true);
                                 toggleFlight(livingEntity, true);
                             }
                         } else {
                             if (Cataclysm.PROXY.isKeyDown(2)) {
-                                SandstormCapability.setSandstorm(false);
+                                Cataclysm.sendMSGToAll(new MessageUpdateItemTag(livingEntity.getId(), stack));
+                                setActivated(stack, false);
                                 toggleFlight(livingEntity, false);
                             }
                         }
+
                     }
+                    if (isActivated(stack)) {
+                        if (SandstormCapability.getSandstormTimer() < CMConfig.Sandstorm_In_A_Bottle_Timer) {
+                            SandstormCapability.setSandstorm(true);
+                        } else {
+                            Cataclysm.sendMSGToAll(new MessageUpdateItemTag(livingEntity.getId(), stack));
+                            setActivated(stack, false);
+                            toggleFlight(livingEntity, false);
+                        }
+                    } else {
+                        SandstormCapability.setSandstorm(false);
+
                 }
             }
-    }
+        }
     }
 
     @Override
@@ -64,12 +78,14 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
         LivingEntity livingEntity = slotContext.entity();
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(livingEntity, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
         if (livingEntity instanceof Player) {
-        if (!livingEntity.level.isClientSide()) {
-            if (SandstormCapability != null) {
-                SandstormCapability.setSandstorm(false);
-                toggleFlight(livingEntity, false);
+            if (!livingEntity.level.isClientSide()) {
+                if (SandstormCapability != null) {
+                    SandstormCapability.setSandstorm(false);
+                    toggleFlight(livingEntity, false);
+                }
+                Cataclysm.sendMSGToAll(new MessageUpdateItemTag(livingEntity.getId(), stack));
+                setActivated(stack, false);
             }
-        }
         }
     }
 
@@ -100,6 +116,16 @@ public class Sandstorm_In_A_Bottle extends CuriosItem {
 
     private boolean isCreativePlayer(LivingEntity living) {
         return living instanceof Player player && player.isCreative();
+    }
+
+    public static boolean isActivated(ItemStack p_40933_) {
+        CompoundTag compoundtag = p_40933_.getTag();
+        return compoundtag != null && compoundtag.getBoolean("isActivated");
+    }
+
+    public static void setActivated(ItemStack p_40885_, boolean p_40886_) {
+        CompoundTag compoundtag = p_40885_.getOrCreateTag();
+        compoundtag.putBoolean("isActivated", p_40886_);
     }
 
     @Override

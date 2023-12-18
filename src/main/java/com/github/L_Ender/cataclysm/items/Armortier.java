@@ -13,8 +13,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 
  public enum Armortier implements ArmorMaterial {
-     IGNITIUM(new int[] {5, 10, 8, 5}, 4.0f, 45, 15, 0.15f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.IGNITIUM_INGOT),
-     CRAB(new int[] {3, 8, 6, 3}, 2.0f, 30, 25, 0.1f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.AMETHYST_CRAB_SHELL);
+     IGNITIUM(new int[] {5, 8, 10, 5}, 4.0f, 45, 15, 0.15f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.IGNITIUM_INGOT),
+     CRAB(new int[] {3, 6, 8, 3}, 4.0f, 30, 15, 0.15f, SoundEvents.ARMOR_EQUIP_IRON , ModItems.AMETHYST_CRAB_SHELL);
 
      private static final int[] DURABILITY_ARRAY = new int[] {13, 15, 16, 11};
      private final int durability, enchantability;

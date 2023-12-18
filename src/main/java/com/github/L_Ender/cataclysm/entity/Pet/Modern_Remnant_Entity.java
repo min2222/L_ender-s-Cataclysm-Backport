@@ -283,7 +283,7 @@ public class Modern_Remnant_Entity extends AnimationPet {
         }
 
         public void start() {
-            this.mob.mode = Modern_Remnant_Entity.AttackMode.CIRCLE;
+            this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             maxcirclingTime = 120 + this.mob.random.nextInt(40);
             circleDistance = 8 + this.mob.random.nextInt(4);
@@ -293,7 +293,7 @@ public class Modern_Remnant_Entity extends AnimationPet {
         }
 
         public void stop() {
-            this.mob.mode = Modern_Remnant_Entity.AttackMode.CIRCLE;
+            this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             maxcirclingTime = 120 + this.mob.random.nextInt(40);
             circleDistance = 8 + this.mob.random.nextInt(4);

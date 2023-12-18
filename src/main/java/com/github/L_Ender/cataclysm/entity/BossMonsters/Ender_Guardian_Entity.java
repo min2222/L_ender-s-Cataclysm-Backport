@@ -1394,7 +1394,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
         public VoidVortexGoal(Ender_Guardian_Entity entity, Animation animation) {
             super(entity, animation);
 
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
 
         public void tick() {
@@ -1429,7 +1429,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
         public RocketPunchGoal(Ender_Guardian_Entity entity, Animation animation) {
             super(entity, animation);
 
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
 
         public void tick() {

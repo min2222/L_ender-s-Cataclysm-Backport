@@ -12,7 +12,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 public class Blessed_Amethyst_Crab_Meat extends Item {
-    public Blessed_Amethyst_Crab_Meat(Item.Properties p_41170_) {
+    public Blessed_Amethyst_Crab_Meat(Properties p_41170_) {
         super(p_41170_);
     }
 

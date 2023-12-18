@@ -39,7 +39,7 @@ public class EarthQuake_Entity extends ThrowableProjectile {
         this.setDeltaMovement(0.1D, 0D, 0.1D);
     }
 
-    public EarthQuake_Entity(PlayMessages.SpawnEntity spawnEntity, net.minecraft.world.level.Level world) {
+    public EarthQuake_Entity(PlayMessages.SpawnEntity spawnEntity, Level world) {
         this(ModEntities.EARTHQUAKE.get(), world);
     }
 

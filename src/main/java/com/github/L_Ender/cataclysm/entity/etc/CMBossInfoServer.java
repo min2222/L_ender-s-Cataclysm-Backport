@@ -18,7 +18,7 @@ public class CMBossInfoServer extends ServerBossEvent {
     private final Set<ServerPlayer> unseen = new HashSet<>();
     private UUID id;
 
-    public CMBossInfoServer(UUID uuid, Mob entity, BossEvent.BossBarColor bossBarColor, boolean dark) {
+    public CMBossInfoServer(UUID uuid, Mob entity, BossBarColor bossBarColor, boolean dark) {
         super(entity.getDisplayName(), bossBarColor, BossBarOverlay.PROGRESS);
         this.setVisible(true);
         this.setId(uuid);

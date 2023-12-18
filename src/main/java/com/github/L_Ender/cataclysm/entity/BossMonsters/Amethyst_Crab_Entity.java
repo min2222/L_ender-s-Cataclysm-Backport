@@ -486,7 +486,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
 
         public CrabSmashGoal(Amethyst_Crab_Entity entity, Animation animation) {
             super(entity, animation);
-            this.setFlags(EnumSet.of(Flag.MOVE,Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
 
         public void start() {
@@ -518,7 +518,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
 
         public CrabAttack(Amethyst_Crab_Entity entity, Animation animation , int look) {
             super(entity, animation);
-            this.setFlags(EnumSet.of(Flag.MOVE,Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
             this.look = look;
         }
 
@@ -546,7 +546,7 @@ public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
 
         public CrabBurrow(Amethyst_Crab_Entity entity, Animation animation) {
             super(entity, animation);
-            this.setFlags(EnumSet.of(Flag.MOVE,Goal.Flag.JUMP, Goal.Flag.LOOK));
+            this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
 
         public void start() {

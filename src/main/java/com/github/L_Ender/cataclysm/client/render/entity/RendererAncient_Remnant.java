@@ -34,11 +34,6 @@ public class RendererAncient_Remnant extends MobRenderer<Ancient_Remnant_Entity,
         }
         return super.getRenderOffset(entityIn, partialTicks);
     }
-    
-    @Override
-    protected void scale(Ancient_Remnant_Entity p_115314_, PoseStack p_115315_, float p_115316_) {
-    	p_115315_.translate(0, -1F, 0);
-    }
 
     @Override
     public ResourceLocation getTextureLocation(Ancient_Remnant_Entity entity) {

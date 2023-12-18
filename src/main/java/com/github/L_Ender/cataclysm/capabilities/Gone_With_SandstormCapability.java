@@ -105,7 +105,6 @@ public class Gone_With_SandstormCapability {
         @Override
         public void setSandstorm(boolean sandstorm) {
             this.Sandstorm = sandstorm;
-            toggleFlight(player, sandstorm);
             sendSync();
         }
 

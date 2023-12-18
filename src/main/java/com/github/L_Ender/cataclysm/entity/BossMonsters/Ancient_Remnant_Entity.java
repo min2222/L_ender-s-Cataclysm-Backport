@@ -1113,7 +1113,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
 
         public void start() {
-            this.mob.mode = Ancient_Remnant_Entity.AttackMode.CIRCLE;
+            this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             circleDistance = 18 + this.mob.random.nextInt(10);
             clockwise = this.mob.random.nextBoolean();
@@ -1121,7 +1121,7 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         }
 
         public void stop() {
-            this.mob.mode = Ancient_Remnant_Entity.AttackMode.CIRCLE;
+            this.mob.mode = AttackMode.CIRCLE;
             circlingTime = 0;
             circleDistance = 18 + this.mob.random.nextInt(10);
             clockwise = this.mob.random.nextBoolean();
@@ -1144,17 +1144,17 @@ public class Ancient_Remnant_Entity extends Boss_monster {
         public void tick() {
             LivingEntity target = this.mob.getTarget();
             if (target != null) {
-                if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.CIRCLE) {
+                if (this.mob.mode == AttackMode.CIRCLE) {
                     circlingTime++;
                     circleEntity(target, circleDistance, 1.0f, clockwise, circlingTime, 0, 1);
                     if (huntingTime >= this.mob.hunting_cooldown) {
-                        this.mob.mode = Ancient_Remnant_Entity.AttackMode.MELEE;
+                        this.mob.mode = AttackMode.MELEE;
                     }else{
                         if(this.mob.distanceTo(target) < 4D){
-                            this.mob.mode = Ancient_Remnant_Entity.AttackMode.MELEE;
+                            this.mob.mode = AttackMode.MELEE;
                         }
                     }
-                } else if (this.mob.mode == Ancient_Remnant_Entity.AttackMode.MELEE) {
+                } else if (this.mob.mode == AttackMode.MELEE) {
                     this.mob.getNavigation().moveTo(target, 1.0D);
                     this.mob.getLookControl().setLookAt(target, 30, 30);
                     if (this.mob.roar2_cooldown <= 0 && this.mob.getRandom().nextFloat() * 100.0F < 12f && target.getY() >= this.mob.getY() + 8
