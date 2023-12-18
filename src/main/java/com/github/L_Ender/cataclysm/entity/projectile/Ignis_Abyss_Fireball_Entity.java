@@ -100,9 +100,9 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
             if (shooter instanceof LivingEntity) {
                 LivingEntity owner = (LivingEntity)shooter;
                 if (entity instanceof LivingEntity) {
-                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), 10.0F + ((LivingEntity) entity).getMaxHealth() * 0.2f);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner).setProjectile(), 10.0F + ((LivingEntity) entity).getMaxHealth() * 0.2f);
                 }else{
-                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), 10.0F);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner).setProjectile(), 10.0F);
                 }
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
