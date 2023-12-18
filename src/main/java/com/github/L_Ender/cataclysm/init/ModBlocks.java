@@ -243,7 +243,7 @@ public class ModBlocks {
 
     public static RegistryObject<Block> registerBlockAndItem(String name, Supplier<Block> block, Item.Properties blockItemProps, boolean specialRender){
         RegistryObject<Block> blockObj = BLOCKS.register(name, block);
-        ModItems.ITEMS.register(name, () -> specialRender ?  new BlockItemCMRender(blockObj, blockItemProps) :  new CMBlockItem(blockObj, blockItemProps));
+        ModItems.ITEMS.register(name, () -> specialRender ?  new BlockItemCMRender(blockObj, blockItemProps.tab(Cataclysm.TAB)) :  new CMBlockItem(blockObj, blockItemProps.tab(Cataclysm.TAB)));
         return blockObj;
     }
 

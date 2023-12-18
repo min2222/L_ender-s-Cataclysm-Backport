@@ -21,7 +21,7 @@ public class ModRecipeTypes
 		return new RecipeType<>()
 		{
 			public String toString() {
-				return Cataclysm.MODID + ":" + identifier;
+				return identifier;
 			}
 		};
 	}
