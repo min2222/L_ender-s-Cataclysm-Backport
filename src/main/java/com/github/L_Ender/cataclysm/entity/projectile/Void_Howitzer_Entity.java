@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,7 +46,7 @@ public class Void_Howitzer_Entity extends ThrowableProjectile {
             boolean flag;
             if (entity1 instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity1;
-                flag = entity.hurt(DamageSource.indirectMagic(this, livingentity), 8.0F);
+                flag = entity.hurt(DamageSource.indirectMagic(this, livingentity).setProjectile(), 8.0F);
                 if (flag) {
                     if (entity.isAlive()) {
                         this.doEnchantDamageEffects(livingentity, entity);
@@ -86,7 +85,6 @@ public class Void_Howitzer_Entity extends ThrowableProjectile {
                 float f5 = (float) k * (float) Math.PI * 2.0F / 26.0F + ((float) Math.PI * 2F / 35F);
                 this.spawnFangs(this.getX() + (double) Mth.cos(f5) * 6.5D, this.getZ() + (double) Mth.sin(f5) * 6.5D, standingOnY, this.getY() + 1, f5, 8);
             }
-
             ScreenShake_Entity.ScreenShake(level, this.position(), 40, 0.3f, 0, 20);
             this.discard();
         }

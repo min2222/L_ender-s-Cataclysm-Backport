@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -22,7 +23,6 @@ import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.partentity.Cm_Part_Entity;
-import com.github.L_Ender.cataclysm.entity.util.LeviathanTongueUtil;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
@@ -41,6 +41,7 @@ import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -86,7 +87,7 @@ import net.minecraftforge.fluids.FluidType;
 
 public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
 
-    public static final Animation LEVIATHAN_GRAB = Animation.create(100);
+    public static final Animation LEVIATHAN_GRAB = Animation.create(140);
     public static final Animation LEVIATHAN_GRAB_BITE = Animation.create(13);
     public static final Animation LEVIATHAN_BITE = Animation.create(24);
     public static final Animation LEVIATHAN_ABYSS_BLAST = Animation.create(184);
@@ -164,6 +165,10 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
     private static final EntityDataAccessor<Integer> MODE_CHANCE = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> MELT_DOWN = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> HELD_ENTITY = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.INT);
+    
+    private static final EntityDataAccessor<Optional<UUID>> TONGUE_UUID = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> TONGUE_ID = SynchedEntityData.defineId(The_Leviathan_Entity.class, EntityDataSerializers.INT);
+    
     public The_Leviathan_Entity(EntityType type, Level worldIn) {
         super(type, worldIn);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
@@ -202,6 +207,8 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         this.entityData.define(MODE_CHANCE, 0);
         this.entityData.define(MELT_DOWN, false);
         this.entityData.define(HELD_ENTITY, 0);
+        this.entityData.define(TONGUE_UUID, Optional.empty());
+        this.entityData.define(TONGUE_ID, -1);
     }
 
     protected void registerGoals() {
@@ -376,7 +383,12 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         if (!isInWater() && !this.isLandNavigator) {
             switchNavigator(true);
         }
-
+        
+        Entity weapon = getTongue();
+        if (weapon instanceof The_Leviathan_Tongue_Entity magneticWeapon) {
+            this.entityData.set(TONGUE_ID, magneticWeapon.getId());
+            magneticWeapon.setControllerUUID(this.getUUID());
+        }
 
         if (!level.isClientSide) {
             float halfHealth = this.getMaxHealth() / 2;
@@ -452,6 +464,10 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         }
 
         AnimationHandler.INSTANCE.updateAnimations(this);
+        
+        if(this.getAnimation() == NO_ANIMATION){
+            this.setAnimation(LEVIATHAN_GRAB);
+        }
 
         if (!this.isNoAi()) {
             if (this.getAnimation() == NO_ANIMATION && !this.getMeltDown() && this.isMeltDown() && this.isAlive()) {
@@ -1245,10 +1261,31 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
     public boolean hasLiftedEntity() {
         return this.entityData.get(HELD_ENTITY) != 0;
     }
+    
+    @Nullable
+    public UUID getTongueUUID() {
+        return this.entityData.get(TONGUE_UUID).orElse(null);
+    }
+
+    public void setTongueUUID(@Nullable UUID uniqueId) {
+        this.entityData.set(TONGUE_UUID, Optional.ofNullable(uniqueId));
+    }
+
+    public Entity getTongue() {
+        if (!level.isClientSide) {
+            UUID id = getTongueUUID();
+            return id == null ? null : ((ServerLevel) level).getEntity(id);
+        } else {
+            int id = this.entityData.get(TONGUE_ID);
+            return id == -1 ? null : level.getEntity(id);
+        }
+    }
 
     @Nullable
     public LivingEntity getHeldEntity() {
         if (!this.hasLiftedEntity()) {
+            return null;
+        } else if (this.getAnimation() != LEVIATHAN_TENTACLE_HOLD_BLAST){
             return null;
         } else {
             return (LivingEntity) this.level.getEntity(this.entityData.get(HELD_ENTITY));
@@ -1378,6 +1415,13 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         super.recreateFromPacket(packet);
         Cm_Part_Entity.assignPartIDs(this);
     }
+    
+    public Vec3 getTonguePosition() {
+        float f1 = -Mth.sin(this.getYRot() * ((float)Math.PI / 180F)) * Mth.cos(this.getXRot() * ((float)Math.PI / 180F));
+        float f2 = -Mth.sin(this.getXRot() * ((float)Math.PI / 180F));
+        float f3 = Mth.cos(this.getYRot() * ((float)Math.PI / 180F)) * Mth.cos(this.getXRot() * ((float)Math.PI / 180F));
+        return new Vec3(this.getX() + f1 * 3.0, this.getY() + f2 * 3.5, this.getZ() + f3 * 3.0);
+    }
 
     private enum AttackMode {
         CIRCLE,
@@ -1427,26 +1471,21 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
             }
             if (entity.getAnimationTick() == 25) {
                 if (target != null) {
-                    if (LeviathanTongueUtil.canLaunchTongues(this.entity.level, this.entity)) {
-                        LeviathanTongueUtil.retractFarTongues(this.entity.level, this.entity);
+                	if (entity.getTongue() == null) {
                         if (!entity.level.isClientSide) {
                             The_Leviathan_Tongue_Entity segment = ModEntities.THE_LEVIATHAN_TONGUE.get().create(this.entity.level);
                             segment.copyPosition(this.entity);
+                            segment.setPos(entity.getTonguePosition());
+                            segment.setControllerUUID(entity.getUUID());
+                            entity.setTongueUUID(segment.getUUID());
                             this.entity.level.addFreshEntity(segment);
-                            segment.setCreatorEntityUUID(this.entity.getUUID());
-                            segment.setToEntityID(target.getId());
-                            segment.setFromEntityID(this.entity.getId());
-                            segment.setMaxExtendTime(15);
-                            segment.copyPosition(this.entity);
-                            segment.setProgress(0.0F);
-                            LeviathanTongueUtil.setLastTongue(this.entity, segment);
                         }
                     }
                 }
             }
-            if (this.entity.getAnimationTick() > 25 && this.entity.getAnimationTick() <= 85) {
+            if (this.entity.getAnimationTick() > 25 && this.entity.getAnimationTick() <= 125) {
                 if (target != null && target.isAlive()) {
-                    if (LeviathanTongueUtil.canLaunchTongues(this.entity.level, this.entity)) {
+                	if (entity.getTongue() == null) {
                         if (this.entity.distanceTo(target) < 8) {
                             AnimationHandler.INSTANCE.sendAnimationMessage(this.entity, LEVIATHAN_GRAB_BITE);
                         }

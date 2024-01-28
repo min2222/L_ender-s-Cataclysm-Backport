@@ -33,6 +33,7 @@ import com.github.L_Ender.cataclysm.items.void_core;
 import com.github.L_Ender.cataclysm.items.void_forge;
 import com.github.L_Ender.cataclysm.items.zweiender;
 import com.github.L_Ender.cataclysm.items.CuriosItem.Sandstorm_In_A_Bottle;
+import com.github.L_Ender.cataclysm.items.CuriosItem.Sticky_Gloves;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.AbyssEyeItem;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.DesertEyeItem;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.FlameEyeItem;
@@ -255,6 +256,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> SANDSTORM_IN_A_BOTTLE = ITEMS.register("sandstorm_in_a_bottle",
             () -> new Sandstorm_In_A_Bottle(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    
+    public static final RegistryObject<Item> STICKY_GLOVES = ITEMS.register("sticky_gloves",
+            () -> new Sticky_Gloves(new Item.Properties().stacksTo(1)));
 
     public static final RegistryObject<Item> REMNANT_SKULL = ITEMS.register("remnant_skull",
             () -> new Remnant_Skull(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));

@@ -5,7 +5,6 @@ import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.items.Tidal_Claws;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -62,7 +61,7 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 	public void tick() {
 		super.tick();
 		HookCapability.IHookCapability hookCapability = ModCapabilities.getCapability(getOwner(), ModCapabilities.HOOK_CAPABILITY);
-		if(getOwner() instanceof Player owner) {
+		if(getOwner() instanceof LivingEntity owner) {
 			if (hookCapability != null) {
 				if (isPulling && tickCount % 3 == 0) {
 					level.playSound(null, getOwner().blockPosition(), ModSounds.TIDAL_HOOK_LOOP.get(), SoundSource.PLAYERS, 0.4F, 1F);
@@ -115,8 +114,8 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 
 	@Override
 	public void kill() {
-		HookCapability.IHookCapability hookCapability = ModCapabilities.getCapability(	getOwner(), ModCapabilities.HOOK_CAPABILITY);
-		if(!level.isClientSide && getOwner() instanceof Player owner) {
+		HookCapability.IHookCapability hookCapability = ModCapabilities.getCapability(getOwner(), ModCapabilities.HOOK_CAPABILITY);
+		if(!level.isClientSide && getOwner() instanceof LivingEntity owner) {
 			if (hookCapability != null) {
 				hookCapability.setHasHook(false);
 				owner.setNoGravity(false);
@@ -147,11 +146,8 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 
 		if(!level.isClientSide && getOwner() instanceof Player owner && hookedEntity == null) {
 			owner.setNoGravity(true);
-		}
-	}
 
-	public boolean canChangeDimensions() {
-		return false;
+		}
 	}
 
 	protected SoundEvent getDefaultHitGroundSoundEvent() {
@@ -172,7 +168,6 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-
 		maxRange = tag.getDouble("maxRange");
 		maxSpeed = tag.getDouble("maxSpeed");
 		isPulling = tag.getBoolean("isPulling");
@@ -185,7 +180,7 @@ public class Tidal_Hook_Entity extends AbstractArrow {
 		tag.putDouble("maxRange", maxRange);
 		tag.putDouble("maxSpeed", maxSpeed);
 		tag.putBoolean("isPulling", isPulling);
-		tag.put("hookshotItem", stack.save(new CompoundTag()));;
+		tag.put("hookshotItem", stack.save(new CompoundTag()));
 	}
 
 	public void setProperties(ItemStack stack, double maxRange, double maxVelocity, float pitch, float yaw, float roll, float modifierZ) {

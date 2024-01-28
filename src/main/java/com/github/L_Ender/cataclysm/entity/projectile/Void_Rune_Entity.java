@@ -1,13 +1,8 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -25,6 +20,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class Void_Rune_Entity extends Entity {
     private int warmupDelayTicks;

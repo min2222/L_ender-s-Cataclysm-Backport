@@ -67,7 +67,6 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererPortal_Abyss_Bl
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Baby_Leviathan;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Harbinger;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Leviathan;
-import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Leviathan_Tongue;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Prowler;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Watcher;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThrown_Coral_Bardiche;
@@ -84,6 +83,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Missile;
 import com.github.L_Ender.cataclysm.client.render.item.CMItemRenderProperties;
 import com.github.L_Ender.cataclysm.client.render.item.CustomArmorRenderProperties;
 import com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer.RendererSandstorm_In_A_Bottle;
+import com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer.RendererSticky_Gloves;
 import com.github.L_Ender.cataclysm.client.sound.MeatShredderSound;
 import com.github.L_Ender.cataclysm.client.sound.SandstormSound;
 import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
@@ -179,7 +179,6 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.VOID_VORTEX.get(), RendererVoid_Vortex::new);
         EntityRenderers.register(ModEntities.THE_LEVIATHAN.get(), RendererThe_Leviathan::new);
         EntityRenderers.register(ModEntities.THE_BABY_LEVIATHAN.get(), RendererThe_Baby_Leviathan::new);
-        EntityRenderers.register(ModEntities.THE_LEVIATHAN_TONGUE.get(), RendererThe_Leviathan_Tongue::new);
         EntityRenderers.register(ModEntities.ABYSS_PORTAL.get(), RendererAbyss_Portal::new);
         EntityRenderers.register(ModEntities.ABYSS_ORB.get(), RendererAbyss_Orb::new);
         EntityRenderers.register(ModEntities.ABYSS_BLAST_PORTAL.get(), RendererAbyss_Blast_Portal::new);
@@ -207,6 +206,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.EARTHQUAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.ANCIENT_DESERT_STELE.get(), RendererAncient_Desert_Stele::new);
         EntityRenderers.register(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), RendererAmethyst_Cluster_Projectile::new);
+        EntityRenderers.register(ModEntities.THE_LEVIATHAN_TONGUE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.VOID_SHARD.get(), (render) -> {
             return new ThrownItemRenderer<>(render, 0.75F, true);
         });
@@ -237,6 +237,7 @@ public class ClientProxy extends CommonProxy {
         BlockEntityRenderers.register(ModTileentites.ABYSSAL_EGG.get(), RendererAbyssal_Egg::new);
         MenuScreens.register(ModMenu.WEAPON_FUSION.get(), GUIWeponfusion::new);
         CuriosRendererRegistry.register(ModItems.SANDSTORM_IN_A_BOTTLE.get(), RendererSandstorm_In_A_Bottle::new);
+        CuriosRendererRegistry.register(ModItems.STICKY_GLOVES.get(), RendererSticky_Gloves::new);
     }
 
 

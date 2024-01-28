@@ -1,10 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
-import javax.annotation.Nullable;
-
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
-
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -27,6 +24,8 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
+
+import javax.annotation.Nullable;
 
 
 public class Void_Shard_Entity extends ThrowableItemProjectile {
@@ -69,7 +68,7 @@ public class Void_Shard_Entity extends ThrowableItemProjectile {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         if (tag.contains("inBlockState", 10)) {
-            tag.put("inBlockState", NbtUtils.writeBlockState(this.lastState));
+            this.lastState = NbtUtils.readBlockState(tag.getCompound("inBlockState"));
         }
     }
 

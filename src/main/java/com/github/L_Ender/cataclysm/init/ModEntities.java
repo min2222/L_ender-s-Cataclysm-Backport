@@ -396,7 +396,7 @@ public class ModEntities {
             .build(Cataclysm.MODID + ":void_vortex"));
 
     public static final RegistryObject<EntityType<The_Leviathan_Tongue_Entity>> THE_LEVIATHAN_TONGUE = ENTITY_TYPE.register("the_leviathan_tongue", () -> EntityType.Builder.<The_Leviathan_Tongue_Entity>of(The_Leviathan_Tongue_Entity::new, MobCategory.MISC)
-            .sized(0.1F, 0.1F)
+    		.sized(0.5F, 0.5F)
             .build(Cataclysm.MODID + ":the_leviathan_tongue"));
 
     public static final RegistryObject<EntityType<Tidal_Tentacle_Entity>> TIDAL_TENTACLE = ENTITY_TYPE.register("tidal_tentacle", () -> EntityType.Builder.<Tidal_Tentacle_Entity>of(Tidal_Tentacle_Entity::new, MobCategory.MISC)

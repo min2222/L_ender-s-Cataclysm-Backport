@@ -78,6 +78,10 @@ public class ModTag {
 
     public static final TagKey<Structure> BLOCKED_ORE = registerStructureTag("blocked_ore");
 
+    public static final TagKey<Structure> BLOCKED_MULTIFACE = registerStructureTag("blocked_multiface");
+
+    public static final TagKey<Structure> BLOCKED_MAGMA_BLOCK = registerStructureTag("blocked_magma_block");
+
     public static final TagKey<Item> EXPLOSION_IMMUNE_ITEM = registerItemTag("explosion_immune_item");
 
     public static final TagKey<Item> STICKY_ITEM = registerItemTag("sticky_item");

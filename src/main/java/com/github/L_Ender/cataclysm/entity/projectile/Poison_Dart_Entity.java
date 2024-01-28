@@ -63,7 +63,7 @@ public class Poison_Dart_Entity extends AbstractArrow {
 
     @Override
     protected ItemStack getPickupItem() {
-        return new ItemStack(Items.AIR);
+        return ItemStack.EMPTY;
     }
 
 

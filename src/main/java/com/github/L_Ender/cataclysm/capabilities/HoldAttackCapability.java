@@ -52,21 +52,22 @@ public class HoldAttackCapability {
 
         @Override
         public void tick(LivingEntity entity) {
-            if(holder != null){
-                if (hold) { // Actually throw the victim
+            if (getHold()) {
+                if (holder != null && holder.isAlive()) {
+                    // Actually throw the victim
                     if (this.target instanceof Player) {
                         this.target.setPos(this.PosVector.x(), this.PosVector.y(), this.PosVector.z());
                         this.target.setDeltaMovement(Vec3.ZERO);
-                    }else{
+                    } else {
                         if (!this.target.level.isClientSide()) {
                             this.target.setPos(this.PosVector.x(), this.PosVector.y(), this.PosVector.z());
                             this.target.setDeltaMovement(Vec3.ZERO);
                         }
                     }
 
+                } else {
+                    setHold(false, null, Vec3.ZERO);
                 }
-            }else{
-                setHold(false,null,Vec3.ZERO);
             }
         }
 

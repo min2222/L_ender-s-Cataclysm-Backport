@@ -1,10 +1,5 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
 import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.tool.ControlledAnimation;
@@ -13,7 +8,6 @@ import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -34,9 +28,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Death_Laser_Beam_Entity extends Entity {
     public static final double RADIUS = 30;
@@ -55,28 +51,24 @@ public class Death_Laser_Beam_Entity extends Entity {
     private static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(Death_Laser_Beam_Entity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(Death_Laser_Beam_Entity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> CASTER = SynchedEntityData.defineId(Death_Laser_Beam_Entity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> HEAD = SynchedEntityData.defineId(Death_Laser_Beam_Entity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> BEAMDIRECTION = SynchedEntityData.defineId(Death_Laser_Beam_Entity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> FIRE = SynchedEntityData.defineId(Death_Laser_Beam_Entity.class, EntityDataSerializers.BOOLEAN);
     public float prevYaw;
     public float prevPitch;
 
-    @OnlyIn(Dist.CLIENT)
-    private Vec3[] attractorPos;
-
     public Death_Laser_Beam_Entity(EntityType<? extends Death_Laser_Beam_Entity> type, Level world) {
         super(type, world);
         noCulling = true;
-        if (world.isClientSide) {
-            attractorPos = new Vec3[] {new Vec3(0, 0, 0)};
-        }
+
     }
 
-    public Death_Laser_Beam_Entity(EntityType<? extends Death_Laser_Beam_Entity> type, Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration) {
+    public Death_Laser_Beam_Entity(EntityType<? extends Death_Laser_Beam_Entity> type, Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration, float direction) {
         this(type, world);
         this.caster = caster;
         this.setYaw(yaw);
         this.setPitch(pitch);
         this.setDuration(duration);
+        this.setBeamDirection(direction);
         this.setPos(x, y, z);
         this.calculateEndPos();
         if (!world.isClientSide) {
@@ -111,7 +103,7 @@ public class Death_Laser_Beam_Entity extends Entity {
         }
 
         if (caster != null) {
-            renderYaw = (float) ((caster.yHeadRot + 90.0d) * Math.PI / 180.0d);
+            renderYaw = (float) ((caster.yHeadRot + this.getBeamDirection()) * Math.PI / 180.0d);
             renderPitch = (float) (-caster.getXRot() * Math.PI / 180.0d);
         }
 
@@ -128,7 +120,7 @@ public class Death_Laser_Beam_Entity extends Entity {
 
         if (tickCount > 20) {
             this.calculateEndPos();
-            List<LivingEntity> hit = raytraceEntities(level, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ), false, true, true).entities;
+            List<LivingEntity> hit = raytraceEntities(level, new Vec3(getX(), getY(), getZ()), new Vec3(endPosX, endPosY, endPosZ)).entities;
             if (blockSide != null) {
                 spawnExplosionParticles(3);
                 if (!this.level.isClientSide) {
@@ -147,7 +139,7 @@ public class Death_Laser_Beam_Entity extends Entity {
                         }
                     }
                     if(this.getFire()) {
-                        BlockPos blockpos1 = new BlockPos(collidePosX,collidePosY, collidePosZ);
+                        BlockPos blockpos1 = new BlockPos(collidePosX, collidePosY, collidePosZ);
                         if(CMConfig.HarbingerLightFire) {
                             if (this.level.isEmptyBlock(blockpos1)) {
                                 this.level.setBlockAndUpdate(blockpos1, BaseFireBlock.getState(this.level, blockpos1));
@@ -166,15 +158,14 @@ public class Death_Laser_Beam_Entity extends Entity {
             if (!level.isClientSide) {
                 for (LivingEntity target : hit) {
                     if (caster != null) {
-                    if (!this.caster.isAlliedTo(target) && target != caster) {
-                        boolean flag = target.hurt(CMDamageTypes.causeDeathLaserDamage(this, caster), (float) ((float) CMConfig.DeathLaserdamage + Math.min(CMConfig.DeathLaserdamage, target.getMaxHealth() * CMConfig.DeathLaserHpdamage)));
-                        if (this.getFire()) {
-                            if (flag) {
-
-                                target.setSecondsOnFire(5);
+                        if (!this.caster.isAlliedTo(target) && target != caster) {
+                            boolean flag = target.hurt(CMDamageTypes.causeLaserDamage(this, caster).bypassArmor(), (float) ((float) CMConfig.DeathLaserdamage + Math.min(CMConfig.DeathLaserdamage, target.getMaxHealth() * CMConfig.DeathLaserHpdamage)));
+                            if (this.getFire()) {
+                                if (flag) {
+                                    target.setSecondsOnFire(5);
+                                }
                             }
                         }
-                    }
                     }
                 }
             }
@@ -191,7 +182,7 @@ public class Death_Laser_Beam_Entity extends Entity {
             float motionY = random.nextFloat() * 0.08F;
             float motionX = velocity * Mth.cos(yaw);
             float motionZ = velocity * Mth.sin(yaw);
-            level.addParticle((new LightningParticle.OrbData(1.0f, 0.2f,  0.0f)), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
+            this.level.addParticle((new LightningParticle.OrbData(1.0f, 0.2f,  0.0f)), collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
         }
 
     }
@@ -202,7 +193,7 @@ public class Death_Laser_Beam_Entity extends Entity {
         this.entityData.define(PITCH, 0F);
         this.entityData.define(DURATION, 0);
         this.entityData.define(CASTER, -1);
-        this.entityData.define(HEAD, 0);
+        this.entityData.define(BEAMDIRECTION, 90f);
         this.entityData.define(FIRE, false);
     }
 
@@ -230,12 +221,12 @@ public class Death_Laser_Beam_Entity extends Entity {
         entityData.set(DURATION, duration);
     }
 
-    public int getHead() {
-        return entityData.get(HEAD);
+    public float getBeamDirection() {
+        return entityData.get(BEAMDIRECTION);
     }
 
-    public void setHead(int head) {
-        entityData.set(HEAD, head);
+    public void setBeamDirection(float beamDirection) {
+        entityData.set(BEAMDIRECTION, beamDirection);
     }
 
 
@@ -279,7 +270,7 @@ public class Death_Laser_Beam_Entity extends Entity {
         }
     }
 
-    public LaserbeamHitResult raytraceEntities(Level world, Vec3 from, Vec3 to, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
+    public LaserbeamHitResult raytraceEntities(Level world, Vec3 from, Vec3 to) {
         LaserbeamHitResult result = new LaserbeamHitResult();
         result.setBlockHit(world.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)));
         if (result.blockHit != null) {
@@ -325,13 +316,17 @@ public class Death_Laser_Beam_Entity extends Entity {
         return false;
     }
 
+    public boolean shouldRender(double p_37588_, double p_37589_, double p_37590_) {
+        return true;
+    }
+
     @Override
     public boolean shouldRenderAtSqrDistance(double distance) {
         return distance < 1024;
     }
 
     private void updateWithHarbinger() {
-        this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0d));
+        this.setYaw((float) ((caster.yHeadRot + this.getBeamDirection()) * Math.PI / 180.0d));
         this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0d));
         this.setPos(caster.getX() ,caster.getY() + 2.7 , caster.getZ());
     }

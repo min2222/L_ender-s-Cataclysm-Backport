@@ -1,13 +1,8 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -31,6 +26,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+
+import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class Wither_Homing_Missile_Entity extends Projectile {
     public double xPower;
@@ -186,7 +184,7 @@ public class Wither_Homing_Missile_Entity extends Projectile {
             boolean flag;
             if (entity1 instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity1;
-                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), (float) CMConfig.WitherHomingMissiledamage);
+                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity).setProjectile(), (float) CMConfig.WitherHomingMissiledamage);
                 if (flag) {
                     if (entity.isAlive()) {
                         this.doEnchantDamageEffects(livingentity, entity);

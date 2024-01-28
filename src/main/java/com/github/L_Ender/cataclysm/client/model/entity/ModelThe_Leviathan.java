@@ -7,6 +7,9 @@ import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.ModelAnimator;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
+import com.mojang.math.Vector4f;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.phys.Vec3;
@@ -70,6 +73,7 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 	private final AdvancedModelBox Muscle;
 	private final AdvancedModelBox Maw;
 	private final AdvancedModelBox Skul;
+	public final AdvancedModelBox tongue;
 	private final AdvancedModelBox R_fin;
 	private final AdvancedModelBox R_fin2;
 	private final AdvancedModelBox R_fin3;
@@ -420,7 +424,7 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 		Muscle = new AdvancedModelBox(this);
 		Muscle.setRotationPoint(0.0F, 0.0F, -2.0F);
 		Head.addChild(Muscle);
-		Muscle.setTextureOffset(43, 0).addBox(-4.5F, -6.0F, -3.0F, 0.0F, 11.0F, 4.0F, 0.0F, false);
+		Muscle.setTextureOffset(43, 0).addBox(-4.5F, -6.0F, -2.0F, 0.0F, 11.0F, 4.0F, 0.0F, false);
 		Muscle.setTextureOffset(43, 0).addBox(4.5F, -6.0F, -2.0F, 0.0F, 11.0F, 4.0F, 0.0F, true);
 
 		Maw = new AdvancedModelBox(this);
@@ -448,6 +452,10 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 		Skul.setTextureOffset(122, 64).addBox(-4.0F, 1.0F, -13.0F, 8.0F, 3.0F, 0.0F, 0.0F, false);
 		Skul.setTextureOffset(8, 0).addBox(4.0F, 1.0F, -13.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);
 		Skul.setTextureOffset(0, 0).addBox(-4.0F, 1.0F, -13.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);
+		
+		tongue = new AdvancedModelBox(this);
+		tongue.setRotationPoint(0.0F, -1.0F, 0.0F);
+		Head.addChild(tongue);
 
 		R_fin = new AdvancedModelBox(this);
 		R_fin.setRotationPoint(-9.0F, 9.0F, -24.0F);
@@ -563,7 +571,7 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 		animator.rotate(Mouth3, (float) Math.toRadians(37.5F), (float) Math.toRadians(42.5F), 0);
 		animator.rotate(Mouth4, (float) Math.toRadians(37.5F), (float) Math.toRadians(-42.5F), 0);
 		animator.endKeyframe();
-		animator.setStaticKeyframe(60);
+		animator.setStaticKeyframe(100);
 
 		animator.resetKeyframe(15);
 
@@ -3118,6 +3126,7 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 				Muscle,
 				Maw,
 				Skul,
+				tongue,
 				R_fin,
 				R_fin2,
 				R_fin3,
@@ -3133,6 +3142,32 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 				Mouth2_e,
 				Mouth,
 				Mouth1_e);
+	}
+	
+	public Vec3 translateToTongue(Vec3 in, float yawIn) {
+		PoseStack modelTranslateStack = new PoseStack();
+		modelTranslateStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yawIn));
+		modelTranslateStack.translate((double) (root.rotationPointX / 16.0F), (double) (root.rotationPointY / 16.0F), (double) (root.rotationPointZ / 16.0F));
+		modelTranslateStack.mulPose(Vector3f.ZN.rotation(root.rotateAngleZ));
+		modelTranslateStack.mulPose(Vector3f.YN.rotation(root.rotateAngleY));
+		modelTranslateStack.mulPose(Vector3f.XN.rotation(root.rotateAngleX));
+		modelTranslateStack.translate((double) (body.rotationPointX / 16.0F), (double) (body.rotationPointY / 16.0F), (double) (body.rotationPointZ / 16.0F));
+		modelTranslateStack.mulPose(Vector3f.ZN.rotation(body.rotateAngleZ));
+		modelTranslateStack.mulPose(Vector3f.YN.rotation(body.rotateAngleY));
+		modelTranslateStack.mulPose(Vector3f.XN.rotation(body.rotateAngleX));
+		modelTranslateStack.translate((double) (Head.rotationPointX / 16.0F), (double) (Head.rotationPointY / 16.0F), (double) (Head.rotationPointZ / 16.0F));
+		modelTranslateStack.mulPose(Vector3f.ZN.rotation(Head.rotateAngleZ));
+		modelTranslateStack.mulPose(Vector3f.YN.rotation(Head.rotateAngleY));
+		modelTranslateStack.mulPose(Vector3f.XN.rotation(Head.rotateAngleX));
+		modelTranslateStack.translate((double) (tongue.rotationPointX / 16.0F), (double) (tongue.rotationPointY / 16.0F), (double) (tongue.rotationPointZ / 16.0F));
+		modelTranslateStack.mulPose(Vector3f.ZN.rotation(tongue.rotateAngleZ));
+		modelTranslateStack.mulPose(Vector3f.YN.rotation(tongue.rotateAngleY));
+		modelTranslateStack.mulPose(Vector3f.XN.rotation(tongue.rotateAngleX));
+		Vector4f tongueOffsetVec = new Vector4f((float) in.x, (float) in.y, (float) in.z, 1.0F);
+		tongueOffsetVec.transform(modelTranslateStack.last().pose());
+		Vec3 offset = new Vec3(tongueOffsetVec.x(), tongueOffsetVec.y(), tongueOffsetVec.z());
+		modelTranslateStack.popPose();
+		return offset;
 	}
 
 	@Override

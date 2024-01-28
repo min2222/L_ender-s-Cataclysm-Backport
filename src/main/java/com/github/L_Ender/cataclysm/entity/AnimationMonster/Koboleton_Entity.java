@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
 import java.util.EnumSet;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 
@@ -48,6 +49,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 
 
 public class Koboleton_Entity extends Animation_Monster {
@@ -186,19 +189,26 @@ public class Koboleton_Entity extends Animation_Monster {
 
                             ItemStack offhand = target.getOffhandItem();
                             ItemStack mainhand = target.getMainHandItem();
+                            Optional<SlotResult> slot = CuriosApi.getCuriosHelper().findFirstCurio(target, stack -> stack.is(ModItems.STICKY_GLOVES.get()));
                             if(this.random.nextFloat() * 100.0F <= CMConfig.CauseKoboletontoDropItemInHandPercent) {
-                                if (!offhand.isEmpty()) {
-                                    if(!offhand.is(ModTag.STICKY_ITEM)) {
-                                        int i = offhand.getCount();
-                                        this.koboletonstealdrop(copyWithCound(offhand, 1), target);
-                                        target.setItemSlot(EquipmentSlot.OFFHAND, offhand.split(i - 1));
-                                    }
-                                } else {
-                                    if (!mainhand.isEmpty()) {
-                                        if (!mainhand.is(ModTag.STICKY_ITEM)) {
-                                            int i = mainhand.getCount();
-                                            this.koboletonstealdrop(copyWithCound(mainhand, 1), target);
-                                            target.setItemSlot(EquipmentSlot.MAINHAND, mainhand.split(i - 1));
+                                if (slot.isEmpty()) {
+                                    if (!offhand.isEmpty()) {
+                                        if (!offhand.is(ModTag.STICKY_ITEM)) {
+                                            int i = offhand.getCount();
+                                            ItemStack offhandCopy = offhand.copy();
+                                            offhandCopy.setCount(1);
+                                            this.koboletonstealdrop(offhandCopy, target);
+                                            target.setItemSlot(EquipmentSlot.OFFHAND, offhand.split(i - 1));
+                                        }
+                                    } else {
+                                        if (!mainhand.isEmpty()) {
+                                            if (!mainhand.is(ModTag.STICKY_ITEM)) {
+                                                int i = mainhand.getCount();
+                                                ItemStack mainhandCopy = mainhand.copy();
+                                                mainhandCopy.setCount(1);
+                                                this.koboletonstealdrop(mainhandCopy, target);
+                                                target.setItemSlot(EquipmentSlot.MAINHAND, mainhand.split(i - 1));
+                                            }
                                         }
                                     }
                                 }

@@ -2,7 +2,6 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -27,7 +26,6 @@ public class Eye_Of_Dungeon_Entity extends Entity implements ItemSupplier {
     private static final EntityDataAccessor<Float> R = SynchedEntityData.defineId(Eye_Of_Dungeon_Entity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> G = SynchedEntityData.defineId(Eye_Of_Dungeon_Entity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> B = SynchedEntityData.defineId(Eye_Of_Dungeon_Entity.class, EntityDataSerializers.FLOAT);
-
 
     private double tx;
     private double ty;

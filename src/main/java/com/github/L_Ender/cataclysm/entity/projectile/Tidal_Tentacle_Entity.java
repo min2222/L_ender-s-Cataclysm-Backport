@@ -1,16 +1,10 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import com.github.L_Ender.cataclysm.entity.util.TidalTentacleUtil;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.google.common.collect.Multimap;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -20,11 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,6 +25,11 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Tidal_Tentacle_Entity extends Entity {
 
@@ -62,7 +57,7 @@ public class Tidal_Tentacle_Entity extends Entity {
 
     @Override
     public Packet<?> getAddEntityPacket() {
-        return (Packet<?>) NetworkHooks.getEntitySpawningPacket(this);
+        return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
@@ -117,7 +112,7 @@ public class Tidal_Tentacle_Entity extends Entity {
                         if (this.tickCount % 2 == 0) {
                             Entity entity = getCreatorEntity();
                             if(entity instanceof LivingEntity) {
-                                if (current != creator && current.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) entity), this.getBaseDamage())) {
+                                if (current != creator && current.hurt(DamageSource.indirectMobAttack(this, (LivingEntity)entity), this.getBaseDamage())) {
                                     MobEffectInstance effectinstance1 = ((LivingEntity)current).getEffect(ModEffect.EFFECTABYSSAL_CURSE.get());
                                     int i = 1;
                                     if (effectinstance1 != null) {
@@ -226,7 +221,6 @@ public class Tidal_Tentacle_Entity extends Entity {
         updateLastTendon(child);
         this.level.addFreshEntity(child);
     }
-
 
     private float getBaseDamage() {
         return this.entityData.get(DAMAGE);

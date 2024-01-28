@@ -3,7 +3,6 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
-
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -36,7 +35,6 @@ public class Lionfish_Spike_Entity extends ThrowableItemProjectile {
         super(ModEntities.LIONFISH_SPIKE.get(), throwerIn, worldIn);
     }
 
-
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -66,14 +64,14 @@ public class Lionfish_Spike_Entity extends ThrowableItemProjectile {
         float i = (float) CMConfig.BlazingBonedamage;
         if (shooter instanceof LivingEntity) {
             if (!((entity == shooter) || (shooter.isAlliedTo(entity)))) {
-                if(entity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) shooter), i)) {
+                if(entity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) shooter), i)){
                     if (entity instanceof LivingEntity) {
-                        ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0), this);
+                       ((LivingEntity) entity).addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0), this);
                     }
                 }
             }
         }else{
-            entity.hurt(DamageSource.indirectMobAttack(this, null), i);
+            entity.hurt(DamageSource.indirectMobAttack(this, null).setProjectile(), i);
         }
     }
 
@@ -98,5 +96,4 @@ public class Lionfish_Spike_Entity extends ThrowableItemProjectile {
             }
         }
     }
-
 }

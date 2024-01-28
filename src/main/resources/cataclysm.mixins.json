@@ -5,18 +5,20 @@
   "target": "@env(DEFAULT)",
   "refmap": "cataclysm.refmap.json",
   "mixins": [
+    "BrushItemMixin",
     "ItemMixin",
     "LivingEntityMixin",
-    "MultifaceGrowthFeatureMixin",
     "NoBasaltColumnsInStructuresMixin",
     "NoDeltasInStructuresMixin",
     "NoGeodeInStructuresMixin",
     "NoLakesInStructuresMixin",
+    "NoMagmaBlockInStructuresMixin",
+    "NoMultifaceGrowthFeatureInStructuresMixin",
     "NoOreInStructuresMixin",
+    "StructureManagerAccessor",
     "StructureProcessorAccessor",
     "StructureTemplateMixin",
-    "WorldGenRegionAccessor",
-    "BrushItemMixin"
+    "WorldGenRegionAccessor"
   ],
   "client": [
   ],

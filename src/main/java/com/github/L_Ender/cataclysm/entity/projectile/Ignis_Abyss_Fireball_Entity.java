@@ -5,8 +5,6 @@ import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -23,7 +21,6 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -113,7 +110,7 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
                     }
                 }
             } else {
-                flag = entity.hurt(DamageSource.MAGIC, 5.0F );
+                flag = entity.hurt(DamageSource.MAGIC, 5.0F);
             }
             this.level.explode(this, this.getX(), this.getY(), this.getZ(), 2.0F, true, Explosion.BlockInteraction.NONE);
             this.discard();
@@ -184,15 +181,11 @@ public class Ignis_Abyss_Fireball_Entity extends AbstractHurtingProjectile {
 
     @Override
     protected void onHit(HitResult ray) {
-        HitResult.Type hitresult$type = ray.getType();
-        if (hitresult$type == HitResult.Type.ENTITY) {
-            this.onHitEntity((EntityHitResult)ray);
-            this.level.gameEvent(GameEvent.PROJECTILE_LAND, ray.getLocation(), GameEvent.Context.of(this, (BlockState)null));
-        } else if (hitresult$type == HitResult.Type.BLOCK) {
-            BlockHitResult blockhitresult = (BlockHitResult)ray;
-            this.onHitBlock(blockhitresult);
-            BlockPos blockpos = blockhitresult.getBlockPos();
-            this.level.gameEvent(GameEvent.PROJECTILE_LAND, blockpos, GameEvent.Context.of(this, this.level.getBlockState(blockpos)));
+        HitResult.Type raytraceresult$type = ray.getType();
+        if (raytraceresult$type == HitResult.Type.ENTITY) {
+            this.onHitEntity((EntityHitResult) ray);
+        } else if (raytraceresult$type == HitResult.Type.BLOCK) {
+            this.onHitBlock((BlockHitResult) ray);
         }
     }
 

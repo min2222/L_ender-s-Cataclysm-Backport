@@ -5,7 +5,6 @@ import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -103,9 +102,9 @@ public class Ignis_Fireball_Entity extends AbstractHurtingProjectile {
                 LivingEntity owner = (LivingEntity)shooter;
                 float damage = this.isSoul() ? 8.0F : 6.0F;
                 if (entity instanceof LivingEntity) {
-                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), damage + ((LivingEntity) entity).getMaxHealth() * 0.07f);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner).setProjectile(), damage + ((LivingEntity) entity).getMaxHealth() * 0.07f);
                 }else{
-                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), damage);
+                    flag = entity.hurt(DamageSource.indirectMobAttack(this, owner).setProjectile(), damage);
                 }
 
                 if (flag) {
@@ -115,7 +114,6 @@ public class Ignis_Fireball_Entity extends AbstractHurtingProjectile {
                     }else{
                         owner.heal(5.0F);
                     }
-
                 }
             } else {
                 flag = entity.hurt(DamageSource.MAGIC, 6.0F);

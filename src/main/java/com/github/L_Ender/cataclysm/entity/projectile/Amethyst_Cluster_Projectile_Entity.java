@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -39,7 +38,7 @@ public class Amethyst_Cluster_Projectile_Entity extends ThrowableProjectile {
         float i = (float) CMConfig.AmethystClusterdamage;
         if (shooter instanceof LivingEntity) {
             if (!((entity == shooter) || (shooter.isAlliedTo(entity)))) {
-                entity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) shooter), i);
+                entity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) shooter).setProjectile(), i);
             }
         }else{
             entity.hurt(DamageSource.MAGIC, i);

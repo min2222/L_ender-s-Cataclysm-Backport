@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.client.model.armor;
 
 import com.github.L_Ender.cataclysm.client.model.item.CuriosModel.Sandstorm_In_A_BottleModel;
+import com.github.L_Ender.cataclysm.client.model.item.CuriosModel.Sticky_Gloves_Model;
 
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -18,6 +19,7 @@ public class CMModelLayers {
     public static final ModelLayerLocation IGNITIUM_ARMOR_MODEL_LEGS = createLocation("ignitium_armor_model_leg", "main");
     public static final ModelLayerLocation BLOOM_STONE_PAULDRONS_MODEL = createLocation("bloom_stone_pauldrons_model", "main");
     public static final ModelLayerLocation SANDSTORM_IN_A_BOTTLE_MODEL = createLocation("sandstorm_in_a_bottle_model", "main");
+    public static final ModelLayerLocation STICKY_GLOVES_MODEL = createLocation("sticky_gloves_model", "main");
 
 
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
@@ -27,6 +29,7 @@ public class CMModelLayers {
         event.registerLayerDefinition(ELYTRA_ARMOR, () -> Modelignitium_Elytra_chestplate.createArmorLayer(new CubeDeformation(0.5F)));
         event.registerLayerDefinition(IGNITIUM_ARMOR_MODEL_LEGS, () -> ModelIgnitium_Armor.createArmorLayer(new CubeDeformation(0.2F)));
         event.registerLayerDefinition(SANDSTORM_IN_A_BOTTLE_MODEL, () -> Sandstorm_In_A_BottleModel.createLayer(new CubeDeformation(0.2F)));
+        event.registerLayerDefinition(STICKY_GLOVES_MODEL, () -> Sticky_Gloves_Model.createLayer(new CubeDeformation(0.2F)));
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {

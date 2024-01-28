@@ -3,7 +3,6 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -141,7 +140,7 @@ public class Wither_Missile_Entity extends Projectile {
             boolean flag;
             if (entity1 instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity1;
-                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), this.getDamage());
+                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity).setProjectile(), this.getDamage());
                 if (flag) {
                     if (entity.isAlive()) {
                         this.doEnchantDamageEffects(livingentity, entity);

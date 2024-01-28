@@ -9,6 +9,7 @@ import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.client.render.etc.LavaVisionFluidRenderer;
 import com.github.L_Ender.cataclysm.config.CMConfig;
+import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
@@ -28,6 +29,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -139,6 +141,13 @@ public class ClientEvent {
         if (player != null) {
             Minecraft mc = Minecraft.getInstance();
             ForgeGui gui = (ForgeGui)mc.gui;
+            if (player.isPassenger()) {
+                if (player.getVehicle() instanceof The_Leviathan_Tongue_Entity) {
+                    if (event.getOverlay().id().equals(VanillaGuiOverlay.HELMET.id())) {
+                        Minecraft.getInstance().gui.setOverlayMessage(Component.translatable("entity.cataclysm.you_cant_escape"), false);
+                    }
+                }
+            }
             if (event.getOverlay() == VanillaGuiOverlay.PLAYER_HEALTH.type() && !mc.options.hideGui && gui.shouldDrawSurvivalElements()) {
                 if (player.hasEffect(ModEffect.EFFECTABYSSAL_BURN.get()) || player.hasEffect(ModEffect.EFFECTABYSSAL_CURSE.get())) {
                     CustomHealth(event, 25);

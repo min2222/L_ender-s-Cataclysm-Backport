@@ -5,6 +5,7 @@ import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
 
+import com.github.L_Ender.cataclysm.util.SandstormUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -46,49 +47,21 @@ public class Gone_With_SandstormCapability {
         public void tick(TickEvent.PlayerTickEvent event) {
             Player player = event.player;
             player.getCapability(ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY).ifPresent(handler -> {
-                if(handler.isSandstorm()){
-                    if(getSandstormTimer() < CMConfig.Sandstorm_In_A_Bottle_Timer){
-                        setSandstormTimer(getSandstormTimer() + 1);
-                        toggleFlight(player, true);
-                    }else{
-                        setSandstorm(false);
-                        toggleFlight(player, false);
-                    }
-                }else{
-                    if(getSandstormTimer() >0) {
-                        setSandstormTimer(getSandstormTimer() - 1);
-                    }
-                }
-            }
-            );
-        }
-
-        private void toggleFlight(LivingEntity living, boolean flight) {
-            if (!living.level.isClientSide && living instanceof ServerPlayer player) {
-                boolean prevFlying = player.getAbilities().flying;
-                boolean trueFlight = isCreativePlayer(living) || flight;
-                player.getAbilities().mayfly = trueFlight;
-                player.getAbilities().flying = trueFlight;
-                float defaultFlightSpeed = 0.05F;
-                if (flight) {
-                    player.getAbilities().setFlyingSpeed(defaultFlightSpeed * 0.5F);
-                } else {
-                    player.getAbilities().setFlyingSpeed(defaultFlightSpeed);
-                    if (!player.isSpectator()) {
-                        player.getAbilities().flying = false;
-                        if(!player.isCreative()){
-                            player.getAbilities().mayfly = false;
+                        if(handler.isSandstorm()){
+                            if(getSandstormTimer() < CMConfig.Sandstorm_In_A_Bottle_Timer){
+                                setSandstormTimer(getSandstormTimer() + 1);
+                                SandstormUtils.toggleFlight(player,true);
+                            }else{
+                                setSandstorm(false);
+                                SandstormUtils.toggleFlight(player,false);
+                            }
+                        }else{
+                            if(getSandstormTimer() >0) {
+                                setSandstormTimer(getSandstormTimer() - 1);
+                            }
                         }
                     }
-                }
-                if (prevFlying != flight) {
-                    player.onUpdateAbilities();
-                }
-            }
-        }
-
-        private boolean isCreativePlayer(LivingEntity living) {
-            return living instanceof Player player && player.isCreative();
+            );
         }
 
         public MessageGoneWithSandstorm makeSyncMessage()
@@ -105,6 +78,7 @@ public class Gone_With_SandstormCapability {
         @Override
         public void setSandstorm(boolean sandstorm) {
             this.Sandstorm = sandstorm;
+            SandstormUtils.toggleFlight(player,sandstorm);
             sendSync();
         }
 

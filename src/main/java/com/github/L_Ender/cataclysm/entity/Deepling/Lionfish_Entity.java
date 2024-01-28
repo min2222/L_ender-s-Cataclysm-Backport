@@ -31,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.monster.Guardian;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -108,20 +109,17 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
     }
 
     public boolean hurt(DamageSource p_32820_, float p_32821_) {
-        if (this.level.isClientSide) {
-            return false;
-        } else {
-            if (!p_32820_.isMagic()) {
-                Entity entity = p_32820_.getDirectEntity();
-                if (entity instanceof LivingEntity livingentity) {
-                    if (livingentity.hurt(DamageSource.mobAttack(this), 1.0F)) {
-                        livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
-                    }
+        if (!p_32820_.isMagic() && p_32820_.getDirectEntity() instanceof LivingEntity) {
+            LivingEntity livingentity = (LivingEntity)p_32820_.getDirectEntity();
+            if (!p_32820_.isExplosion()) {
+                boolean flag = livingentity.hurt(DamageSource.mobAttack(this), 1.0F);
+                if(flag){
+                    livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
                 }
             }
-
-            return super.hurt(p_32820_, p_32821_);
         }
+
+        return super.hurt(p_32820_, p_32821_);
     }
 
     public void tick(){

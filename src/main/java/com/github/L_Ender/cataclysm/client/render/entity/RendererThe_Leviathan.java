@@ -2,19 +2,28 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 
 
 import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Leviathan;
+import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Leviathan_Tongue;
+import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Leviathan_Tongue_End;
 import com.github.L_Ender.cataclysm.client.render.RenderUtils;
 import com.github.L_Ender.cataclysm.client.render.layer.LayerBasicGlow;
 import com.github.L_Ender.cataclysm.client.render.layer.The_Leviathan_Layer;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Part;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -26,6 +35,8 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
     private static final ResourceLocation BURNING_LEVIATHAN_TEXTURES = new ResourceLocation("cataclysm:textures/entity/leviathan/the_burning_leviathan.png");
     private static final ResourceLocation LEVIATHAN_TEXTURE_EYES = new ResourceLocation("cataclysm:textures/entity/leviathan/the_leviathan_eye.png");
     private final RandomSource rnd = RandomSource.create();
+    private static final ModelThe_Leviathan_Tongue TONGUE_MODEL = new ModelThe_Leviathan_Tongue();
+    private static final ModelThe_Leviathan_Tongue_End TONGUE_END_MODEL = new ModelThe_Leviathan_Tongue_End();
 
     public RendererThe_Leviathan(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new ModelThe_Leviathan(), 1.5F);
@@ -39,11 +50,11 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
     }
 
 
-    public boolean shouldRender(The_Leviathan_Entity livingEntityIn, Frustum camera, double camX, double camY, double camZ) {
-        if (super.shouldRender(livingEntityIn, camera, camX, camY, camZ)) {
+    public boolean shouldRender(The_Leviathan_Entity livingentity, Frustum camera, double camX, double camY, double camZ) {
+        if (super.shouldRender(livingentity, camera, camX, camY, camZ)) {
             return true;
         } else {
-            for(The_Leviathan_Part part : livingEntityIn.leviathanParts){
+            for(The_Leviathan_Part part : livingentity.leviathanParts){
                 if(camera.isVisible(part.getBoundingBox())){
                     return true;
                 }
@@ -53,12 +64,12 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
     }
 
 
-    public Vec3 getRenderOffset(The_Leviathan_Entity entityIn, float partialTicks) {
-        if (entityIn.getAnimation() == The_Leviathan_Entity.LEVIATHAN_ABYSS_BLAST && entityIn.getAnimationTick() <= 66) {
+    public Vec3 getRenderOffset(The_Leviathan_Entity entity, float partialTicks) {
+        if (entity.getAnimation() == The_Leviathan_Entity.LEVIATHAN_ABYSS_BLAST && entity.getAnimationTick() <= 66) {
             double d0 = 0.01D;
             return new Vec3(this.rnd.nextGaussian() * d0, 0.0D, this.rnd.nextGaussian() * d0);
         } else {
-            return super.getRenderOffset(entityIn, partialTicks);
+            return super.getRenderOffset(entity, partialTicks);
         }
     }
 
@@ -68,6 +79,82 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
         if (entity.getAnimation() == The_Leviathan_Entity.LEVIATHAN_TAIL_WHIPS) {
             Vec3 bladePos = RenderUtils.getWorldPosFromModel(entity, entityYaw, model.Tail_Particle);
             entity.setSocketPosArray(0, bladePos);
+        }
+        double x = Mth.lerp(partialTicks, entity.xOld, entity.getX());
+        double y = Mth.lerp(partialTicks, entity.yOld, entity.getY());
+        double z = Mth.lerp(partialTicks, entity.zOld, entity.getZ());
+        float yaw = entity.yBodyRotO + (entity.yBodyRot - entity.yBodyRotO) * partialTicks;
+        Entity weapon = entity.getTongue();
+        if (weapon != null && entity.isAlive() && weapon.isAlive()) {
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(-x, -y, -z);
+            Vec3 headModelPos = getModel().translateToTongue(new Vec3(0, 0.0F, 0), yaw).scale(0.2);
+            Vec3 fromVec = entity.getTonguePosition().add(headModelPos);
+            Vec3 toVec = weapon.getPosition(partialTicks);
+
+            int segmentCount = 0;
+            Vec3 currentNeckButt = fromVec;
+            VertexConsumer neckConsumer;
+
+            neckConsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(LEVIATHAN_TEXTURES));
+            double remainingDistance = toVec.distanceTo(fromVec);
+            while (segmentCount < 128 && remainingDistance > 0) {
+                remainingDistance = Math.min(fromVec.distanceTo(toVec), 0.5F);
+                Vec3 linearVec = toVec.subtract(currentNeckButt);
+                Vec3 powVec = new Vec3(modifyVecAngle(linearVec.x), modifyVecAngle(linearVec.y), modifyVecAngle(linearVec.z));
+                Vec3 smoothedVec = powVec;
+                Vec3 next = smoothedVec.normalize().scale(remainingDistance).add(currentNeckButt);
+                int neckLight = getLightColor(entity, toVec.add(currentNeckButt).add(x, y, z));
+                renderNeckCube(currentNeckButt, next, matrixStackIn, neckConsumer, neckLight, OverlayTexture.NO_OVERLAY, 0);
+                currentNeckButt = next;
+                segmentCount++;
+            }
+            VertexConsumer clawConsumer;
+
+            clawConsumer = bufferIn.getBuffer(RenderType.entityCutoutNoCull(LEVIATHAN_TEXTURES));
+
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(toVec.x, toVec.y, toVec.z);
+            matrixStackIn.translate(0, -0.5F, 0);
+            float rotY = (float) (Mth.atan2(toVec.x, toVec.z) * (double) (180F / (float) Math.PI));
+            float rotX = (float) (-(Mth.atan2(toVec.y, toVec.horizontalDistance()) * (double) (180F / (float) Math.PI)));
+            TONGUE_END_MODEL.setAttributes(rotX, rotY);
+            TONGUE_END_MODEL.renderToBuffer(matrixStackIn, clawConsumer, getLightColor(entity, toVec.add(x, y, z)), OverlayTexture.NO_OVERLAY, 1, 1F, 1, 1F);
+            matrixStackIn.popPose();
+            matrixStackIn.popPose();
+        }
+    }
+
+    public static void renderNeckCube(Vec3 from, Vec3 to, PoseStack poseStack, VertexConsumer buffer, int packedLightIn, int overlayCoords, float additionalYaw) {
+        Vec3 sub = from.subtract(to);
+        double d = sub.horizontalDistance();
+        float rotY = (float) (Mth.atan2(sub.x, sub.z) * (double) (180F / (float) Math.PI));
+        float rotX = (float) (-(Mth.atan2(sub.y, d) * (double) (180F / (float) Math.PI))) - 90.0F;
+        poseStack.pushPose();
+        poseStack.translate(from.x, from.y, from.z);
+        poseStack.translate(0, -0.5F, 0);
+        TONGUE_MODEL.setAttributes((float) sub.length(), rotX, rotY, additionalYaw);
+        TONGUE_MODEL.renderToBuffer(poseStack, buffer, packedLightIn, overlayCoords, 1, 1F, 1, 1);
+        poseStack.popPose();
+    }
+
+    private double modifyVecAngle(double dimension) {
+        float abs = (float) Math.abs(dimension);
+        return Math.signum(dimension) * Mth.clamp(Math.pow(abs, 0.1), 0.05 * abs, abs);
+    }
+
+    private int getLightColor(Entity head, Vec3 vec3) {
+        BlockPos blockpos = new BlockPos(vec3);
+        if(head.level.hasChunkAt(blockpos)){
+            int i = LevelRenderer.getLightColor(head.level, blockpos);
+            int j = LevelRenderer.getLightColor(head.level, blockpos.above());
+            int k = i & 255;
+            int l = j & 255;
+            int i1 = i >> 16 & 255;
+            int j1 = j >> 16 & 255;
+            return (k > l ? k : l) | (i1 > j1 ? i1 : j1) << 16;
+        }else{
+            return 0;
         }
     }
 

@@ -3,7 +3,6 @@ package com.github.L_Ender.cataclysm.entity.projectile;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
@@ -52,7 +51,7 @@ public class Laser_Beam_Entity extends Projectile {
             LivingEntity entity1 = (LivingEntity) this.getOwner();
             int i = entity.getRemainingFireTicks();
             entity.setSecondsOnFire(5);
-            if (!entity.hurt(CMDamageTypes.causeLaserDamage(this, entity1), (float) CMConfig.Laserdamage)) {
+            if (!entity.hurt(CMDamageTypes.causeLaserDamage(this, entity1).setProjectile(), (float) CMConfig.Laserdamage)) {
                 entity.setRemainingFireTicks(i);
             } else if (entity1 != null) {
                 this.doEnchantDamageEffects((LivingEntity)entity1, entity);

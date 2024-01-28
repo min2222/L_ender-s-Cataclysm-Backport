@@ -3,13 +3,14 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 // Paste this class into your mod and generate all required imports
 
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
 import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
 import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
 import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 
-public class ModelThe_Leviathan_Tongue_End extends AdvancedEntityModel<The_Leviathan_Tongue_Entity> {
+import net.minecraft.world.entity.Entity;
+
+public class ModelThe_Leviathan_Tongue_End extends AdvancedEntityModel<Entity> {
 	private final AdvancedModelBox root;
 	private final AdvancedModelBox tongue;
 
@@ -42,7 +43,7 @@ public class ModelThe_Leviathan_Tongue_End extends AdvancedEntityModel<The_Levia
 	}
 
 	@Override
-	public void setupAnim(The_Leviathan_Tongue_Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
+	public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
 		this.resetToDefaultPose();
 	}
 

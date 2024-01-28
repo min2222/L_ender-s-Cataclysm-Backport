@@ -1,9 +1,6 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
-import javax.annotation.Nonnull;
-
 import com.github.L_Ender.cataclysm.init.ModEntities;
-
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -24,6 +21,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+
+import javax.annotation.Nonnull;
 
 public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
     //Projectile goes to a point over a set duration, then activates and accelerates in a given straight line
@@ -52,7 +51,7 @@ public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
             Entity entity = result.getEntity();
             Entity Shooter = this.getOwner();
             LivingEntity livingentity = Shooter instanceof LivingEntity ? (LivingEntity)Shooter : null;
-            boolean flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), 6.0F);
+            boolean flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity).setProjectile(), 6.0F);
             if (flag) {
                 this.doEnchantDamageEffects(livingentity, entity);
                 if (entity instanceof LivingEntity) {
