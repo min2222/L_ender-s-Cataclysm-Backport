@@ -125,6 +125,7 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
         }
     }
 
+
     public static void renderNeckCube(Vec3 from, Vec3 to, PoseStack poseStack, VertexConsumer buffer, int packedLightIn, int overlayCoords, float additionalYaw) {
         Vec3 sub = from.subtract(to);
         double d = sub.horizontalDistance();
@@ -144,18 +145,7 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
     }
 
     private int getLightColor(Entity head, Vec3 vec3) {
-        BlockPos blockpos = new BlockPos(vec3);
-        if(head.level.hasChunkAt(blockpos)){
-            int i = LevelRenderer.getLightColor(head.level, blockpos);
-            int j = LevelRenderer.getLightColor(head.level, blockpos.above());
-            int k = i & 255;
-            int l = j & 255;
-            int i1 = i >> 16 & 255;
-            int j1 = j >> 16 & 255;
-            return (k > l ? k : l) | (i1 > j1 ? i1 : j1) << 16;
-        }else{
-            return 0;
-        }
+    	return 15728880;
     }
 
     @Override
@@ -169,4 +159,3 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
     }
 
 }
-

@@ -258,7 +258,7 @@ public class ModItems {
             () -> new Sandstorm_In_A_Bottle(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
     
     public static final RegistryObject<Item> STICKY_GLOVES = ITEMS.register("sticky_gloves",
-            () -> new Sticky_Gloves(new Item.Properties().stacksTo(1)));
+            () -> new Sticky_Gloves(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1)));
 
     public static final RegistryObject<Item> REMNANT_SKULL = ITEMS.register("remnant_skull",
             () -> new Remnant_Skull(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));

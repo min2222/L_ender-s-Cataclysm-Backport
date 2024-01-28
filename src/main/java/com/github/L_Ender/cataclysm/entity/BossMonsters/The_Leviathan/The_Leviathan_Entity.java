@@ -464,10 +464,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic {
         }
 
         AnimationHandler.INSTANCE.updateAnimations(this);
-        
-        if(this.getAnimation() == NO_ANIMATION){
-            this.setAnimation(LEVIATHAN_GRAB);
-        }
 
         if (!this.isNoAi()) {
             if (this.getAnimation() == NO_ANIMATION && !this.getMeltDown() && this.isMeltDown() && this.isAlive()) {

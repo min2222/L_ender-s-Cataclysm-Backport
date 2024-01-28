@@ -452,7 +452,7 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 		Skul.setTextureOffset(122, 64).addBox(-4.0F, 1.0F, -13.0F, 8.0F, 3.0F, 0.0F, 0.0F, false);
 		Skul.setTextureOffset(8, 0).addBox(4.0F, 1.0F, -13.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);
 		Skul.setTextureOffset(0, 0).addBox(-4.0F, 1.0F, -13.0F, 0.0F, 4.0F, 2.0F, 0.0F, false);
-		
+
 		tongue = new AdvancedModelBox(this);
 		tongue.setRotationPoint(0.0F, -1.0F, 0.0F);
 		Head.addChild(tongue);
@@ -3143,7 +3143,7 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 				Mouth,
 				Mouth1_e);
 	}
-	
+
 	public Vec3 translateToTongue(Vec3 in, float yawIn) {
 		PoseStack modelTranslateStack = new PoseStack();
 		modelTranslateStack.mulPose(Vector3f.YP.rotationDegrees(180.0F - yawIn));
