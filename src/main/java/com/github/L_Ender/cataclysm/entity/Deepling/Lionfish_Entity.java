@@ -108,17 +108,17 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
     }
 
     public boolean hurt(DamageSource p_32820_, float p_32821_) {
-        if (!p_32820_.isMagic() && p_32820_.getDirectEntity() instanceof LivingEntity) {
-            LivingEntity livingentity = (LivingEntity)p_32820_.getDirectEntity();
-            if (!p_32820_.isExplosion()) {
-                boolean flag = livingentity.hurt(DamageSource.thorns(this), 1.0F) && !(livingentity instanceof Lionfish_Entity);
-                if(flag){
-                    livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
-                }
-            }
-        }
+    	if (p_32820_.getDirectEntity() instanceof LivingEntity livingentity) {
+    		if (!(livingentity instanceof Lionfish_Entity)) {
+    			if (!p_32820_.isMagic() && !p_32820_.isExplosion()) {
+    				if (livingentity.hurt(DamageSource.thorns(this), 1.0F)) {
+    					livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
+    				}
+    			}
+    		}
+    	}
 
-        return super.hurt(p_32820_, p_32821_);
+    	return super.hurt(p_32820_, p_32821_);
     }
 
     public void tick(){
