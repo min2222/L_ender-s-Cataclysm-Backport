@@ -1,5 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.tool.ControlledAnimation;
@@ -8,6 +12,7 @@ import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -29,10 +34,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class Death_Laser_Beam_Entity extends Entity {
     public static final double RADIUS = 30;

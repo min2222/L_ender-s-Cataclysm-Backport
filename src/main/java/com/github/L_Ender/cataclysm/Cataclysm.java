@@ -1,10 +1,6 @@
 package com.github.L_Ender.cataclysm;
 
 
-import com.github.L_Ender.cataclysm.message.*;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraftforge.fml.InterModComms;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,12 +24,22 @@ import com.github.L_Ender.cataclysm.init.ModStructurePlacementType;
 import com.github.L_Ender.cataclysm.init.ModStructureProcessor;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
+import com.github.L_Ender.cataclysm.message.MessageCMMultipart;
+import com.github.L_Ender.cataclysm.message.MessageCharge;
+import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
+import com.github.L_Ender.cataclysm.message.MessageHoldEntity;
+import com.github.L_Ender.cataclysm.message.MessageHookFalling;
+import com.github.L_Ender.cataclysm.message.MessageSwingArm;
+import com.github.L_Ender.cataclysm.message.MessageToggleSandstorm;
+import com.github.L_Ender.cataclysm.message.MessageUpdateItemTag;
+import com.github.L_Ender.cataclysm.message.MessageUpdateblockentity;
 import com.github.L_Ender.cataclysm.world.CMMobSpawnBiomeModifier;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -41,12 +47,14 @@ import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;

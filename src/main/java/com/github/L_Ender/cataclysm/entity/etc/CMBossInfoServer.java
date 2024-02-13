@@ -9,7 +9,6 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.BossEvent;
 import net.minecraft.world.entity.Mob;
 
 public class CMBossInfoServer extends ServerBossEvent {

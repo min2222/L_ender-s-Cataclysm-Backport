@@ -1,10 +1,15 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.tool.ControlledAnimation;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
+
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -25,10 +30,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkHooks;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 public class Mini_Abyss_Blast_Entity extends Entity {
     public static final double RADIUS = 15;

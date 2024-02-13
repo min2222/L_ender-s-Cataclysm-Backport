@@ -1,7 +1,11 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,9 +27,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Void_Scatter_Arrow_Entity extends Arrow {
 

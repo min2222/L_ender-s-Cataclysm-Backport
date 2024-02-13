@@ -153,6 +153,8 @@ public class CMConfig {
 
     public static int KoboletonSpawnWeight = 2;
     public static int KoboletonSpawnRolls = 30;
+    
+    public static boolean renderingOffsetFixes = true;
 
     public static void bake(ModConfig config) {
         try {
@@ -297,6 +299,8 @@ public class CMConfig {
 
             KoboletonSpawnWeight = ConfigHolder.COMMON.KoboletonSpawnWeight.get();
             KoboletonSpawnRolls  = ConfigHolder.COMMON.KoboletonSpawnRolls.get();
+            
+            renderingOffsetFixes = ConfigHolder.COMMON.renderingOffsetFixes.get();
 
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("An exception was caused trying to load the config for CM");

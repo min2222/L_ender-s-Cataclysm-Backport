@@ -1,8 +1,11 @@
 package com.github.L_Ender.cataclysm.message;
 
+import java.util.function.Supplier;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.items.UpdatesStackTags;
 import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -11,8 +14,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class MessageUpdateItemTag {
 

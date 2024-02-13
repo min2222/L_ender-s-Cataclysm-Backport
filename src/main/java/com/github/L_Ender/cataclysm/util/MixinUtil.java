@@ -1,8 +1,13 @@
 package com.github.L_Ender.cataclysm.util;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
+
 import com.github.L_Ender.cataclysm.mixin.StructureManagerAccessor;
 import com.github.L_Ender.cataclysm.mixin.WorldGenRegionAccessor;
 import com.google.common.collect.ImmutableList;
+
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.SectionPos;
@@ -13,10 +18,6 @@ import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.chunk.ChunkStatus;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * Util methods taken from vanilla, with slight tweaks to prevent log spam.

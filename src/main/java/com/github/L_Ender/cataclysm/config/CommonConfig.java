@@ -141,6 +141,8 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue AmethystCrabSpawnRolls;
     public final ForgeConfigSpec.IntValue KoboletonSpawnWeight;
     public final ForgeConfigSpec.IntValue KoboletonSpawnRolls;
+    
+    public final ForgeConfigSpec.BooleanValue renderingOffsetFixes;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("Etc");
@@ -313,6 +315,8 @@ public class CommonConfig {
         KoboletonSpawnWeight = buildInt(builder, "KoboletonSpawnWeight", "spawns", CMConfig.KoboletonSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         KoboletonSpawnRolls = buildInt(builder, "KoboletonSpawnRolls", "spawns", CMConfig.KoboletonSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
+        renderingOffsetFixes = buildBoolean(builder, "renderingOffsetFixes", "all", CMConfig.renderingOffsetFixes, "if you experience ancient remnant looks like floating or stuck in ground while hitbox is normal, try change this value");
+        
         builder.pop();
     }
 

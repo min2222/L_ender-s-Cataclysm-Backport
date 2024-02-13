@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.init.ModEntities;
+import com.github.L_Ender.cataclysm.init.ModTag;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -102,7 +103,9 @@ public class The_Leviathan_Tongue_Entity extends Entity {
 
     private void hurtEntity(LivingEntity holder, Entity target) {
         if(target.hurt(DamageSource.mobAttack(holder), 6)){
-            target.startRiding(this);
+        	if(!target.getType().is(ModTag.IGNIS_CANT_POKE)) {
+            	target.startRiding(this);
+        	}
         }
     }
 

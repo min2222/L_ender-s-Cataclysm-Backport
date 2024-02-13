@@ -1,6 +1,9 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
+import javax.annotation.Nonnull;
+
 import com.github.L_Ender.cataclysm.init.ModEntities;
+
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,8 +24,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-
-import javax.annotation.Nonnull;
 
 public class Ender_Guardian_Bullet_Entity extends AbstractHurtingProjectile {
     //Projectile goes to a point over a set duration, then activates and accelerates in a given straight line

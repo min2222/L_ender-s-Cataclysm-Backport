@@ -1,5 +1,9 @@
 package com.github.L_Ender.cataclysm.items.CuriosItem;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -8,9 +12,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class Sticky_Gloves extends CuriosItem {
 

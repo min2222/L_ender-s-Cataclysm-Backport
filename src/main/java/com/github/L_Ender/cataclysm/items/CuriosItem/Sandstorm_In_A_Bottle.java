@@ -1,11 +1,16 @@
 package com.github.L_Ender.cataclysm.items.CuriosItem;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModKeybind;
 import com.github.L_Ender.cataclysm.message.MessageToggleSandstorm;
 import com.github.L_Ender.cataclysm.util.SandstormUtils;
+
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -16,9 +21,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurio;
-
-import javax.annotation.Nullable;
-import java.util.List;
 
 public class Sandstorm_In_A_Bottle extends CuriosItem {
 

@@ -1,13 +1,14 @@
 package com.github.L_Ender.cataclysm.message;
 
+import java.util.function.Supplier;
+
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.util.SandstormUtils;
+
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class MessageToggleSandstorm {
 
