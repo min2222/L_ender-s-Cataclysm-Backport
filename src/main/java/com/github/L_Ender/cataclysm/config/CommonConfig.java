@@ -324,8 +324,8 @@ public class CommonConfig {
         builder.pop();
 
         builder.push("World Generation");
-        cursedPyramidCheckRange = buildInt(builder, "cursedPyramidCheckRange", "all", CMConfig.cursedPyramidCheckRange, 0, 5, "Defines the area in which the structure check for height variances (1 means 9 chunks will be checked (center + area around it)) - 0 disables this check");
-        cursedPyramidHeightVariance = buildInt(builder, "cursedPyramidHeightVariance", "all", CMConfig.cursedPyramidCheckRange, 0, 32, "Allowed height variance for the check - if the variance is lower than this value the structure will not spawn (has no effect if the are check is disabled)");
+        cursedPyramidCheckRange = buildInt(builder, "cursedPyramidCheckRange", "all", CMConfig.cursedPyramidCheckRange, 0, 4, "Defines the area in which the structure checks for height variances (1 means 9 chunks will be checked (center + area around it)) - 0 disables this check");
+        cursedPyramidHeightVariance = buildInt(builder, "cursedPyramidHeightVariance", "all", CMConfig.cursedPyramidHeightVariance, 0, 32, "Allowed height variance for the check - if the variance is lower than this value the structure will not spawn (has no effect if the are check is disabled)");
         builder.pop();
     }
 
