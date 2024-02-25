@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.config;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-
 import net.minecraftforge.fml.config.ModConfig;
 
 public class CMConfig {
@@ -156,6 +155,9 @@ public class CMConfig {
     
     public static boolean renderingOffsetFixes = true;
 
+    public static int cursedPyramidCheckRange = 2;
+    public static int cursedPyramidHeightVariance = 7;
+
     public static void bake(ModConfig config) {
         try {
             LavaVisionOpacity = ConfigHolder.COMMON.LavaVisionOpacity.get();
@@ -301,6 +303,9 @@ public class CMConfig {
             KoboletonSpawnRolls  = ConfigHolder.COMMON.KoboletonSpawnRolls.get();
             
             renderingOffsetFixes = ConfigHolder.COMMON.renderingOffsetFixes.get();
+
+            cursedPyramidCheckRange = ConfigHolder.COMMON.cursedPyramidCheckRange.get();
+            cursedPyramidHeightVariance = ConfigHolder.COMMON.cursedPyramidHeightVariance.get();
 
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("An exception was caused trying to load the config for CM");
