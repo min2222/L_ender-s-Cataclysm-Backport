@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.registries.DeferredRegister;
@@ -199,9 +200,8 @@ public class ModBlocks {
                     strength(2.0F, 3.0F)
                     .sound(SoundType.WOOD)));
 
-
     public static final RegistryObject<Block> CHORUS_PLANKS = BLOCKS.register("chorus_planks",
-            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.COLOR_PURPLE).
+            () -> new Block(BlockBehaviour.Properties.of(Material.WOOD).color(MaterialColor.COLOR_PURPLE).
                     strength(2.0F, 3.0F)
                     .sound(SoundType.WOOD)));
 
