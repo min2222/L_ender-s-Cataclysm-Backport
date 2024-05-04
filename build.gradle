@@ -139,9 +139,7 @@ dependencies {
 
 
 mixin {
-    add sourceSets.main, "citadel.refmap.json"
     add sourceSets.main, "cataclysm.refmap.json"
-    config 'citadel.mixins.json'
     config 'cataclysm.mixins.json'
 }
 
