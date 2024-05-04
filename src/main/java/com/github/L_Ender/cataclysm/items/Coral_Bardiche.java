@@ -47,7 +47,7 @@ public class Coral_Bardiche extends Item implements Vanishable {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 9.0D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", (double)-3.2F, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("8A189F9D-0CAD-4F4F-BE2D-EE7586DAA7D1"), "Tool modifier", 1.5F, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(UUID.fromString("8A189F9D-0CAD-4F4F-BE2D-EE7586DAA7D1"), "Tool modifier", 1.5F, AttributeModifier.Operation.ADDITION));
         this.defaultModifiers = builder.build();
     }
 

@@ -23,7 +23,7 @@ public class Athame extends SwordItem {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 4.0D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -1.8F, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("F0A24AD4-7D3B-4890-A3E6-CDFF88DA7975"), "Tool modifier", -1.0F, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(UUID.fromString("F0A24AD4-7D3B-4890-A3E6-CDFF88DA7975"), "Tool modifier", -1.0F, AttributeModifier.Operation.ADDITION));
         this.incineratorAttributes = builder.build();
     }
 
