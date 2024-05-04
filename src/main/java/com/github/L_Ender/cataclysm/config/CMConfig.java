@@ -180,6 +180,9 @@ public class CMConfig {
 
     public static int IgnitedBerserkerSpawnWeight = 1;
     public static int IgnitedBerserkerSpawnRolls = 30;
+    
+    public static int cursedPyramidCheckRange = 2;
+    public static int cursedPyramidHeightVariance = 7;
 
     public static void bake(ModConfig config) {
         try {
@@ -353,6 +356,9 @@ public class CMConfig {
 
             IgnitedBerserkerSpawnWeight = ConfigHolder.COMMON.IgnitedBerserkerSpawnWeight.get();
             IgnitedBerserkerSpawnRolls = ConfigHolder.COMMON.IgnitedBerserkerSpawnRolls.get();
+            
+            cursedPyramidCheckRange = ConfigHolder.COMMON.cursedPyramidCheckRange.get();
+            cursedPyramidHeightVariance = ConfigHolder.COMMON.cursedPyramidHeightVariance.get();
 
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("An exception was caused trying to load the config for CM");
