@@ -1,8 +1,8 @@
 package com.github.L_Ender.cataclysm.client.model.item;
 
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -3,9 +3,9 @@ package com.github.L_Ender.cataclysm.client.model.block;// Made with Blockbench 
 // Paste this class into your mod and generate all required imports
 
 
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.world.entity.Entity;

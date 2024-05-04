@@ -4,7 +4,7 @@ package com.github.L_Ender.cataclysm;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.github.L_Ender.cataclysm.client.model.armor.CMModelLayers;
+import com.github.L_Ender.cataclysm.client.model.CMModelLayers;
 import com.github.L_Ender.cataclysm.config.BiomeConfig;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.config.ConfigHolder;
@@ -13,7 +13,6 @@ import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-import com.github.L_Ender.cataclysm.init.ModGroup;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModMenu;
 import com.github.L_Ender.cataclysm.init.ModParticle;
@@ -24,37 +23,36 @@ import com.github.L_Ender.cataclysm.init.ModStructurePlacementType;
 import com.github.L_Ender.cataclysm.init.ModStructureProcessor;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
+import com.github.L_Ender.cataclysm.message.MessageArmorKey;
 import com.github.L_Ender.cataclysm.message.MessageCMMultipart;
 import com.github.L_Ender.cataclysm.message.MessageCharge;
 import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
-import com.github.L_Ender.cataclysm.message.MessageHoldEntity;
 import com.github.L_Ender.cataclysm.message.MessageHookFalling;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
+import com.github.L_Ender.cataclysm.message.MessageTidalTentacle;
 import com.github.L_Ender.cataclysm.message.MessageToggleSandstorm;
-import com.github.L_Ender.cataclysm.message.MessageUpdateItemTag;
+import com.github.L_Ender.cataclysm.message.MessageUpdateBossBar;
 import com.github.L_Ender.cataclysm.message.MessageUpdateblockentity;
 import com.github.L_Ender.cataclysm.world.CMMobSpawnBiomeModifier;
+import com.github.L_Ender.cataclysm.world.CMMobSpawnStructureModifier;
 import com.mojang.serialization.Codec;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.BiomeModifier;
+import net.minecraftforge.common.world.StructureModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
@@ -62,9 +60,6 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.server.ServerLifecycleHooks;
-import top.theillusivec4.curios.api.CuriosApi;
-import top.theillusivec4.curios.api.SlotTypeMessage;
-import top.theillusivec4.curios.api.SlotTypePreset;
 
 //import com.github.L_Ender.cataclysm.init.ModStructures;
 
@@ -75,7 +70,6 @@ public class Cataclysm {
     public static final Logger LOGGER = LogManager.getLogger();
     public static final SimpleChannel NETWORK_WRAPPER;
     private static final String PROTOCOL_VERSION = Integer.toString(1);
-    public static final CreativeModeTab TAB = new ModGroup();
     public static CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
     private static int packetsRegistered;
 
@@ -118,10 +112,13 @@ public class Cataclysm {
         MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ModCapabilities::attachEntityCapability);
         bus.addListener(ModCapabilities::registerCapabilities);
-        bus.addListener(this::enqueueIMC);
+
         final DeferredRegister<Codec<? extends BiomeModifier>> biomeModifiers = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Cataclysm.MODID);
         biomeModifiers.register(bus);
         biomeModifiers.register("cataclysm_mob_spawns", CMMobSpawnBiomeModifier::makeCodec);
+        final DeferredRegister<Codec<? extends StructureModifier>> structureModifiers = DeferredRegister.create(ForgeRegistries.Keys.STRUCTURE_MODIFIER_SERIALIZERS, Cataclysm.MODID);
+        structureModifiers.register(bus);
+        structureModifiers.register("cataclysm_structure_spawns", CMMobSpawnStructureModifier::makeCodec);
 
     }
 
@@ -157,25 +154,19 @@ public class Cataclysm {
         PROXY.clientInit();
     }
 
-    public void enqueueIMC(final InterModEnqueueEvent event) {
-        SlotTypePreset[] types = {SlotTypePreset.HEAD, SlotTypePreset.NECKLACE, SlotTypePreset.BELT};
-        for (SlotTypePreset type : types) {
-            InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> type.getMessageBuilder().build());
-        }
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> SlotTypePreset.HANDS.getMessageBuilder().size(2).build());
-        InterModComms.sendTo(CuriosApi.MODID, SlotTypeMessage.REGISTER_TYPE, () -> new SlotTypeMessage.Builder("feet").priority(220).icon(InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS).build());
-    }
 
     private void setup(final FMLCommonSetupEvent event) {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCMMultipart.class, MessageCMMultipart::encode, MessageCMMultipart::new, MessageCMMultipart.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateblockentity.class, MessageUpdateblockentity::write, MessageUpdateblockentity::read, MessageUpdateblockentity.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageHookFalling.class, MessageHookFalling::encode, MessageHookFalling::new, MessageHookFalling.Handler::onMessage);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageTidalTentacle.class, MessageTidalTentacle::encode, MessageTidalTentacle::new, MessageTidalTentacle.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageGoneWithSandstorm.class, MessageGoneWithSandstorm::encode, MessageGoneWithSandstorm::new, MessageGoneWithSandstorm.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCharge.class, MessageCharge::encode, MessageCharge::new, MessageCharge.Handler::onMessage);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageHoldEntity.class, MessageHoldEntity::write, MessageHoldEntity::new, MessageHoldEntity.Handler::handle);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateItemTag.class, MessageUpdateItemTag::write, MessageUpdateItemTag::read, MessageUpdateItemTag::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageToggleSandstorm.class, MessageToggleSandstorm::encode, MessageToggleSandstorm::new, MessageToggleSandstorm.Handler::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateBossBar.class, MessageUpdateBossBar::write, MessageUpdateBossBar::read, MessageUpdateBossBar::handle);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageArmorKey.class, MessageArmorKey::write, MessageArmorKey::read, MessageArmorKey::handle);
+
         event.enqueueWork(ModItems::initDispenser);
     }
 }

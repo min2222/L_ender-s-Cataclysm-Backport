@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.github.L_Ender.cataclysm.client.model.entity.ModelIgnis;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignis_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignis_Entity;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 

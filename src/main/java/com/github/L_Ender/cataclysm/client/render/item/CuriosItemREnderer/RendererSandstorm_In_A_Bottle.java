@@ -1,6 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer;
 
-import com.github.L_Ender.cataclysm.client.model.armor.CMModelLayers;
+import com.github.L_Ender.cataclysm.client.model.CMModelLayers;
 import com.github.L_Ender.cataclysm.client.model.item.CuriosModel.Sandstorm_In_A_BottleModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

@@ -1,85 +1,102 @@
 package com.github.L_Ender.cataclysm.crafting;
 
-import java.lang.reflect.Type;
-
-import com.github.alexthe666.citadel.client.model.container.JsonUtils;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
+import com.github.L_Ender.cataclysm.init.ModRecipeSerializers;
+import com.github.L_Ender.cataclysm.init.ModRecipeTypes;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.core.NonNullList;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.level.Level;
 
-public class AltarOfAmethystRecipe {
-    private final NonNullList<Ingredient> ingredients;
-    private ItemStack result = ItemStack.EMPTY;
-    private int time = 0;
+public class AltarOfAmethystRecipe implements Recipe<Container> {
+    private final Ingredient ingredients;
+    private ItemStack result;
+    private int time;
+    private final ResourceLocation id;
 
-    public AltarOfAmethystRecipe(NonNullList<Ingredient> ingredients, ItemStack result, int time) {
-        this.result = result;
+    public AltarOfAmethystRecipe(ResourceLocation p_44523_,Ingredient ingredients, ItemStack result, int time) {
+        this.id = p_44523_;
         this.ingredients = ingredients;
+        this.result = result;
         this.time = time;
-    }
-
-    private static NonNullList<Ingredient> readIngredients(JsonArray ingredientArray) {
-        NonNullList<Ingredient> nonnulllist = NonNullList.create();
-
-        for (int i = 0; i < ingredientArray.size(); ++i) {
-            Ingredient ingredient = Ingredient.fromJson(ingredientArray.get(i));
-            if (!ingredient.isEmpty()) {
-                nonnulllist.add(ingredient);
-            }
-        }
-        return nonnulllist;
     }
 
     public ItemStack getResult() {
         return result;
     }
 
-    public NonNullList<Ingredient> getIngredients() {
-        return ingredients;
+    @Override
+    public boolean matches(Container p_44002_, Level p_44003_) {
+        return this.ingredients.test(p_44002_.getItem(0));
+    }
+
+    @Override
+    public ItemStack assemble(Container p_44001_) {
+        return this.result.copy();
+    }
+
+    @Override
+    public boolean canCraftInDimensions(int p_43999_, int p_44000_) {
+        return true;
+    }
+
+    public Ingredient getbaseIngredient() {
+        return this.ingredients;
+    }
+
+    @Override
+    public ItemStack getResultItem() {
+        return this.result;
+    }
+
+    @Override
+    public ResourceLocation getId() {
+        return this.id;
+    }
+
+    public RecipeSerializer<?> getSerializer() {
+        return ModRecipeSerializers.AMETHYST_BLESS.get();
+    }
+
+    public RecipeType<?> getType() {
+        return ModRecipeTypes.AMETHYST_BLESS.get();
     }
 
     public int getTime() {
         return time;
     }
 
-    public boolean matches(ItemStack... stacks) {
-        IntList taken = new IntArrayList();
-        ItemStack[] copy = new ItemStack[stacks.length];
-        for (int j = 0; j < copy.length; j++) {
-            copy[j] = stacks[j].copy();
-            for (int i = 0; i < ingredients.size(); i++) {
-                if (ingredients.get(i).test(copy[j])) {
-                    taken.add(j);
-                    copy[j].shrink(1);
-                }
-            }
-        }
-        return taken.size() >= ingredients.size();
-    }
 
-    public static class Deserializer implements JsonDeserializer<AltarOfAmethystRecipe> {
+    public static class Serializer implements RecipeSerializer<AltarOfAmethystRecipe> {
 
-        @Override
-        public AltarOfAmethystRecipe deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-            JsonObject jsonobject = json.getAsJsonObject();
-            int time = JsonUtils.getInt(jsonobject, "time");
-            ItemStack result = ItemStack.EMPTY;
-            if (jsonobject.has("result")) {
-                result = ShapedRecipe.itemStackFromJson(JsonUtils.getJsonObject(jsonobject, "result"));
-            }
-            NonNullList<Ingredient> nonnulllist = readIngredients(JsonUtils.getJsonArray(jsonobject, "ingredients"));
-            return new AltarOfAmethystRecipe(nonnulllist, result, time);
+        public AltarOfAmethystRecipe fromJson(ResourceLocation p_44562_, JsonObject p_44563_) {
+            Ingredient ingredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(p_44563_, "ingredients"));
+            ItemStack itemstack = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(p_44563_, "result"));
+            int i = GsonHelper.getAsInt(p_44563_, "time", 200);
+            return new AltarOfAmethystRecipe(p_44562_, ingredient, itemstack, i);
         }
+
+        public AltarOfAmethystRecipe fromNetwork(ResourceLocation p_44565_, FriendlyByteBuf p_44566_) {
+            Ingredient ingredient = Ingredient.fromNetwork(p_44566_);
+            ItemStack itemstack = p_44566_.readItem();
+            int i = p_44566_.readVarInt();
+            return new AltarOfAmethystRecipe(p_44565_, ingredient, itemstack, i);
+        }
+
+        public void toNetwork(FriendlyByteBuf p_44553_, AltarOfAmethystRecipe p_44554_) {
+            p_44554_.ingredients.toNetwork(p_44553_);
+            p_44553_.writeItem(p_44554_.result);
+            p_44553_.writeVarInt(p_44554_.time);
+        }
+
 
     }
 }

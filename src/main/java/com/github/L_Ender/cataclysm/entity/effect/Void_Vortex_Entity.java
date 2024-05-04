@@ -4,18 +4,18 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.client.particle.StormParticle;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,7 +50,7 @@ public class Void_Vortex_Entity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
@@ -69,21 +69,16 @@ public class Void_Vortex_Entity extends Entity {
 
         if(Math.min(tickCount, this.getLifespan()) >= 16){
             if(level.isClientSide) {
-                float spawnPercent = 2.0f;
-                float maxY = 2.5F * spawnPercent * 1.65F;
-                float y = 0;
-                float nY = 120 * spawnPercent;
-                float dY = maxY / nY;
-                double posX = this.getX();
-                double posY = this.getY();
-                double posZ = this.getZ();
-                for (float a = 0, nA = 28, dA = (1.4F * (float) Math.PI) / nA; y < maxY; a += dA) {
-                    float radius = y * 0.35F;
-                    float cosA = Mth.cos(a) * radius;
-                    float sinA = Mth.sin(a) * radius;
-                    level.addParticle(ParticleTypes.REVERSE_PORTAL, posX + cosA, posY + y - (maxY * 0.15), posZ + sinA, 0.0D, 0D, 0.0D);
-                    y += dY;
-                }
+                float r = 0.4F;
+                float g = 0.1f;
+                float b = 0.8f;
+                this.level.addParticle((new StormParticle.OrbData(r, g, b,2.5F + random.nextFloat() * 0.9f,5 + random.nextFloat() * 0.9f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+                this.level.addParticle((new StormParticle.OrbData(r, g, b,2.25f + random.nextFloat() * 0.6f,4.25F + random.nextFloat() * 0.6f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+                this.level.addParticle((new StormParticle.OrbData(r, g, b,2f + random.nextFloat() * 0.45f,3.5F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+                this.level.addParticle((new StormParticle.OrbData(r, g, b,1.5f + random.nextFloat() * 0.25f,2.75F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+                this.level.addParticle((new StormParticle.OrbData(r, g, b,1.25f + random.nextFloat() * 0.25f,2.0F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+                this.level.addParticle((new StormParticle.OrbData(r, g, b,1.0f + random.nextFloat() * 0.25f,1.25F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+                this.level.addParticle((new StormParticle.OrbData(r, g, b,0.75f + random.nextFloat() * 0.25f,0.5F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
             }
             AABB screamBox = new AABB(this.getX() - 3f, this.getY(), this.getZ() - 3, this.getX() + 3, this.getY() + 15F, this.getZ() + 3F);
 

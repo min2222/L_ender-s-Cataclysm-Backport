@@ -1,7 +1,8 @@
 package com.github.L_Ender.cataclysm.config;
 
-import com.github.alexthe666.citadel.config.biome.BiomeEntryType;
-import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
+
+import com.github.L_Ender.lionfishapi.config.biome.BiomeEntryType;
+import com.github.L_Ender.lionfishapi.config.biome.SpawnBiomeData;
 
 public class DefaultBiomes {
 

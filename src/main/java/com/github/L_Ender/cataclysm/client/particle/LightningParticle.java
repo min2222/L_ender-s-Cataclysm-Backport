@@ -3,9 +3,9 @@ package com.github.L_Ender.cataclysm.client.particle;
 import java.util.Locale;
 import java.util.Random;
 
+import com.github.L_Ender.cataclysm.client.render.etc.LightningBoltData;
+import com.github.L_Ender.cataclysm.client.render.etc.LightningRender;
 import com.github.L_Ender.cataclysm.init.ModParticle;
-import com.github.alexthe666.citadel.client.render.LightningBoltData;
-import com.github.alexthe666.citadel.client.render.LightningRender;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.brigadier.StringReader;

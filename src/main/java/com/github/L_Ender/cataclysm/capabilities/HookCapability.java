@@ -69,7 +69,7 @@ public class HookCapability {
         }
 
         public static class HookProvider implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
-            private final LazyOptional<IHookCapability> instance = LazyOptional.of(HookCapabilityImp::new);
+            private final LazyOptional<IHookCapability> instance = LazyOptional.of(HookCapability.HookCapabilityImp::new);
 
             @Override
             public CompoundTag serializeNBT() {

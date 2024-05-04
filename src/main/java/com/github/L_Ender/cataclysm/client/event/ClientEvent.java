@@ -2,19 +2,21 @@ package com.github.L_Ender.cataclysm.client.event;
 
 import java.util.Random;
 
-import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
+import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.ClientProxy;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.client.model.entity.Model_PlayerSandstorm;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.client.render.etc.LavaVisionFluidRenderer;
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Hold_Attack_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
-import com.github.alexthe666.citadel.client.event.EventGetFluidRenderType;
+import com.github.L_Ender.lionfishapi.client.event.EventGetFluidRenderType;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -24,7 +26,8 @@ import com.mojang.math.Vector3f;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -44,6 +47,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.FogType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 import net.minecraftforge.client.event.MovementInputUpdateEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
@@ -55,6 +59,7 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
@@ -65,6 +70,8 @@ public class ClientEvent {
     private static final ResourceLocation SANDSTORM_ICON = new ResourceLocation("cataclysm:textures/gui/sandstorm_icons.png");
     private static final ResourceLocation EFFECT_HEART = new ResourceLocation("cataclysm:textures/gui/effect_heart.png");
     private static final ResourceLocation SANDSTORM_TEXTURE = new ResourceLocation("cataclysm:textures/entity/ancient_remnant/sandstorm.png");
+    protected static final ResourceLocation BOSS_BAR_HUD_OVERLAYSTEXTURE = new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar_frames.png");
+    private static final ResourceLocation GUI_BARS_LOCATION = new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar.png");
     private static final Model_PlayerSandstorm SANDSTORM_MODEL = new Model_PlayerSandstorm();
     private final Random random = new Random();
     private int lastHealth;
@@ -107,7 +114,7 @@ public class ClientEvent {
     public void onFogDensity(ViewportEvent.RenderFog event) {
         FogType fogType = event.getCamera().getFluidInCamera();
         ItemStack itemstack = Minecraft.getInstance().player.getInventory().getArmor(3);
-        if (itemstack.is(ModItems.IGNITIUM_HEAD.get()) && fogType == FogType.LAVA) {
+        if (itemstack.is(ModItems.IGNITIUM_HELMET.get()) && fogType == FogType.LAVA) {
             RenderSystem.setShaderFogStart(-8.0F);
             RenderSystem.setShaderFogEnd(50.0F);
         }
@@ -142,7 +149,7 @@ public class ClientEvent {
             Minecraft mc = Minecraft.getInstance();
             ForgeGui gui = (ForgeGui)mc.gui;
             if (player.isPassenger()) {
-                if (player.getVehicle() instanceof The_Leviathan_Tongue_Entity) {
+                if (player.getVehicle() instanceof The_Leviathan_Tongue_Entity || player.getVehicle() instanceof Hold_Attack_Entity) {
                     if (event.getOverlay().id().equals(VanillaGuiOverlay.HELMET.id())) {
                         Minecraft.getInstance().gui.setOverlayMessage(Component.translatable("entity.cataclysm.you_cant_escape"), false);
                     }
@@ -217,32 +224,13 @@ public class ClientEvent {
     @OnlyIn(Dist.CLIENT)
     public void onPreRenderPlayer(RenderPlayerEvent.Pre event) {
         Player player = event.getEntity();
-        Bloom_Stone_PauldronsCapability.IBloom_Stone_PauldronsCapability chargeCapability = ModCapabilities.getCapability(player, ModCapabilities.BLOOM_STONE_PAULDRONS_CAPABILITY_CAPABILITY);
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(player, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
         if (SandstormCapability != null) {
             if (SandstormCapability.isSandstorm()) {
                 return;
             }
         }
-        if (chargeCapability != null) {
-            if(chargeCapability.isBurrow()) {
-                event.getPoseStack().pushPose();
-                event.getPoseStack().translate(0.0D, -event.getEntity().getBbHeight(), 0.0D);
-            }
-        }
 
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public void onPostRenderPlayer(RenderPlayerEvent.Post event) {
-        Player player = event.getEntity();
-        Bloom_Stone_PauldronsCapability.IBloom_Stone_PauldronsCapability chargeCapability = ModCapabilities.getCapability(player, ModCapabilities.BLOOM_STONE_PAULDRONS_CAPABILITY_CAPABILITY);
-        if (chargeCapability != null) {
-            if(chargeCapability.isBurrow()) {
-                event.getPoseStack().popPose();
-            }
-        }
     }
 
     public void drawVertex(Matrix4f p_229039_1_, Matrix3f p_229039_2_, VertexConsumer p_229039_3_, int p_229039_4_, int p_229039_5_, int p_229039_6_, float p_229039_7_, float p_229039_8_, int p_229039_9_, int p_229039_10_, int p_229039_11_, int p_229039_12_) {
@@ -272,7 +260,7 @@ public class ClientEvent {
         if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
             if (!CMConfig.shadersCompat) {
                 ItemStack itemstack = Minecraft.getInstance().player.getInventory().getArmor(3);
-                if (itemstack.is(ModItems.IGNITIUM_HEAD.get())) {
+                if (itemstack.is(ModItems.IGNITIUM_HELMET.get())) {
                     if (!previousLavaVision) {
                         previousFluidRenderer = Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer;
                         Minecraft.getInstance().getBlockRenderer().liquidBlockRenderer = new LavaVisionFluidRenderer();
@@ -286,7 +274,7 @@ public class ClientEvent {
                         updateAllChunks();
                     }
                 }
-                previousLavaVision = itemstack.is(ModItems.IGNITIUM_HEAD.get());
+                previousLavaVision = itemstack.is(ModItems.IGNITIUM_HELMET.get());
             }
         }
     }
@@ -294,7 +282,7 @@ public class ClientEvent {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public void onGetFluidRenderType(EventGetFluidRenderType event) {
-        if (Minecraft.getInstance().player.getInventory().getArmor(3).is(ModItems.IGNITIUM_HEAD.get()) && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
+        if (Minecraft.getInstance().player.getInventory().getArmor(3).is(ModItems.IGNITIUM_HELMET.get()) && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
             event.setRenderType(RenderType.translucent());
             event.setResult(Event.Result.ALLOW);
         }
@@ -364,7 +352,8 @@ public class ClientEvent {
             if (i == regen) {
                 y -= 2;
             }
-            
+
+            RenderSystem.setShaderTexture(0, EFFECT_HEART);
             gui.blit(stack, x, y, BACKGROUND, TOP, 9, 9);
             if (highlight) {
                 if (i * 2 + 1 < healthLast) {
@@ -398,6 +387,7 @@ public class ClientEvent {
         Minecraft mc = Minecraft.getInstance();
         ForgeGui gui = (ForgeGui) mc.gui;
         PoseStack stack = event.getPoseStack();
+        RenderSystem.setShaderTexture(0, SANDSTORM_ICON);
         gui.setupOverlayRenderState(true, false);
         int width = event.getWindow().getGuiScaledWidth();
         int height = event.getWindow().getGuiScaledHeight();
@@ -420,12 +410,194 @@ public class ClientEvent {
                 int partial = Mth.ceil(progress * 10) - full;
 
                 for (int i = 0; i < full + partial; ++i) {
-                	RenderSystem.setShaderTexture(0, SANDSTORM_ICON);
-                    GuiComponent.blit(stack, left - i * 8 - 9, top, -90, (i < full ? 0 : 9), 0, 9, 9, 32, 16);
+                    Screen.blit(stack, left - i * 8 - 9, top, -90, (i < full ? 0 : 9), 0, 9, 9, 32, 16);
                 }
                 gui.rightHeight += 10;
 
                 RenderSystem.disableBlend();
+            }
+        }
+    }
+
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void renderBossOverlay(CustomizeGuiOverlayEvent.BossEventProgress event){
+        if(CMConfig.custombossbar) {
+            if (ClientProxy.bossBarRenderTypes.containsKey(event.getBossEvent().getId())) {
+                int renderTypeFor = ClientProxy.bossBarRenderTypes.get(event.getBossEvent().getId());
+                int g = Minecraft.getInstance().getWindow().getGuiScaledWidth();
+                int pX = g / 2 - 94;
+                int pY = event.getY() - 2;
+                Component component = event.getBossEvent().getName();
+                int i = (int) (event.getBossEvent().getProgress() * 182.0F);
+                int l = Minecraft.getInstance().font.width(component);
+                //N.M
+                if (renderTypeFor == 0) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 2, 0, 0, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 3, 0, 6, i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 0, 188, 9, 256, 256);
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0Xec3500, 0X3c3947, poseStack.last().pose(), Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 7);
+                }
+                //E.G
+                if (renderTypeFor == 1) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 2, 0, 10, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 3, 0, 16, i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 9, 188, 9, 256, 256);
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0Xa472a3,0X754576, poseStack.last().pose(),  Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 7);
+                }
+                //Ignis 1 Phase
+                if (renderTypeFor == 2) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 2, 0, 30, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 3, 0, 36, i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 27, 188, 9, 256, 256);
+
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0Xe9ec00,0X733b45, poseStack.last().pose(),  Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 7);
+                }
+                //Ignis 2,3 Phase
+                if (renderTypeFor == 3) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 2, 0, 39, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 3, 0, 45, i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 36, 188, 9, 256, 256);
+
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0X00b7ec,0X003a4a, poseStack.last().pose(),  Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 7);
+                }
+                //Harbinger
+                if (renderTypeFor == 4) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 2, 0, 20, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 3, 0, 26, i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 18, 188, 9, 256, 256);
+
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0Xec3500, 0X1e2021, poseStack.last().pose(),  Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 7);
+                }
+                //Leviathan 1
+                if (renderTypeFor == 5) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 5, 0, 50, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 6, 0, 56, (int) i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 45, 188, 13, 256, 256);
+
+
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0X7b00ec, 0X26004a, poseStack.last().pose(),  Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 7);
+                }
+                //Leviathan 2
+                if (renderTypeFor == 6) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 6, 0, 50, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 7, 0, 56, i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 62, 188, 16, 256, 256);
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0X7b00ec, 0X26004a, poseStack.last().pose(),  Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 7);
+                }
+                //Remnant
+                if (renderTypeFor == 7) {
+                    event.setCanceled(true);
+                    RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                    Gui.blit(event.getPoseStack(), pX + 3, pY + 10, 0, 60, 182, 5, 256, 256);
+                    if (i > 0) {
+                        RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
+                        Gui.blit(event.getPoseStack(), pX + 3, pY + 11, 0, 66, i, 5, 256, 256);
+                    }
+                    RenderSystem.setShaderTexture(0, BOSS_BAR_HUD_OVERLAYSTEXTURE);
+                    Gui.blit(event.getPoseStack(), pX, pY, 0, 79, 188, 26, 256, 256);
+                    int i1 = g / 2 - l / 2;
+                    int j1 = pY - 9;
+                    PoseStack poseStack = event.getPoseStack();
+                    poseStack.pushPose();
+                    poseStack.translate(i1, j1, 0);
+                    Minecraft.getInstance().font.drawInBatch8xOutline(component.getVisualOrderText(), 0.0F, 0.0F, 0Xececec,0X682e22, poseStack.last().pose(),  Minecraft.getInstance().renderBuffers().bufferSource(), 240);
+                    poseStack.popPose();
+                    event.setIncrement(event.getIncrement() + 12);
+                }
             }
         }
     }

@@ -1,9 +1,9 @@
 package com.github.L_Ender.cataclysm.client.model.entity;
 
 import com.github.L_Ender.cataclysm.entity.projectile.Lava_Bomb_Entity;
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.world.entity.Entity;
@@ -18,7 +18,7 @@ public class ModelLava_Bomb extends AdvancedEntityModel<Entity> {
         texHeight = 64;
 
         root = new AdvancedModelBox(this);
-        root.setPos(0.0F, 4F, 0.0F);
+        root.setRotationPoint(0.0F, 4F, 0.0F);
 
 
 

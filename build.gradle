@@ -46,7 +46,7 @@ repositories{
 
 }
 
-version = '1.90-1.19.2'
+version = '1.99.2-1.19.2'
 group = 'com.github.L_Ender' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'L_Enders_Cataclysm'
 
@@ -125,10 +125,10 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.3.0'
+    minecraft 'net.minecraftforge:forge:1.19.2-43.3.8'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     implementation fg.deobf("curse.maven:archaeology-api-950822:4996103")
-    implementation fg.deobf("curse.maven:citadel-331936:4556677")
+    implementation fg.deobf("com.github.L_ender:lionfishapi:1.8")
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}"))
     compileOnly fg.deobf("top.theillusivec4.curios:curios-forge:${curios_version}:api")

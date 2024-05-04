@@ -6,6 +6,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -17,12 +20,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.network.PlayMessages;
 
 
 public class EarthQuake_Entity extends ThrowableProjectile {
     private int lifeTime = 60;
-
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(EarthQuake_Entity.class, EntityDataSerializers.FLOAT);
 
     public EarthQuake_Entity(EntityType<? extends EarthQuake_Entity> type, Level worldIn) {
         super(type, worldIn);
@@ -37,10 +39,6 @@ public class EarthQuake_Entity extends ThrowableProjectile {
         this(ModEntities.EARTHQUAKE.get(), worldIn);
         this.setOwner(throwerIn);
         this.setDeltaMovement(0.1D, 0D, 0.1D);
-    }
-
-    public EarthQuake_Entity(PlayMessages.SpawnEntity spawnEntity, Level world) {
-        this(ModEntities.EARTHQUAKE.get(), world);
     }
 
 
@@ -104,7 +102,7 @@ public class EarthQuake_Entity extends ThrowableProjectile {
         if (this.lifeTime <= 0) {
             this.discard();
         }
-        BlockPos pos =  new BlockPos(this.getX(), this.getY() - 1, this.getZ());
+        BlockPos pos = new BlockPos(this.getX(), this.getY() - 1, this.getZ());
         BlockState iblockstate = this.level.getBlockState(pos);
 
         for (LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.5,0.5,0.5))) {
@@ -112,7 +110,7 @@ public class EarthQuake_Entity extends ThrowableProjectile {
                 if (this.tickCount % 5 == 0) {
                     if (livingentity != this.getOwner() && livingentity.isOnGround() && !this.getOwner().isAlliedTo(livingentity)) {
                         // entity.motionY += this.getEntityThrowDistance();
-                        if(livingentity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()), 5.0F)) {
+                        if(livingentity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()), this.getDamage())) {
                             this.strongKnockback(livingentity, 0.5);
                         }
                     }
@@ -139,7 +137,15 @@ public class EarthQuake_Entity extends ThrowableProjectile {
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(DAMAGE,0f);
+    }
 
+    public float getDamage() {
+        return entityData.get(DAMAGE);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DAMAGE, damage);
     }
 
     @Override

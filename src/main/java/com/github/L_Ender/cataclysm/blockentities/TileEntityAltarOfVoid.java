@@ -1,6 +1,6 @@
 package com.github.L_Ender.cataclysm.blockentities;
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Guardian_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Guardian_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 

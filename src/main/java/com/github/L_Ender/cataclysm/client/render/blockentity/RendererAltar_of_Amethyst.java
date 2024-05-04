@@ -57,7 +57,7 @@ public class RendererAltar_of_Amethyst<T extends TileEntityAltarOfAmethyst> impl
 
     public void renderItem(T tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn) {
         ItemStack stack = tileEntityIn.getItem(0);
-        float f2 = (float) tileEntityIn.tickCount + partialTicks;
+        float f2 = (float) tileEntityIn.tickCounts + partialTicks;
         if (!stack.isEmpty()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 1.15F, 0.5F);
@@ -145,5 +145,3 @@ public class RendererAltar_of_Amethyst<T extends TileEntityAltarOfAmethyst> impl
     }
 
 }
-
-

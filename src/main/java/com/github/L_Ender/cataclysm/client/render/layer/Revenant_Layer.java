@@ -2,7 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.layer;
 
 import com.github.L_Ender.cataclysm.client.model.entity.ModelIgnited_Revenant;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnited_Revenant;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignited_Revenant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignited_Revenant_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 

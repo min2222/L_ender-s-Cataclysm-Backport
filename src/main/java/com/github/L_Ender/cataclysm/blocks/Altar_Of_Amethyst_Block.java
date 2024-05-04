@@ -94,7 +94,7 @@ public class Altar_Of_Amethyst_Block extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, ModTileentites.ALTAR_OF_AMETHYST.get(), TileEntityAltarOfAmethyst::commonTick);
+        return createTickerHelper(p_152182_, ModTileentites.ALTAR_OF_AMETHYST.get(), TileEntityAltarOfAmethyst::cookTick);
     }
 
 }

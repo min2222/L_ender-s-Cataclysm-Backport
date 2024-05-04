@@ -1,7 +1,5 @@
 package com.github.L_Ender.cataclysm.entity.etc;
 
-import com.github.alexthe666.citadel.server.entity.collision.MovementControllerCustomCollisions;
-
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.phys.AABB;

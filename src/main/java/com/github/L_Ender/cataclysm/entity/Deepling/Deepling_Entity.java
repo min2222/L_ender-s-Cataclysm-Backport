@@ -9,7 +9,7 @@ import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-import com.github.alexthe666.citadel.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -76,7 +76,7 @@ public class Deepling_Entity extends AbstractDeepling {
         return Monster.createMonsterAttributes()
                 .add(Attributes.MOVEMENT_SPEED, 0.27F)
                 .add(Attributes.ATTACK_DAMAGE, 4.0D)
-                .add(Attributes.MAX_HEALTH, 30)
+                .add(Attributes.MAX_HEALTH, 26)
                 .add(Attributes.FOLLOW_RANGE, 20)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.25);
     }

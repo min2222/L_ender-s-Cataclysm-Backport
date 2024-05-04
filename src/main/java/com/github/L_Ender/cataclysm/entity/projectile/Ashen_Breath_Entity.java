@@ -6,7 +6,7 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ignited_Revenant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignited_Revenant_Entity;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;

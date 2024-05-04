@@ -4,9 +4,9 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 
 
 import com.github.L_Ender.cataclysm.entity.projectile.Wither_Howitzer_Entity;
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 
 public class ModelWither_Howitzer extends AdvancedEntityModel<Wither_Howitzer_Entity> {

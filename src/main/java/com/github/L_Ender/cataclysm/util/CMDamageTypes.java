@@ -23,5 +23,8 @@ public class CMDamageTypes {
     public static DamageSource causeShredderDamage(LivingEntity attacker) {
         return new EntityDamageSource("cataclysm.shredder", attacker).setExplosion();
     }
-
+    
+    public static DamageSource causeSwordDanceDamage(LivingEntity attacker) {
+        return new EntityDamageSource("cataclysm.sword_dance", attacker).setExplosion();
+    }
 }

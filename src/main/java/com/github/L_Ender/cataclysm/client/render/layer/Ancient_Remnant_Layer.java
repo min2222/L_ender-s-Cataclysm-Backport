@@ -2,7 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.layer;
 
 import com.github.L_Ender.cataclysm.client.model.entity.ModelAncient_Remnant;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Remnant;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Remnant_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 

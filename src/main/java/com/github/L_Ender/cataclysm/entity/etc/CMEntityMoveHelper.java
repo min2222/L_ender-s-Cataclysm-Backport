@@ -20,7 +20,7 @@ public class CMEntityMoveHelper extends MoveControl
 
     public void tick()
     {
-        if (this.operation == Operation.STRAFE)
+        if (this.operation == CMEntityMoveHelper.Operation.STRAFE)
         {
             float f = (float)this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue();
             float f1 = (float)this.speedModifier * f;
@@ -57,11 +57,11 @@ public class CMEntityMoveHelper extends MoveControl
             this.mob.setSpeed(f1);
             this.mob.setZza(this.strafeForwards);
             this.mob.setXxa(this.strafeRight);
-            this.operation = Operation.WAIT;
+            this.operation = CMEntityMoveHelper.Operation.WAIT;
         }
-        else if (this.operation == Operation.MOVE_TO)
+        else if (this.operation == CMEntityMoveHelper.Operation.MOVE_TO)
         {
-            this.operation = Operation.WAIT;
+            this.operation = CMEntityMoveHelper.Operation.WAIT;
             double d0 = this.wantedX - this.mob.getX();
             double d1 = this.wantedZ - this.mob.getZ();
             double d2 = this.wantedY - this.mob.getY();
@@ -80,16 +80,16 @@ public class CMEntityMoveHelper extends MoveControl
             if (d2 > (double)this.mob.getStepHeight() && d0 * d0 + d1 * d1 < (double)Math.max(1.0F, this.mob.getBbWidth()))
             {
                 this.mob.getJumpControl().jump();
-                this.operation = Operation.JUMPING;
+                this.operation = CMEntityMoveHelper.Operation.JUMPING;
             }
         }
-        else if (this.operation == Operation.JUMPING)
+        else if (this.operation == CMEntityMoveHelper.Operation.JUMPING)
         {
             this.mob.setSpeed((float)(this.speedModifier * this.mob.getAttribute(Attributes.MOVEMENT_SPEED).getValue()));
 
             if (this.mob.isOnGround())
             {
-                this.operation = Operation.WAIT;
+                this.operation = CMEntityMoveHelper.Operation.WAIT;
             }
         }
         else

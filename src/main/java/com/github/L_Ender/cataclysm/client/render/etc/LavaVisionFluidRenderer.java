@@ -396,4 +396,3 @@ public class LavaVisionFluidRenderer extends LiquidBlockRenderer {
         }
     }
 }
-

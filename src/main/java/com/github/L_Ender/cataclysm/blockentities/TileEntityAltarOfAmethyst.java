@@ -1,215 +1,133 @@
 package com.github.L_Ender.cataclysm.blockentities;
 
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.crafting.AltarOfAmethystRecipe;
+import com.github.L_Ender.cataclysm.init.ModRecipeTypes;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 import com.github.L_Ender.cataclysm.message.MessageUpdateblockentity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.Connection;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.Clearable;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileEntityAltarOfAmethyst extends BaseContainerBlockEntity {
-
-    public int tickCount;
+public class TileEntityAltarOfAmethyst extends BlockEntity implements Clearable {
     private static final int NUM_SLOTS = 1;
-    private NonNullList<ItemStack> stacks = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> items = NonNullList.withSize(NUM_SLOTS, ItemStack.EMPTY);
+    public int blessingProgress;
+    public int tickCounts;
     public boolean brightThisTick = false;
-    private AltarOfAmethystRecipe lastRecipe = null;
-    private int blessingtime = 0;
+    private final RecipeManager.CachedCheck<Container, AltarOfAmethystRecipe> quickCheck = RecipeManager.createCheck(ModRecipeTypes.AMETHYST_BLESS.get());
 
-    public TileEntityAltarOfAmethyst(BlockPos pos, BlockState state) {
-        super(ModTileentites.ALTAR_OF_AMETHYST.get(), pos, state);
+    public TileEntityAltarOfAmethyst(BlockPos p_155301_, BlockState p_155302_) {
+        super(ModTileentites.ALTAR_OF_AMETHYST.get(), p_155301_, p_155302_);
     }
 
-    public static void commonTick(Level level, BlockPos pos, BlockState state, TileEntityAltarOfAmethyst entity) {
-        entity.tick();
-
-    }
-
-    public void tick() {
-        tickCount++;
-        brightThisTick = false;
-        if (!this.getItem(0).isEmpty()) {
-            if(lastRecipe != null && lastRecipe.matches(this.getItem(0))){
-                brightThisTick = true;
-                if(blessingtime > lastRecipe.getTime()) {
-                    ItemStack current = this.getItem(0).copy();
+    public static void cookTick(Level p_155307_, BlockPos p_155308_, BlockState p_155309_, TileEntityAltarOfAmethyst p_155310_) {
+        p_155310_.brightThisTick = false;
+        p_155310_.tickCounts++;
+        ItemStack itemstack = p_155310_.items.get(0);
+        if (!itemstack.isEmpty()) {
+            Container container = new SimpleContainer(itemstack);
+            Optional<AltarOfAmethystRecipe> ingredient = p_155310_.quickCheck.getRecipeFor(container, p_155307_);
+            ItemStack finale = ingredient.map((p_270054_) -> p_270054_.getResult().copy()).orElse(itemstack);
+            if(ingredient.isPresent()){
+                p_155310_.brightThisTick = true;
+                if(p_155310_.blessingProgress >= ingredient.get().getTime()) {
+                    ItemStack current = p_155310_.getItem(0).copy();
                     current.shrink(1);
                     if(!current.isEmpty()){
-                        ItemEntity itemEntity = new ItemEntity(this.level, this.getBlockPos().getX() + 0.5F, this.getBlockPos().getY() + 0.5F, this.getBlockPos().getZ() + 0.5F, current);
-                        if(!level.isClientSide){
-                            level.addFreshEntity(itemEntity);
+                        ItemEntity itemEntity = new ItemEntity(p_155307_, p_155308_.getX() + 0.5F, p_155308_.getY() + 0.5F, p_155308_.getZ() + 0.5F, current);
+                        if(!p_155307_.isClientSide){
+                            p_155307_.addFreshEntity(itemEntity);
                         }
                     }
-                    this.setItem(0, lastRecipe.getResult().copy());
+                    p_155310_.setItem(0, finale);
                 }
             }
+
         }
-        if(!brightThisTick){
-            blessingtime = 0;
+
+        if(!p_155310_.brightThisTick){
+            p_155310_.blessingProgress = 0;
         }else{
-            blessingtime++;
+            p_155310_.blessingProgress++;
         }
-    }
 
-    @Override
+    }
+    
     public int getContainerSize() {
-        return this.stacks.size();
+        return this.items.size();
     }
 
-    @Override
     public ItemStack getItem(int index) {
-        return this.stacks.get(index);
+        return this.items.get(index);
     }
 
-    @Override
-    public ItemStack removeItem(int index, int count) {
-        if (!this.stacks.get(index).isEmpty()) {
-            ItemStack itemstack;
-
-            if (this.stacks.get(index).getCount() <= count) {
-                itemstack = this.stacks.get(index);
-                this.stacks.set(index, ItemStack.EMPTY);
-            } else {
-                itemstack = this.stacks.get(index).split(count);
-
-                if (this.stacks.get(index).isEmpty()) {
-                    this.stacks.set(index, ItemStack.EMPTY);
-                }
-
-            }
-            return itemstack;
-        } else {
-            return ItemStack.EMPTY;
-        }
-    }
-
-    @Override
     public void setItem(int index, ItemStack stack) {
-        boolean flag = !stack.isEmpty() && ItemStack.isSameItemSameTags(stack, this.stacks.get(index));
-        this.stacks.set(index, stack);
+        this.items.set(index, stack);
         if (!stack.isEmpty() && stack.getCount() > this.getMaxStackSize()) {
             stack.setCount(this.getMaxStackSize());
         }
-        lastRecipe = Cataclysm.PROXY.getAltarOfAmethystRecipeManager().getRecipeFor(stack);
         this.saveAdditional(this.getUpdateTag());
         if (!level.isClientSide) {
-            Cataclysm.sendMSGToAll(new MessageUpdateblockentity(this.getBlockPos().asLong(), stacks.get(0)));
+            Cataclysm.sendMSGToAll(new MessageUpdateblockentity(this.getBlockPos().asLong(), items.get(0)));
         }
     }
 
-    @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(compound, this.stacks);
-    }
-
-    @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        ContainerHelper.saveAllItems(compound, this.stacks);
-    }
-
-    @Override
-    public void startOpen(Player player) {
-    }
-
-    @Override
-    public void stopOpen(Player player) {
-    }
-
-
-
-    @Override
     public int getMaxStackSize() {
         return 1;
     }
+    
 
-    @Override
-    public boolean stillValid(Player player) {
-        return true;
+    public NonNullList<ItemStack> getItems() {
+        return this.items;
     }
 
-    @Override
-    public void clearContent() {
-        this.stacks.clear();
+    public void load(CompoundTag p_155312_) {
+        super.load(p_155312_);
+        this.items.clear();
+        ContainerHelper.loadAllItems(p_155312_, this.items);
+        if (p_155312_.contains("blessingProgress", 11)) {
+            this.blessingProgress = p_155312_.getInt("blessingProgress");
+        }
+
     }
 
-    @Override
-    public boolean hasCustomName() {
-        return false;
+    protected void saveAdditional(CompoundTag p_187486_) {
+        super.saveAdditional(p_187486_);
+        ContainerHelper.saveAllItems(p_187486_, this.items, true);
+        p_187486_.putInt("blessingProgress", this.blessingProgress);
     }
 
-    @Override
-    public boolean canPlaceItem(int index, ItemStack stack) {
-        return true;
-    }
-
-    @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket packet) {
-        if (packet != null && packet.getTag() != null) {
-            this.stacks = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-            ContainerHelper.loadAllItems(packet.getTag(), this.stacks);
-        }
-    }
-
     public CompoundTag getUpdateTag() {
-        return this.saveWithoutMetadata();
+        CompoundTag compoundtag = new CompoundTag();
+        ContainerHelper.saveAllItems(compoundtag, this.items, true);
+        return compoundtag;
+    }
+
+    public Optional<AltarOfAmethystRecipe> getCookableRecipe(ItemStack p_59052_) {
+        return this.items.stream().noneMatch(ItemStack::isEmpty) ? Optional.empty() : this.quickCheck.getRecipeFor(new SimpleContainer(p_59052_), this.level);
     }
 
     @Override
-    public ItemStack removeItemNoUpdate(int index) {
-        ItemStack lvt_2_1_ = this.stacks.get(index);
-        if (lvt_2_1_.isEmpty()) {
-            return ItemStack.EMPTY;
-        } else {
-            this.stacks.set(index, ItemStack.EMPTY);
-            return lvt_2_1_;
-        }
+    public void clearContent() {
+        this.items.clear();
     }
-
-    @Override
-    public Component getDisplayName() {
-        return getDefaultName();
-    }
-
-    @Override
-    protected Component getDefaultName() {
-        return Component.translatable("block.cataclysm.altar_of_amethyst");
-    }
-
-    @Override
-    protected AbstractContainerMenu createMenu(int id, Inventory player) {
-        return null;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (int i = 0; i < this.getContainerSize(); i++) {
-            if (!this.getItem(i).isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 }

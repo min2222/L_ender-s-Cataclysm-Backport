@@ -1,8 +1,12 @@
 package com.github.L_Ender.cataclysm.client.render;
 
+import java.util.function.Function;
+
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 
+import net.minecraft.Util;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 
@@ -77,8 +81,9 @@ public class CMRenderTypes extends RenderType {
     }
 
     public static RenderType CMEyes(ResourceLocation locationIn) {
-        TextureStateShard renderstateshard$texturestateshard = new TextureStateShard(locationIn, false, false);
-        return create("cm_eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, CompositeState.builder()
+        RenderStateShard.TextureStateShard renderstateshard$texturestateshard = new RenderStateShard.TextureStateShard(locationIn, false, false);
+        return create("cm_eyes", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, true, RenderType
+                .CompositeState.builder()
                 .setShaderState(RENDERTYPE_EYES_SHADER)
                 .setTextureState(renderstateshard$texturestateshard)
                 .setTransparencyState(ADDITIVE_TRANSPARENCY)
@@ -100,6 +105,35 @@ public class CMRenderTypes extends RenderType {
                 .setLayeringState(VIEW_OFFSET_Z_LAYERING)
                 .createCompositeState(false);
         return create("em_pulse", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+    }
+
+    private static final Function<ResourceLocation, RenderType> ITEM_ENTITY_TRANSLUCENT_CULL = Util.memoize((p_286155_) -> {
+        CompositeState renderState = CompositeState.builder()
+                .setShaderState(RENDERTYPE_ITEM_ENTITY_TRANSLUCENT_CULL_SHADER)
+                        .setTextureState(new RenderStateShard.TextureStateShard(p_286155_, false, false))
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .setOutputState(ITEM_ENTITY_TARGET)
+                        .setLightmapState(LIGHTMAP)
+                        .setOverlayState(OVERLAY)
+                        .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
+                        .createCompositeState(true);
+        return create("item_entity_translucent_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, renderState);
+    });
+
+
+    public static RenderType getTrailEffect(ResourceLocation locationIn) {
+        TextureStateShard renderstate$texturestate = new TextureStateShard(locationIn, false, false);
+        return create("trail_effect", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, RenderType
+                .CompositeState.builder()
+                .setTextureState(renderstate$texturestate)
+                .setShaderState(RENDERTYPE_ITEM_ENTITY_TRANSLUCENT_CULL_SHADER)
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                .setOutputState(ITEM_ENTITY_TARGET)
+                .setCullState(NO_CULL)
+                .setLightmapState(LIGHTMAP)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(COLOR_WRITE)
+                .createCompositeState(false));
     }
 
     public static RenderType getShockWave() {

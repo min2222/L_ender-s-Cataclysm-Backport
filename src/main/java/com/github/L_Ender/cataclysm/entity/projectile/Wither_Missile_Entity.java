@@ -1,7 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.projectile;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 
 import net.minecraft.core.particles.ParticleTypes;

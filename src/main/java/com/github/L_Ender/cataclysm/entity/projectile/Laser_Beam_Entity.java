@@ -6,6 +6,9 @@ import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +25,8 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class Laser_Beam_Entity extends Projectile {
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Laser_Beam_Entity.class, EntityDataSerializers.FLOAT);
+
 
     public Laser_Beam_Entity(EntityType type, Level worldIn) {
         super(type, worldIn);
@@ -38,6 +43,7 @@ public class Laser_Beam_Entity extends Projectile {
     }
 
     protected void defineSynchedData() {
+        this.entityData.define(DAMAGE,0f);
     }
 
     public boolean isOnFire() {
@@ -52,7 +58,7 @@ public class Laser_Beam_Entity extends Projectile {
             LivingEntity entity1 = (LivingEntity) this.getOwner();
             int i = entity.getRemainingFireTicks();
             entity.setSecondsOnFire(5);
-            if (!entity.hurt(CMDamageTypes.causeLaserDamage(this, entity1).setProjectile(), (float) CMConfig.Laserdamage)) {
+            if (!entity.hurt(CMDamageTypes.causeLaserDamage(this, entity1), getDamage())) {
                 entity.setRemainingFireTicks(i);
             } else if (entity1 != null) {
                 this.doEnchantDamageEffects((LivingEntity)entity1, entity);
@@ -148,6 +154,13 @@ public class Laser_Beam_Entity extends Projectile {
     }
 
 
+    public float getDamage() {
+        return entityData.get(DAMAGE);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DAMAGE, damage);
+    }
 
     public boolean isPickable() {
         return false;

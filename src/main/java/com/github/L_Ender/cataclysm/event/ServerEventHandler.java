@@ -1,40 +1,35 @@
 package com.github.L_Ender.cataclysm.event;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.capabilities.Bloom_Stone_PauldronsCapability;
 import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
-import com.github.L_Ender.cataclysm.capabilities.HoldAttackCapability;
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
-import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.items.ILeftClick;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
+import com.github.L_Ender.lionfishapi.server.event.StandOnFluidEvent;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingChangeTargetEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -48,32 +43,6 @@ public class ServerEventHandler {
 
     @SubscribeEvent
     public void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
-        int p_45022_ = 2;
-        final BlockPos p_45021_ = event.getEntity().blockPosition();
-        if (!event.getEntity().getItemBySlot(EquipmentSlot.FEET).isEmpty() && event.getEntity().getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.IGNITIUM_BOOTS.get()) {
-            if(!event.getEntity().isShiftKeyDown()){
-            if (event.getEntity().isOnGround()) {
-                BlockState blockstate = ModBlocks.MELTING_NETHERRACK.get().defaultBlockState();
-                int f = Math.min(16, 2 + p_45022_);
-                BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
-                for(BlockPos blockpos : BlockPos.betweenClosed(p_45021_.offset(-f, -1, -f), p_45021_.offset(f, -1, f))) {
-                    if (blockpos.closerToCenterThan(event.getEntity().position(), (double) f)) {
-                        blockpos$mutableblockpos.set(blockpos.getX(), blockpos.getY() + 1, blockpos.getZ());
-                        BlockState blockstate1 = event.getEntity().level.getBlockState(blockpos$mutableblockpos);
-                        if (blockstate1.isAir()) {
-                            BlockState blockstate2 = event.getEntity().level.getBlockState(blockpos);
-                            boolean isFull = blockstate2.getBlock() == Blocks.LAVA && blockstate2.getValue(LiquidBlock.LEVEL) == 0; //TODO: Forge, modded waters?
-                            if (blockstate2 == Blocks.LAVA.defaultBlockState() && isFull && blockstate.canSurvive(event.getEntity().level, blockpos) && event.getEntity().level.isUnobstructed(blockstate, blockpos, CollisionContext.empty()) && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(event.getEntity(), net.minecraftforge.common.util.BlockSnapshot.create(event.getEntity().level.dimension(), event.getEntity().level, blockpos), net.minecraft.core.Direction.UP)) {
-                                event.getEntity().level.setBlockAndUpdate(blockpos, blockstate);
-                                event.getEntity().level.scheduleTick(blockpos, ModBlocks.MELTING_NETHERRACK.get(), Mth.nextInt(event.getEntity().getRandom(), 60, 120));
-                            }
-
-                        }
-                    }
-                }
-            }
-            }
-        }
         HookCapability.IHookCapability hookCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.HOOK_CAPABILITY);
         if (hookCapability != null) {
             hookCapability.tick(event.getEntity());
@@ -83,21 +52,20 @@ public class ServerEventHandler {
         if (chargeCapability != null) {
             chargeCapability.tick(event.getEntity());
         }
+    }
 
-        HoldAttackCapability.IHoldAttackCapability HoldAttackCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.HOLD_ATTACK_CAPABILITY);
-        if (HoldAttackCapability != null) {
-            HoldAttackCapability.tick(event.getEntity());
+    @SubscribeEvent
+    public void StandOnFluidEventEvent(StandOnFluidEvent event) {
+        if (!event.getEntity().getItemBySlot(EquipmentSlot.FEET).isEmpty() && event.getEntity().getItemBySlot(EquipmentSlot.FEET).getItem() == ModItems.IGNITIUM_BOOTS.get()) {
+            if (!event.getEntity().isShiftKeyDown() && (event.getFluidState().is(Fluids.LAVA) || event.getFluidState().is(Fluids.FLOWING_LAVA))) {
+                event.setCanceled(true);
+            }
         }
-
     }
 
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         Player player = event.player;
-        Bloom_Stone_PauldronsCapability.IBloom_Stone_PauldronsCapability chargeCapability = ModCapabilities.getCapability(player, ModCapabilities.BLOOM_STONE_PAULDRONS_CAPABILITY_CAPABILITY);
-        if (chargeCapability != null) {
-            chargeCapability.tick(event);
-        }
         Gone_With_SandstormCapability.IGone_With_SandstormCapability SandstormCapability = ModCapabilities.getCapability(player, ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY);
         if (SandstormCapability != null) {
             SandstormCapability.tick(event);
@@ -132,15 +100,6 @@ public class ServerEventHandler {
 
     }
 
-    @SubscribeEvent
-    public void Knockbackevent(LivingKnockBackEvent event) {
-        if(event.getEntity().getCombatTracker().getLastEntry() != null) {
-            if(event.getEntity().getCombatTracker().getLastEntry().getSource().getMsgId().equals("cataclysm.shredder")) {
-                event.setCanceled(true);
-            }
-
-        }
-    }
 
     @SubscribeEvent
     public void onPlayerAttack(AttackEntityEvent event) {
@@ -260,6 +219,18 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
+    public void onLivingSetTargetEvent(LivingChangeTargetEvent event) {
+        if (event.getNewTarget() != null && event.getEntity() instanceof Mob mob) {
+            if (mob.getType().is(ModTag.LAVA_MONSTER) && event.getEntity().getLastHurtByMob() != event.getNewTarget()) {
+                if (event.getNewTarget().getItemBySlot(EquipmentSlot.HEAD).is(ModItems.IGNITIUM_HELMET.get())) {
+                    event.setCanceled(true);
+                    return;
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onLivingDamage(LivingDamageEvent event) {
         LivingEntity entity = event.getEntity();
         if (entity.getHealth() <= event.getAmount() && entity.hasEffect(ModEffect.EFFECTSTUN.get())) {
@@ -299,13 +270,6 @@ public class ServerEventHandler {
         }
     }
 
-
-
-    @SubscribeEvent
-    public void onAddReloadListener(AddReloadListenerEvent event){
-        Cataclysm.LOGGER.info("Adding datapack listener altar_of_amethyst_recipes");
-        event.addListener(Cataclysm.PROXY.getAltarOfAmethystRecipeManager());
-    }
 }
 
 

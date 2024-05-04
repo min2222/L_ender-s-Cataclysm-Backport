@@ -10,15 +10,18 @@ import com.github.L_Ender.cataclysm.blocks.Altar_Of_Abyss_Block;
 import com.github.L_Ender.cataclysm.blocks.Altar_Of_Amethyst_Block;
 import com.github.L_Ender.cataclysm.blocks.Altar_Of_Fire_Block;
 import com.github.L_Ender.cataclysm.blocks.Altar_Of_Void_Block;
+import com.github.L_Ender.cataclysm.blocks.Cataclysm_Skull_Block;
 import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.blocks.EndStoneTeleportTrapBricks;
 import com.github.L_Ender.cataclysm.blocks.Mechanical_fusion_Anvil;
 import com.github.L_Ender.cataclysm.blocks.MeltingNetherrack;
 import com.github.L_Ender.cataclysm.blocks.ObsidianExplosionTrapBricks;
+import com.github.L_Ender.cataclysm.blocks.PointedIcicleBlock;
 import com.github.L_Ender.cataclysm.blocks.PurpurVoidRuneTrapBlock;
 import com.github.L_Ender.cataclysm.blocks.Sandstone_Falling_Trap;
 import com.github.L_Ender.cataclysm.blocks.Sandstone_Ignite_Trap;
 import com.github.L_Ender.cataclysm.blocks.Sandstone_Poison_Dart_Trap;
+import com.github.L_Ender.cataclysm.blocks.Wall_Cataclysm_Skull_Block;
 import com.github.L_Ender.cataclysm.items.BlockItemCMRender;
 import com.github.L_Ender.cataclysm.items.CMBlockItem;
 
@@ -64,6 +67,11 @@ public class ModBlocks {
                         return 15;
                     })));
 
+    public static final RegistryObject<Block> ANCIENT_METAL_BLOCK = BLOCKS.register("ancient_metal_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).color(MaterialColor.COLOR_YELLOW)
+                    .strength(25f, 600f)
+                    .sound(SoundType.METAL)));
+
     public static final RegistryObject<Block> POLISHED_END_STONE = BLOCKS.register("polished_end_stone",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.END_STONE)));
 
@@ -85,7 +93,7 @@ public class ModBlocks {
                     })));
 
     public static final RegistryObject<Block> VOID_STONE = BLOCKS.register("void_stone",
-            () -> new Block(BlockBehaviour.Properties.of(Material.METAL).color(MaterialColor.COLOR_PURPLE)
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.COLOR_PURPLE)
                     .requiresCorrectToolForDrops()
                     .strength(50f, 1200f).lightLevel((state) -> {
                         return 7;
@@ -176,17 +184,24 @@ public class ModBlocks {
     public static final RegistryObject<Block> MECHANICAL_FUSION_ANVIL = registerBlockAndItem("mechanical_fusion_anvil",
             Mechanical_fusion_Anvil::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
+
+    public static final RegistryObject<Block> KOBOLEDIATOR_SKULL = BLOCKS.register("kobolediator_skull", () -> new Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.KOBOLEDIATOR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F)));
+
+
+    public static final RegistryObject<Block> KOBOLEDIATOR_WALL_SKULL = BLOCKS.register("kobolediator_wall_skull", () -> new Wall_Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.KOBOLEDIATOR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).lootFrom(() -> KOBOLEDIATOR_SKULL.get())));
+
+
     public static final RegistryObject<Block> ABYSSAL_EGG = registerBlockAndItem("abyssal_egg",
             Abyssal_Egg_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> CHORUS_STEM = BLOCKS.register("chorus_stem",
-            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.NETHER_WOOD).color(MaterialColor.COLOR_PURPLE).
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.COLOR_PURPLE).
                     strength(2.0F, 3.0F)
                     .sound(SoundType.WOOD)));
 
 
     public static final RegistryObject<Block> CHORUS_PLANKS = BLOCKS.register("chorus_planks",
-            () -> new Block(BlockBehaviour.Properties.of(Material.NETHER_WOOD).color(MaterialColor.COLOR_PURPLE).
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.COLOR_PURPLE).
                     strength(2.0F, 3.0F)
                     .sound(SoundType.WOOD)));
 
@@ -217,6 +232,31 @@ public class ModBlocks {
                     .requiresCorrectToolForDrops()
                     .strength(1.5F, 6.0F)));
 
+    public static final RegistryObject<Block> FROSTED_STONE_BRICKS = BLOCKS.register("frosted_stone_bricks",
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.STONE)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.5F, 6.0F)));
+
+    public static final RegistryObject<Block> FROSTED_STONE_BRICK_SLAB = BLOCKS.register("frosted_stone_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(FROSTED_STONE_BRICKS.get())));
+
+    public static final RegistryObject<Block> FROSTED_STONE_BRICK_STAIRS = BLOCKS.register("frosted_stone_brick_stairs",
+            () -> new StairBlock(FROSTED_STONE_BRICKS.get().defaultBlockState(),BlockBehaviour.Properties.copy(FROSTED_STONE_BRICKS.get())));
+
+    public static final RegistryObject<Block> FROSTED_STONE_BRICK_WALL = BLOCKS.register("frosted_stone_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(FROSTED_STONE_BRICKS.get())));
+
+    public static final RegistryObject<Block> BLACK_STEEL_BLOCK = BLOCKS.register("black_steel_block",
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.COLOR_BLACK)
+                    .strength(25f, 600f)
+                    .sound(SoundType.METAL)));
+
+    public static final RegistryObject<Block> BLACK_STEEL_FENCE = BLOCKS.register("black_steel_fence",
+            () -> new FenceBlock(BlockBehaviour.Properties.copy(BLACK_STEEL_BLOCK.get())));
+
+    public static final RegistryObject<Block> BLACK_STEEL_WALL = BLOCKS.register("black_steel_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(BLACK_STEEL_BLOCK.get())));
+
     public static final RegistryObject<Block> STONE_TILE_SLAB = BLOCKS.register("stone_tile_slab",
             () -> new SlabBlock(BlockBehaviour.Properties.copy(STONE_TILES.get())));
 
@@ -228,6 +268,20 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> POLISHED_SANDSTONE = BLOCKS.register("polished_sandstone",
             () -> new Block(BlockBehaviour.Properties.copy(Blocks.SANDSTONE)));
+
+    public static final RegistryObject<Block> BLACKSTONE_PILLAR = BLOCKS.register("blackstone_pillar",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.COLOR_BLACK)
+                    .requiresCorrectToolForDrops()
+                    .strength(1.5F, 6.0F)));
+
+    public static final RegistryObject<Block> POINTED_ICICLE = BLOCKS.register("pointed_icicle",
+            () -> new PointedIcicleBlock(BlockBehaviour.Properties.of(Material.ICE).color(MaterialColor.ICE)
+                    .noOcclusion()
+                    .randomTicks()
+                    .sound(SoundType.GLASS)
+                    .strength(0.5F)
+                    .dynamicShape()
+                    .offsetType(BlockBehaviour.OffsetType.XZ)));
 
     private static ToIntFunction<BlockState> getLightValueLit(int lightValue) {
         return (state) -> {
@@ -243,7 +297,7 @@ public class ModBlocks {
 
     public static RegistryObject<Block> registerBlockAndItem(String name, Supplier<Block> block, Item.Properties blockItemProps, boolean specialRender){
         RegistryObject<Block> blockObj = BLOCKS.register(name, block);
-        ModItems.ITEMS.register(name, () -> specialRender ?  new BlockItemCMRender(blockObj, blockItemProps.tab(Cataclysm.TAB)) :  new CMBlockItem(blockObj, blockItemProps.tab(Cataclysm.TAB)));
+        ModItems.ITEMS.register(name, () -> specialRender ?  new BlockItemCMRender(blockObj, blockItemProps) :  new CMBlockItem(blockObj, blockItemProps));
         return blockObj;
     }
 

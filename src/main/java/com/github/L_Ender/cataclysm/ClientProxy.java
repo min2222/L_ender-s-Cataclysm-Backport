@@ -2,11 +2,11 @@ package com.github.L_Ender.cataclysm;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.client.event.BossBarEvent;
 import com.github.L_Ender.cataclysm.client.event.ClientEvent;
 import com.github.L_Ender.cataclysm.client.gui.GUIWeponfusion;
 import com.github.L_Ender.cataclysm.client.particle.EM_PulseParticle;
@@ -14,7 +14,10 @@ import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.particle.SandStormParticle;
 import com.github.L_Ender.cataclysm.client.particle.Shock_WaveParticle;
 import com.github.L_Ender.cataclysm.client.particle.SoulLavaParticle;
+import com.github.L_Ender.cataclysm.client.particle.StormParticle;
+import com.github.L_Ender.cataclysm.client.particle.TrapFlameParticle;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
+import com.github.L_Ender.cataclysm.client.render.blockentity.Cataclysm_Skull_Block_Renderer;
 import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAbyssal_Egg;
 import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_Abyss;
 import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_Amethyst;
@@ -22,7 +25,6 @@ import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_F
 import com.github.L_Ender.cataclysm.client.render.blockentity.RendererAltar_of_Void;
 import com.github.L_Ender.cataclysm.client.render.blockentity.RendererEMP;
 import com.github.L_Ender.cataclysm.client.render.blockentity.RendererMechanical_fusion_anvil;
-import com.github.L_Ender.cataclysm.client.render.entity.RenderSandstorm;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Blast;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Blast_Portal;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAbyss_Mark;
@@ -35,6 +37,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Desert_
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Remnant;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererBlazing_Bone;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererCm_Falling_Block;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererCoral_Golem;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererCoralssus;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererDeath_Laser_beam;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererDeepling;
@@ -51,7 +54,9 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererFlame_Strike;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis_Abyss_Fireball;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis_Fireball;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnited_Berserker;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnited_Revenant;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererKobolediator;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererKoboleton;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererLaser_Beam;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererLava_Bomb;
@@ -64,6 +69,8 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererNetherite_Monst
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNull;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPoison_Dart;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPortal_Abyss_Blast;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererSandstorm;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererSandstorm_Projectile;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Baby_Leviathan;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Harbinger;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Leviathan;
@@ -77,15 +84,18 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Howitzer;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Rune;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Scatter_Arrow;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererVoid_Vortex;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererWadjet;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Homing_Missile;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Howitzer;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Missile;
+import com.github.L_Ender.cataclysm.client.render.etc.CurioHeadRenderer;
 import com.github.L_Ender.cataclysm.client.render.item.CMItemRenderProperties;
 import com.github.L_Ender.cataclysm.client.render.item.CustomArmorRenderProperties;
 import com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer.RendererSandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.client.render.item.CuriosItemREnderer.RendererSticky_Gloves;
 import com.github.L_Ender.cataclysm.client.sound.MeatShredderSound;
 import com.github.L_Ender.cataclysm.client.sound.SandstormSound;
+import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
@@ -98,6 +108,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.multiplayer.ServerData;
+import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -108,7 +120,6 @@ import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CrossbowItem;
 import net.minecraft.world.item.Items;
@@ -127,7 +138,7 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 public class ClientProxy extends CommonProxy {
     public static final Int2ObjectMap<AbstractTickableSoundInstance> ENTITY_SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();
     public static final Map<BlockEntity, AbstractTickableSoundInstance> BLOCK_ENTITY_SOUND_INSTANCE_MAP = new HashMap<>();
-
+    public static Map<UUID, Integer> bossBarRenderTypes = new HashMap<>();
 
     public void init() {
        // FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerEvent::onAddLayers);
@@ -141,7 +152,9 @@ public class ClientProxy extends CommonProxy {
         registry.register(ModParticle.EM_PULSE.get(), new EM_PulseParticle.Factory());
         registry.register(ModParticle.SHOCK_WAVE.get(), new Shock_WaveParticle.Factory());
         registry.register(ModParticle.LIGHTNING.get(), new LightningParticle.OrbFactory());
+        registry.register(ModParticle.STORM.get(), new StormParticle.OrbFactory());
         registry.register(ModParticle.SANDSTORM.get(), SandStormParticle.Factory::new);
+        registry.register(ModParticle.TRAP_FLAME.get(), TrapFlameParticle.Factory::new);
     }
 
     public void clientInit() {
@@ -156,11 +169,13 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.VOID_RUNE.get(), RendererVoid_Rune::new);
         EntityRenderers.register(ModEntities.ENDERMAPTERA.get(), RendererEndermaptera::new);
         EntityRenderers.register(ModEntities.IGNITED_REVENANT.get(), RendererIgnited_Revenant::new);
+        EntityRenderers.register(ModEntities.IGNITED_BERSERKER.get(), RendererIgnited_Berserker::new);
         EntityRenderers.register(ModEntities.THE_HARBINGER.get(), RendererThe_Harbinger::new);
         EntityRenderers.register(ModEntities.VOID_SCATTER_ARROW.get(), RendererVoid_Scatter_Arrow::new);
 
         EntityRenderers.register(ModEntities.POISON_DART.get(), RendererPoison_Dart::new);
         EntityRenderers.register(ModEntities.SCREEN_SHAKE.get(), RendererNull::new);
+        EntityRenderers.register(ModEntities.HOLD_ATTACK.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.WITHER_SMOKE_EFFECT.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.ASHEN_BREATH.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.WALL_WATCHER.get(), RendererNull::new);
@@ -193,16 +208,20 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.DEEPLING_ANGLER.get(), RendererDeepling_Angler::new);
         EntityRenderers.register(ModEntities.DEEPLING_WARLOCK.get(), RendererDeepling_Warlock::new);
         EntityRenderers.register(ModEntities.ABYSS_MARK.get(), RendererAbyss_Mark::new);
+        EntityRenderers.register(ModEntities.CORAL_GOLEM.get(), RendererCoral_Golem::new);
         EntityRenderers.register(ModEntities.CORALSSUS.get(), RendererCoralssus::new);
         EntityRenderers.register(ModEntities.LIONFISH.get(), RendererLionfish::new);
         EntityRenderers.register(ModEntities.TIDAL_HOOK.get(), RendererTidal_Hook::new);
         EntityRenderers.register(ModEntities.AMETHYST_CRAB.get(), RendererAmethyst_Crab::new);
         EntityRenderers.register(ModEntities.ANCIENT_REMNANT.get(), RendererAncient_Remnant::new);
         EntityRenderers.register(ModEntities.MODERN_REMNANT.get(), RendererModern_Remnant::new);
-        EntityRenderers.register(ModEntities.SANDSTORM.get(), RenderSandstorm::new);
+        EntityRenderers.register(ModEntities.SANDSTORM.get(), RendererSandstorm::new);
+        EntityRenderers.register(ModEntities.SANDSTORM_PROJECTILE.get(), RendererSandstorm_Projectile::new);
         EntityRenderers.register(ModEntities.THE_WATCHER.get(), RendererThe_Watcher::new);
         EntityRenderers.register(ModEntities.THE_PROWLER.get(), RendererThe_Prowler::new);
         EntityRenderers.register(ModEntities.KOBOLETON.get(), RendererKoboleton::new);
+        EntityRenderers.register(ModEntities.KOBOLEDIATOR.get(), RendererKobolediator::new);
+        EntityRenderers.register(ModEntities.WADJET.get(), RendererWadjet::new);
         EntityRenderers.register(ModEntities.EARTHQUAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.ANCIENT_DESERT_STELE.get(), RendererAncient_Desert_Stele::new);
         EntityRenderers.register(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), RendererAmethyst_Cluster_Projectile::new);
@@ -223,29 +242,51 @@ public class ClientProxy extends CommonProxy {
             ItemProperties.register(ModItems.CORAL_BARDICHE.get(), new ResourceLocation("throwing"), (stack, p_239421_1_, p_239421_2_, j) -> p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F);
             ItemProperties.register(ModItems.MEAT_SHREDDER.get(), new ResourceLocation("using"), (stack, p_239421_1_, p_239421_2_, j) -> p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F);
             ItemProperties.register(Items.CROSSBOW, new ResourceLocation(Cataclysm.MODID, "void_scatter_arrow"), (stack, world, entity, j) -> entity != null && CrossbowItem.isCharged(stack) && CrossbowItem.containsChargedProjectile(stack, ModItems.VOID_SCATTER_ARROW.get()) ? 1.0F : 0.0F);
+            ItemProperties.register(ModItems.CORAL_CHUNK.get(), new ResourceLocation("chunk"), (stack, level, living, j) -> (stack.getCount() % 3 == 0) ? 0.0F : (stack.getCount() % 3 == 1) ? 0.5F : 1.0F);
+
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("Could not load item models for weapons");
 
         }
-        MinecraftForge.EVENT_BUS.addListener(BossBarEvent::renderBossBar);
         BlockEntityRenderers.register(ModTileentites.ALTAR_OF_FIRE.get(), RendererAltar_of_Fire::new);
         BlockEntityRenderers.register(ModTileentites.ALTAR_OF_VOID.get(), RendererAltar_of_Void::new);
         BlockEntityRenderers.register(ModTileentites.EMP.get(), RendererEMP::new);
         BlockEntityRenderers.register(ModTileentites.MECHANICAL_FUSION_ANVIL.get(), RendererMechanical_fusion_anvil::new);
         BlockEntityRenderers.register(ModTileentites.ALTAR_OF_AMETHYST.get(), RendererAltar_of_Amethyst::new);
+        BlockEntityRenderers.register(ModTileentites.CATACLYSM_SKULL.get(), Cataclysm_Skull_Block_Renderer::new);
         BlockEntityRenderers.register(ModTileentites.ALTAR_OF_ABYSS.get(), RendererAltar_of_Abyss::new);
         BlockEntityRenderers.register(ModTileentites.ABYSSAL_EGG.get(), RendererAbyssal_Egg::new);
         MenuScreens.register(ModMenu.WEAPON_FUSION.get(), GUIWeponfusion::new);
         CuriosRendererRegistry.register(ModItems.SANDSTORM_IN_A_BOTTLE.get(), RendererSandstorm_In_A_Bottle::new);
         CuriosRendererRegistry.register(ModItems.STICKY_GLOVES.get(), RendererSticky_Gloves::new);
-    }
+        CuriosRendererRegistry.register(ModItems.KOBOLEDIATOR_SKULL.get(), CurioHeadRenderer::new);
 
+        addServerToList("ender.purpleprison.net", "Purple Prison");
+    }
 
     @OnlyIn(Dist.CLIENT)
     public static Callable<BlockEntityWithoutLevelRenderer> getTEISR() {
         return CMItemstackRenderer::new;
     }
 
+    public void addServerToList(String address, String name) {
+        if(CMConfig.AddedServerlist) {
+            ServerList serverList = new ServerList(Minecraft.getInstance());
+            serverList.load();
+            ServerData serverData = serverList.get(address);
+            ServerData serverData2 = new ServerData(name, address, false);
+            if (serverData != null) {
+                serverList.remove(serverData);
+            }
+            serverList.add(serverData2, false);
+
+            for (int i = serverList.size() - 1; i > 0; i--) {
+                serverList.swap(i, i - 1);
+            }
+
+            serverList.save();
+        }
+    }
 
     public Player getClientSidePlayer() {
         return Minecraft.getInstance().player;
@@ -269,6 +310,9 @@ public class ClientProxy extends CommonProxy {
         BLOCK_ENTITY_SOUND_INSTANCE_MAP.remove(entity);
     }
 
+    public float getPartialTicks() {
+        return Minecraft.getInstance().getPartialTick();
+    }
 
     public boolean isKeyDown(int keyType) {
         if (keyType == -1) {
@@ -289,8 +333,12 @@ public class ClientProxy extends CommonProxy {
         if (keyType == 4) {
             return Minecraft.getInstance().options.keyShift.isDown();
         }
+        if (keyType == 5) {
+            return ModKeybind.ARMOR_KEY_ABILITY.isDown();
+        }
         return false;
     }
+
 
     @Override
     public void playWorldSound(@Nullable Object soundEmitter, byte type) {
@@ -333,15 +381,15 @@ public class ClientProxy extends CommonProxy {
 
     private void registerKeybinds(RegisterKeyMappingsEvent e) {
         e.register(ModKeybind.KEY_ABILITY);
+        e.register(ModKeybind.ARMOR_KEY_ABILITY);
     }
 
-    @Override
-    public void addBoss(Mob mob) {
-        BossBarEvent.addBoss(mob);
+    public void removeBossBarRender(UUID bossBar) {
+        this.bossBarRenderTypes.remove(bossBar);
     }
 
-    @Override
-    public void removeBoss(Mob mob) {
-        BossBarEvent.removeBoss(mob);
+    public void setBossBarRender(UUID bossBar, int renderType) {
+        this.bossBarRenderTypes.put(bossBar, renderType);
     }
+
 }

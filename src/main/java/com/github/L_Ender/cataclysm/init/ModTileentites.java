@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.init;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.blockentities.Cataclysm_Skull_BlockEntity;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAbyssal_Egg;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAbyss;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
@@ -45,6 +46,9 @@ public class ModTileentites {
 
     public static final RegistryObject<BlockEntityType<TileEntityEMP>> EMP = TILE_ENTITY_TYPES.register("emp", () ->
             BlockEntityType.Builder.of(TileEntityEMP::new, ModBlocks.EMP.get()).build(null));
+
+    public static final RegistryObject<BlockEntityType<Cataclysm_Skull_BlockEntity>> CATACLYSM_SKULL = TILE_ENTITY_TYPES.register("cataclysm_skull", () ->
+            BlockEntityType.Builder.of(Cataclysm_Skull_BlockEntity::new, ModBlocks.KOBOLEDIATOR_SKULL.get(), ModBlocks.KOBOLEDIATOR_WALL_SKULL.get()).build(null));
 
     public static final RegistryObject<BlockEntityType<TileEntityMechanical_fusion_Anvil>> MECHANICAL_FUSION_ANVIL = TILE_ENTITY_TYPES.register("mechanical_fusion_anvil", () ->
             BlockEntityType.Builder.of(TileEntityMechanical_fusion_Anvil::new, ModBlocks.MECHANICAL_FUSION_ANVIL.get()).build(null));

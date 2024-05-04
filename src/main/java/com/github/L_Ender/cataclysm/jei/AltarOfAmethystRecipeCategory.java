@@ -12,7 +12,6 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 public class AltarOfAmethystRecipeCategory implements IRecipeCategory<AltarOfAmethystRecipe> {
     private final IDrawable background;
     private final IDrawable icon;
@@ -44,10 +43,7 @@ public class AltarOfAmethystRecipeCategory implements IRecipeCategory<AltarOfAme
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, AltarOfAmethystRecipe recipe, IFocusGroup focuses) {
-        for(int i = 0; i < recipe.getIngredients().size(); i++){
-            Ingredient ingredient = recipe.getIngredients().get(i);
-            builder.addSlot(RecipeIngredientRole.INPUT, 21 + i * 15, 23).addIngredients(ingredient);
-        }
+        builder.addSlot(RecipeIngredientRole.INPUT, 21, 23).addIngredients(recipe.getbaseIngredient());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 94, 23).addItemStack(recipe.getResult());
     }
 

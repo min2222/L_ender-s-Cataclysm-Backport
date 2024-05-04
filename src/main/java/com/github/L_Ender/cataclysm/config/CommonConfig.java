@@ -8,6 +8,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue LavaVisionOpacity;
     public final ForgeConfigSpec.BooleanValue shadersCompat;
     public final ForgeConfigSpec.BooleanValue custombossbar;
+    public final ForgeConfigSpec.BooleanValue AddedServerlist;
 
     public final ForgeConfigSpec.BooleanValue Armor_Infinity_Durability;
     public final ForgeConfigSpec.IntValue BulwarkOfTheFlameCooldown;
@@ -46,7 +47,8 @@ public class CommonConfig {
 
     public final ForgeConfigSpec.DoubleValue EnderguardianHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue EnderguardianDamageMultiplier;
-    public final ForgeConfigSpec.IntValue EnderguardianDamageCap;
+    public final ForgeConfigSpec.DoubleValue EnderguardianNatureHealing;
+    public final ForgeConfigSpec.DoubleValue EnderguardianDamageCap;
     public final ForgeConfigSpec.BooleanValue EnderguardianBlockBreaking;
     public final ForgeConfigSpec.DoubleValue EnderguardianLongRangelimit;
     public final ForgeConfigSpec.IntValue EnderguardianBlockBreakingX;
@@ -57,8 +59,9 @@ public class CommonConfig {
     public final ForgeConfigSpec.IntValue Lavabombamount;
     public final ForgeConfigSpec.DoubleValue MonstrosityHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue MonstrosityDamageMultiplier;
+    public final ForgeConfigSpec.DoubleValue MonstrosityNatureHealing;
     public final ForgeConfigSpec.DoubleValue MonstrosityHealingMultiplier;
-    public final ForgeConfigSpec.IntValue MonstrosityDamageCap;
+    public final ForgeConfigSpec.DoubleValue MonstrosityDamageCap;
     public final ForgeConfigSpec.DoubleValue MonstrosityLongRangelimit;
     public final ForgeConfigSpec.BooleanValue NetheritemonstrosityBodyBloking;
 
@@ -69,8 +72,9 @@ public class CommonConfig {
 
     public final ForgeConfigSpec.DoubleValue IgnisHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue IgnisDamageMultiplier;
+    public final ForgeConfigSpec.DoubleValue IgnisNatureHealing;
     public final ForgeConfigSpec.DoubleValue IgnisHealingMultiplier;
-    public final ForgeConfigSpec.IntValue IgnisDamageCap;
+    public final ForgeConfigSpec.DoubleValue IgnisDamageCap;
     public final ForgeConfigSpec.DoubleValue IgnisLongRangelimit;
     public final ForgeConfigSpec.BooleanValue IgnisBlockBreaking;
 
@@ -84,16 +88,18 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue HarbingerHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue HarbingerDamageMultiplier;
     public final ForgeConfigSpec.DoubleValue HarbingerWitherMissiledamage;
+    public final ForgeConfigSpec.DoubleValue HarbingerLaserdamage;
     public final ForgeConfigSpec.DoubleValue HarbingerHealingMultiplier;
     public final ForgeConfigSpec.DoubleValue HarbingerLongRangelimit;
-    public final ForgeConfigSpec.IntValue HarbingerDamageCap;
+    public final ForgeConfigSpec.DoubleValue HarbingerDamageCap;
     public final ForgeConfigSpec.BooleanValue HarbingerLightFire;
 
 
     public final ForgeConfigSpec.DoubleValue LeviathanHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue LeviathanDamageMultiplier;
+    public final ForgeConfigSpec.DoubleValue LeviathanNatureHealing;
     public final ForgeConfigSpec.DoubleValue LeviathanLongRangelimit;
-    public final ForgeConfigSpec.IntValue LeviathanDamageCap;
+    public final ForgeConfigSpec.DoubleValue LeviathanDamageCap;
     public final ForgeConfigSpec.BooleanValue LeviathanBlockBreaking;
     public final ForgeConfigSpec.BooleanValue LeviathanImmuneOutofWater;
 
@@ -101,12 +107,15 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue BabyLeviathanDamageMultiplier;
 
     public final ForgeConfigSpec.DoubleValue AmethystCrabHealthMultiplier;
+    public final ForgeConfigSpec.DoubleValue AmethystCrabEarthQuakeDamage;
     public final ForgeConfigSpec.DoubleValue AmethystCrabDamageMultiplier;
 
     public final ForgeConfigSpec.DoubleValue AncientRemnantHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue AncientRemnantDamageMultiplier;
+    public final ForgeConfigSpec.DoubleValue AncientRemnantNatureHealing;
     public final ForgeConfigSpec.BooleanValue AncientRemnantBlockBreaking;
-    public final ForgeConfigSpec.IntValue AncientRemnantDamageCap;
+    public final ForgeConfigSpec.DoubleValue AncientRemnantDamageCap;
+    public final ForgeConfigSpec.DoubleValue AncientRemnantEarthQuakeDamage;
     public final ForgeConfigSpec.DoubleValue AncientRemnantLongRangelimit;
     public final ForgeConfigSpec.DoubleValue RemnantChargeHpDamage;
     public final ForgeConfigSpec.DoubleValue RemnantHpDamage;
@@ -131,18 +140,35 @@ public class CommonConfig {
 
     public final ForgeConfigSpec.DoubleValue CauseKoboletontoDropItemInHandPercent;
 
+    public final ForgeConfigSpec.BooleanValue KobolediatorBlockBreaking;
+    public final ForgeConfigSpec.DoubleValue KobolediatorHealthMultiplier;
+    public final ForgeConfigSpec.DoubleValue KobolediatorDamageMultiplier;
+
+    public final ForgeConfigSpec.DoubleValue WadjetHealthMultiplier;
+    public final ForgeConfigSpec.DoubleValue WadjetDamageMultiplier;
+
     public final ForgeConfigSpec.IntValue DeeplingSpawnWeight;
     public final ForgeConfigSpec.IntValue DeeplingSpawnRolls;
     public final ForgeConfigSpec.IntValue DeeplingBruteSpawnWeight;
     public final ForgeConfigSpec.IntValue DeeplingBruteSpawnRolls;
     public final ForgeConfigSpec.IntValue DeeplingAnglerSpawnWeight;
     public final ForgeConfigSpec.IntValue DeeplingAnglerSpawnRolls;
+    public final ForgeConfigSpec.IntValue DeeplingPriestSpawnWeight;
+    public final ForgeConfigSpec.IntValue DeeplingPriestSpawnRolls;
+    public final ForgeConfigSpec.IntValue DeeplingWarlockSpawnWeight;
+    public final ForgeConfigSpec.IntValue DeeplingWarlockSpawnRolls;
+
     public final ForgeConfigSpec.IntValue AmethystCrabSpawnWeight;
     public final ForgeConfigSpec.IntValue AmethystCrabSpawnRolls;
+
     public final ForgeConfigSpec.IntValue KoboletonSpawnWeight;
     public final ForgeConfigSpec.IntValue KoboletonSpawnRolls;
-    
-    public final ForgeConfigSpec.BooleanValue renderingOffsetFixes;
+
+    public final ForgeConfigSpec.IntValue CoralgolemSpawnWeight;
+    public final ForgeConfigSpec.IntValue CoralgolemSpawnRolls;
+
+    public final ForgeConfigSpec.IntValue IgnitedBerserkerSpawnWeight;
+    public final ForgeConfigSpec.IntValue IgnitedBerserkerSpawnRolls;
 
     public CommonConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("Etc");
@@ -150,8 +176,9 @@ public class CommonConfig {
         shadersCompat = buildBoolean(builder, "shadersCompat", "all", false, "Whether to disable certain aspects of the Ignitium Helemt. Enable if issues with shaders persist.");
         ScreenShake = buildBoolean(builder, "ScreenShake(on/off)", "all", true, "ScreenShake(on/off)");
         custombossbar = buildBoolean(builder, "custombossbar(on/off)", "all", true, "custombossbar(on/off)");
+        AddedServerlist = buildBoolean(builder, "AddedServerlist(on/off)", "all", true, "AddedServerlist(on/off)");
         BossMusic = buildBoolean(builder, "BossMusic(on/off)", "all", true, "BossMusic(on/off)");
-        BossMusicVolume = buildInt(builder, "BossMusicVolume", "all", 2, 1, 1000000, "BossMusicVolume");
+        BossMusicVolume = buildInt(builder, "BossMusicVolume", "all", 1, 1, 1000000, "BossMusicVolume(denominator)");
         builder.pop();
 
         builder.push("Weapon");
@@ -174,7 +201,7 @@ public class CommonConfig {
         Ashenbreathdamage = buildDouble(builder, "Ashenbreathdamage", "all", 4, 0D, 1000000D, "Ashen Breath's Damage");
         DeathLaserdamage = buildDouble(builder, "DeathLaserdamage", "all", 5, 0D, 1000000D, "Death Laser's Damage");
         DeathLaserHpdamage = buildDouble(builder, "DeathLaserHpdamage", "all", 0.05, 0.0D, 1.0D, "Death Laser's Hp Damage");
-        Laserdamage = buildDouble(builder, "Laserdamage", "all", 4, 0D, 1000000D, "Laser's Damage");
+        Laserdamage = buildDouble(builder, "Laserdamage", "all", 7, 0D, 1000000D, "Player's Laser's Damage");
         BlazingBonedamage = buildDouble(builder, "BlazingBonedamage", "all", 5, 0D, 1000000D, "Blazing Bone's Damage");
         Lionfishspikedamage = buildDouble(builder, "LionfishSpikedamage", "all", 4, 0D, 1000000D, "Lionfish Spike's Damage");
         WitherHowizterdamage = buildDouble(builder, "WitherHowizterdamage", "all", 8, 0D, 1000000D, "Wither Howizter's Damage");
@@ -192,7 +219,8 @@ public class CommonConfig {
         builder.push("Ender Guardian");
         EnderguardianHealthMultiplier = buildDouble(builder, "EnderGuardianHealthMultiplier", "all", 1.0D, 0D, 1000000D, "EnderGuardian's Health Multiplier");
         EnderguardianDamageMultiplier = buildDouble(builder, "EnderGuardianDamageMultiplier", "all", 1.0D, 0D, 1000000D, "EnderGuardian's Damage Multiplier");
-        EnderguardianDamageCap = buildInt(builder, "EnderGuardianDamageCap", "all", 22, 0, 1000000, "EnderGuardian's DamageCap");
+        EnderguardianDamageCap = buildDouble(builder, "EnderGuardianDamageCap", "all", 22D, 0D, 1000000D, "EnderGuardian's DamageCap");
+        EnderguardianNatureHealing = buildDouble(builder, "EnderGuardianNatureHealing", "all", 10D, 0D, 1000000D, "EnderGuardian's Healing with out target");
         EnderguardianBlockBreaking = buildBoolean(builder, "EnderguardianBlockBreaking", "all", true, "Ender guardian's block breaking ignore the MobGriefing");
         EnderguardianLongRangelimit = buildDouble(builder, "Guardian's prevent attacks from far away Range", "all", 12.0D, 1D, 1000000D, "Guardian's Immune to Long distance attack range.");
         EnderguardianGravityPunchHpdamage = buildDouble(builder, "Guardian's gravity Punch Hp Damage", "all", 0.05D, 0.0D, 1.0D, "Guardian's gravity Punch Hp Damage");
@@ -212,7 +240,8 @@ public class CommonConfig {
         MonstrosityHealthMultiplier = buildDouble(builder, "MonstrosityHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Monstrosity's Health Multiplier");
         MonstrosityDamageMultiplier = buildDouble(builder, "MonstrosityDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Monstrosity's Damage Multiplier");
         MonstrosityHealingMultiplier = buildDouble(builder, "MonstrosityHealingMultiplier", "all", 1.0D, 0D, 1000000D, "Monstrosity's Healing Multiplier");
-        MonstrosityDamageCap = buildInt(builder, "MonstrosityDamageCap", "all", 22, 0, 1000000, "Monstrosity's DamageCap");
+        MonstrosityNatureHealing = buildDouble(builder, "MonstrosityNatureHealing", "all", 10D, 0D, 1000000D, " Monstrosity's Healing with out target");
+        MonstrosityDamageCap = buildDouble(builder, "MonstrosityDamageCap", "all", 22D, 0D, 1000000D, "Monstrosity's DamageCap");
         NetheritemonstrosityBodyBloking = buildBoolean(builder, "NetheritemonstrosityBodyBloking", "all", true, "Monstrosity's bodyBlocking verdict");
         MonstrositysHpdamage = buildDouble(builder, "Monstrosity's attack Hp Damage", "all", 0.08D, 0.0D, 1.0D, "Monstrosity's attack Hp Damage");
         MonstrosityLongRangelimit = buildDouble(builder, "Monstrosity's prevent attacks from far away Range", "all", 18.0D, 1D, 1000000D, "Monstrosity's Immune to Long distance attack range.");
@@ -228,9 +257,10 @@ public class CommonConfig {
         builder.push("Ignis");
         IgnisHealthMultiplier = buildDouble(builder, "IgnisHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Ignis's Health Multiplier");
         IgnisDamageMultiplier = buildDouble(builder, "IgnisDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Ignis's Damage Multiplier");
+        IgnisNatureHealing = buildDouble(builder, "IgnisNatureHealing", "all", 10D, 0D, 1000000D, "Ignis's Healing with out target");
         IgnisHealingMultiplier = buildDouble(builder, "IgnisHealingMultiplier", "all", 1.0D, 0D, 1000000D, "Ignis's Healing Multiplier");
         IgnisLongRangelimit = buildDouble(builder, "Ignis's prevent attacks from far away Range", "all", 15.0D, 1D, 1000000D, "Ignis's Immune to Long distance attack range.");
-        IgnisDamageCap = buildInt(builder, "IgnisDamageCap", "all", 20, 0, 1000000, "Ignis's DamageCap");
+        IgnisDamageCap = buildDouble(builder, "IgnisDamageCap", "all", 20D, 0D, 1000000D, "Ignis's DamageCap");
         IgnisBlockBreaking = buildBoolean(builder, "IgnisBlockBreaking", "all", true, "Ignis's cracked block breaking ignore the MobGriefing");
         builder.pop();
 
@@ -250,8 +280,10 @@ public class CommonConfig {
         HarbingerDamageMultiplier = buildDouble(builder, "HarbingerDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Harbinger's Damage Multiplier");
         HarbingerHealingMultiplier = buildDouble(builder, "HarbingerHealingMultiplier", "all", 1.0D, 0D, 1000000D, "Harbinger's Healing Multiplier");
         HarbingerWitherMissiledamage = buildDouble(builder, "Harbinger's WitherMissiledamage", "all", 8, 0D, 1000000D, "Harbinger's Wither Missile's Damage");
+        HarbingerLaserdamage = buildDouble(builder, "Harbinger's laser damage", "all", 5, 0D, 1000000D, "Harbinger's laser's Damage");
+
         HarbingerLongRangelimit = buildDouble(builder, "The Harbinger's prevent attacks from far away Range", "all", 35D, 1D, 1000000D, "Harbinger's Immune to Long distance attack range.");
-        HarbingerDamageCap = buildInt(builder, "The Harbinger DamageCap", "all", 22, 0, 1000000, "Harbinger's DamageCap");
+        HarbingerDamageCap = buildDouble(builder, "The Harbinger DamageCap", "all", 22D, 0D, 1000000D, "Harbinger's DamageCap");
         HarbingerLightFire = buildBoolean(builder, "The Harbinger Light A Fire", "all", true, "Harbinger's lasers can light a fire in MobGriefing");
         HarbingerChargeHpDamage = buildDouble(builder, "The Harbinger's charge attack Hp Damage", "all", 0.06D, 0.0D, 1.0D, "The Harbinger's charge attack Hp Damage");
         builder.pop();
@@ -259,12 +291,13 @@ public class CommonConfig {
         builder.push("The Leviathan");
         LeviathanHealthMultiplier = buildDouble(builder, "LeviathanHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Leviathan's Health Multiplier");
         LeviathanDamageMultiplier = buildDouble(builder, "LeviathanDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Leviathan's Damage Multiplier");
+        LeviathanNatureHealing = buildDouble(builder, "LeviathanNatureHealing", "all", 10D, 0D, 1000000D, "Leviathan's Healing with out target");
         LeviathanLongRangelimit = buildDouble(builder, "Leviathan's prevent attacks from far away Range", "all", 38.0D, 1D, 1000000D, "Leviathan's Immune to Long distance attack range.");
         LeviathanbiteHpdamage = buildDouble(builder, "Leviathan's Bite Hp Damage", "all", 0.1D, 0.0D, 1.0D, "Leviathan's Bite Hp Damage");
         LeviathanRushHpdamage = buildDouble(builder, "Leviathan's Rush Hp Damage", "all", 0.05D, 0.0D, 1.0D, "Leviathan's Rush Hp Damage");
         LeviathanTailSwingHpdamage = buildDouble(builder, "Leviathan's TailSwing Hp Damage", "all", 0.08D, 0.0D, 1.0D, "Leviathan's TailSwing Hp Damage");
         LeviathanTentacleHpdamage = buildDouble(builder, "Leviathan's Tentacle Hp Damage", "all", 0.03D, 0.0D, 1.0D, "Leviathan's Tentacle Hp Damage");
-        LeviathanDamageCap = buildInt(builder, "LeviathanDamageCap", "all", 20, 0, 1000000, "Leviathan's DamageCap");
+        LeviathanDamageCap = buildDouble(builder, "LeviathanDamageCap", "all", 20D, 0D, 1000000D, "Leviathan's DamageCap");
         LeviathanBlockBreaking = buildBoolean(builder, "LeviathanBlockBreaking", "all", true, "Leviathan's block breaking ignore the MobGriefing");
         LeviathanImmuneOutofWater = buildBoolean(builder, "LeviathanImmuneOutofWater", "all", true, "Leviathan Immune Out of Water");
         builder.pop();
@@ -281,23 +314,38 @@ public class CommonConfig {
 
         builder.push("Amethyst Crab");
         AmethystCrabHealthMultiplier = buildDouble(builder, "AmethystCrabHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Amethyst Crab's Health Multiplier");
-        AmethystCrabDamageMultiplier  = buildDouble(builder, "AmethystCrabDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Amethyst Crab's Damage Multiplier");
+        AmethystCrabEarthQuakeDamage = buildDouble(builder, "AmethystCrabEarthQuakeDamage", "all", 5.0D, 0D, 1000000D, "Amethyst Crab's EarthQuake Damage");
+        AmethystCrabDamageMultiplier = buildDouble(builder, "AmethystCrabDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Amethyst Crab's Damage Multiplier");
         builder.pop();
 
         builder.push("Ancient Remnant");
         AncientRemnantHealthMultiplier = buildDouble(builder, "AncientRemnantHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Ancient Remnant's Health Multiplier");
         AncientRemnantDamageMultiplier  = buildDouble(builder, "AncientRemnantDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Ancient Remnant's Damage Multiplier");
+        AncientRemnantNatureHealing = buildDouble(builder, "LeviathanNatureHealing", "all", 10D, 0D, 1000000D, "Leviathan's Healing with out target");
         AncientRemnantLongRangelimit = buildDouble(builder, "Ancient Remnant's prevent attacks from far away Range", "all", 15.0D, 1D, 1000000D, "Ancient Remnant's Immune to Long distance attack range.");
-        AncientRemnantDamageCap = buildInt(builder, "AncientRemnantCap", "all", 21, 0, 1000000, "Ancient Remnant's DamageCap");
+        AncientRemnantDamageCap = buildDouble(builder, "AncientRemnantCap", "all", 21.0D, 0D, 1000000D, "Ancient Remnant's DamageCap");
         AncientRemnantBlockBreaking = buildBoolean(builder, "AncientRemnantBlockBreaking", "all", true, "Ancient Remnant's block breaking ignore the MobGriefing");
         RemnantChargeHpDamage = buildDouble(builder, "Remnant's Charge Hp Damage", "all", 0.07D, 0.0D, 1.0D, "Remnant's Charge Hp Damage");
         RemnantHpDamage = buildDouble(builder, "Remnant's Normal attack Hp Damage", "all", 0.05D, 0.0D, 1.0D, "Remnant's Hp Damage");
         RemnantStompHpDamage = buildDouble(builder, "Remnant's Stomp Hp Damage", "all", 0.03D, 0.0D, 1.0D, "Remnant's Stomp Hp Damage");
+        AncientRemnantEarthQuakeDamage = buildDouble(builder, "Remnant's EarthQuakeDamage", "all", 8.0D, 0D, 1000000D, "Remnant's EarthQuake Damage");
         builder.pop();
 
         builder.push("Koboleton");
         CauseKoboletontoDropItemInHandPercent = buildDouble(builder, "CauseKoboletontoDropItemInHandPercent", "all", 5.0D, 0D, 100D, "Cause Koboleton to Drop Item In Hand Percent");
         builder.pop();
+
+        builder.push("Kobolediator");
+        KobolediatorBlockBreaking = buildBoolean(builder, "KobolediatorBlockBreaking", "all", false, "Kobolediator's block breaking ignore the MobGriefing");
+        KobolediatorHealthMultiplier = buildDouble(builder, "KobolediatorHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Kobolediator's Health Multiplier");
+        KobolediatorDamageMultiplier = buildDouble(builder, "KobolediatorDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Kobolediator's Damage Multiplier");
+        builder.pop();
+
+        builder.push("wadjet");
+        WadjetHealthMultiplier = buildDouble(builder, "WadjetHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Wadjet's Health Multiplier");
+        WadjetDamageMultiplier = buildDouble(builder, "WadjetDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Wadjet's Damage Multiplier");
+        builder.pop();
+
 
         builder.push("spawning");
         DeeplingSpawnWeight = buildInt(builder, "DeeplingSpawnWeight", "spawns", CMConfig.DeeplingSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
@@ -309,14 +357,26 @@ public class CommonConfig {
         DeeplingAnglerSpawnWeight = buildInt(builder, "DeeplingAnglerSpawnWeight", "spawns", CMConfig.DeeplingAnglerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         DeeplingAnglerSpawnRolls = buildInt(builder, "DeeplingAnglerSpawnRolls", "spawns", CMConfig.DeeplingAnglerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
+        DeeplingPriestSpawnWeight = buildInt(builder, "DeeplingPriestSpawnWeight", "spawns", CMConfig.DeeplingPriestSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        DeeplingPriestSpawnRolls = buildInt(builder, "DeeplingPriestSpawnRolls", "spawns", CMConfig.DeeplingPriestSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+
+        DeeplingWarlockSpawnWeight = buildInt(builder, "DeeplingWarlockSpawnWeight", "spawns", CMConfig.DeeplingWarlockSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        DeeplingWarlockSpawnRolls = buildInt(builder, "DeeplingWarlockSpawnRolls", "spawns", CMConfig.DeeplingWarlockSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+
+        CoralgolemSpawnWeight = buildInt(builder, "CoralgolemSpawnWeight", "spawns", CMConfig.CoralgolemSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        CoralgolemSpawnRolls = buildInt(builder, "CoralgolemSpawnRolls", "spawns", CMConfig.CoralgolemSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+
+
         AmethystCrabSpawnWeight = buildInt(builder, "AmethystCrabSpawnWeight", "spawns", CMConfig.AmethystCrabSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         AmethystCrabSpawnRolls = buildInt(builder, "AmethystCrabSpawnRolls", "spawns", CMConfig.AmethystCrabSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
         KoboletonSpawnWeight = buildInt(builder, "KoboletonSpawnWeight", "spawns", CMConfig.KoboletonSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         KoboletonSpawnRolls = buildInt(builder, "KoboletonSpawnRolls", "spawns", CMConfig.KoboletonSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
 
-        renderingOffsetFixes = buildBoolean(builder, "renderingOffsetFixes", "all", CMConfig.renderingOffsetFixes, "if you experience ancient remnant looks like floating or stuck in ground while hitbox is normal, try change this value");
-        
+        IgnitedBerserkerSpawnWeight = buildInt(builder, "IgnitedBerserkerSpawnWeight", "spawns", CMConfig.IgnitedBerserkerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
+        IgnitedBerserkerSpawnRolls = buildInt(builder, "IgnitedBerserkerSpawnRolls", "spawns", CMConfig.IgnitedBerserkerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+
+
         builder.pop();
     }
 

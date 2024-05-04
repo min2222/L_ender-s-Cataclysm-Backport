@@ -6,13 +6,13 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
-import com.github.alexthe666.citadel.animation.Animation;
-import com.github.alexthe666.citadel.animation.AnimationHandler;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.AnimationHandler;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

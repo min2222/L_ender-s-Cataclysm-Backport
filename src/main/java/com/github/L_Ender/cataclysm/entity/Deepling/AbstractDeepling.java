@@ -5,11 +5,12 @@ import java.util.List;
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.AI.MobAILeaveWater;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.GroundPathNavigatorWide;
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.SemiAquaticPathNavigator;
-import com.github.alexthe666.citadel.animation.AnimationHandler;
+import com.github.L_Ender.cataclysm.init.ModTag;
+import com.github.L_Ender.lionfishapi.server.animation.AnimationHandler;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,13 +27,14 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
-public class AbstractDeepling extends Animation_Monster implements ISemiAquatic {
+public class AbstractDeepling extends Animation_Monster implements ISemiAquatic,Enemy {
     private int moistureAttackTime = 0;
     public float LayerBrightness, oLayerBrightness;
     public int LayerTicks;
@@ -68,7 +70,7 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
             return true;
         } else if (super.isAlliedTo(entityIn)) {
             return true;
-        } else if (entityIn instanceof Coralssus_Entity || entityIn instanceof AbstractDeepling || entityIn instanceof Lionfish_Entity || entityIn instanceof The_Leviathan_Entity) {
+        } else if (entityIn.getType().is(ModTag.TEAM_THE_LEVIATHAN)) {
             return this.getTeam() == null && entityIn.getTeam() == null;
         } else {
             return false;
@@ -238,7 +240,7 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
 
         public boolean canUse() {
             Coralssus_Entity sus = getClosestCoralssus_Entity();
-            return sus !=null && this.drowned.getMoistness() > 300 && sus.isAlive() && !sus.isVehicle();
+            return !this.drowned.isPassenger() && sus !=null && this.drowned.getMoistness() > 300 && sus.isAlive() && !sus.isVehicle();
         }
 
         public void start() {
@@ -252,7 +254,7 @@ public class AbstractDeepling extends Animation_Monster implements ISemiAquatic 
             Coralssus_Entity sus = getClosestCoralssus_Entity();
             if(sus !=null) {
                 this.drowned.getNavigation().moveTo(sus, 1.0D);
-                if(this.drowned.distanceTo(sus) < 2.0f){
+                if(this.drowned.distanceTo(sus) < 4.0f){
                     this.drowned.startRiding(sus, true);
                 }
 

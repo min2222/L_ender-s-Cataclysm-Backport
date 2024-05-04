@@ -2,17 +2,17 @@ package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Golem_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ender_Guardian_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Golem_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Guardian_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.DirectPathNavigator;
 import com.github.L_Ender.cataclysm.entity.etc.FlightMoveController;
 import com.github.L_Ender.cataclysm.entity.projectile.Void_Shard_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
-import com.github.alexthe666.citadel.animation.Animation;
-import com.github.alexthe666.citadel.animation.AnimationHandler;
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.AnimationHandler;
+import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

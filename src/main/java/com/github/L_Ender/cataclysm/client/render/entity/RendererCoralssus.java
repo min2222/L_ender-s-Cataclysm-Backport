@@ -2,7 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 
 
 import com.github.L_Ender.cataclysm.client.model.entity.ModelCoralssus;
-import com.github.L_Ender.cataclysm.entity.Deepling.Coralssus_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.entity.EntityRendererProvider;

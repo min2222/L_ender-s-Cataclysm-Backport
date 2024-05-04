@@ -1,7 +1,7 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
 import com.github.L_Ender.cataclysm.client.render.RenderUtils;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -29,7 +29,7 @@ public class Item_Layer<T extends LivingEntity, M extends EntityModel<T>> extend
     public void render(PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn, T entitylivingbaseIn, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
         if (!AdvancedModelBox.showModel) return;
         matrixStackIn.pushPose();
-        RenderUtils.matrixStackFromModel(matrixStackIn, getAdvancedModelBox());
+        RenderUtils.matrixStackFromCitadelModel(matrixStackIn, getAdvancedModelBox());
         Minecraft.getInstance().getEntityRenderDispatcher().getItemInHandRenderer().renderItem(entitylivingbaseIn, getItemstack(), transformType, false, matrixStackIn, bufferIn, packedLightIn);
         matrixStackIn.popPose();
     }

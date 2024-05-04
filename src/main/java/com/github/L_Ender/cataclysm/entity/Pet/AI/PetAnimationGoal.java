@@ -3,8 +3,8 @@ package com.github.L_Ender.cataclysm.entity.Pet.AI;
 import java.util.EnumSet;
 
 import com.github.L_Ender.cataclysm.entity.Pet.AnimationPet;
-import com.github.alexthe666.citadel.animation.Animation;
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 

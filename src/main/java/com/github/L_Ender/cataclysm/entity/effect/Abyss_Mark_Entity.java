@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.Abyss_Blast_Portal_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Blast_Portal_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 
 import net.minecraft.core.BlockPos;

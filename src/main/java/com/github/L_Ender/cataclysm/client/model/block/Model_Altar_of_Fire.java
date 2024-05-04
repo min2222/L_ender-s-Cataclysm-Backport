@@ -4,9 +4,9 @@ package com.github.L_Ender.cataclysm.client.model.block;// Made with Blockbench 
 
 
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfFire;
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.world.entity.Entity;
@@ -28,11 +28,11 @@ public class Model_Altar_of_Fire extends AdvancedEntityModel<Entity> {
 		texHeight = 128;
 
 		root = new AdvancedModelBox(this);
-		root.setPos(0.0F, 24.0F, 0.0F);
+		root.setRotationPoint(0.0F, 24.0F, 0.0F);
 
 
 		pillar = new AdvancedModelBox(this);
-		pillar.setPos(0.0F, 0.0F, 0.0F);
+		pillar.setRotationPoint(0.0F, 0.0F, 0.0F);
 		root.addChild(pillar);
 		pillar.setTextureOffset(0, 46).addBox(-8.0F, -12.0F, -8.0F, 16.0F, 4.0F, 16.0F, 0.0F, false);
 		pillar.setTextureOffset(0, 25).addBox(-8.0F, -4.1F, -8.0F, 16.0F, 4.0F, 16.0F, 0.0F, false);
@@ -40,32 +40,32 @@ public class Model_Altar_of_Fire extends AdvancedEntityModel<Entity> {
 		pillar.setTextureOffset(53, 13).addBox(-6.0F, -8.0F, -6.0F, 12.0F, 4.0F, 12.0F, 0.0F, false);
 
 		flag_ring = new AdvancedModelBox(this);
-		flag_ring.setPos(0.0F, -0.25F, 0.0F);
+		flag_ring.setRotationPoint(0.0F, -0.25F, 0.0F);
 		pillar.addChild(flag_ring);
 
 
 		flag1 = new AdvancedModelBox(this);
-		flag1.setPos(0.0F, -12.0F, -8.75F);
+		flag1.setRotationPoint(0.0F, -12.0F, -8.75F);
 		flag_ring.addChild(flag1);
 		flag1.setTextureOffset(49, 0).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 11.0F, 0.0F, 0.0F, false);
 
 		flag2 = new AdvancedModelBox(this);
-		flag2.setPos(8.25F, -12.0F, 0.0F);
+		flag2.setRotationPoint(8.25F, -12.0F, 0.0F);
 		flag_ring.addChild(flag2);
 		flag2.setTextureOffset(66, 47).addBox(0.0F, 0.0F, -4.0F, 0.0F, 11.0F, 8.0F, 0.0F, false);
 
 		flag3 = new AdvancedModelBox(this);
-		flag3.setPos(0.0F, -12.0F, 8.25F);
+		flag3.setRotationPoint(0.0F, -12.0F, 8.25F);
 		flag_ring.addChild(flag3);
 		flag3.setTextureOffset(49, 0).addBox(-4.0F, 0.0F, 0.0F, 8.0F, 11.0F, 0.0F, 0.0F, false);
 
 		flag4 = new AdvancedModelBox(this);
-		flag4.setPos(-8.25F, -12.0F, 0.0F);
+		flag4.setRotationPoint(-8.25F, -12.0F, 0.0F);
 		flag_ring.addChild(flag4);
 		flag4.setTextureOffset(66, 47).addBox(0.0F, 0.0F, -4.0F, 0.0F, 11.0F, 8.0F, 0.0F, false);
 
 		edge = new AdvancedModelBox(this);
-		edge.setPos(0.0F, -12.0F, 0.0F);
+		edge.setRotationPoint(0.0F, -12.0F, 0.0F);
 		pillar.addChild(edge);
 		edge.setTextureOffset(66, 0).addBox(6.0F, -1.0F, 6.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 		edge.setTextureOffset(0, 67).addBox(6.0F, -1.0F, -10.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
@@ -77,7 +77,7 @@ public class Model_Altar_of_Fire extends AdvancedEntityModel<Entity> {
 		edge.setTextureOffset(0, 0).addBox(-9.0F, 3.0F, -9.0F, 3.0F, 3.0F, 3.0F, 0.0F, true);
 
 		under_edge = new AdvancedModelBox(this);
-		under_edge.setPos(0.0F, 9.0F, 0.0F);
+		under_edge.setRotationPoint(0.0F, 9.0F, 0.0F);
 		pillar.addChild(under_edge);
 		under_edge.setTextureOffset(0, 67).addBox(5.0F, -12.0F, -9.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 		under_edge.setTextureOffset(0, 67).addBox(-9.0F, -12.0F, -9.0F, 4.0F, 3.0F, 4.0F, 0.0F, true);
@@ -85,7 +85,7 @@ public class Model_Altar_of_Fire extends AdvancedEntityModel<Entity> {
 		under_edge.setTextureOffset(66, 0).addBox(5.0F, -12.0F, 5.0F, 4.0F, 3.0F, 4.0F, 0.0F, false);
 
 		fire = new AdvancedModelBox(this);
-		fire.setPos(0.0F, -12.0F, 0.0F);
+		fire.setRotationPoint(0.0F, -12.0F, 0.0F);
 		root.addChild(fire);
 		setRotationAngle(fire, 0.0F, -0.7854F, 0.0F);
 		fire.setTextureOffset(65, 30).addBox(-8.0F, -16.0F, 0.0F, 16.0F, 16.0F, 0.0F, 0.0F, false);

@@ -2,13 +2,13 @@ package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
 import java.util.EnumSet;
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Prowler_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.AI.SimpleAnimationGoal;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.SimpleAnimationGoal;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Prowler_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-import com.github.alexthe666.citadel.animation.Animation;
-import com.github.alexthe666.citadel.animation.AnimationHandler;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.AnimationHandler;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -20,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.goal.Goal.Flag;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;

@@ -2,12 +2,11 @@ package com.github.L_Ender.cataclysm;
 
 import static com.github.L_Ender.cataclysm.Cataclysm.MODID;
 
+import java.util.UUID;
+
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.crafting.AltarOfAmethystRecipeManager;
-
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fml.common.Mod;
@@ -16,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class CommonProxy {
 
-    private AltarOfAmethystRecipeManager AltarOfAmethystManager;
 
     public void init() {
     }
@@ -25,6 +23,9 @@ public class CommonProxy {
     }
 
     public void clientInit() {
+    }
+
+    public void addServerToList(String address, String name) {
     }
 
     public Object getISTERProperties() {
@@ -38,15 +39,13 @@ public class CommonProxy {
     public void onEntityStatus(Entity entity, byte updateKind) {
     }
 
-    public AltarOfAmethystRecipeManager getAltarOfAmethystRecipeManager(){
-        if(AltarOfAmethystManager == null){
-            AltarOfAmethystManager = new AltarOfAmethystRecipeManager();
-        }
-        return AltarOfAmethystManager;
-    }
 
     public void clearSoundCacheFor(Entity entity) {
 
+    }
+
+    public float getPartialTicks() {
+        return 1.0F;
     }
 
 
@@ -62,10 +61,11 @@ public class CommonProxy {
 
     }
 
-    public void addBoss(Mob mob) {
+
+    public void removeBossBarRender(UUID bossBar) {
     }
 
-    public void removeBoss(Mob mob) {
+    public void setBossBarRender(UUID bossBar, int renderType) {
     }
 
 }

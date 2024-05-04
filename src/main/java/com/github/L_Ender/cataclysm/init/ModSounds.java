@@ -66,8 +66,10 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> ENDERGUARDIAN_MUSIC = SOUNDS.register("enderguardian_music",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"enderguardian_music")));
 
+
     public static final RegistryObject<SoundEvent> IGNIS_MUSIC = SOUNDS.register("ignis_music",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"ignis_music")));
+
 
     public static final RegistryObject<SoundEvent> ENDERMAPTERA_HURT = SOUNDS.register("endermaptera_hurt",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"endermaptera_hurt")));
@@ -159,6 +161,7 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> HARBINGER_MUSIC = SOUNDS.register("harbinger_music",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"harbinger_music")));
 
+
     public static final RegistryObject<SoundEvent> HARBINGER_HURT = SOUNDS.register("harbinger_hurt",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"harbinger_hurt")));
 
@@ -234,11 +237,11 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> TIDAL_HOOK_LOOP = SOUNDS.register("tidal_hook_loop",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"tidal_hook_loop")));
 
-    public static final RegistryObject<SoundEvent> CORALSSUS_HURT = SOUNDS.register("coralssus_hurt",
-            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coralssus_hurt")));
+    public static final RegistryObject<SoundEvent> CORAL_GOLEM_HURT = SOUNDS.register("coral_golem_hurt",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coral_golem_hurt")));
 
-    public static final RegistryObject<SoundEvent> CORALSSUS_DEATH = SOUNDS.register("coralssus_death",
-            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coralssus_death")));
+    public static final RegistryObject<SoundEvent> CORAL_GOLEM_DEATH = SOUNDS.register("coral_golem_death",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coral_golem_death")));
 
     public static final RegistryObject<SoundEvent> CRAB_DEATH = SOUNDS.register("crab_death",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"crab_death")));
@@ -294,6 +297,9 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> MODERN_REMNANT_DEATH = SOUNDS.register("modern_remnant_death",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"modern_remnant_death")));
 
+    public static final RegistryObject<SoundEvent> MODERN_REMNANT_FILL_BUCKET = SOUNDS.register("modern_remnant_fill_bucket",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"modern_remnant_fill_bucket")));
+
     public static final RegistryObject<SoundEvent> SANDSTORM = SOUNDS.register("sandstorm",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"sandstorm")));
 
@@ -347,4 +353,39 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> PROWLER_SAW_SPIN_ATTACK = SOUNDS.register("prowler_saw_spin_attack",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"prowler_saw_spin_attack")));
+
+    public static final RegistryObject<SoundEvent> CORALSSUS_AMBIENT = SOUNDS.register("coralssus_ambient",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coralssus_ambient")));
+
+    public static final RegistryObject<SoundEvent> CORALSSUS_HURT = SOUNDS.register("coralssus_hurt",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coralssus_hurt")));
+
+    public static final RegistryObject<SoundEvent> CORALSSUS_DEATH = SOUNDS.register("coralssus_death",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coralssus_death")));
+
+    public static final RegistryObject<SoundEvent> CORALSSUS_ROAR = SOUNDS.register("coralssus_roar",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"coralssus_roar")));
+
+
+    public static final RegistryObject<SoundEvent> WADJET_AMBIENT = SOUNDS.register("wadjet_ambient",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"wadjet_ambient")));
+
+    public static final RegistryObject<SoundEvent> WADJET_HURT = SOUNDS.register("wadjet_hurt",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"wadjet_hurt")));
+
+    public static final RegistryObject<SoundEvent> WADJET_DEATH = SOUNDS.register("wadjet_death",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"wadjet_death")));
+
+
+    public static final RegistryObject<SoundEvent> KOBOLEDIATOR_AMBIENT = SOUNDS.register("kobolediator_ambient",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"kobolediator_ambient")));
+
+    public static final RegistryObject<SoundEvent> KOBOLEDIATOR_HURT = SOUNDS.register("kobolediator_hurt",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"kobolediator_hurt")));
+
+    public static final RegistryObject<SoundEvent> KOBOLEDIATOR_DEATH = SOUNDS.register("kobolediator_death",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"kobolediator_death")));
+
+
+
 }

@@ -1,7 +1,7 @@
 package com.github.L_Ender.cataclysm.client.sound;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Boss_monster;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Boss_monster;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;

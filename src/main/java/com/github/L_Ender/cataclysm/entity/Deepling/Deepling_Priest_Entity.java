@@ -4,14 +4,20 @@ import java.util.EnumSet;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.config.CMConfig;
+import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-import com.github.alexthe666.citadel.animation.Animation;
+import com.github.L_Ender.cataclysm.world.data.CMWorldData;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -34,6 +40,8 @@ import net.minecraft.world.entity.ai.navigation.WaterBoundPathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -109,6 +117,15 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
         this.playSound(ModSounds.DEEPLING_IDLE.get(), 0.15F, 0.6F);
     }
 
+    public boolean checkSpawnRules(LevelAccessor worldIn, MobSpawnType spawnReasonIn) {
+        if (ModEntities.rollSpawn(CMConfig.DeeplingPriestSpawnRolls, this.getRandom(), spawnReasonIn) && worldIn instanceof ServerLevel serverLevel) {
+            CMWorldData data = CMWorldData.get(serverLevel,Level.OVERWORLD);
+            return data != null && data.isLeviathanDefeatedOnce();
+        }
+        return false;
+
+    }
+
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_34088_, DifficultyInstance p_34089_, MobSpawnType p_34090_, @Nullable SpawnGroupData p_34091_, @Nullable CompoundTag p_34092_) {
         SpawnGroupData spawngroupdata = super.finalizeSpawn(p_34088_, p_34089_, p_34090_, p_34091_, p_34092_);
@@ -117,12 +134,29 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
         return spawngroupdata;
     }
 
+    public boolean checkSpawnObstruction(LevelReader p_32829_) {
+        return p_32829_.isUnobstructed(this);
+    }
+
+
+    public static boolean candeeplingSpawn(EntityType<Deepling_Priest_Entity> p_223364_0_, LevelAccessor p_223364_1_, MobSpawnType reason, BlockPos p_223364_3_, RandomSource p_223364_4_) {
+        return p_223364_1_.getDifficulty() != Difficulty.PEACEFUL && (reason == MobSpawnType.SPAWNER || p_223364_1_.getFluidState(p_223364_3_).is(FluidTags.WATER));
+    }
 
     @Override
     public Animation[] getAnimations() {
         return new Animation[]{NO_ANIMATION, DEEPLING_MELEE,DEEPLING_BLIND};
     }
 
+    private boolean isEntityLookingAt(LivingEntity looker, LivingEntity seen, double degree) {
+        degree *= 1 + (looker.distanceTo(seen) * 0.1);
+        Vec3 Vector3d = looker.getViewVector(1.0F).normalize();
+        Vec3 Vector3d1 = new Vec3(seen.getX() - looker.getX(), seen.getBoundingBox().minY + (double) seen.getEyeHeight() - (looker.getY() + (double) looker.getEyeHeight()), seen.getZ() - looker.getZ());
+        double d0 = Vector3d1.length();
+        Vector3d1 = Vector3d1.normalize();
+        double d1 = Vector3d.dot(Vector3d1);
+        return d1 > 1.0D - degree / d0 && (looker.hasLineOfSight(seen));
+    }
 
     @Override
     public void tick() {
@@ -131,7 +165,6 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
         if (lightcooldown > 0) {
             lightcooldown--;
         }
-
         if(this.isAlive()) {
             if (this.getAnimation() == DEEPLING_MELEE) {
                 if (this.getAnimationTick() == 5) {
@@ -145,11 +178,13 @@ public class Deepling_Priest_Entity extends AbstractDeepling {
                 }
             }
             if (this.getAnimation() == DEEPLING_BLIND) {
-                if (this.getAnimationTick() == 18) {
+                if (this.getAnimationTick() == 18){
                     this.playSound(ModSounds.DEEPLING_LIGHT.get(), 0.2F, 1.0F / (this.getRandom().nextFloat() * 0.4F + 0.8F));
+                }
+                if (this.getAnimationTick() >18 && this.getAnimationTick() <47) {
                     for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(7.0D))) {
-                        if (!isAlliedTo(entity) && entity != this) {
-                            boolean flag = entity.hurt(DamageSource.indirectMagic(this,this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE));
+                        if (!isAlliedTo(entity) && entity != this && isEntityLookingAt(entity, this, 0.6)) {
+                            boolean flag = entity.hurt(DamageSource.indirectMagic(this,this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.7F);
 
                             if(flag){
                                 entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 80));

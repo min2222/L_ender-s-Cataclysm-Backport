@@ -47,25 +47,24 @@ public class Gone_With_SandstormCapability {
         public void tick(TickEvent.PlayerTickEvent event) {
             Player player = event.player;
             player.getCapability(ModCapabilities.GONE_WITH_SANDSTORM_CAPABILITY).ifPresent(handler -> {
-                        if(handler.isSandstorm()){
-                            if(getSandstormTimer() < CMConfig.Sandstorm_In_A_Bottle_Timer){
-                                setSandstormTimer(getSandstormTimer() + 1);
-                                SandstormUtils.toggleFlight(player,true);
-                            }else{
-                                setSandstorm(false);
-                                SandstormUtils.toggleFlight(player,false);
-                            }
-                        }else{
-                            if(getSandstormTimer() >0) {
-                                setSandstormTimer(getSandstormTimer() - 1);
-                            }
-                        }
+                if(handler.isSandstorm()){
+                    if(getSandstormTimer() < CMConfig.Sandstorm_In_A_Bottle_Timer){
+                        setSandstormTimer(getSandstormTimer() + 1);
+                        SandstormUtils.toggleFlight(player,true);
+                    }else{
+                        setSandstorm(false);
+                        SandstormUtils.toggleFlight(player,false);
                     }
+                }else{
+                    if(getSandstormTimer() >0) {
+                        setSandstormTimer(getSandstormTimer() - 1);
+                    }
+                }
+            }
             );
         }
 
-        public MessageGoneWithSandstorm makeSyncMessage()
-        {
+        public MessageGoneWithSandstorm makeSyncMessage() {
             return new MessageGoneWithSandstorm(player.getId(), this,Timer);
         }
 

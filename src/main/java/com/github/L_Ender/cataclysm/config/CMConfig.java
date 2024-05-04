@@ -9,6 +9,7 @@ public class CMConfig {
     public static double LavaVisionOpacity = 0.5F;
     public static boolean shadersCompat = false;
     public static boolean custombossbar = true;
+    public static boolean AddedServerlist = true;
 
     public static int GauntletOfBulwarkCooldown = 80;
     public static int BulwarkOfTheFlameCooldown = 80;
@@ -43,12 +44,12 @@ public class CMConfig {
     public static boolean ScreenShake = true;
     public static boolean BossMusic = true;
 
-    public static int EnderguardianDamageCap = 22;
-    public static int MonstrosityDamageCap = 25;
-    public static int IgnisDamageCap = 20;
-    public static int HarbingerDamageCap = 22;
-    public static int LeviathanDamageCap = 20;
-    public static int AncientRemnantDamageCap = 21;
+    public static double EnderguardianDamageCap = 22;
+    public static double MonstrosityDamageCap = 25;
+    public static double IgnisDamageCap = 20;
+    public static double HarbingerDamageCap = 22;
+    public static double LeviathanDamageCap = 20;
+    public static double AncientRemnantDamageCap = 21;
 
     public static int Lavabombmagazine = 3;
     public static int Lavabombamount = 3;
@@ -64,17 +65,21 @@ public class CMConfig {
     public static boolean LeviathanBlockBreaking = true;
     public static boolean HarbingerLightFire = true;
     public static boolean LeviathanImmuneOutofWater = true;
+    public static boolean KobolediatorBlockBreaking = false;
 
     public static double MonstrosityHealthMultiplier = 1D;
     public static double MonstrosityDamageMultiplier = 1D;
     public static double MonstrosityHealingMultiplier = 1D;
+    public static double MonstrosityNatureHealing = 10D;
     public static boolean NetheritemonstrosityBodyBloking = true;
 
     public static double EnderguardianHealthMultiplier = 1D;
     public static double EnderguardianDamageMultiplier = 1D;
+    public static double EnderguardianNatureHealing = 10D;
 
     public static double IgnisHealthMultiplier = 1D;
     public static double IgnisHealingMultiplier = 1D;
+    public static double IgnisNatureHealing = 10D;
     public static double IgnisDamageMultiplier = 1D;
 
     public static double EnderGolemHealthMultiplier = 1D;
@@ -90,24 +95,34 @@ public class CMConfig {
     public static double HarbingerHealingMultiplier = 1D;
     public static double HarbingerDamageMultiplier = 1D;
     public static double HarbingerWitherMissiledamage = 8;
+    public static double HarbingerLaserdamage = 5;
 
     public static double LeviathanHealthMultiplier = 1D;
+    public static double LeviathanNatureHealing = 10D;
     public static double LeviathanDamageMultiplier = 1D;
 
     public static double BabyLeviathanHealthMultiplier = 1D;
     public static double BabyLeviathanDamageMultiplier = 1D;
 
     public static double AmethystCrabHealthMultiplier = 1D;
+    public static double AmethystCrabEarthQuakeDamage = 5D;
     public static double AmethystCrabDamageMultiplier = 1D;
 
     public static double AncientRemnantHealthMultiplier = 1D;
     public static double AncientRemnantDamageMultiplier = 1D;
-
+    public static double AncientRemnantNatureHealing = 10D;
+    public static double AncientRemnantEarthQuakeDamage = 8D;
 
     public static double ModernRemnantHealthMultiplier = 1D;
     public static double ModernRemnantDamageMultiplier = 1D;
 
     public static double CauseKoboletontoDropItemInHandPercent = 5d;
+
+    public static double KobolediatorHealthMultiplier = 1D;
+    public static double KobolediatorDamageMultiplier = 1D;
+
+    public static double WadjetHealthMultiplier = 1D;
+    public static double WadjetDamageMultiplier = 1D;
 
     public static double MonstrosityLongRangelimit = 18D;
     public static double EnderguardianLongRangelimit = 12D;
@@ -148,19 +163,30 @@ public class CMConfig {
     public static int DeeplingAnglerSpawnWeight = 2;
     public static int DeeplingAnglerSpawnRolls = 30;
 
+    public static int DeeplingPriestSpawnWeight = 1;
+    public static int DeeplingPriestSpawnRolls = 70;
+
+    public static int DeeplingWarlockSpawnWeight = 1;
+    public static int DeeplingWarlockSpawnRolls = 70;
+
     public static int AmethystCrabSpawnWeight = 1;
     public static int AmethystCrabSpawnRolls = 100;
 
     public static int KoboletonSpawnWeight = 2;
     public static int KoboletonSpawnRolls = 30;
-    
-    public static boolean renderingOffsetFixes = true;
+
+    public static int CoralgolemSpawnWeight = 1;
+    public static int CoralgolemSpawnRolls = 70;
+
+    public static int IgnitedBerserkerSpawnWeight = 1;
+    public static int IgnitedBerserkerSpawnRolls = 30;
 
     public static void bake(ModConfig config) {
         try {
             LavaVisionOpacity = ConfigHolder.COMMON.LavaVisionOpacity.get();
             shadersCompat = ConfigHolder.COMMON.shadersCompat.get();
             custombossbar = ConfigHolder.COMMON.custombossbar.get();
+            AddedServerlist = ConfigHolder.COMMON.AddedServerlist.get();
 
             GauntletOfBulwarkCooldown = ConfigHolder.COMMON.GauntletOfBulwarkCooldown.get();
             BulwarkOfTheFlameCooldown = ConfigHolder.COMMON.BulwarkOfTheFlameCooldown.get();
@@ -210,12 +236,16 @@ public class CMConfig {
             NetheritemonstrosityBodyBloking = ConfigHolder.COMMON.NetheritemonstrosityBodyBloking.get();
             EnderguardianBlockBreaking = ConfigHolder.COMMON.EnderguardianBlockBreaking.get();
             EndergolemBlockBreaking = ConfigHolder.COMMON.EndergolemBlockBreaking.get();
+            KobolediatorBlockBreaking = ConfigHolder.COMMON.KobolediatorBlockBreaking.get();
+
             MonstrosityHealthMultiplier = ConfigHolder.COMMON.MonstrosityHealthMultiplier.get();
             MonstrosityDamageMultiplier = ConfigHolder.COMMON.MonstrosityDamageMultiplier.get();
             MonstrosityHealingMultiplier = ConfigHolder.COMMON.MonstrosityHealingMultiplier.get();
+            MonstrosityNatureHealing = ConfigHolder.COMMON.MonstrosityNatureHealing.get();
 
             EnderguardianHealthMultiplier = ConfigHolder.COMMON.EnderguardianHealthMultiplier.get();
             EnderguardianDamageMultiplier = ConfigHolder.COMMON.EnderguardianDamageMultiplier.get();
+            EnderguardianNatureHealing = ConfigHolder.COMMON.EnderguardianNatureHealing.get();
 
             RevenantHealthMultiplier = ConfigHolder.COMMON.RevenantHealthMultiplier.get();
             RevenantDamageMultiplier = ConfigHolder.COMMON.RevenantDamageMultiplier.get();
@@ -227,6 +257,7 @@ public class CMConfig {
             HarbingerDamageMultiplier = ConfigHolder.COMMON.HarbingerDamageMultiplier.get();
             HarbingerHealingMultiplier = ConfigHolder.COMMON.HarbingerHealingMultiplier.get();
             HarbingerWitherMissiledamage = ConfigHolder.COMMON.HarbingerWitherMissiledamage.get();
+            HarbingerLaserdamage = ConfigHolder.COMMON.HarbingerLaserdamage.get();
             HarbingerLightFire = ConfigHolder.COMMON.HarbingerLightFire.get();
 
             IgnisBlockBreaking = ConfigHolder.COMMON.IgnisBlockBreaking.get();
@@ -237,6 +268,7 @@ public class CMConfig {
             IgnisHealthMultiplier = ConfigHolder.COMMON.IgnisHealthMultiplier.get();
             IgnisDamageMultiplier = ConfigHolder.COMMON.IgnisDamageMultiplier.get();
             IgnisHealingMultiplier = ConfigHolder.COMMON.IgnisHealingMultiplier.get();
+            IgnisNatureHealing = ConfigHolder.COMMON.IgnisNatureHealing.get();
 
             MonstrosityLongRangelimit = ConfigHolder.COMMON.MonstrosityLongRangelimit.get();
             EnderguardianLongRangelimit = ConfigHolder.COMMON.EnderguardianLongRangelimit.get();
@@ -267,21 +299,31 @@ public class CMConfig {
             LeviathanDamageMultiplier = ConfigHolder.COMMON.LeviathanDamageMultiplier.get();
             LeviathanBlockBreaking = ConfigHolder.COMMON.LeviathanBlockBreaking.get();
             LeviathanImmuneOutofWater = ConfigHolder.COMMON.LeviathanImmuneOutofWater.get();
+            LeviathanNatureHealing = ConfigHolder.COMMON.LeviathanNatureHealing.get();
 
             BabyLeviathanHealthMultiplier = ConfigHolder.COMMON.BabyLeviathanHealthMultiplier.get();
             BabyLeviathanDamageMultiplier = ConfigHolder.COMMON.BabyLeviathanDamageMultiplier.get();
 
             AmethystCrabHealthMultiplier = ConfigHolder.COMMON.AmethystCrabHealthMultiplier.get();
+            AmethystCrabEarthQuakeDamage = ConfigHolder.COMMON.AmethystCrabEarthQuakeDamage.get();
             AmethystCrabDamageMultiplier = ConfigHolder.COMMON.AmethystCrabDamageMultiplier.get();
 
             AncientRemnantHealthMultiplier = ConfigHolder.COMMON.AncientRemnantHealthMultiplier.get();
             AncientRemnantDamageMultiplier = ConfigHolder.COMMON.AncientRemnantDamageMultiplier.get();
             AncientRemnantBlockBreaking = ConfigHolder.COMMON.AncientRemnantBlockBreaking.get();
+            AncientRemnantEarthQuakeDamage = ConfigHolder.COMMON.HarbingerLaserdamage.get();
+            AncientRemnantNatureHealing = ConfigHolder.COMMON.AncientRemnantNatureHealing.get();
 
             ModernRemnantHealthMultiplier = ConfigHolder.COMMON.ModernRemnantHealthMultiplier.get();
             ModernRemnantDamageMultiplier = ConfigHolder.COMMON.ModernRemnantDamageMultiplier.get();
 
             CauseKoboletontoDropItemInHandPercent = ConfigHolder.COMMON.CauseKoboletontoDropItemInHandPercent.get();
+
+            KobolediatorHealthMultiplier = ConfigHolder.COMMON.KobolediatorHealthMultiplier.get();
+            KobolediatorDamageMultiplier = ConfigHolder.COMMON.KobolediatorDamageMultiplier.get();
+
+            WadjetHealthMultiplier = ConfigHolder.COMMON.WadjetHealthMultiplier.get();
+            WadjetDamageMultiplier = ConfigHolder.COMMON.WadjetDamageMultiplier.get();
 
             Armor_Infinity_Durability = ConfigHolder.COMMON.Armor_Infinity_Durability.get();
 
@@ -294,13 +336,23 @@ public class CMConfig {
             DeeplingAnglerSpawnWeight = ConfigHolder.COMMON.DeeplingAnglerSpawnWeight.get();
             DeeplingAnglerSpawnRolls = ConfigHolder.COMMON.DeeplingAnglerSpawnRolls.get();
 
+            DeeplingPriestSpawnWeight = ConfigHolder.COMMON.DeeplingPriestSpawnWeight.get();
+            DeeplingPriestSpawnRolls = ConfigHolder.COMMON.DeeplingPriestSpawnRolls.get();
+
+            DeeplingWarlockSpawnWeight = ConfigHolder.COMMON.DeeplingWarlockSpawnWeight.get();
+            DeeplingWarlockSpawnRolls = ConfigHolder.COMMON.DeeplingWarlockSpawnRolls.get();
+
             AmethystCrabSpawnWeight = ConfigHolder.COMMON.AmethystCrabSpawnWeight.get();
             AmethystCrabSpawnRolls = ConfigHolder.COMMON.AmethystCrabSpawnRolls.get();
 
             KoboletonSpawnWeight = ConfigHolder.COMMON.KoboletonSpawnWeight.get();
             KoboletonSpawnRolls  = ConfigHolder.COMMON.KoboletonSpawnRolls.get();
-            
-            renderingOffsetFixes = ConfigHolder.COMMON.renderingOffsetFixes.get();
+
+            CoralgolemSpawnWeight = ConfigHolder.COMMON.CoralgolemSpawnWeight.get();
+            CoralgolemSpawnRolls  = ConfigHolder.COMMON.CoralgolemSpawnRolls.get();
+
+            IgnitedBerserkerSpawnWeight = ConfigHolder.COMMON.IgnitedBerserkerSpawnWeight.get();
+            IgnitedBerserkerSpawnRolls = ConfigHolder.COMMON.IgnitedBerserkerSpawnRolls.get();
 
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("An exception was caused trying to load the config for CM");

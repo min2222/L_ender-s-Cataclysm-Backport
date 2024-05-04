@@ -6,8 +6,8 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAbyss;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfAmethyst;
 import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfFire;
-import com.github.alexthe666.citadel.server.message.PacketBufferUtils;
 
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -30,12 +30,33 @@ public class MessageUpdateblockentity {
     }
 
     public static MessageUpdateblockentity read(FriendlyByteBuf buf) {
-        return new MessageUpdateblockentity(buf.readLong(), PacketBufferUtils.readItemStack(buf));
+        return new MessageUpdateblockentity(buf.readLong(), readItemStack(buf));
     }
 
     public static void write(MessageUpdateblockentity message, FriendlyByteBuf buf) {
         buf.writeLong(message.blockPos);
-        PacketBufferUtils.writeItemStack(buf, message.heldStack);
+        writeItemStack(buf, message.heldStack);
+    }
+
+    public static void writeItemStack(ByteBuf to, ItemStack stack) {
+        FriendlyByteBuf pb = new FriendlyByteBuf(to);
+        pb.writeItem(stack);
+    }
+
+    /**
+     * Read an {@link ItemStack} from the byte buffer provided. It uses the minecraft encoding.
+     *
+     * @param from The buffer to read from
+     * @return The itemstack read
+     */
+    public static ItemStack readItemStack(ByteBuf from) {
+        FriendlyByteBuf pb = new FriendlyByteBuf(from);
+        try {
+            return pb.readItem();
+        } catch (Exception e) {
+            // Unpossible?
+            throw new RuntimeException(e);
+        }
     }
 
     public static class Handler {

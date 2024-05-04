@@ -4,13 +4,13 @@ import java.util.EnumSet;
 
 import com.github.L_Ender.cataclysm.entity.AI.AnimalAIRandomSwimming;
 import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.AquaticMoveController;
 import com.github.L_Ender.cataclysm.entity.etc.SemiAquaticPathNavigator;
 import com.github.L_Ender.cataclysm.entity.projectile.Lionfish_Spike_Entity;
-import com.github.alexthe666.citadel.animation.Animation;
-import com.github.alexthe666.citadel.animation.AnimationHandler;
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.L_Ender.cataclysm.init.ModTag;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.AnimationHandler;
+import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -108,17 +108,21 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
     }
 
     public boolean hurt(DamageSource p_32820_, float p_32821_) {
-    	if (p_32820_.getDirectEntity() instanceof LivingEntity livingentity) {
-    		if (!(livingentity instanceof Lionfish_Entity)) {
-    			if (!p_32820_.isMagic() && !p_32820_.isExplosion()) {
-    				if (livingentity.hurt(DamageSource.thorns(this), 1.0F)) {
-    					livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
-    				}
-    			}
-    		}
-    	}
+        if (this.level.isClientSide) {
+            return false;
+        } else {
+            if (!p_32820_.isMagic() && !p_32820_.getMsgId().equals("thorns")) {
+                Entity entity = p_32820_.getDirectEntity();
+                if (entity instanceof LivingEntity livingentity) {
+                    if (livingentity.hurt(DamageSource.thorns(this), 1.0F)) {
+                        livingentity.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0), this);
+                    }
+                }
 
-    	return super.hurt(p_32820_, p_32821_);
+            }
+
+            return super.hurt(p_32820_, p_32821_);
+        }
     }
 
     public void tick(){
@@ -162,7 +166,7 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
             this.setAirSupply(p_30344_ - 1);
             if (this.getAirSupply() == -20) {
                 this.setAirSupply(0);
-                this.hurt(DamageSource.DROWN, 2.0F);
+                this.hurt(DamageSource.DROWN, 0.01F);
             }
         } else {
             this.setAirSupply(1000);
@@ -182,7 +186,7 @@ public class Lionfish_Entity extends Monster implements IAnimatedEntity {
             return true;
         } else if (super.isAlliedTo(entityIn)) {
             return true;
-        } else if (entityIn instanceof Coralssus_Entity || entityIn instanceof AbstractDeepling || entityIn instanceof Lionfish_Entity || entityIn instanceof The_Leviathan_Entity) {
+        } else if (entityIn.getType().is(ModTag.TEAM_THE_LEVIATHAN)) {
             return this.getTeam() == null && entityIn.getTeam() == null;
         } else {
             return false;

@@ -39,7 +39,7 @@ public class LEnderCataclysmJEIPlugin implements IModPlugin {
     public void registerRecipes(IRecipeRegistration registration) {
         CMRecipes modRecipes = new CMRecipes();
         registration.addRecipes(WEAPON_FUSION, modRecipes.getWeaponfusionRecipes());
-        registration.addRecipes(ALTAR_OF_AMETHYST_RECIPE_RECIPE_TYPE, Cataclysm.PROXY.getAltarOfAmethystRecipeManager().getaltarRecipes());
+        registration.addRecipes(ALTAR_OF_AMETHYST_RECIPE_RECIPE_TYPE, modRecipes.getAmethystBlessRecipes());
     }
 
     @Override

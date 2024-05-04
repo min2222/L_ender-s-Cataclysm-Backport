@@ -7,8 +7,8 @@ import java.util.Map;
 import org.apache.commons.lang3.tuple.Pair;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.alexthe666.citadel.config.biome.SpawnBiomeConfig;
-import com.github.alexthe666.citadel.config.biome.SpawnBiomeData;
+import com.github.L_Ender.lionfishapi.config.biome.SpawnBiomeConfig;
+import com.github.L_Ender.lionfishapi.config.biome.SpawnBiomeData;
 
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -19,7 +19,10 @@ public class BiomeConfig {
 
 	public static final Pair<String, SpawnBiomeData> deepling = Pair.of("cataclysm:deepling_spawns", DefaultBiomes.DEEPLING);
 	public static final Pair<String, SpawnBiomeData> deepling_angler = Pair.of("cataclysm:deepling_angler_spawns", DefaultBiomes.DEEPLING);
+	public static final Pair<String, SpawnBiomeData> coral_golem = Pair.of("cataclysm:coral_golem_spawns", DefaultBiomes.DEEPLING);
 	public static final Pair<String, SpawnBiomeData> deepling_brute = Pair.of("cataclysm:deepling_brute_spawns", DefaultBiomes.DEEPLING);
+	public static final Pair<String, SpawnBiomeData> deepling_priest = Pair.of("cataclysm:deepling_priest_spawns", DefaultBiomes.DEEPLING);
+	public static final Pair<String, SpawnBiomeData> deepling_warlock = Pair.of("cataclysm:deepling_warlock_spawns", DefaultBiomes.DEEPLING);
 	public static final Pair<String, SpawnBiomeData> amethyst_crab = Pair.of("cataclysm:amethyst_crab_spawns", DefaultBiomes.CRAB);
 	public static final Pair<String, SpawnBiomeData> koboleton = Pair.of("cataclysm:koboleton_spawns", DefaultBiomes.KOBOLETON);
 

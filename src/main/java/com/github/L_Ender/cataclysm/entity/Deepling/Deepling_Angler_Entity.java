@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
-import com.github.alexthe666.citadel.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

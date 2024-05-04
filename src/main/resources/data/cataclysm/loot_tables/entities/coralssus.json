@@ -6,7 +6,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "cataclysm:crystallized_coral_fragments",
+          "name": "cataclysm:coral_chunk",
           "weight": 1
         }
       ]

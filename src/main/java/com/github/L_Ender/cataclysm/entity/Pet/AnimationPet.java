@@ -4,8 +4,8 @@ package com.github.L_Ender.cataclysm.entity.Pet;
 import java.util.UUID;
 
 import com.github.L_Ender.cataclysm.entity.etc.IFollower;
-import com.github.alexthe666.citadel.animation.Animation;
-import com.github.alexthe666.citadel.animation.IAnimatedEntity;
+import com.github.L_Ender.lionfishapi.server.animation.Animation;
+import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

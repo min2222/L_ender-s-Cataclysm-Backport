@@ -3,11 +3,11 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 // Paste this class into your mod and generate all required imports
 
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Prowler_Entity;
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.ModelAnimator;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Prowler_Entity;
+import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.Minecraft;
@@ -482,10 +482,6 @@ public class ModelThe_Prowler extends AdvancedEntityModel<The_Prowler_Entity> {
 		}
 
 		saw.rotateAngleX -= ageInTicks * sawspeed;
-
-		this.catapiller.rotationPointZ += Mth.cos(limbSwing * globalSpeed ) * limbSwingAmount * 5;
-
-		this.catapiller2.rotationPointZ += Mth.cos(limbSwing * globalSpeed ) * limbSwingAmount * 5;
 
 		float partialTick = Minecraft.getInstance().getFrameTime();
 		float deactivateProgress = entityIn.prevdeactivateProgress + (entityIn.deactivateProgress - entityIn.prevdeactivateProgress) * partialTick;

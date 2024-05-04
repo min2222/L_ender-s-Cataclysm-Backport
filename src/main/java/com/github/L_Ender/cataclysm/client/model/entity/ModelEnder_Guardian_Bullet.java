@@ -1,8 +1,8 @@
 package com.github.L_Ender.cataclysm.client.model.entity;
 
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.world.entity.Entity;
@@ -22,7 +22,7 @@ public class ModelEnder_Guardian_Bullet extends AdvancedEntityModel<Entity> {
 				.addBox(-1.0F, -4.0F, -4.0F, 2, 8, 8, 0.0F);
 		this.renderer.setTextureOffset(20, 0)
 				.addBox(-4.0F, -1.0F, -4.0F, 8, 2, 8, 0.0F);
-		this.renderer.setPos(0.0F, 0.0F, 0.0F);
+		this.renderer.setRotationPoint(0.0F, 0.0F, 0.0F);
 	}
 
 	@Override

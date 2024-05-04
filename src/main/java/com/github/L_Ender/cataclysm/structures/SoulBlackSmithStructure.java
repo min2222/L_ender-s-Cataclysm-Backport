@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Netherite_Monstrosity_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Netherite_Monstrosity_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.google.common.collect.ImmutableMap;

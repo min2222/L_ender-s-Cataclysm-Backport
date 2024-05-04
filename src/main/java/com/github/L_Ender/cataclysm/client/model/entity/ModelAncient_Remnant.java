@@ -3,12 +3,12 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 // Paste this class into your mod and generate all required imports
 
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
-import com.github.alexthe666.citadel.animation.LegSolver;
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.ModelAnimator;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Remnant_Entity;
+import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
+import com.github.L_Ender.lionfishapi.server.animation.LegSolver;
 import com.google.common.collect.ImmutableList;
 
 import net.minecraft.client.Minecraft;

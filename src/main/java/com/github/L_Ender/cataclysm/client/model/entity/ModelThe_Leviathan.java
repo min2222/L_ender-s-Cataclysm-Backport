@@ -1,11 +1,11 @@
 package com.github.L_Ender.cataclysm.client.model.entity;
 
 
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
-import com.github.alexthe666.citadel.client.model.AdvancedEntityModel;
-import com.github.alexthe666.citadel.client.model.AdvancedModelBox;
-import com.github.alexthe666.citadel.client.model.ModelAnimator;
-import com.github.alexthe666.citadel.client.model.basic.BasicModelPart;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Entity;
+import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
+import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -571,7 +571,7 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 		animator.rotate(Mouth3, (float) Math.toRadians(37.5F), (float) Math.toRadians(42.5F), 0);
 		animator.rotate(Mouth4, (float) Math.toRadians(37.5F), (float) Math.toRadians(-42.5F), 0);
 		animator.endKeyframe();
-		animator.setStaticKeyframe(100);
+		animator.setStaticKeyframe(120);
 
 		animator.resetKeyframe(15);
 
@@ -3056,15 +3056,10 @@ public class ModelThe_Leviathan extends AdvancedEntityModel<The_Leviathan_Entity
 			//this.body.rotateAngleX += -0.05F + -0.05F * Mth.cos(ageInTicks * 0.3F);
 		}
 
-
-
-
-
-
-
-
 	}
 
+
+	
 	@Override
 	public Iterable<AdvancedModelBox> getAllParts() {
 		return ImmutableList.of(

@@ -5,7 +5,7 @@ import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Harbinger;
 import com.github.L_Ender.cataclysm.client.render.layer.The_Harbinger_Item_Layer;
 import com.github.L_Ender.cataclysm.client.render.layer.The_Harbinger_Layer;
 import com.github.L_Ender.cataclysm.client.render.layer.The_Harbinger_Shield_Layer;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Harbinger_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;

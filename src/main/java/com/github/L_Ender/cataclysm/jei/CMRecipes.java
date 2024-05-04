@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.jei;
 
 import java.util.List;
 
+import com.github.L_Ender.cataclysm.crafting.AltarOfAmethystRecipe;
 import com.github.L_Ender.cataclysm.crafting.WeaponfusionRecipe;
 import com.github.L_Ender.cataclysm.init.ModRecipeTypes;
 
@@ -26,6 +27,10 @@ public class CMRecipes
 
 	public List<WeaponfusionRecipe> getWeaponfusionRecipes() {
 		return recipeManager.getAllRecipesFor(ModRecipeTypes.WEAPON_FUSION.get()).stream().toList();
+	}
+
+	public List<AltarOfAmethystRecipe> getAmethystBlessRecipes() {
+		return recipeManager.getAllRecipesFor(ModRecipeTypes.AMETHYST_BLESS.get()).stream().toList();
 	}
 
 }

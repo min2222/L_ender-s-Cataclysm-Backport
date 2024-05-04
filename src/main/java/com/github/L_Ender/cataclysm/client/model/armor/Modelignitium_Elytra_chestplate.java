@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
 
@@ -94,7 +95,7 @@ public class Modelignitium_Elytra_chestplate extends HumanoidModel {
 
     public Modelignitium_Elytra_chestplate withAnimations(LivingEntity entity){
         float partialTick = Minecraft.getInstance().getFrameTime();
-        float limbSwingAmount = entity.animationSpeedOld + (entity.animationSpeed - entity.animationSpeedOld) * partialTick;
+        float limbSwingAmount = Mth.lerp(partialTick, entity.animationSpeedOld, entity.animationSpeed);
         float limbSwing = entity.animationPosition + partialTick;
         setupAnim(entity, limbSwing, limbSwingAmount, entity.tickCount + partialTick, 0, 0);
         return  this;

@@ -2,7 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.layer;
 
 import com.github.L_Ender.cataclysm.client.model.entity.ModelNetherite_Monstrosity;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNetherite_Monstrosity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Netherite_Monstrosity_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Netherite_Monstrosity_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 

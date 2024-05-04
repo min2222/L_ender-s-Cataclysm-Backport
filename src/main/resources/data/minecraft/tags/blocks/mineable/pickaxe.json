@@ -34,6 +34,16 @@
     "cataclysm:stone_pillar",
     "cataclysm:sandstone_poison_dart_trap",
     "cataclysm:sandstone_ignite_trap",
-    "cataclysm:sandstone_falling_trap"
+    "cataclysm:sandstone_falling_trap",
+    "cataclysm:blackstone_pillar",
+    "cataclysm:ancient_metal_block",
+    "cataclysm:pointed_icicle",
+    "cataclysm:frosted_stone_bricks",
+    "cataclysm:frosted_stone_brick_slab",
+    "cataclysm:frosted_stone_brick_stairs",
+    "cataclysm:frosted_stone_brick_wall",
+    "cataclysm:black_steel_block",
+    "cataclysm:black_steel_wall",
+    "cataclysm:black_steel_fence"
   ]
 }

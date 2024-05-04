@@ -1,16 +1,19 @@
 package com.github.L_Ender.cataclysm.init;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.util.LazyTagLookup;
 
 import net.minecraft.core.Registry;
+import net.minecraft.data.BuiltinRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.structure.Structure;
-import top.theillusivec4.curios.api.CuriosApi;
+import net.minecraftforge.registries.ForgeRegistries;
 
 
 public class ModTag {
@@ -24,7 +27,8 @@ public class ModTag {
 
     public static final TagKey<EntityType<?>> IGNIS_CANT_POKE = registerEntityTag("ignis_cant_poke");
 
-    public static final TagKey<EntityType<?>> HARBINGER_NONE_TARGETS = registerEntityTag("harbinger_none_targets");
+    public static final TagKey<EntityType<?>> LAVA_MONSTER = registerEntityTag("lava_monster");
+
 
     public static final TagKey<EntityType<?>> LEVIATHAN_TARGET = registerEntityTag("leviathan_target");
 
@@ -33,6 +37,17 @@ public class ModTag {
     public static final TagKey<EntityType<?>> ANCIENT_REMNANT_TARGET = registerEntityTag("ancient_remnant_target");
 
     public static final TagKey<EntityType<?>> MODERN_REMNANT_TARGET = registerEntityTag("modern_remnant_target");
+
+    public static final TagKey<EntityType<?>> TEAM_ANCIENT_REMNANT = registerEntityTag("team_ancient_remnant");
+
+    public static final TagKey<EntityType<?>> TEAM_ENDER_GUARDIAN = registerEntityTag("team_ender_guardian");
+
+    public static final TagKey<EntityType<?>> TEAM_IGNIS = registerEntityTag("team_ignis");
+
+    public static final TagKey<EntityType<?>> TEAM_THE_HARBINGER = registerEntityTag("team_the_harbinger");
+
+    public static final TagKey<EntityType<?>> TEAM_THE_LEVIATHAN = registerEntityTag("team_the_leviathan");
+
 
     public static final TagKey<Block> ENDER_GOLEM_CAN_DESTROY = registerBlockTag("ender_golem_can_destroy");
 
@@ -51,6 +66,8 @@ public class ModTag {
     public static final TagKey<Block> LEVIATHAN_IMMUNE = registerBlockTag("leviathan_immune");
 
     public static final TagKey<Block> REMNANT_IMMUNE = registerBlockTag("remnant_immune");
+
+    public static final TagKey<Block> CORALSSUS_BREAK = registerBlockTag("coralssus_break");
 
     public static final TagKey<Block> ENDERMAPTERA_CAN_NOT_SPAWN = registerBlockTag("endermaptera_can_not_spawn");
 
@@ -82,15 +99,19 @@ public class ModTag {
 
     public static final TagKey<Structure> BLOCKED_MAGMA_BLOCK = registerStructureTag("blocked_magma_block");
 
+    public static final TagKey<Structure> BERSERKER_SPAWN = registerStructureTag("berserker_spawn");
+
     public static final TagKey<Item> EXPLOSION_IMMUNE_ITEM = registerItemTag("explosion_immune_item");
 
     public static final TagKey<Item> STICKY_ITEM = registerItemTag("sticky_item");
 
     public static final TagKey<Item> BONE_ITEM = registerItemTag("bone_item");
 
-    public static final TagKey<Biome> REQUIRED_SUNKEN_CITY_SURROUNDING = registerBiomeTag("required_sunken_city_surrounding");
+    public static final TagKey<MobEffect> EFFECTIVE_FOR_BOSSES = registerEffectTag("effective_for_bosses");
 
-    public static final TagKey<Item> BELT = registerItemTag("belt");
+    public static final LazyTagLookup<MobEffect> EFFECTIVE_FOR_BOSSES_LOOKUP = LazyTagLookup.create(ForgeRegistries.MOB_EFFECTS, EFFECTIVE_FOR_BOSSES);
+
+    public static final TagKey<Biome> REQUIRED_SUNKEN_CITY_SURROUNDING = registerBiomeTag("required_sunken_city_surrounding");
 
     private static TagKey<EntityType<?>> registerEntityTag(String name) {
         return TagKey.create(Registry.ENTITY_TYPE_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
@@ -104,6 +125,10 @@ public class ModTag {
         return TagKey.create(Registry.BLOCK_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
 
+    private static TagKey<MobEffect> registerEffectTag(String name) {
+        return TagKey.create(Registry.MOB_EFFECT_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
+    }
+
     private static TagKey<Structure> registerStructureTag(String name) {
         return TagKey.create(Registry.STRUCTURE_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
@@ -112,8 +137,10 @@ public class ModTag {
         return TagKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(Cataclysm.MODID, name));
     }
 
-    private static TagKey<Item> registerCuriosItemTag(String name) {
-        return TagKey.create(Registry.ITEM_REGISTRY, new ResourceLocation(CuriosApi.MODID, name));
+    public static <T> boolean isInTag(T value, TagKey<T> tagKey) {
+        // noinspection unchecked
+        Registry<T> registry = (Registry<T>) BuiltinRegistries.REGISTRY.get(tagKey.registry().location());
+        // noinspection ConstantConditions
+        return registry.getOrCreateTag(tagKey).contains(registry.getHolderOrThrow(registry.getResourceKey(value).orElseThrow()));
     }
-
 }

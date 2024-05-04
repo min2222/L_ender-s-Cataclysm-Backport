@@ -4,21 +4,21 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.client.particle.StormParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.Ancient_Remnant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
-import com.github.L_Ender.cataclysm.init.ModParticle;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.players.OldUsersConverter;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
@@ -48,7 +48,7 @@ public class Sandstorm_Entity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
     }
 
@@ -58,21 +58,17 @@ public class Sandstorm_Entity extends Entity {
         Entity owner = getCreatorEntity();
         if (owner != null && !owner.isAlive()) discard();
         if(level.isClientSide) {
-            float spawnPercent = 2.0f;
-            float maxY = 2.5F * spawnPercent * 1.25F;
-            float y = 0;
-            float nY = 30 * spawnPercent;
-            float dY = maxY / nY;
-            double posX = this.getX();
-            double posY = this.getY();
-            double posZ = this.getZ();
-            for (float a = 0, nA = 16, dA = (1.4F * (float) Math.PI) / nA; y < maxY; a += dA) {
-                float radius = y * 0.35F;
-                float cosA = Mth.cos(a) * radius;
-                float sinA = Mth.sin(a) * radius;
-                level.addParticle(ModParticle.SANDSTORM.get(), posX + cosA, posY + y - (maxY * 0.15), posZ + sinA, 0.0D, 0D, 0.0D);
-                y += dY;
-            }
+            float ran = 0.04f;
+            float r = 0.89F + random.nextFloat() * ran;
+            float g = 0.85f + random.nextFloat() * ran;
+            float b = 0.69f + random.nextFloat() * ran * 1.5F;
+            this.level.addParticle((new StormParticle.OrbData(r, g, b,2.75f + random.nextFloat() * 0.6f,3.75F + random.nextFloat() * 0.6f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+            this.level.addParticle((new StormParticle.OrbData(r, g, b,2.5f + random.nextFloat() * 0.45f,3.0F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+            this.level.addParticle((new StormParticle.OrbData(r, g, b,2.25f + random.nextFloat() * 0.45f,2.25F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+            //this.level.addParticle((new StormParticle.OrbData(r, g, b,2.0f + random.nextFloat() * 0.45f,2.0f + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+           // this.level.addParticle((new StormParticle.OrbData(r, g, b,1.75f + random.nextFloat() * 0.45f,1.75F + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+            this.level.addParticle((new StormParticle.OrbData(r, g, b,1.25f + random.nextFloat() * 0.45f,1.25f + random.nextFloat() * 0.45f,this.getId())), this.getX(), this.getY(), this.getZ() , 0, 0, 0);
+
         }
 
         if (!this.isSilent() && level.isClientSide) {

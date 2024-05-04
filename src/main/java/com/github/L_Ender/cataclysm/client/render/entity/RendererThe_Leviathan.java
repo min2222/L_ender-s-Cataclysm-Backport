@@ -7,8 +7,8 @@ import com.github.L_Ender.cataclysm.client.model.entity.ModelThe_Leviathan_Tongu
 import com.github.L_Ender.cataclysm.client.render.RenderUtils;
 import com.github.L_Ender.cataclysm.client.render.layer.LayerBasicGlow;
 import com.github.L_Ender.cataclysm.client.render.layer.The_Leviathan_Layer;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Entity;
-import com.github.L_Ender.cataclysm.entity.BossMonsters.The_Leviathan.The_Leviathan_Part;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Part;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -75,7 +75,7 @@ public class RendererThe_Leviathan extends MobRenderer<The_Leviathan_Entity, Mod
     public void render(The_Leviathan_Entity entity, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
         super.render(entity, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         if (entity.getAnimation() == The_Leviathan_Entity.LEVIATHAN_TAIL_WHIPS) {
-            Vec3 bladePos = RenderUtils.getWorldPosFromModel(entity, entityYaw, model.Tail_Particle);
+            Vec3 bladePos = RenderUtils.matrixStackFromCitadelModel(entity, entityYaw, model.Tail_Particle);
             entity.setSocketPosArray(0, bladePos);
         }
         double x = Mth.lerp(partialTicks, entity.xOld, entity.getX());

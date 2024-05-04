@@ -1,5 +1,11 @@
 package com.github.L_Ender.cataclysm.client.render;
 
+import java.util.Map;
+
+import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.blocks.Abstract_Cataclysm_Skull_Block;
+import com.github.L_Ender.cataclysm.blocks.Cataclysm_Skull_Block;
+import com.github.L_Ender.cataclysm.client.model.block.Cataclysm_Skull_Model_Base;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Abyssal_Egg;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Abyss;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Altar_of_Amethyst;
@@ -18,12 +24,15 @@ import com.github.L_Ender.cataclysm.client.model.item.ModelMeat_Shredder;
 import com.github.L_Ender.cataclysm.client.model.item.ModelTidal_Claws;
 import com.github.L_Ender.cataclysm.client.model.item.ModelVoid_Forge;
 import com.github.L_Ender.cataclysm.client.model.item.ModelWither_Assault_SHoulder_Weapon;
+import com.github.L_Ender.cataclysm.client.render.blockentity.Cataclysm_Skull_Block_Renderer;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.items.Laser_Gatling;
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -31,8 +40,13 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -83,8 +97,22 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation TEXTURE_4 = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altarfire4.png");
     private static final ResourceLocation CORAL_SPEAR_TEXTURE = new ResourceLocation("cataclysm:textures/entity/coral_spear.png");
     private static final ResourceLocation CORAL_BARDICHE_TEXTURE = new ResourceLocation("cataclysm:textures/entity/coral_bardiche.png");
+
+    private Map<Cataclysm_Skull_Block.Type, Cataclysm_Skull_Model_Base> skullModels = Cataclysm_Skull_Block_Renderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
+
+    public static final Map<Cataclysm_Skull_Block.Type, ResourceLocation> SKIN_BY_TYPE = Util.make(Maps.newHashMap(), (p_261388_) -> {
+        p_261388_.put(Cataclysm_Skull_Block.Types.KOBOLEDIATOR, new ResourceLocation(Cataclysm.MODID,"textures/entity/koboleton/kobolediator.png"));
+    });
+
     public CMItemstackRenderer() {
-        super(null, null);
+        super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+    }
+
+    @Override
+    public void onResourceManagerReload(ResourceManager manager) {
+        this.skullModels = Cataclysm_Skull_Block_Renderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
+
+        Cataclysm.LOGGER.debug("Reloaded ItemStackRenderer!");
     }
 
     public static void incrementTick() {
@@ -101,6 +129,19 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
         }else{
             tick = Minecraft.getInstance().player.tickCount;
         }
+
+        Item item = itemStackIn.getItem();
+        if (item instanceof BlockItem blockItem) {
+            Block block = blockItem.getBlock();
+            if (block instanceof Abstract_Cataclysm_Skull_Block) {
+                Cataclysm_Skull_Block.Type skullblock$type = ((Abstract_Cataclysm_Skull_Block) block).getType();
+                Cataclysm_Skull_Model_Base skullmodelbase = this.skullModels.get(skullblock$type);
+                ResourceLocation resourcelocation = SKIN_BY_TYPE.get(skullblock$type);
+                RenderType rendertype = RenderType.entityCutoutNoCullZOffset(resourcelocation);
+                Cataclysm_Skull_Block_Renderer.renderSkull((Direction) null, 180.0F, 0.0F, matrixStackIn, bufferIn, combinedLightIn, skullmodelbase, rendertype);
+            }
+        }
+
         if (itemStackIn.getItem() == ModItems.BULWARK_OF_THE_FLAME.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
