@@ -15,6 +15,4 @@ public interface IHoldEntity {
     UUID getHeldUUID();
 
     Entity getHeldEntity();
-
-    int getId();
 }

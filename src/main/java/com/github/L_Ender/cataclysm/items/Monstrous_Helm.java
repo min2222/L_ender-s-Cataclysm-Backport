@@ -25,7 +25,6 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
-import net.minecraft.world.level.Explosion;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
@@ -78,7 +77,7 @@ public class Monstrous_Helm extends ArmorItem {
                     entity.push(d0 / d2 * 1.5 , 0.15D, d1 / d2 * 1.5);
                 }
             }
-            world.explode(player, player.getX() + xx, player.getY() + (double) player.getEyeHeight(), player.getZ() + zz, 1.5F, Explosion.BlockInteraction.NONE);
+           // world.explode(player, player.getX() + xx, player.getY() + (double) player.getEyeHeight(), player.getZ() + zz, 1.5F, Level.ExplosionInteraction.NONE);
             player.getCooldowns().addCooldown(this, 350);
             player.addEffect(new MobEffectInstance(ModEffect.EFFECTMONSTROUS.get(), 200, 0, false, true));
         }

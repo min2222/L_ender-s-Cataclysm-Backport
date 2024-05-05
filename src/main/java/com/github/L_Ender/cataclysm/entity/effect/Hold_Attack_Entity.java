@@ -74,7 +74,7 @@ public class Hold_Attack_Entity extends Entity {
         }
 
         if (controller instanceof IHoldEntity levi) {
-            this.entityData.set(CONTROLLER_ID, levi.getId());
+            this.entityData.set(CONTROLLER_ID, controller.getId());
             levi.setHeldUUID(this.getUUID());
         }
 
