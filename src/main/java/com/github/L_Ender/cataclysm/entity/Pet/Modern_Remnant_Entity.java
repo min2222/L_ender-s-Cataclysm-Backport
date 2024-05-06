@@ -214,8 +214,7 @@ public class Modern_Remnant_Entity extends AnimationPet implements Bucketable {
         ItemStack itemstack = player.getItemInHand(hand);
         Item item = itemstack.getItem();
         InteractionResult type = super.mobInteract(player, hand);
-        if(item == ArchaeologyItems.BRUSH.get())
-        {
+        if(item == ArchaeologyItems.BRUSH.get()) {
         	player.startUsingItem(hand);
         }
         if (isTame() && itemstack.is(ModTag.BONE_ITEM)) {
@@ -227,6 +226,12 @@ public class Modern_Remnant_Entity extends AnimationPet implements Bucketable {
             }
             return InteractionResult.PASS;
 
+        }
+        if (isTame()) {
+            Optional<InteractionResult> result = emptybucketMobPickup(player, hand, this);
+            if (result.isPresent()) {
+                return result.get();
+            }
         }
         InteractionResult interactionresult = itemstack.interactLivingEntity(player, this, hand);
         if (interactionresult != InteractionResult.SUCCESS && type != InteractionResult.SUCCESS && isTame() && isOwnedBy(player) && item != ArchaeologyItems.BRUSH.get()) {
