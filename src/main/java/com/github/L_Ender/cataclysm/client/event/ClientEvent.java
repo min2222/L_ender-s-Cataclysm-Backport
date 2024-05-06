@@ -387,7 +387,6 @@ public class ClientEvent {
         Minecraft mc = Minecraft.getInstance();
         ForgeGui gui = (ForgeGui) mc.gui;
         PoseStack stack = event.getPoseStack();
-        RenderSystem.setShaderTexture(0, SANDSTORM_ICON);
         gui.setupOverlayRenderState(true, false);
         int width = event.getWindow().getGuiScaledWidth();
         int height = event.getWindow().getGuiScaledHeight();
@@ -410,6 +409,7 @@ public class ClientEvent {
                 int partial = Mth.ceil(progress * 10) - full;
 
                 for (int i = 0; i < full + partial; ++i) {
+                    RenderSystem.setShaderTexture(0, SANDSTORM_ICON);
                     Screen.blit(stack, left - i * 8 - 9, top, -90, (i < full ? 0 : 9), 0, 9, 9, 32, 16);
                 }
                 gui.rightHeight += 10;
