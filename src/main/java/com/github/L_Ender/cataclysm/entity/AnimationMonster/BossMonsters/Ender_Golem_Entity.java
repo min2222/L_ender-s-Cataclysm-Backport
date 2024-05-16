@@ -180,7 +180,6 @@ public class Ender_Golem_Entity extends Boss_monster {
         super.tick();
         setYRot(yBodyRot);
         repelEntities(1.7F, 3.7f, 1.7F, 1.7F);
-        AnimationHandler.INSTANCE.updateAnimations(this);
         LivingEntity target = this.getTarget();
         prevdeactivateProgress = deactivateProgress;
         if (!this.getIsAwaken() && deactivateProgress < 30F) {
