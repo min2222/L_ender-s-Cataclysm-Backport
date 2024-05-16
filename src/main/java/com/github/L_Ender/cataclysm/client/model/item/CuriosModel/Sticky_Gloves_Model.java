@@ -24,13 +24,12 @@ public class Sticky_Gloves_Model extends HumanoidModel<LivingEntity> {
         PartDefinition leftArm = partDefinition.getChild("left_arm");
 
         rightArm.addOrReplaceChild("right_glove", CubeListBuilder.create().texOffs(63, 11).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F))
-                .texOffs(75, 23).addBox(-3.0F, 7.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offset(1.0F, 0.0F, 0.0F));
+                .texOffs(75, 23).addBox(-3.0F, 7.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.2F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
-         leftArm.addOrReplaceChild("left_glove", CubeListBuilder.create().texOffs(63, 11).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false)
-                 .texOffs(75, 23).mirror().addBox(-1.0F, 7.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.2F)).mirror(false), PartPose.offset(-1.0F, 0.0F, 0.0F));
+        leftArm.addOrReplaceChild("left_glove", CubeListBuilder.create().texOffs(63, 11).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false)
+                 .texOffs(75, 23).mirror().addBox(-1.0F, 7.0F, -2.0F, 4.0F, 3.0F, 4.0F, new CubeDeformation(0.2F)).mirror(false), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         return LayerDefinition.create(meshDefinition, 128, 128);
-
     }
 
     @Override
