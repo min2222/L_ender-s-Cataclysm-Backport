@@ -217,7 +217,6 @@ public class Ignited_Revenant_Entity extends Boss_monster {
     public void tick() {
         super.tick();
        // setYRot(yBodyRot);
-        AnimationHandler.INSTANCE.updateAnimations(this);
         LivingEntity target = this.getTarget();
         if (!this.isOnGround() && this.getDeltaMovement().y < 0.0D) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(1.0D, 0.6D, 1.0D));
