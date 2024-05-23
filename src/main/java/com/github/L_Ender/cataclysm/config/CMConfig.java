@@ -9,7 +9,6 @@ public class CMConfig {
     public static double LavaVisionOpacity = 0.5F;
     public static boolean shadersCompat = false;
     public static boolean custombossbar = true;
-    public static boolean AddedServerlist = true;
 
     public static int GauntletOfBulwarkCooldown = 80;
     public static int BulwarkOfTheFlameCooldown = 80;
@@ -189,7 +188,6 @@ public class CMConfig {
             LavaVisionOpacity = ConfigHolder.COMMON.LavaVisionOpacity.get();
             shadersCompat = ConfigHolder.COMMON.shadersCompat.get();
             custombossbar = ConfigHolder.COMMON.custombossbar.get();
-            AddedServerlist = ConfigHolder.COMMON.AddedServerlist.get();
 
             GauntletOfBulwarkCooldown = ConfigHolder.COMMON.GauntletOfBulwarkCooldown.get();
             BulwarkOfTheFlameCooldown = ConfigHolder.COMMON.BulwarkOfTheFlameCooldown.get();
