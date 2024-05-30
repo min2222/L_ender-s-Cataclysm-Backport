@@ -67,11 +67,13 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererLaser_Beam;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererLava_Bomb;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererLionfish;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererLionfish_Spike;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererMaledictus;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererMini_Abyss_Blast;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererModern_Remnant;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNameless_Sorcerer;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNetherite_Monstrosity;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNull;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererPhantom_Arrow;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPoison_Dart;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPortal_Abyss_Blast;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererSandstorm;
@@ -180,8 +182,8 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.IGNITED_BERSERKER.get(), RendererIgnited_Berserker::new);
         EntityRenderers.register(ModEntities.THE_HARBINGER.get(), RendererThe_Harbinger::new);
         EntityRenderers.register(ModEntities.VOID_SCATTER_ARROW.get(), RendererVoid_Scatter_Arrow::new);
-
         EntityRenderers.register(ModEntities.POISON_DART.get(), RendererPoison_Dart::new);
+        EntityRenderers.register(ModEntities.PHANTOM_ARROW.get(), RendererPhantom_Arrow::new);
         EntityRenderers.register(ModEntities.SCREEN_SHAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.HOLD_ATTACK.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.WITHER_SMOKE_EFFECT.get(), RendererNull::new);
@@ -230,6 +232,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.KOBOLETON.get(), RendererKoboleton::new);
         EntityRenderers.register(ModEntities.KOBOLEDIATOR.get(), RendererKobolediator::new);
         EntityRenderers.register(ModEntities.WADJET.get(), RendererWadjet::new);
+        EntityRenderers.register(ModEntities.MALEDICTUS.get(), RendererMaledictus::new);
         EntityRenderers.register(ModEntities.EARTHQUAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.ANCIENT_DESERT_STELE.get(), RendererAncient_Desert_Stele::new);
         EntityRenderers.register(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), RendererAmethyst_Cluster_Projectile::new);
