@@ -1,4 +1,4 @@
-package com.github.L_Ender.cataclysm.entity.etc;
+package com.github.L_Ender.cataclysm.entity.etc.path;
 
 import java.util.ArrayList;
 import java.util.List;

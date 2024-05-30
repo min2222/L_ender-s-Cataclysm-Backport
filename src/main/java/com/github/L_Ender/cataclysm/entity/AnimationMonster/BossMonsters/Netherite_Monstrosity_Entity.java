@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.AnimationGoal;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.AttackMoveGoal;
@@ -11,8 +12,8 @@ import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.SimpleAnimationGo
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;
-import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
+import com.github.L_Ender.cataclysm.entity.etc.path.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.partentity.Cm_Part_Entity;
 import com.github.L_Ender.cataclysm.entity.partentity.Netherite_Monstrosity_Part;
 import com.github.L_Ender.cataclysm.entity.projectile.Lava_Bomb_Entity;
@@ -455,8 +456,9 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
         this.playSound(SoundEvents.GENERIC_EXPLODE, 1.5f, 1F + this.getRandom().nextFloat() * 0.1F);
         for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(7.0D))) {
             if (!isAlliedTo(entity) && !(entity instanceof Netherite_Monstrosity_Entity) && entity != this) {
-                boolean flag = entity.hurt(DamageSource.mobAttack(this), (float) ((float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE), entity.getMaxHealth() * CMConfig.MonstrositysHpdamage)));
-                if (entity instanceof Player && entity.isBlocking()) {
+                DamageSource damagesource = DamageSource.mobAttack(this);
+                boolean flag = entity.hurt(damagesource, (float) ((float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE), entity.getMaxHealth() * CMConfig.MonstrositysHpdamage)));
+                if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource)) {
                     disableShield(entity, 120);
                 }
                 if (flag) {
@@ -471,20 +473,20 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
 
     private void Makeparticle(float vec, float math) {
         if (this.level.isClientSide) {
+            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
+            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
+            double theta = (yBodyRot) * (Math.PI / 180);
+            theta += Math.PI / 2;
+            double vecX = Math.cos(theta);
+            double vecZ = Math.sin(theta);
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 double DeltaMovementX = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementY = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementZ = getRandom().nextGaussian() * 0.07D;
-                float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
-                float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
                 float angle = (0.01745329251F * this.yBodyRot) + i1;
                 double extraX = 2F * Mth.sin((float) (Math.PI + angle));
                 double extraY = 0.3F;
                 double extraZ = 2F * Mth.cos(angle);
-                double theta = (yBodyRot) * (Math.PI / 180);
-                theta += Math.PI / 2;
-                double vecX = Math.cos(theta);
-                double vecZ = Math.sin(theta);
                 int hitX = Mth.floor(getX() + vec * vecX+ extraX);
                 int hitY = Mth.floor(getY());
                 int hitZ = Mth.floor(getZ() + vec * vecZ + extraZ);
@@ -495,6 +497,11 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
                 } else {
                     this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
                 }
+            }
+            if (getIsBerserk()) {
+                this.level.addParticle(new RingParticle.RingData(0f, (float) Math.PI / 2f, 35, 0.8f, 0.305f, 0.02f, 1f, 30f, false, RingParticle.EnumRingBehavior.GROW), getX() + vec * vecX + f * math, getY() + 0.2f, getZ() + vec * vecZ + f1 * math, 0, 0, 0);
+            }else{
+                this.level.addParticle(new RingParticle.RingData(0f, (float) Math.PI / 2f, 35, 1f, 1f, 1f, 1f, 30f, false, RingParticle.EnumRingBehavior.GROW), getX() + vec * vecX + f * math, getY() + 0.2f, getZ() + vec * vecZ + f1 * math, 0, 0, 0);
             }
         }
     }
@@ -524,7 +531,7 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
                             BlockPos blockpos = new BlockPos(i3, k, l);
                             BlockState block = level.getBlockState(blockpos);
                             BlockEntity tileEntity = level.getBlockEntity(blockpos);
-                            if (block != Blocks.AIR.defaultBlockState() & !block.is(ModTag.NETHERITE_MONSTROSITY_IMMUNE)) {
+                            if (block != Blocks.AIR.defaultBlockState() && !block.is(ModTag.NETHERITE_MONSTROSITY_IMMUNE)) {
                                 if (tileEntity == null && random.nextInt(4) + 1 == 4) {
                                     this.level.removeBlock(blockpos, true);
                                     Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, i3 + 0.5D, k + 0.5D, l + 0.5D, block,5);

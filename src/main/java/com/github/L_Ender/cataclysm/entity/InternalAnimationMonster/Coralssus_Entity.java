@@ -5,6 +5,7 @@ import java.util.function.IntFunction;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.AI.MobAILeaveWater;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalAttackGoal;
@@ -12,10 +13,10 @@ import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalM
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalStateGoal;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
-import com.github.L_Ender.cataclysm.entity.etc.GroundPathNavigatorWide;
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
-import com.github.L_Ender.cataclysm.entity.etc.SemiAquaticPathNavigator;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
+import com.github.L_Ender.cataclysm.entity.etc.path.GroundPathNavigatorWide;
+import com.github.L_Ender.cataclysm.entity.etc.path.SemiAquaticPathNavigator;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
@@ -29,7 +30,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -452,15 +452,15 @@ public class Coralssus_Entity extends Internal_Animation_Monster implements Vari
             if (this.attackTicks == 5
                     || this.attackTicks == 30) {
                 EarthQuake(3.5f,2,60);
-                Makeparticle(0.5f, 2.5f, 0.2f);
+                Makeparticle(0.5f, 3.15f, 0.2f);
             }
             if (this.attackTicks == 17) {
                 EarthQuake(3.5f,2,60);
-                Makeparticle(0.5f, 2.5f, -0.2f);
+                Makeparticle(0.5f, 3.15f, -0.2f);
             }
             if (this.attackTicks == 42) {
                 EarthQuake(3.5f,2,60);
-                Makeparticle(0.5f, 2.5f, -0.2f);
+                Makeparticle(0.5f, 3.15f, -0.2f);
                 BlockBreaking();
             }
 
@@ -468,13 +468,13 @@ public class Coralssus_Entity extends Internal_Animation_Monster implements Vari
         if(this.getAttackState() == 3) {
             if (this.attackTicks == 12) {
                 EarthQuake(3.5f,2,0);
-                Makeparticle(0.5f, 2.5f, 0.2f);
+                Makeparticle(0.5f, 2.8f, 0.2f);
             }
         }
         if(this.getAttackState() == 4) {
             if (this.attackTicks == 12) {
                 EarthQuake(3.5f,2,0);
-                Makeparticle(0.5f,2.5f,-0.2f);
+                Makeparticle(0.5f,2.8f,-0.2f);
             }
         }
         if(this.getAttackState()== 6){
@@ -485,8 +485,8 @@ public class Coralssus_Entity extends Internal_Animation_Monster implements Vari
         if(this.getAttackState()== 7){
             if (this.attackTicks == 3) {
                 EarthQuake(4.5f,5,120);
-                Makeparticle(0.5f,2.8f,-0.4f);
-                Makeparticle(0.5f, 2.8f, 0.4f);
+                Makeparticle(0.5f,3.1f,-0.4f);
+                Makeparticle(0.5f, 3.1f, 0.4f);
             }
         }
 
@@ -498,9 +498,10 @@ public class Coralssus_Entity extends Internal_Animation_Monster implements Vari
         this.playSound(SoundEvents.GENERIC_EXPLODE, 0.5f, 1F + this.getRandom().nextFloat() * 0.1F);
         for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(grow))) {
             if (!isAlliedTo(entity) && !(entity instanceof Coralssus_Entity) && entity != this) {
-                entity.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(damage));
                 launch(entity, true);
-                if (entity instanceof Player && entity.isBlocking() && shieldbreakticks > 0) {
+                DamageSource damagesource = DamageSource.mobAttack(this);
+                entity.hurt(damagesource, (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(damage));
+                if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
                     disableShield(entity, shieldbreakticks);
                 }
             }
@@ -539,30 +540,31 @@ public class Coralssus_Entity extends Internal_Animation_Monster implements Vari
     }
 
     private void Makeparticle(float size,float vec, float math) {
-        if (!this.level.isClientSide) {
+        if (this.level.isClientSide) {
+            float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
+            float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
+            double theta = (yBodyRot) * (Math.PI / 180);
+            theta += Math.PI / 2;
+            double vecX = Math.cos(theta);
+            double vecZ = Math.sin(theta);
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 double DeltaMovementX = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementY = getRandom().nextGaussian() * 0.07D;
                 double DeltaMovementZ = getRandom().nextGaussian() * 0.07D;
-                float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
-                float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
                 float angle = (0.01745329251F * this.yBodyRot) + i1;
                 double extraX = size * Mth.sin((float) (Math.PI + angle));
                 double extraY = 0.3F;
                 double extraZ = size * Mth.cos(angle);
-                double theta = (yBodyRot) * (Math.PI / 180);
-                theta += Math.PI / 2;
-                double vecX = Math.cos(theta);
-                double vecZ = Math.sin(theta);
                 int hitX = Mth.floor(getX() + vec * vecX + extraX);
                 int hitY = Mth.floor(getY());
                 int hitZ = Mth.floor(getZ() + vec * vecZ + extraZ);
                 BlockPos hit = new BlockPos(hitX, hitY, hitZ);
                 BlockState block = this.level.getBlockState(hit.below());
                 if (block.getRenderShape() != RenderShape.INVISIBLE) {
-                    ((ServerLevel) this.level).sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math,1, DeltaMovementX, DeltaMovementY, DeltaMovementZ,0);
+                   this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, DeltaMovementX, DeltaMovementY, DeltaMovementZ);
                 }
             }
+            this.level.addParticle(new RingParticle.RingData(0f, (float)Math.PI/2f, 30, 1.0f, 1.0F,  1.0F, 1.0f, 20f, false, RingParticle.EnumRingBehavior.GROW_THEN_SHRINK), getX() + vec * vecX + f * math, getY() + 0.2f, getZ() + vec * vecZ + f1 * math, 0, 0, 0);
         }
     }
 

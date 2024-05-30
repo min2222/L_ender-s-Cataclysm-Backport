@@ -9,12 +9,17 @@ import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.client.event.ClientEvent;
 import com.github.L_Ender.cataclysm.client.gui.GUIWeponfusion;
+import com.github.L_Ender.cataclysm.client.particle.CursedFlameParticle;
 import com.github.L_Ender.cataclysm.client.particle.EM_PulseParticle;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
+import com.github.L_Ender.cataclysm.client.particle.MaledictusRingParticle;
+import com.github.L_Ender.cataclysm.client.particle.Phantom_Wing_FlameParticle;
+import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.client.particle.SandStormParticle;
 import com.github.L_Ender.cataclysm.client.particle.Shock_WaveParticle;
 import com.github.L_Ender.cataclysm.client.particle.SoulLavaParticle;
 import com.github.L_Ender.cataclysm.client.particle.StormParticle;
+import com.github.L_Ender.cataclysm.client.particle.TrackLightningParticle;
 import com.github.L_Ender.cataclysm.client.particle.TrapFlameParticle;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.blockentity.Cataclysm_Skull_Block_Renderer;
@@ -146,10 +151,16 @@ public class ClientProxy extends CommonProxy {
     public void setupParticles(RegisterParticleProvidersEvent registry) {
         Cataclysm.LOGGER.debug("Registered particle factories");
         registry.register(ModParticle.SOUL_LAVA.get(), SoulLavaParticle.Factory::new);
+        registry.register(ModParticle.CURSED_FLAME.get(), CursedFlameParticle.Provider::new);
+        registry.register(ModParticle.SMALL_CURSED_FLAME.get(), CursedFlameParticle.SmallFlameProvider::new);
+        registry.register(ModParticle.PHANTOM_WING_FLAME.get(), Phantom_Wing_FlameParticle.EmissiveProvider::new);
         registry.register(ModParticle.EM_PULSE.get(), new EM_PulseParticle.Factory());
         registry.register(ModParticle.SHOCK_WAVE.get(), new Shock_WaveParticle.Factory());
         registry.register(ModParticle.LIGHTNING.get(), new LightningParticle.OrbFactory());
+        registry.register(ModParticle.TRACK_LIGHTNING.get(), new TrackLightningParticle.OrbFactory());
         registry.register(ModParticle.STORM.get(), new StormParticle.OrbFactory());
+        registry.register(ModParticle.RING.get(), RingParticle.RingFactory::new);
+        registry.register(ModParticle.MALEDICTUSRING.get(), MaledictusRingParticle.RingFactory::new);
         registry.register(ModParticle.SANDSTORM.get(), SandStormParticle.Factory::new);
         registry.register(ModParticle.TRAP_FLAME.get(), TrapFlameParticle.Factory::new);
     }

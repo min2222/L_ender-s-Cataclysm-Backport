@@ -386,6 +386,6 @@ public class ModSounds {
     public static final RegistryObject<SoundEvent> KOBOLEDIATOR_DEATH = SOUNDS.register("kobolediator_death",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"kobolediator_death")));
 
-
-
+    public static final RegistryObject<SoundEvent> MALEDICTUS_BATTLE_CRY = SOUNDS.register("maledictus_battle_cry",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"maledictus_battle_cry")));
 }

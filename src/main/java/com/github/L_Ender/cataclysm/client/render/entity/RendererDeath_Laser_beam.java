@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
+import com.github.L_Ender.cataclysm.util.CMMathUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
@@ -104,7 +105,7 @@ public class RendererDeath_Laser_beam extends EntityRenderer<Death_Laser_Beam_En
         }
         matrixStackIn.pushPose();
         Quaternion sideQuat = side.getRotation();
-        sideQuat.mul(new Quaternion(90, 0, 0, true));
+        sideQuat.mul(CMMathUtil.quatFromRotationXYZ(90, 0, 0, true));
         matrixStackIn.mulPose(sideQuat);
         matrixStackIn.translate(0, 0, -0.01f);
         renderFlatQuad(frame, matrixStackIn, builder, packedLightIn);
@@ -128,9 +129,9 @@ public class RendererDeath_Laser_beam extends EntityRenderer<Death_Laser_Beam_En
 
     private void renderBeam(float length, float yaw, float pitch, int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         matrixStackIn.pushPose();
-        matrixStackIn.mulPose(new Quaternion(90, 0, 0, true));
-        matrixStackIn.mulPose(new Quaternion(0, 0, yaw - 90f, true));
-        matrixStackIn.mulPose(new Quaternion(-pitch, 0, 0, true));
+        matrixStackIn.mulPose(CMMathUtil.quatFromRotationXYZ(90, 0, 0, true));
+        matrixStackIn.mulPose(CMMathUtil.quatFromRotationXYZ(0, 0, yaw - 90f, true));
+        matrixStackIn.mulPose(CMMathUtil.quatFromRotationXYZ(-pitch, 0, 0, true));
         matrixStackIn.pushPose();
         if (!clearerView) {
             matrixStackIn.mulPose(new Quaternion(0, Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() + 90, 0, true));

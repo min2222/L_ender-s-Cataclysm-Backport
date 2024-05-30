@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.util;
 
+import com.mojang.math.Quaternion;
+
 import net.minecraft.util.Mth;
 
 public class CMMathUtil {
@@ -17,5 +19,9 @@ public class CMMathUtil {
         float desiredDifference = Mth.degreesDifference(current, desired);
         float previousDifference = Mth.degreesDifference(current, previous);
         return approachSmooth(current, current + previousDifference, current + desiredDifference, desiredSpeed, deltaSpeed);
+    }
+    
+    public static Quaternion quatFromRotationXYZ(float x, float y, float z, boolean degrees) {
+        return new Quaternion(x, y, z, degrees);
     }
 }

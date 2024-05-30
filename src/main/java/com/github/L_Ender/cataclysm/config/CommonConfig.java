@@ -8,6 +8,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue LavaVisionOpacity;
     public final ForgeConfigSpec.BooleanValue shadersCompat;
     public final ForgeConfigSpec.BooleanValue custombossbar;
+    public final ForgeConfigSpec.BooleanValue AddedServerlist;
 
     public final ForgeConfigSpec.BooleanValue Armor_Infinity_Durability;
     public final ForgeConfigSpec.IntValue BulwarkOfTheFlameCooldown;
@@ -63,11 +64,18 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue MonstrosityDamageCap;
     public final ForgeConfigSpec.DoubleValue MonstrosityLongRangelimit;
     public final ForgeConfigSpec.BooleanValue NetheritemonstrosityBodyBloking;
+    public final ForgeConfigSpec.DoubleValue MonstrositysHpdamage;
 
     public final ForgeConfigSpec.BooleanValue EndergolemBlockBreaking;
     public final ForgeConfigSpec.DoubleValue EndergolemLongRangelimit;
     public final ForgeConfigSpec.DoubleValue EndergolemHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue EndergolemDamageMultiplier;
+    public final ForgeConfigSpec.DoubleValue EnderguardianGravityPunchHpdamage;
+    public final ForgeConfigSpec.DoubleValue EnderguardianKnockbackHpdamage;
+    public final ForgeConfigSpec.DoubleValue EnderguardianUppercutHpdamage;
+    public final ForgeConfigSpec.DoubleValue EnderguardianTeleportAttackHpdamage;
+    public final ForgeConfigSpec.DoubleValue EnderguardianAreaAttackHpdamage;
+    public final ForgeConfigSpec.DoubleValue EnderguardianRocketPunchHpdamage;
 
     public final ForgeConfigSpec.DoubleValue IgnisHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue IgnisDamageMultiplier;
@@ -92,7 +100,7 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue HarbingerLongRangelimit;
     public final ForgeConfigSpec.DoubleValue HarbingerDamageCap;
     public final ForgeConfigSpec.BooleanValue HarbingerLightFire;
-
+    public final ForgeConfigSpec.DoubleValue HarbingerChargeHpDamage;
 
     public final ForgeConfigSpec.DoubleValue LeviathanHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue LeviathanDamageMultiplier;
@@ -101,6 +109,12 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue LeviathanDamageCap;
     public final ForgeConfigSpec.BooleanValue LeviathanBlockBreaking;
     public final ForgeConfigSpec.BooleanValue LeviathanImmuneOutofWater;
+    public final ForgeConfigSpec.DoubleValue LeviathanbiteHpdamage;
+    public final ForgeConfigSpec.DoubleValue LeviathanTailSwingHpdamage;
+    public final ForgeConfigSpec.DoubleValue LeviathanRushHpdamage;
+    public final ForgeConfigSpec.DoubleValue LeviathanTentacleHpdamage;
+
+
 
     public final ForgeConfigSpec.DoubleValue BabyLeviathanHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue BabyLeviathanDamageMultiplier;
@@ -124,19 +138,6 @@ public class CommonConfig {
     public final ForgeConfigSpec.DoubleValue ModernRemnantHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue ModernRemnantDamageMultiplier;
 
-    public final ForgeConfigSpec.DoubleValue MonstrositysHpdamage;
-    public final ForgeConfigSpec.DoubleValue EnderguardianGravityPunchHpdamage;
-    public final ForgeConfigSpec.DoubleValue EnderguardianKnockbackHpdamage;
-    public final ForgeConfigSpec.DoubleValue EnderguardianUppercutHpdamage;
-    public final ForgeConfigSpec.DoubleValue EnderguardianTeleportAttackHpdamage;
-    public final ForgeConfigSpec.DoubleValue EnderguardianAreaAttackHpdamage;
-    public final ForgeConfigSpec.DoubleValue EnderguardianRocketPunchHpdamage;
-    public final ForgeConfigSpec.DoubleValue HarbingerChargeHpDamage;
-    public final ForgeConfigSpec.DoubleValue LeviathanbiteHpdamage;
-    public final ForgeConfigSpec.DoubleValue LeviathanTailSwingHpdamage;
-    public final ForgeConfigSpec.DoubleValue LeviathanRushHpdamage;
-    public final ForgeConfigSpec.DoubleValue LeviathanTentacleHpdamage;
-
     public final ForgeConfigSpec.DoubleValue CauseKoboletontoDropItemInHandPercent;
 
     public final ForgeConfigSpec.BooleanValue KobolediatorBlockBreaking;
@@ -145,6 +146,16 @@ public class CommonConfig {
 
     public final ForgeConfigSpec.DoubleValue WadjetHealthMultiplier;
     public final ForgeConfigSpec.DoubleValue WadjetDamageMultiplier;
+
+    public final ForgeConfigSpec.DoubleValue MaledictusHealthMultiplier;
+    public final ForgeConfigSpec.DoubleValue MaledictusDamageMultiplier;
+    public final ForgeConfigSpec.DoubleValue MaledictusDamageCap;
+
+    public final ForgeConfigSpec.DoubleValue MaledictusHpDamage;
+    public final ForgeConfigSpec.DoubleValue MaledictusShockWaveHpDamage;
+    public final ForgeConfigSpec.DoubleValue MaledictusAOEHpDamage;
+    public final ForgeConfigSpec.DoubleValue MaledictusFlyingSmashHpDamage;
+    public final ForgeConfigSpec.DoubleValue MaledictusSmashHpDamage;
 
     public final ForgeConfigSpec.IntValue DeeplingSpawnWeight;
     public final ForgeConfigSpec.IntValue DeeplingSpawnRolls;
@@ -168,7 +179,7 @@ public class CommonConfig {
 
     public final ForgeConfigSpec.IntValue IgnitedBerserkerSpawnWeight;
     public final ForgeConfigSpec.IntValue IgnitedBerserkerSpawnRolls;
-    
+
     public final ForgeConfigSpec.IntValue cursedPyramidCheckRange;
     public final ForgeConfigSpec.IntValue cursedPyramidHeightVariance;
 
@@ -178,6 +189,7 @@ public class CommonConfig {
         shadersCompat = buildBoolean(builder, "shadersCompat", "all", false, "Whether to disable certain aspects of the Ignitium Helemt. Enable if issues with shaders persist.");
         ScreenShake = buildBoolean(builder, "ScreenShake(on/off)", "all", true, "ScreenShake(on/off)");
         custombossbar = buildBoolean(builder, "custombossbar(on/off)", "all", true, "custombossbar(on/off)");
+        AddedServerlist = buildBoolean(builder, "AddedServerlist(on/off)", "all", true, "AddedServerlist(on/off)");
         BossMusic = buildBoolean(builder, "BossMusic(on/off)", "all", true, "BossMusic(on/off)");
         BossMusicVolume = buildInt(builder, "BossMusicVolume", "all", 1, 1, 1000000, "BossMusicVolume(denominator)");
         builder.pop();
@@ -322,7 +334,7 @@ public class CommonConfig {
         builder.push("Ancient Remnant");
         AncientRemnantHealthMultiplier = buildDouble(builder, "AncientRemnantHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Ancient Remnant's Health Multiplier");
         AncientRemnantDamageMultiplier  = buildDouble(builder, "AncientRemnantDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Ancient Remnant's Damage Multiplier");
-        AncientRemnantNatureHealing = buildDouble(builder, "LeviathanNatureHealing", "all", 10D, 0D, 1000000D, "Leviathan's Healing with out target");
+        AncientRemnantNatureHealing = buildDouble(builder, "AncientRemnantNatureHealing", "all", 10D, 0D, 1000000D, "AncientRemnant's Healing with out target");
         AncientRemnantLongRangelimit = buildDouble(builder, "Ancient Remnant's prevent attacks from far away Range", "all", 15.0D, 1D, 1000000D, "Ancient Remnant's Immune to Long distance attack range.");
         AncientRemnantDamageCap = buildDouble(builder, "AncientRemnantCap", "all", 21.0D, 0D, 1000000D, "Ancient Remnant's DamageCap");
         AncientRemnantBlockBreaking = buildBoolean(builder, "AncientRemnantBlockBreaking", "all", true, "Ancient Remnant's block breaking ignore the MobGriefing");
@@ -347,6 +359,16 @@ public class CommonConfig {
         WadjetDamageMultiplier = buildDouble(builder, "WadjetDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Wadjet's Damage Multiplier");
         builder.pop();
 
+        builder.push("Maledictus");
+        MaledictusHealthMultiplier = buildDouble(builder, "MaledictusHealthMultiplier", "all", 1.0D, 0D, 1000000D, "Maledictus's Health Multiplier");
+        MaledictusDamageMultiplier = buildDouble(builder, "MaledictusDamageMultiplier", "all", 1.0D, 0D, 1000000D, "Maledictus's Damage Multiplier");
+        MaledictusDamageCap = buildDouble(builder, "MaledictusDamageCap", "all", 20.0D, 0D, 1000000D, "Maledictus's DamageCap");
+        MaledictusHpDamage = buildDouble(builder, "Maledictus's melee Hp Damage", "all", 0.05D, 0.0D, 1.0D, "Maledictus's melee Hp Damage");
+        MaledictusShockWaveHpDamage = buildDouble(builder, "Maledictus's Shock Wave Hp Damage", "all", 0.03D, 0.0D, 1.0D, "Maledictus's Shock wave Hp Damage");
+        MaledictusAOEHpDamage = buildDouble(builder, "Maledictus's AOE Hp Damage", "all", 0.15D, 0.0D, 1.0D, "Maledictus's AOE Hp Damage");
+        MaledictusFlyingSmashHpDamage = buildDouble(builder, "Maledictus's Flying Smash Hp Damage", "all", 0.1D, 0.0D, 1.0D, "Maledictus's flying Smash Hp Damage");
+        MaledictusSmashHpDamage = buildDouble(builder, "Maledictus's Jump Smash Hp Damage", "all", 0.08D, 0.0D, 1.0D, "Maledictus's Jump Smash Hp Damage");
+        builder.pop();
 
         builder.push("spawning");
         DeeplingSpawnWeight = buildInt(builder, "DeeplingSpawnWeight", "spawns", CMConfig.DeeplingSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
@@ -376,12 +398,14 @@ public class CommonConfig {
 
         IgnitedBerserkerSpawnWeight = buildInt(builder, "IgnitedBerserkerSpawnWeight", "spawns", CMConfig.IgnitedBerserkerSpawnWeight, 0, 1000, "Spawn Weight, added to a pool of other mobs for each biome. Higher number = higher chance of spawning. 0 = disable spawn");
         IgnitedBerserkerSpawnRolls = buildInt(builder, "IgnitedBerserkerSpawnRolls", "spawns", CMConfig.IgnitedBerserkerSpawnRolls, 0, Integer.MAX_VALUE, "Random roll chance to enable mob spawning. Higher number = lower chance of spawning");
+
         builder.pop();
-    
+
         builder.push("World Generation");
-        cursedPyramidCheckRange = buildInt(builder, "cursedPyramidCheckRange", "all", CMConfig.cursedPyramidCheckRange, 0, 4, "Defines the area in which the structure checks for height variances (1 means 9 chunks will be checked (center + area around it)) - 0 disables this check");
-        cursedPyramidHeightVariance = buildInt(builder, "cursedPyramidHeightVariance", "all", CMConfig.cursedPyramidHeightVariance, 0, 32, "Allowed height variance for the check - if the variance is lower than this value the structure will not spawn (has no effect if the are check is disabled)");
+        cursedPyramidCheckRange = buildInt(builder, "cursedPyramidCheckRange", "all", CMConfig.cursedPyramidCheckRange, 0, 5, "Defines the area in which the structure check for height variances (1 means 9 chunks will be checked (center + area around it)) - 0 disables this check");
+        cursedPyramidHeightVariance = buildInt(builder, "cursedPyramidHeightVariance", "all", CMConfig.cursedPyramidCheckRange, 0, 32, "Allowed height variance for the check - if the variance is lower than this value the structure will not spawn (has no effect if the are check is disabled)");
         builder.pop();
+
     }
 
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, String catagory, boolean defaultValue, String comment) {

@@ -37,6 +37,7 @@ import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_En
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Ignited_Berserker_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Wadjet_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.Modern_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Abyss_Mark_Entity;
@@ -62,6 +63,7 @@ import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Lava_Bomb_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Lionfish_Spike_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Mini_Abyss_Blast_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Arrow_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Poison_Dart_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Sandstorm_Projectile;
 import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Bardiche_Entity;
@@ -263,7 +265,14 @@ public class ModEntities {
             .setCustomClientFactory(Poison_Dart_Entity::new)
             .updateInterval(20)
             .clientTrackingRange(4)
-            .build(Cataclysm.MODID + ":void_scatter_arrow"));
+            .build(Cataclysm.MODID + ":poison_dart"));
+    
+    public static final RegistryObject<EntityType<Phantom_Arrow_Entity>> PHANTOM_ARROW = ENTITY_TYPE.register("phantom_arrow", () -> EntityType.Builder.<Phantom_Arrow_Entity>of(Phantom_Arrow_Entity::new, MobCategory.MISC)
+            .sized(0.5f, 0.5f)
+            .setCustomClientFactory(Phantom_Arrow_Entity::new)
+            .setUpdateInterval(1)
+            .setShouldReceiveVelocityUpdates(true)
+            .build(Cataclysm.MODID + ":phantom_arrow"));
 
     public static final RegistryObject<EntityType<Void_Shard_Entity>> VOID_SHARD = ENTITY_TYPE.register("void_shard", () -> EntityType.Builder.<Void_Shard_Entity>of(Void_Shard_Entity::new, MobCategory.MISC)
             .sized(0.5f, 0.5f)
@@ -529,6 +538,13 @@ public class ModEntities {
             .setShouldReceiveVelocityUpdates(true)
             .fireImmune()
             .build(Cataclysm.MODID + ":ancient_desert_stele"));
+    
+    public static final RegistryObject<EntityType<Maledictus_Entity>> MALEDICTUS = ENTITY_TYPE.register("maledictus", () -> EntityType.Builder.of(Maledictus_Entity::new, MobCategory.MONSTER)
+            .sized(1.5F, 3.0F)
+            .fireImmune()
+            .clientTrackingRange(10)
+            .setShouldReceiveVelocityUpdates(true)
+            .build(Cataclysm.MODID + ":maledictus"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
         if(entityTag == null){
@@ -585,6 +601,7 @@ public class ModEntities {
         event.put(THE_PROWLER.get(), The_Prowler_Entity.the_prowler().build());
         event.put(KOBOLEDIATOR.get(), Kobolediator_Entity.kobolediator().build());
         event.put(WADJET.get(), Wadjet_Entity.wadjet().build());
+        event.put(MALEDICTUS.get(), Maledictus_Entity.maledictus().build());
     }
 }
 

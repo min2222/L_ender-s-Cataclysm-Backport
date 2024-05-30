@@ -29,7 +29,6 @@ public class ModTag {
 
     public static final TagKey<EntityType<?>> LAVA_MONSTER = registerEntityTag("lava_monster");
 
-
     public static final TagKey<EntityType<?>> LEVIATHAN_TARGET = registerEntityTag("leviathan_target");
 
     public static final TagKey<EntityType<?>> BABY_LEVIATHAN_TARGET = registerEntityTag("baby_leviathan_target");
@@ -48,6 +47,7 @@ public class ModTag {
 
     public static final TagKey<EntityType<?>> TEAM_THE_LEVIATHAN = registerEntityTag("team_the_leviathan");
 
+    public static final TagKey<EntityType<?>> TEAM_MALEDICTUS = registerEntityTag("team_maledictus");
 
     public static final TagKey<Block> ENDER_GOLEM_CAN_DESTROY = registerBlockTag("ender_golem_can_destroy");
 

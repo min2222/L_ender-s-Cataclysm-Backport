@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.config;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-
 import net.minecraftforge.fml.config.ModConfig;
 
 public class CMConfig {
@@ -9,6 +8,7 @@ public class CMConfig {
     public static double LavaVisionOpacity = 0.5F;
     public static boolean shadersCompat = false;
     public static boolean custombossbar = true;
+    public static boolean AddedServerlist = true;
 
     public static int GauntletOfBulwarkCooldown = 80;
     public static int BulwarkOfTheFlameCooldown = 80;
@@ -39,6 +39,7 @@ public class CMConfig {
     public static int Lavabombradius = 2;
     public static double Sandstormdamage = 5;
     public static double AncientDesertSteledamage = 18;
+    public static double PhantomArrowbasedamage = 4;
 
     public static boolean ScreenShake = true;
     public static boolean BossMusic = true;
@@ -49,6 +50,7 @@ public class CMConfig {
     public static double HarbingerDamageCap = 22;
     public static double LeviathanDamageCap = 20;
     public static double AncientRemnantDamageCap = 21;
+    public static double MaledictusDamageCap = 20;
 
     public static int Lavabombmagazine = 3;
     public static int Lavabombamount = 3;
@@ -123,6 +125,9 @@ public class CMConfig {
     public static double WadjetHealthMultiplier = 1D;
     public static double WadjetDamageMultiplier = 1D;
 
+    public static double MaledictusHealthMultiplier = 1D;
+    public static double MaledictusDamageMultiplier = 1D;
+
     public static double MonstrosityLongRangelimit = 18D;
     public static double EnderguardianLongRangelimit = 12D;
     public static double EndergolemLongRangelimit = 6D;
@@ -149,7 +154,11 @@ public class CMConfig {
     public static double RemnantChargeHpDamage = 0.06D;
     public static double RemnantStompHpDamage = 0.03D;
     public static double RemnantHpDamage = 0.05D;
-
+    public static double MaledictusHpDamage = 0.05D;
+    public static double MaledictusShockWaveHpDamage = 0.03D;
+    public static double MaledictusAOEHpDamage = 0.15D;
+    public static double MaledictusFlyingSmashHpDamage = 0.1D;
+    public static double MaledictusSmashHpDamage = 0.08D;
 
     public static boolean Armor_Infinity_Durability = true;
 
@@ -179,15 +188,17 @@ public class CMConfig {
 
     public static int IgnitedBerserkerSpawnWeight = 1;
     public static int IgnitedBerserkerSpawnRolls = 30;
-    
+
     public static int cursedPyramidCheckRange = 2;
     public static int cursedPyramidHeightVariance = 7;
+
 
     public static void bake(ModConfig config) {
         try {
             LavaVisionOpacity = ConfigHolder.COMMON.LavaVisionOpacity.get();
             shadersCompat = ConfigHolder.COMMON.shadersCompat.get();
             custombossbar = ConfigHolder.COMMON.custombossbar.get();
+            AddedServerlist = ConfigHolder.COMMON.AddedServerlist.get();
 
             GauntletOfBulwarkCooldown = ConfigHolder.COMMON.GauntletOfBulwarkCooldown.get();
             BulwarkOfTheFlameCooldown = ConfigHolder.COMMON.BulwarkOfTheFlameCooldown.get();
@@ -228,6 +239,7 @@ public class CMConfig {
             HarbingerDamageCap = ConfigHolder.COMMON.HarbingerDamageCap.get();
             LeviathanDamageCap = ConfigHolder.COMMON.LeviathanDamageCap.get();
             AncientRemnantDamageCap = ConfigHolder.COMMON.AncientRemnantDamageCap.get();
+            MaledictusDamageCap = ConfigHolder.COMMON.MaledictusDamageCap.get();
 
             Lavabombmagazine = ConfigHolder.COMMON.Lavabombmagazine.get();
             Lavabombamount = ConfigHolder.COMMON.Lavabombamount.get();
@@ -296,6 +308,13 @@ public class CMConfig {
             RemnantHpDamage = ConfigHolder.COMMON.RemnantHpDamage.get();
             RemnantStompHpDamage = ConfigHolder.COMMON.RemnantStompHpDamage.get();
 
+            MaledictusHpDamage = ConfigHolder.COMMON.MaledictusHpDamage.get();
+            MaledictusShockWaveHpDamage = ConfigHolder.COMMON.MaledictusShockWaveHpDamage.get();
+            MaledictusAOEHpDamage = ConfigHolder.COMMON.MaledictusAOEHpDamage.get();
+            MaledictusFlyingSmashHpDamage = ConfigHolder.COMMON.MaledictusFlyingSmashHpDamage.get();
+            MaledictusSmashHpDamage = ConfigHolder.COMMON.MaledictusSmashHpDamage.get();
+
+
             LeviathanHealthMultiplier = ConfigHolder.COMMON.LeviathanHealthMultiplier.get();
             LeviathanDamageMultiplier = ConfigHolder.COMMON.LeviathanDamageMultiplier.get();
             LeviathanBlockBreaking = ConfigHolder.COMMON.LeviathanBlockBreaking.get();
@@ -326,6 +345,9 @@ public class CMConfig {
             WadjetHealthMultiplier = ConfigHolder.COMMON.WadjetHealthMultiplier.get();
             WadjetDamageMultiplier = ConfigHolder.COMMON.WadjetDamageMultiplier.get();
 
+            MaledictusHealthMultiplier = ConfigHolder.COMMON.MaledictusHealthMultiplier.get();
+            MaledictusDamageMultiplier = ConfigHolder.COMMON.MaledictusDamageMultiplier.get();
+
             Armor_Infinity_Durability = ConfigHolder.COMMON.Armor_Infinity_Durability.get();
 
             DeeplingSpawnWeight = ConfigHolder.COMMON.DeeplingSpawnWeight.get();
@@ -352,11 +374,11 @@ public class CMConfig {
             CoralgolemSpawnWeight = ConfigHolder.COMMON.CoralgolemSpawnWeight.get();
             CoralgolemSpawnRolls  = ConfigHolder.COMMON.CoralgolemSpawnRolls.get();
 
-            IgnitedBerserkerSpawnWeight = ConfigHolder.COMMON.IgnitedBerserkerSpawnWeight.get();
-            IgnitedBerserkerSpawnRolls = ConfigHolder.COMMON.IgnitedBerserkerSpawnRolls.get();
-            
             cursedPyramidCheckRange = ConfigHolder.COMMON.cursedPyramidCheckRange.get();
             cursedPyramidHeightVariance = ConfigHolder.COMMON.cursedPyramidHeightVariance.get();
+
+            IgnitedBerserkerSpawnWeight = ConfigHolder.COMMON.IgnitedBerserkerSpawnWeight.get();
+            IgnitedBerserkerSpawnRolls = ConfigHolder.COMMON.IgnitedBerserkerSpawnRolls.get();
 
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("An exception was caused trying to load the config for CM");

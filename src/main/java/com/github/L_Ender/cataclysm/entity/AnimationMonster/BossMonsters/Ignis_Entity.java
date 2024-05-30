@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.AnimationGoal;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.AttackAniamtionGoal3;
@@ -22,9 +23,9 @@ import com.github.L_Ender.cataclysm.entity.effect.Flame_Strike_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Hold_Attack_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.CMBossInfoServer;
-import com.github.L_Ender.cataclysm.entity.etc.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.IHoldEntity;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
+import com.github.L_Ender.cataclysm.entity.etc.path.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Abyss_Fireball_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Fireball_Entity;
 import com.github.L_Ender.cataclysm.init.ModEffect;
@@ -91,7 +92,6 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.ToolActions;
 
 public class Ignis_Entity extends Boss_monster implements IHoldEntity {
     private final CMBossInfoServer bossInfo = new CMBossInfoServer(this.getDisplayName(), this, BossEvent.BossBarColor.YELLOW, false,2);
@@ -970,8 +970,9 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
                 ScreenShake_Entity.ScreenShake(level, this.position(), 20, 0.3f, 0, 20);
                 for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.25D))) {
                     if (!isAlliedTo(entity) && !(entity instanceof Ignis_Entity) && entity != this) {
-                        boolean flag = entity.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F + entity.getMaxHealth() * 0.15F));
-                        if (entity instanceof Player && entity.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+                        DamageSource damagesource = DamageSource.mobAttack(this);
+                        boolean flag = entity.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F + entity.getMaxHealth() * 0.15F));
+                        if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource)) {
                             disableShield(entity, 200);
                         }
                     }
@@ -1032,8 +1033,9 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
                 ScreenShake_Entity.ScreenShake(level, this.position(), 20, 0.3f, 0, 20);
                 for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(1.25D))) {
                     if (!isAlliedTo(entity) && !(entity instanceof Ignis_Entity) && entity != this) {
-                        boolean flag = entity.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F + entity.getMaxHealth() * 0.15F));
-                        if (entity instanceof Player && entity.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK)) {
+                        DamageSource damagesource = DamageSource.mobAttack(this);
+                        boolean flag = entity.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * 1.5F + entity.getMaxHealth() * 0.15F));
+                        if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource)) {
                             disableShield(entity, 200);
                         }
                     }
@@ -1496,8 +1498,9 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!(entityHit instanceof Ignis_Entity)) {
-                    boolean flag = entityHit.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entityHit.getMaxHealth() * hpdamage));
-                    if (entityHit instanceof Player && entityHit.isBlocking() && shieldbreakticks > 0) {
+                    DamageSource damagesource = DamageSource.mobAttack(this);
+                    boolean flag = entityHit.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entityHit.getMaxHealth() * hpdamage));
+                    if (entityHit instanceof Player && entityHit.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
                         disableShield(entityHit, shieldbreakticks);
                     }
                     if (flag) {
@@ -1548,11 +1551,10 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!isAlliedTo(entityHit) && !(entityHit instanceof Ignis_Entity)) {
-                    boolean flag = entityHit.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entityHit.getMaxHealth() * hpdamage));
-                    if (entityHit instanceof Player) {
-                        if (entityHit.isBlocking() && shieldbreakticks > 0) {
-                            disableShield(entityHit, shieldbreakticks);
-                        }
+                    DamageSource damagesource = DamageSource.mobAttack(this);
+                    boolean flag = entityHit.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entityHit.getMaxHealth() * hpdamage));
+                    if (entityHit instanceof Player && entityHit.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
+                        disableShield(entityHit, shieldbreakticks);
                     }
                     if (flag) {
                         this.playSound(SoundEvents.ANVIL_LAND, 1.5f, 0.8F + this.getRandom().nextFloat() * 0.1F);
@@ -1583,11 +1585,10 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
             float entityRelativeAngle = entityHitAngle - entityAttackingAngle;
             if (this.distanceTo(entityHit) <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
                 if (!isAlliedTo(entityHit) && !(entityHit instanceof Ignis_Entity)) {
-                    boolean flag = entityHit.hurt(DamageSource.mobAttack(this), (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + entityHit.getMaxHealth() * 0.1f);
-                    if (entityHit instanceof Player) {
-                        if (entityHit.isBlocking() && shieldbreakticks > 0) {
-                            disableShield(entityHit, shieldbreakticks);
-                        }
+                    DamageSource damagesource = DamageSource.mobAttack(this);
+                    boolean flag = entityHit.hurt(damagesource, (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + entityHit.getMaxHealth() * 0.1f);
+                    if (entityHit instanceof Player && entityHit.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
+                        disableShield(entityHit, shieldbreakticks);
                     }
 
                     if (flag && !entityHit.getType().is(ModTag.IGNIS_CANT_POKE) && entityHit.isAlive()) {
@@ -1780,20 +1781,20 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
 
     private void ShieldSmashparticle(float radius, float vec, float math) {
         if (this.level.isClientSide) {
+            float f = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;
+            float f1 = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F)) ;
+            double theta = (yBodyRot) * (Math.PI / 180);
+            theta += Math.PI / 2;
+            double vecX = Math.cos(theta);
+            double vecZ = Math.sin(theta);
             for (int i1 = 0; i1 < 80 + random.nextInt(12); i1++) {
                 double motionX = getRandom().nextGaussian() * 0.07D;
                 double motionY = getRandom().nextGaussian() * 0.07D;
                 double motionZ = getRandom().nextGaussian() * 0.07D;
                 float angle = (0.01745329251F * this.yBodyRot) + i1;
-                float f = Mth.cos(this.yBodyRot * ((float) Math.PI / 180F));
-                float f1 = Mth.sin(this.yBodyRot * ((float) Math.PI / 180F));
                 double extraX = radius * Mth.sin((float) (Math.PI + angle));
                 double extraY = 0.3F;
                 double extraZ = radius * Mth.cos(angle);
-                double theta = (yBodyRot) * (Math.PI / 180);
-                theta += Math.PI / 2;
-                double vecX = Math.cos(theta);
-                double vecZ = Math.sin(theta);
                 int hitX = Mth.floor(getX() + vec * vecX + extraX);
                 int hitY = Mth.floor(getY());
                 int hitZ = Mth.floor(getZ() + vec * vecZ + extraZ);
@@ -1802,6 +1803,7 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
                 this.level.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, block), getX() + vec * vecX + extraX + f * math, this.getY() + extraY, getZ() + vec * vecZ + extraZ + f1 * math, motionX, motionY, motionZ);
 
             }
+            this.level.addParticle(new RingParticle.RingData(0f, (float) Math.PI / 2f, 25, 1f, 1f, 1f, 1f, 25f, false, RingParticle.EnumRingBehavior.GROW), getX() + vec * vecX + f * math, getY() + 0.3f, getZ() + vec * vecZ + f1 * math, 0, 0, 0);
         }
     }
 
@@ -1857,12 +1859,10 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
             List<LivingEntity> hit = level.getEntitiesOfClass(LivingEntity.class, selection);
             for (LivingEntity entity : hit) {
                 if (!isAlliedTo(entity) && !(entity instanceof Ignis_Entity) && entity != this) {
-                    if (entity instanceof Player) {
-                        if (entity.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK) && shieldbreakticks > 0) {
-                            disableShield(entity, shieldbreakticks);
-                        }
+                    DamageSource damagesource = DamageSource.mobAttack(this);
+                    boolean flag = entity.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
+                        disableShield(entity, shieldbreakticks);
                     }
-                    boolean flag = entity.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));
                     if (flag) {
                         if (grab) {
                             double magnitude = -4;
@@ -1920,12 +1920,11 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
         List<LivingEntity> hit = level.getEntitiesOfClass(LivingEntity.class, selection);
         for (LivingEntity entity : hit) {
             if (!isAlliedTo(entity) && !(entity instanceof Ignis_Entity) && entity != this) {
-                if (entity instanceof Player) {
-                    if (entity.getUseItem().canPerformAction(ToolActions.SHIELD_BLOCK) && shieldbreakticks > 0) {
-                        disableShield(entity, shieldbreakticks);
-                    }
+                DamageSource damagesource = DamageSource.mobAttack(this);
+                boolean flag = entity.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));
+                if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
+                    disableShield(entity, shieldbreakticks);
                 }
-                boolean flag = entity.hurt(DamageSource.mobAttack(this), (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));
                 if (flag) {
                     entity.setDeltaMovement(entity.getDeltaMovement().add(0.0D, airborne + level.random.nextDouble() * 0.15, 0.0D));
                 }

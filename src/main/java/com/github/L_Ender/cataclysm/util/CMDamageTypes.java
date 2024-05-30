@@ -27,4 +27,12 @@ public class CMDamageTypes {
     public static DamageSource causeSwordDanceDamage(LivingEntity attacker) {
         return new EntityDamageSource("cataclysm.sword_dance", attacker).setExplosion();
     }
+    
+    public static DamageSource causeMaledictioDamage(LivingEntity attacker) {
+        return new EntityDamageSource("cataclysm.maledictio", attacker).bypassArmor();
+    }
+
+    public static DamageSource causeMaledictioSagittaDamage(Entity attacker, Entity caster) {
+        return new IndirectEntityDamageSource("cataclysm.maledictio_sagitta", attacker, caster).setProjectile().setExplosion();
+    }
 }
