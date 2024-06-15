@@ -9,6 +9,7 @@ import com.github.L_Ender.cataclysm.client.model.entity.Model_Maledictus;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.client.render.layer.Maledictus_Layer;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
+import com.github.L_Ender.cataclysm.util.AssetsProtector.AESUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.Minecraft;
@@ -41,7 +42,7 @@ public class RendererMaledictus extends MobRenderer<Maledictus_Entity, Model_Mal
     }
     @Override
     public ResourceLocation getTextureLocation(Maledictus_Entity entity) {
-        return MALEDICTUS_TEXTURES;
+        return AESUtil.getTexture(MALEDICTUS_TEXTURES);
     }
 
     @Override

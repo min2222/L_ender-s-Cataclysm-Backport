@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.client.model;
 
 import com.github.L_Ender.cataclysm.client.model.armor.ModelBloom_Stone_Pauldrons;
 import com.github.L_Ender.cataclysm.client.model.armor.ModelBone_Reptile_Armor;
+import com.github.L_Ender.cataclysm.client.model.armor.ModelCursium_Armor;
 import com.github.L_Ender.cataclysm.client.model.armor.ModelIgnitium_Armor;
 import com.github.L_Ender.cataclysm.client.model.armor.ModelMonstrousHelm;
 import com.github.L_Ender.cataclysm.client.model.armor.Modelignitium_Elytra_chestplate;
@@ -30,6 +31,8 @@ public class CMModelLayers {
     public static final ModelLayerLocation STICKY_GLOVES_MODEL = createLocation("sticky_gloves_model", "main");
     public static final ModelLayerLocation KOBOLEDIATOR_HEAD_MODEL = createLocation("kobolediator_head_model", "main");
     public static final ModelLayerLocation IGNITED_BERSERKER_MODEL = createLocation("ignited_berserker_model", "main");
+    public static final ModelLayerLocation CURSIUM_ARMOR_MODEL = createLocation("cursium_armor_model", "main");
+    public static final ModelLayerLocation CURSIUM_ARMOR_MODEL_LEGS = createLocation("cursium_armor_model_leg", "main");
 
     public static void register(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(MONSTROUS_HELM, () -> ModelMonstrousHelm.createArmorLayer(new CubeDeformation(0.3F)));
@@ -42,6 +45,8 @@ public class CMModelLayers {
         event.registerLayerDefinition(STICKY_GLOVES_MODEL, () -> Sticky_Gloves_Model.createLayer(new CubeDeformation(0.2F)));
         event.registerLayerDefinition(KOBOLEDIATOR_HEAD_MODEL, KobolediatorHeadModel::createHeadLayer);
         event.registerLayerDefinition(IGNITED_BERSERKER_MODEL, ModelIgnited_Berserker::createBodyLayer);
+        event.registerLayerDefinition(CURSIUM_ARMOR_MODEL, () -> ModelCursium_Armor.createArmorLayer(new CubeDeformation(0.5F)));
+        event.registerLayerDefinition(CURSIUM_ARMOR_MODEL_LEGS, () -> ModelCursium_Armor.createArmorLayer(new CubeDeformation(0.2F)));
     }
 
     private static ModelLayerLocation createLocation(String model, String layer) {

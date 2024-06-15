@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.entity.AnimationMonster;
 
 import java.util.EnumSet;
 
+import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Prowler_Entity;
@@ -144,6 +145,7 @@ public class The_Watcher_Entity extends Animation_Monster {
 
                     Laser_Beam_Entity laserBeam = new Laser_Beam_Entity(this.level, this);
                     laserBeam.shoot(d3, d4, d5, 1F, 1F);
+                    laserBeam.setDamage((float) CMConfig.HarbingerLaserdamage);
                     laserBeam.setPosRaw(d0, d1, d2);
                     this.level.addFreshEntity(laserBeam);
                 }

@@ -11,6 +11,7 @@ import com.github.L_Ender.cataclysm.items.Bulwark_of_the_flame;
 import com.github.L_Ender.cataclysm.items.CataclysmSkullItem;
 import com.github.L_Ender.cataclysm.items.Coral_Bardiche;
 import com.github.L_Ender.cataclysm.items.Coral_Spear;
+import com.github.L_Ender.cataclysm.items.Cursium_Armor;
 import com.github.L_Ender.cataclysm.items.Gauntlet_of_Bulwark;
 import com.github.L_Ender.cataclysm.items.Gauntlet_of_Guard;
 import com.github.L_Ender.cataclysm.items.Ignitium_Armor;
@@ -360,6 +361,18 @@ public class ModItems {
 
     public static final RegistryObject<Item> IGNITIUM_BOOTS = ITEMS.register("ignitium_boots",
             () -> new Ignitium_Armor(Armortier.IGNITIUM, EquipmentSlot.FEET, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+    
+    public static final RegistryObject<Item> CURSIUM_HELMET = ITEMS.register("cursium_helmet",
+            () -> new Cursium_Armor(Armortier.CURSIUM, EquipmentSlot.HEAD, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> CURSIUM_CHESTPLATE = ITEMS.register("cursium_chestplate",
+            () -> new Cursium_Armor(Armortier.CURSIUM, EquipmentSlot.CHEST, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> CURSIUM_LEGGINGS = ITEMS.register("cursium_leggings",
+            () -> new Cursium_Armor(Armortier.CURSIUM, EquipmentSlot.LEGS, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> CURSIUM_BOOTS = ITEMS.register("cursium_boots",
+            () -> new Cursium_Armor(Armortier.CURSIUM, EquipmentSlot.FEET, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> MONSTROUS_HORN = ITEMS.register("monstrous_horn",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));

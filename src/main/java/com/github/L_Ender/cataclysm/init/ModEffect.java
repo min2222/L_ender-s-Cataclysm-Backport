@@ -9,6 +9,8 @@ import com.github.L_Ender.cataclysm.effects.EffectBlazing_Brand;
 import com.github.L_Ender.cataclysm.effects.EffectBlessing_Of_Amethyst;
 import com.github.L_Ender.cataclysm.effects.EffectBone_Fracture;
 import com.github.L_Ender.cataclysm.effects.EffectCurse_Of_Desert;
+import com.github.L_Ender.cataclysm.effects.EffectGhostForm;
+import com.github.L_Ender.cataclysm.effects.EffectGhost_Sickness;
 import com.github.L_Ender.cataclysm.effects.EffectMonstrous;
 import com.github.L_Ender.cataclysm.effects.EffectStun;
 
@@ -39,4 +41,8 @@ public class ModEffect {
     public static final RegistryObject<MobEffect> EFFECTBLESSING_OF_AMETHYST = EFFECTS.register("blessing_of_amethyst", EffectBlessing_Of_Amethyst::new);
 
     public static final RegistryObject<MobEffect> EFFECTCURSE_OF_DESERT = EFFECTS.register("curse_of_desert", EffectCurse_Of_Desert::new);
+
+    public static final RegistryObject<MobEffect> EFFECTGHOST_FORM = EFFECTS.register("ghost_form", EffectGhostForm::new);
+
+    public static final RegistryObject<MobEffect> EFFECTGHOST_SICKNESS = EFFECTS.register("ghost_sickness", EffectGhost_Sickness::new);
 }
