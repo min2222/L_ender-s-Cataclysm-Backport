@@ -179,17 +179,16 @@ public class Modern_Remnant_Entity extends AnimationPet implements Bucketable {
 
     @Override
     public void saveToBucketTag(@Nonnull ItemStack bucket) {
-        if (this.hasCustomName()) {
-            bucket.setHoverName(this.getCustomName());
-        }
         CompoundTag platTag = new CompoundTag();
-        this.addAdditionalSaveData(platTag);
         CompoundTag compound = bucket.getOrCreateTag();
+        this.addAdditionalSaveData(platTag);
+        Bucketable.saveDefaultDataToBucketTag(this, bucket);
         compound.put("ModernRemnantData", platTag);
     }
 
     @Override
     public void loadFromBucketTag(CompoundTag p_148832_) {
+        Bucketable.loadDefaultDataFromBucketTag(this, p_148832_);
         if (p_148832_.contains("ModernRemnantData")) {
             this.readAdditionalSaveData(p_148832_.getCompound("ModernRemnantData"));
         }
@@ -199,9 +198,6 @@ public class Modern_Remnant_Entity extends AnimationPet implements Bucketable {
     @Nonnull
     public ItemStack getBucketItemStack() {
         ItemStack stack = new ItemStack(ModItems.MODERN_REMNANT_BUCKET.get());
-        if (this.hasCustomName()) {
-            stack.setHoverName(this.getCustomName());
-        }
         return stack;
     }
 

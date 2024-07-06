@@ -2,7 +2,6 @@ package com.github.L_Ender.cataclysm.init;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
-import com.github.L_Ender.cataclysm.client.particle.MaledictusRingParticle;
 import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.client.particle.StormParticle;
 import com.github.L_Ender.cataclysm.client.particle.TrackLightningParticle;
@@ -45,13 +44,6 @@ public class ModParticle {
         @Override
         public Codec<RingParticle.RingData> codec() {
             return RingParticle.RingData.CODEC(RING.get());
-        }
-    });
-    
-    public static final RegistryObject<ParticleType<MaledictusRingParticle.MaledictusRingData>> MALEDICTUSRING = PARTICLE.register("maledictus_ring", () -> new ParticleType<MaledictusRingParticle.MaledictusRingData>(false, MaledictusRingParticle.MaledictusRingData.DESERIALIZER) {
-        @Override
-        public Codec<MaledictusRingParticle.MaledictusRingData> codec() {
-            return MaledictusRingParticle.MaledictusRingData.CODEC(MALEDICTUSRING.get());
         }
     });
 

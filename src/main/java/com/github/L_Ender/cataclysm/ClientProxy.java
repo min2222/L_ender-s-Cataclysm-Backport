@@ -12,7 +12,6 @@ import com.github.L_Ender.cataclysm.client.gui.GUIWeponfusion;
 import com.github.L_Ender.cataclysm.client.particle.CursedFlameParticle;
 import com.github.L_Ender.cataclysm.client.particle.EM_PulseParticle;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
-import com.github.L_Ender.cataclysm.client.particle.MaledictusRingParticle;
 import com.github.L_Ender.cataclysm.client.particle.Phantom_Wing_FlameParticle;
 import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.client.particle.SandStormParticle;
@@ -162,7 +161,6 @@ public class ClientProxy extends CommonProxy {
         registry.register(ModParticle.TRACK_LIGHTNING.get(), new TrackLightningParticle.OrbFactory());
         registry.register(ModParticle.STORM.get(), new StormParticle.OrbFactory());
         registry.register(ModParticle.RING.get(), RingParticle.RingFactory::new);
-        registry.register(ModParticle.MALEDICTUSRING.get(), MaledictusRingParticle.RingFactory::new);
         registry.register(ModParticle.SANDSTORM.get(), SandStormParticle.Factory::new);
         registry.register(ModParticle.TRAP_FLAME.get(), TrapFlameParticle.Factory::new);
     }

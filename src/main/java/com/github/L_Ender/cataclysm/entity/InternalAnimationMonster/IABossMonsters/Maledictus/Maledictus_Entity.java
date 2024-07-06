@@ -1,12 +1,11 @@
 package com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus;
 
-import com.github.L_Ender.cataclysm.client.particle.MaledictusRingParticle;
+import java.util.EnumSet;
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Golem_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignis_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalAttackGoal;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalMoveGoal;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalStateGoal;
@@ -17,14 +16,13 @@ import com.github.L_Ender.cataclysm.entity.etc.FlightMoveController;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.etc.path.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.etc.path.DirectPathNavigator;
-import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Arrow_Entity;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
+
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -33,7 +31,11 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -43,10 +45,7 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.animal.AbstractGolem;
-import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Phantom;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -55,9 +54,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.EnumSet;
-import java.util.List;
 
 
 public class Maledictus_Entity extends IABoss_monster {
@@ -450,6 +446,7 @@ public class Maledictus_Entity extends IABoss_monster {
 
     private void SwingParticles() {
         if (level.isClientSide) {
+        	/*
             if(this.getAttackState() == 1) {
                 if (this.attackTicks == 1) {
                     Warningparticle(0.95f,0.5215f,0.1333F);
@@ -486,12 +483,8 @@ public class Maledictus_Entity extends IABoss_monster {
                     Warningparticle(0.423f,0.062f,0.019F);
                 }
             }
+            */
         }
-    }
-
-    private void Warningparticle(float r,float g,float b) {
-        this.level.addParticle(new MaledictusRingParticle.MaledictusRingData(0f, 0f, 50, r, g,  b, 1.0f, 4f, true,false, this.getId(),MaledictusRingParticle.EnumRingBehavior.CONSTANT), this.getX(), this.getY() , this.getZ() , 0, 0, 0);
-        this.level.addParticle(new MaledictusRingParticle.MaledictusRingData(0f, 0f, 50, r, g,  b, 1.0f, 4f, true,true, this.getId(),MaledictusRingParticle.EnumRingBehavior.CONSTANT), this.getX(), this.getY() , this.getZ() , 0, 0, 0);
     }
 
 

@@ -1,12 +1,11 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
 
-import java.util.HashMap;
-
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.client.model.entity.Model_Maledictus;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
+import com.github.L_Ender.cataclysm.client.render.layer.Maledictus_Cicle_Layer;
 import com.github.L_Ender.cataclysm.client.render.layer.Maledictus_Layer;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.cataclysm.util.AssetsProtector.AESUtil;
@@ -24,7 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderNameTagEvent;
@@ -33,12 +31,11 @@ import net.minecraftforge.client.event.RenderNameTagEvent;
 public class RendererMaledictus extends MobRenderer<Maledictus_Entity, Model_Maledictus> {
 
     private static final ResourceLocation MALEDICTUS_TEXTURES = new ResourceLocation("cataclysm:textures/entity/maledictus/maledictus_ghost.png");
-    private static final HashMap<Integer, Vec3> righthandParticlePositions = new HashMap<>();
-    private static final HashMap<Integer, Vec3> lefthandParticlePositions = new HashMap<>();
 
     public RendererMaledictus(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new Model_Maledictus(), 0.75F);
         this.addLayer(new Maledictus_Layer(this));
+        this.addLayer(new Maledictus_Cicle_Layer(this, renderManagerIn));
     }
     @Override
     public ResourceLocation getTextureLocation(Maledictus_Entity entity) {
@@ -137,17 +134,6 @@ public class RendererMaledictus extends MobRenderer<Maledictus_Entity, Model_Mal
             this.renderNameTag(entityIn, renderNameplateEvent.getContent(), matrixStackIn, bufferIn, packedLightIn);
         }
         net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<Maledictus_Entity, Model_Maledictus>(entityIn, this, partialTicks, matrixStackIn, bufferIn, packedLightIn));
-
-        righthandParticlePositions.put(entityIn.getId(), this.model.getParticlePosition(Vec3.ZERO,true));
-        lefthandParticlePositions.put(entityIn.getId(), this.model.getParticlePosition(Vec3.ZERO,false));
-    }
-
-    public static Vec3 getRightHandPositionFor(int entityId) {
-        return righthandParticlePositions.get(entityId);
-    }
-
-    public static Vec3 getLeftHandPositionFor(int entityId) {
-        return lefthandParticlePositions.get(entityId);
     }
 
 
