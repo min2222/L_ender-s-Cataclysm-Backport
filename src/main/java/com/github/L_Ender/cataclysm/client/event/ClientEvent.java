@@ -5,6 +5,7 @@ import java.util.Random;
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.ClientProxy;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
+import com.github.L_Ender.cataclysm.client.gui.CustomBossBar;
 import com.github.L_Ender.cataclysm.client.model.entity.Model_PlayerSandstorm;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
@@ -26,7 +27,6 @@ import com.mojang.math.Vector3f;
 
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.LiquidBlockRenderer;
@@ -432,7 +432,14 @@ public class ClientEvent {
                 int i = (int) (event.getBossEvent().getProgress() * 182.0F);
                 int l = Minecraft.getInstance().font.width(component);
                 //N.M
-                if (renderTypeFor == 0) {
+                CustomBossBar customBossBar = CustomBossBar.customBossBars.getOrDefault(renderTypeFor, null);
+                if (customBossBar == null) return;
+
+                event.setCanceled(true);
+                customBossBar.renderBossBar(event);
+                
+                
+                /*if (renderTypeFor == 0) {
                     event.setCanceled(true);
                     RenderSystem.setShaderTexture(0, GUI_BARS_LOCATION);
                     Gui.blit(event.getPoseStack(), pX + 3, pY + 2, 0, 0, 182, 5, 256, 256);
@@ -598,6 +605,8 @@ public class ClientEvent {
                     poseStack.popPose();
                     event.setIncrement(event.getIncrement() + 12);
                 }
+                
+                */
             }
         }
     }

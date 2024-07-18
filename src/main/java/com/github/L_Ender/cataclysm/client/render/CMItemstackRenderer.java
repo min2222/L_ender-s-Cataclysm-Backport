@@ -15,6 +15,7 @@ import com.github.L_Ender.cataclysm.client.model.block.Model_EMP;
 import com.github.L_Ender.cataclysm.client.model.block.Model_Mechanical_Anvil;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelCoral_Bardiche;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelCoral_Spear;
+import com.github.L_Ender.cataclysm.client.model.item.ModelAncient_Spear;
 import com.github.L_Ender.cataclysm.client.model.item.ModelBulwark_of_the_flame;
 import com.github.L_Ender.cataclysm.client.model.item.ModelGauntlet_of_Bulwark;
 import com.github.L_Ender.cataclysm.client.model.item.ModelGauntlet_of_Guard;
@@ -43,6 +44,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -73,6 +75,7 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ModelTidal_Claws TIDAL_CLAWS_MODEL = new ModelTidal_Claws();
     private static final ModelMeat_Shredder MEAT_SHREDDER_MODEL = new ModelMeat_Shredder();
     private static final ModelLaser_Gatling LASER_GATLING_MODEL = new ModelLaser_Gatling();
+    private static final ModelAncient_Spear ANCIENT_SPEAR_MODEL = new ModelAncient_Spear();
     private static final ResourceLocation BULWARK_OF_THE_FLAME_TEXTURE = new ResourceLocation("cataclysm:textures/item/bulwark_of_the_flame.png");
     private static final ResourceLocation GAUNTLET_OF_GUARD_TEXTURE = new ResourceLocation("cataclysm:textures/item/gauntlet_of_guard.png");
     private static final ResourceLocation GAUNTLET_OF_BULWARK_TEXTURE = new ResourceLocation("cataclysm:textures/item/gauntlet_of_bulwark.png");
@@ -91,12 +94,10 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation WASW_TEXTURE = new ResourceLocation("cataclysm:textures/item/wither_assualt_shoulder_weapon.png");
     private static final ResourceLocation VASW_TEXTURE = new ResourceLocation("cataclysm:textures/item/void_assualt_shoulder_weapon.png");
     private static final ResourceLocation EMP_TEXTURE = new ResourceLocation("cataclysm:textures/block/emp.png");
-    private static final ResourceLocation TEXTURE_1 = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altarfire1.png");
-    private static final ResourceLocation TEXTURE_2 = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altarfire2.png");
-    private static final ResourceLocation TEXTURE_3 = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altarfire3.png");
-    private static final ResourceLocation TEXTURE_4 = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altarfire4.png");
+    private static final ResourceLocation[] TEXTURE_FIRE_PROGRESS = new ResourceLocation[8];
     private static final ResourceLocation CORAL_SPEAR_TEXTURE = new ResourceLocation("cataclysm:textures/entity/coral_spear.png");
     private static final ResourceLocation CORAL_BARDICHE_TEXTURE = new ResourceLocation("cataclysm:textures/entity/coral_bardiche.png");
+    private static final ResourceLocation ANCIENT_SPEAR_TEXTURE = new ResourceLocation("cataclysm:textures/item/ancient_spear.png");
 
     private Map<Cataclysm_Skull_Block.Type, Cataclysm_Skull_Model_Base> skullModels = Cataclysm_Skull_Block_Renderer.createSkullRenderers(Minecraft.getInstance().getEntityModels());
 
@@ -106,6 +107,11 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
     public CMItemstackRenderer() {
         super(Minecraft.getInstance().getBlockEntityRenderDispatcher(), Minecraft.getInstance().getEntityModels());
+        
+        for(int i = 0; i < 8; i++){
+            TEXTURE_FIRE_PROGRESS[i] = new ResourceLocation("cataclysm:textures/block/altar_of_fire/altarfire_" + i + ".png");
+        }
+        
     }
 
     @Override
@@ -246,13 +252,21 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
             matrixStackIn.popPose();
         }
+        if (itemStackIn.getItem() == ModItems.ANCIENT_SPEAR.get()) {
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0.5F, 0.5F, 0.5F);
+            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(ANCIENT_SPEAR_TEXTURE), false, itemStackIn.hasFoil());
+            ANCIENT_SPEAR_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
+        }
         if(itemStackIn.getItem() == ModBlocks.ALTAR_OF_FIRE.get().asItem()){
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 1.50F, 0.5F);
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
             ALTAR_OF_FIRE_MODEL.resetToDefaultPose();
             ALTAR_OF_FIRE_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(RenderType.entityCutoutNoCull(ALTAR_OF_FIRE_TEXTURE)), combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
-            ALTAR_OF_FIRE_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(CMRenderTypes.getGlowingEffect(getIdleTexture(tick % 12))), 210, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
+            ALTAR_OF_FIRE_MODEL.renderToBuffer(matrixStackIn, bufferIn.getBuffer(CMRenderTypes.getGlowingEffect(getIdleTexture((int) ((tick * 0.5F) % 7)))), 210, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
             matrixStackIn.popPose();
         }
         if(itemStackIn.getItem() == ModBlocks.ALTAR_OF_VOID.get().asItem()){
@@ -307,16 +321,6 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     }
 
     private ResourceLocation getIdleTexture(int age) {
-        if (age < 3) {
-            return TEXTURE_1;
-        } else if (age < 6) {
-            return TEXTURE_2;
-        } else if (age < 9) {
-            return TEXTURE_3;
-        } else if (age < 12) {
-            return TEXTURE_4;
-        } else {
-            return TEXTURE_1;
-        }
+        return TEXTURE_FIRE_PROGRESS[Mth.clamp(age, 0, 7)];
     }
 }

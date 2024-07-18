@@ -30,6 +30,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.event.ForgeEventFactory;
 
 public class Sandstorm_Projectile extends Projectile {
     public double xPower;
@@ -154,7 +155,7 @@ public class Sandstorm_Projectile extends Projectile {
             super.tick();
             lifetick++;
             HitResult hitresult = ProjectileUtil.getHitResult(this, this::canHitEntity);
-            if (hitresult.getType() != HitResult.Type.MISS && !net.minecraftforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult)) {
+            if (hitresult.getType() != HitResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
                 this.onHit(hitresult);
             }
             if(this.getState() == 1) {
@@ -206,10 +207,10 @@ public class Sandstorm_Projectile extends Projectile {
         super.onHitEntity(p_37626_);
         if (!this.level.isClientSide) {
             Entity entity = p_37626_.getEntity();
-            if (!entity.getType().is(ModTag.TEAM_ANCIENT_REMNANT)) {
-                Entity entity1 = this.getOwner();
-                boolean flag;
-                if (entity1 instanceof LivingEntity) {
+            Entity entity1 = this.getOwner();
+            boolean flag = false;
+            if (entity1 instanceof LivingEntity) {
+                if (!(entity.getType().is(ModTag.TEAM_ANCIENT_REMNANT) && entity1.getType().is(ModTag.TEAM_ANCIENT_REMNANT))) {
                     LivingEntity livingentity = (LivingEntity) entity1;
                     flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), this.getDamage());
                     if (flag) {
@@ -217,15 +218,16 @@ public class Sandstorm_Projectile extends Projectile {
                             this.doEnchantDamageEffects(livingentity, entity);
                         }
                     }
-                } else {
-                    flag = entity.hurt(DamageSource.MAGIC, this.getDamage());
                 }
-
-                if (flag && entity instanceof LivingEntity) {
-                    ((LivingEntity) entity).addEffect(new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 100, 1), this.getEffectSource());
-                }
-                this.setState(2);
+            } else {
+                flag = entity.hurt(DamageSource.MAGIC, this.getDamage());
             }
+
+            if (flag && entity instanceof LivingEntity) {
+                ((LivingEntity) entity).addEffect(new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 100, 1), this.getEffectSource());
+            }
+            this.setState(2);
+
         }
     }
 

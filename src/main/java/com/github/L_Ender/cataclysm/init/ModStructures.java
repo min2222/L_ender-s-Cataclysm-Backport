@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.init;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.structures.Burning_Arena_Structure;
+import com.github.L_Ender.cataclysm.structures.CataclysmJigsawStructure;
 import com.github.L_Ender.cataclysm.structures.Cursed_Pyramid_Structure;
 import com.github.L_Ender.cataclysm.structures.RuinedCitadelStructure;
 import com.github.L_Ender.cataclysm.structures.SoulBlackSmithStructure;
@@ -32,6 +33,9 @@ public class ModStructures {
 
     public static final RegistryObject<StructureType<Cursed_Pyramid_Structure>> CURSED_PYRAMID = STRUCTURE_TYPE_DEF_REG.register("cursed_pyramid", () -> () ->
             Cursed_Pyramid_Structure.CODEC);
+    
+    public static final RegistryObject<StructureType<CataclysmJigsawStructure>> CATACLYSM_JIGSAW = STRUCTURE_TYPE_DEF_REG.register("cataclysm_jigsaw", () -> () ->
+    CataclysmJigsawStructure.CODEC);
 
     public static final RegistryObject<StructurePieceType> SBSP = STRUCTURE_PIECE_DEF_REG.register("soul_black_smith", () -> SoulBlackSmithStructure.Piece::new);
     public static final RegistryObject<StructurePieceType> RCP = STRUCTURE_PIECE_DEF_REG.register("ruined_citadel", () -> RuinedCitadelStructure.Piece::new);

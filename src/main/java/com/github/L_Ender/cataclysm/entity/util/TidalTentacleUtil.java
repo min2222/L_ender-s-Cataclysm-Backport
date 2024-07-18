@@ -1,10 +1,14 @@
 package com.github.L_Ender.cataclysm.entity.util;
 
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.capabilities.TidalTentacleCapability;
 import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Tentacle_Entity;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 public class TidalTentacleUtil {
 
@@ -16,7 +20,7 @@ public class TidalTentacleUtil {
             TentacleCapability.setHasTentacle(tendon != null);
         }
     }
-    /**
+   
     public static void retractFarTentacles(Level level, LivingEntity livingEntity) {
         Tidal_Tentacle_Entity last = getLastTendon(livingEntity);
         if (last != null) {
@@ -39,14 +43,14 @@ public class TidalTentacleUtil {
         if (TentacleCapability != null) {
             UUID uuid = TentacleCapability.getLastTentacleUUID();
             int id = TentacleCapability.getLastTentacleID();
-            if (!livingEntity.level().isClientSide) {
+            if (!livingEntity.level.isClientSide) {
                 if (uuid != null) {
-                    Entity e = livingEntity.level().getEntity(id);
+                    Entity e = livingEntity.level.getEntity(id);
                     return e instanceof Tidal_Tentacle_Entity ? (Tidal_Tentacle_Entity) e : null;
                 }
             } else {
                 if (id != -1) {
-                    Entity e = livingEntity.level().getEntity(id);
+                    Entity e = livingEntity.level.getEntity(id);
                     return e instanceof Tidal_Tentacle_Entity ? (Tidal_Tentacle_Entity) e : null;
                 }
             }
@@ -54,5 +58,4 @@ public class TidalTentacleUtil {
         }
         return null;
     }
-     */
 }
