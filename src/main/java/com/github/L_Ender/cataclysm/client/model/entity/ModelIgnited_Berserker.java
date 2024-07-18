@@ -7,10 +7,8 @@ import com.github.L_Ender.cataclysm.client.animation.Ignited_Berserker_Animation
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Ignited_Berserker_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Vector3f;
 
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -144,7 +142,7 @@ public class ModelIgnited_Berserker<T extends Ignited_Berserker_Entity> extends 
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
 		this.animateHeadLookTarget(netHeadYaw, headPitch);
-		if(entity.getAttackState() == 0 && entity.isMoving()) {
+		if(entity.getAttackState() == 0) {
 			this.animateWalk(Ignited_Berserker_Animation.WALK, limbSwing, limbSwingAmount, 1.0F, 2.0F);
 			edges.yRot -= ageInTicks * 0.1F;
 		}
@@ -162,7 +160,8 @@ public class ModelIgnited_Berserker<T extends Ignited_Berserker_Entity> extends 
 	protected void animateWalk(AnimationDefinition p_268159_, float p_268057_, float p_268347_, float p_268138_, float p_268165_) {
 		long i = (long)(p_268057_ * 50.0F * p_268138_);
 		float f = Math.min(p_268347_ * p_268165_, 1.0F);
-		KeyframeAnimations.animate(this, p_268159_, i, f, new Vector3f());
+		//FIXME
+		//KeyframeAnimations.animate(this, p_268159_, i, f, new Vector3f());
 	}
 
 	private void animateHeadLookTarget(float yRot, float xRot) {
