@@ -147,7 +147,6 @@ public class CustomBossBar {
         int y = event.getY();
         int i = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         int j = y - 9;
-        int k = i / 2 - 91;
         PoseStack poseStack = event.getPoseStack();
         Minecraft.getInstance().getProfiler().push("CataclysmCustomBossBarBase");
 
