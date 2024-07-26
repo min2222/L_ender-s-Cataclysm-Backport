@@ -122,7 +122,7 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 dependencies {
     minecraft 'net.minecraftforge:forge:1.19.2-43.3.8'
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-    implementation fg.deobf("curse.maven:archaeology-api-950822:5141973")
+    implementation fg.deobf("curse.maven:archeology-api-1069500:5557456")
     implementation fg.deobf("curse.maven:lionfish-api-1001614:5314835")
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-common-api:${jei_version}"))
     compileOnly(fg.deobf("mezz.jei:jei-${jei_mc_version}-forge-api:${jei_version}"))

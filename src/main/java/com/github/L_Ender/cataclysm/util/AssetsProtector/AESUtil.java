@@ -28,34 +28,12 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.lang3.RandomStringUtils;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.AbstractTexture;
-import net.minecraft.client.renderer.texture.MissingTextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class AESUtil
 {
 	//https://www.baeldung.com/java-aes-encryption-decryption
-	
-	public static ResourceLocation getTexture(ResourceLocation texture)
-	{
-		registerTexture(texture);
-		return texture;
-	}
-	
-	public static void registerTexture(ResourceLocation p_172522_) 
-	{
-		TextureManager textureManager = Minecraft.getInstance().getTextureManager();
-		AbstractTexture abstracttexture = textureManager.getTexture(p_172522_, MissingTextureAtlasSprite.getTexture());
-		if(abstracttexture == MissingTextureAtlasSprite.getTexture()) 
-		{
-			AbstractTexture texture = new AESTexture((File)null, p_172522_);
-			textureManager.register(p_172522_, texture);
-		}
-	}
 	
 	private static String generateRandomString()
 	{
@@ -94,6 +72,7 @@ public class AESUtil
 	    return decryptFile(algorithm, key, ivParameterSpec, array);
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	public static void encryptFiles(String fileExtension) throws NoSuchAlgorithmException, IOException, IllegalBlockSizeException, InvalidKeyException, BadPaddingException, InvalidAlgorithmParameterException, NoSuchPaddingException, InvalidKeySpecException
 	{
 	    String algorithm = "AES/CBC/PKCS5Padding";
@@ -119,6 +98,7 @@ public class AESUtil
 	    }
 	}
 	
+	@OnlyIn(Dist.CLIENT)
 	private static File makeDirectory(String folderName)
 	{
 		Minecraft mc = Minecraft.getInstance();
