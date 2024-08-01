@@ -39,6 +39,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererAmethyst_Cluste
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAmethyst_Crab;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Desert_Stele;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Remnant;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Remnant_Rework;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererBlazing_Bone;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererCm_Falling_Block;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererCoral_Golem;
@@ -73,6 +74,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererNameless_Sorcer
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNetherite_Monstrosity;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNull;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPhantom_Arrow;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererPhantom_Halberd;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPoison_Dart;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPortal_Abyss_Blast;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererSandstorm;
@@ -222,6 +224,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.TIDAL_HOOK.get(), RendererTidal_Hook::new);
         EntityRenderers.register(ModEntities.AMETHYST_CRAB.get(), RendererAmethyst_Crab::new);
         EntityRenderers.register(ModEntities.ANCIENT_REMNANT.get(), RendererAncient_Remnant::new);
+        EntityRenderers.register(ModEntities.ANCIENT_REMNANT_REWORK.get(), RendererAncient_Remnant_Rework::new);
         EntityRenderers.register(ModEntities.MODERN_REMNANT.get(), RendererModern_Remnant::new);
         EntityRenderers.register(ModEntities.SANDSTORM.get(), RendererSandstorm::new);
         EntityRenderers.register(ModEntities.SANDSTORM_PROJECTILE.get(), RendererSandstorm_Projectile::new);
@@ -231,6 +234,7 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.KOBOLEDIATOR.get(), RendererKobolediator::new);
         EntityRenderers.register(ModEntities.WADJET.get(), RendererWadjet::new);
         EntityRenderers.register(ModEntities.MALEDICTUS.get(), RendererMaledictus::new);
+        EntityRenderers.register(ModEntities.PHANTOM_HALBERD.get(), RendererPhantom_Halberd::new);
         EntityRenderers.register(ModEntities.EARTHQUAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.ANCIENT_DESERT_STELE.get(), RendererAncient_Desert_Stele::new);
         EntityRenderers.register(ModEntities.AMETHYST_CLUSTER_PROJECTILE.get(), RendererAmethyst_Cluster_Projectile::new);

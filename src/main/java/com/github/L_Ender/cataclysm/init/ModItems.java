@@ -242,6 +242,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> IGNITIUM_INGOT = ITEMS.register("ignitium_ingot",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+    
+    public static final RegistryObject<Item> CURSIUM_INGOT = ITEMS.register("cursium_ingot",
+            () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> CHAIN_OF_SOUL_BINDING = ITEMS.register("chain_of_soul_binding",
             () -> new ItemInventoryOnly(new Item.Properties()));

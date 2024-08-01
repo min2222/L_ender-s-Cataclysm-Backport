@@ -71,7 +71,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 
-public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy {
+public class Netherite_Monstrosity_Entity extends LLibrary_Boss_Monster implements Enemy {
 
    // private final ServerBossEvent bossInfo = (ServerBossEvent) (new ServerBossEvent(this.getDisplayName(), BossEvent.BossBarColor.RED, BossEvent.BossBarOverlay.PROGRESS)).setDarkenScreen(false);
     private final CMBossInfoServer bossInfo = new CMBossInfoServer(this.getDisplayName(), this, BossEvent.BossBarColor.RED, false,0);
@@ -268,7 +268,7 @@ public class Netherite_Monstrosity_Entity extends Boss_monster implements Enemy 
     public void tick() {
         super.tick();
         this.floatStrider();
-        if (tickCount % 4 == 0) bossInfo.update();
+        if (tickCount % 4 == 0) bossInfo.update(this.getHealth() , this.getMaxHealth());
 
         frame++;
         float moveX = (float) (getX() - xo);

@@ -35,4 +35,8 @@ public class CMDamageTypes {
     public static DamageSource causeMaledictioSagittaDamage(Entity attacker, Entity caster) {
         return new IndirectEntityDamageSource("cataclysm.maledictio_sagitta", attacker, caster).setProjectile().setExplosion();
     }
+    
+    public static DamageSource causeMaledictioMagicaeDamage(Entity attacker, Entity caster) {
+        return new IndirectEntityDamageSource("cataclysm.maledictio_magicae", attacker, caster).bypassArmor();
+    }
 }

@@ -14,7 +14,7 @@ import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.AnimationGoal;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.SimpleAnimationGoal;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Boss_monster;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.LLibrary_Boss_Monster;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Hold_Attack_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
@@ -48,7 +48,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
@@ -87,7 +86,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
-public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic, IHoldEntity {
+public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemiAquatic, IHoldEntity {
 
     public static final Animation LEVIATHAN_GRAB = Animation.create(160);
     public static final Animation LEVIATHAN_GRAB_BITE = Animation.create(13);
@@ -217,7 +216,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic, 
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(1, new LeviathanAIFindWaterAndPortal(this));
         this.goalSelector.addGoal(2, new MobAIFindWater(this,1.0D));
         this.goalSelector.addGoal(3, new LeviathanAttackGoal(this));
         this.goalSelector.addGoal(4, new AnimalAIRandomSwimming(this, 1F, 3, 15));
@@ -381,7 +379,7 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic, 
     public void tick() {
         super.tick();
         this.setYRot(this.yHeadRot);
-        if (tickCount % 4 == 0) bossInfo.update();
+        if (tickCount % 4 == 0) bossInfo.update(this.getHealth(), this.getMaxHealth());
         if (isInWater() && this.isLandNavigator) {
             switchNavigator(false);
         }
@@ -781,9 +779,19 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic, 
         }
 
         if(this.getAnimation() == LEVIATHAN_PHASE2){
+            if (this.getAnimationTick() == 1) {
+                if (!level.isClientSide && getBossMusic() != null) {
+                    this.level.broadcastEntityEvent(this, MUSIC_STOP_ID);
+                }
+            }
+
+            
             if (this.getAnimationTick() == 90) {
                 if(!this.getMeltDown()) {
                     setMeltDown(true);
+                }
+                if (!level.isClientSide && getBossMusic() != null) {
+                    this.level.broadcastEntityEvent(this, MUSIC_PLAY_ID);
                 }
                 for(int i = 0; i < 3; ++i) {
                     motion = new Vec3(0.5, -1.25, 0.5).yRot(-(float)(120 * i) * 0.01745329251F);
@@ -1422,12 +1430,16 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic, 
 
     @Override
     public SoundEvent getBossMusic() {
-        return ModSounds.LEVIATHAN_MUSIC.get();
+        return this.getMeltDown() ? ModSounds.LEVIATHAN_MUSIC_2.get() : ModSounds.LEVIATHAN_MUSIC_1.get();
     }
 
     @Override
     protected boolean canPlayMusic() {
-        return super.canPlayMusic();
+        if (this.getAnimation() == LEVIATHAN_PHASE2 ){
+            return getAnimationTick() > 90 &&  super.canPlayMusic();
+        }else{
+            return super.canPlayMusic();
+        }
     }
 
     @Nullable
@@ -2291,64 +2303,6 @@ public class The_Leviathan_Entity extends Boss_monster implements ISemiAquatic, 
                     entity.getLookControl().setLookAt(target, 30, 90);
                 }
             }
-        }
-    }
-
-    static class LeviathanAIFindWaterAndPortal extends Goal {
-        private final The_Leviathan_Entity creature;
-        private BlockPos targetPos;
-
-        public LeviathanAIFindWaterAndPortal(The_Leviathan_Entity creature) {
-            this.creature = creature;
-            this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
-        }
-
-        public boolean canUse() {
-            if (this.creature.isOnGround() && !this.creature.level.getFluidState(this.creature.blockPosition()).is(FluidTags.WATER) && this.creature.makePortalCooldown <= 0) {
-                if (this.creature.shouldEnterWater()) {
-                    targetPos = generateTarget();
-                    return targetPos != null;
-                }
-            }
-            return false;
-        }
-
-        public void start() {
-            if (targetPos != null) {
-                Vec3 to = new Vec3(targetPos.getX(), targetPos.getY(), targetPos.getZ());
-                this.creature.createPortal2(this.creature.getX() , this.creature.getY() + 0.1,this.creature.getZ(), to);
-            }
-        }
-
-        public void tick() {
-            if (targetPos != null) {
-                if (this.creature.portalTarget != null) {
-                    double centerX = this.creature.portalTarget.getX();
-                    double centerY = this.creature.portalTarget.getY();
-                    double centerZ = this.creature.portalTarget.getZ();
-                    this.creature.getNavigation().moveTo(centerX, centerY, centerZ, 1D);
-                    // this.creature.getMoveControl().setWantedPosition(centerX, centerY, centerZ, 1.0D);
-                    this.creature.lookAt(this.creature.portalTarget, 30.0F, 30.0F);
-                }
-            }
-        }
-
-
-        public BlockPos generateTarget() {
-            BlockPos blockpos = null;
-            final RandomSource random = this.creature.getRandom();
-            final int range = this.creature.getWaterSearchRange();
-            for(int i = 0; i < 15; i++) {
-                BlockPos blockPos = this.creature.blockPosition().offset(random.nextInt(range) - range/2, 3, random.nextInt(range) - range/2);
-                while (this.creature.level.isEmptyBlock(blockPos) && blockPos.getY() > 1) {
-                    blockPos = blockPos.below();
-                }
-
-                if (this.creature.level.getFluidState(blockPos).is(FluidTags.WATER)) {
-                    blockpos = blockPos;
-                }
-            }
-            return blockpos;
         }
     }
 

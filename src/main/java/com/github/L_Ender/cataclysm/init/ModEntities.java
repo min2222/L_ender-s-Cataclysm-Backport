@@ -37,6 +37,7 @@ import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_En
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Ignited_Berserker_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Wadjet_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Ancient_Remnant.Ancient_Remnant_Rework;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.Modern_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
@@ -64,6 +65,7 @@ import com.github.L_Ender.cataclysm.entity.projectile.Lava_Bomb_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Lionfish_Spike_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Mini_Abyss_Blast_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Arrow_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Halberd_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Poison_Dart_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Sandstorm_Projectile;
 import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Bardiche_Entity;
@@ -273,6 +275,13 @@ public class ModEntities {
             .setUpdateInterval(1)
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":phantom_arrow"));
+    
+    public static final RegistryObject<EntityType<Phantom_Halberd_Entity>> PHANTOM_HALBERD = ENTITY_TYPE.register("phantom_halberd", () -> EntityType.Builder.<Phantom_Halberd_Entity>of(Phantom_Halberd_Entity::new, MobCategory.MISC)
+            .sized(0.6F, 1.95F)
+            .clientTrackingRange(6)
+            .updateInterval(2)
+            .fireImmune()
+            .build(Cataclysm.MODID + ":phantom_halberd"));
 
     public static final RegistryObject<EntityType<Void_Shard_Entity>> VOID_SHARD = ENTITY_TYPE.register("void_shard", () -> EntityType.Builder.<Void_Shard_Entity>of(Void_Shard_Entity::new, MobCategory.MISC)
             .sized(0.5f, 0.5f)
@@ -495,6 +504,13 @@ public class ModEntities {
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":ancient_remnant"));
+    
+    public static final RegistryObject<EntityType<Ancient_Remnant_Rework>> ANCIENT_REMNANT_REWORK = ENTITY_TYPE.register("ancient_remnant_rework", () -> EntityType.Builder.of(Ancient_Remnant_Rework::new, MobCategory.MONSTER)
+    		.sized(4.35F, 5F)
+            .fireImmune()
+            .clientTrackingRange(8)
+            .setShouldReceiveVelocityUpdates(true)
+            .build(Cataclysm.MODID + ":ancient_remnant_rework"));
 
     public static final RegistryObject<EntityType<Modern_Remnant_Entity>> MODERN_REMNANT = ENTITY_TYPE.register("modern_remnant", () -> EntityType.Builder.of(Modern_Remnant_Entity::new, MobCategory.CREATURE)
             .sized(0.75F, 0.42F)
@@ -602,6 +618,7 @@ public class ModEntities {
         event.put(KOBOLEDIATOR.get(), Kobolediator_Entity.kobolediator().build());
         event.put(WADJET.get(), Wadjet_Entity.wadjet().build());
         event.put(MALEDICTUS.get(), Maledictus_Entity.maledictus().build());
+        event.put(ANCIENT_REMNANT_REWORK.get(), Ancient_Remnant_Rework.maledictus().build());
     }
 }
 

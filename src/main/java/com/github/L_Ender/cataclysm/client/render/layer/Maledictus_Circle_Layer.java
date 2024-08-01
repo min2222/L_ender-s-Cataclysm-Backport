@@ -129,6 +129,16 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Mode
                     drawCircle(portalStatic, matrix4f, matrix3f, packedLightIn, 0.95f, 0.5215f, 0.1333F);
                 }
             }
+            if (entity.getAttackState() == 24) {
+                if (entity.attackTicks <= 50) {
+                    drawCircle(portalStatic, matrix4f, matrix3f, packedLightIn, 0.423f, 0.062f, 0.019F);
+                }
+            }
+            if (entity.getAttackState() == 27) {
+                if (entity.attackTicks <= 44) {
+                    drawCircle(portalStatic, matrix4f, matrix3f, packedLightIn, 0.95f, 0.5215f, 0.1333F);
+                }
+            }
         }
 
         matrixStackIn.popPose();
@@ -206,6 +216,16 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Mode
 
             if (entity.getAttackState() == 22 || entity.getAttackState() == 23) {
                 if (entity.attackTicks <= 21) {
+                    drawLightning(matrixStackIn, bufferIn, entity, 0.95f, 0.5215f, 0.1333F, partialtick);
+                }
+            }
+            if (entity.getAttackState() == 24) {
+                if (entity.attackTicks <= 50) {
+                    drawLightning(matrixStackIn, bufferIn, entity, 0.423f, 0.062f, 0.019F, partialtick);
+                }
+            }
+            if (entity.getAttackState() == 27) {
+                if (entity.attackTicks <= 44) {
                     drawLightning(matrixStackIn, bufferIn, entity, 0.95f, 0.5215f, 0.1333F, partialtick);
                 }
             }

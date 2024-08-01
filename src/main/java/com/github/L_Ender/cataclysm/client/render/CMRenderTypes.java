@@ -127,6 +127,14 @@ public class CMRenderTypes extends RenderType {
                 .setWriteMaskState(COLOR_WRITE)
                 .createCompositeState(false));
     }
+    
+    public static RenderType DragonDeath(ResourceLocation texture) {
+        RenderType.CompositeState rendertype$compositestate = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENTITY_ALPHA_SHADER)
+                .setTextureState(new RenderStateShard.TextureStateShard(texture, false, false))
+                .setCullState(NO_CULL)
+                .createCompositeState(true);
+        return create("entity_alpha", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,true,true, rendertype$compositestate);
+    }
 
     public static RenderType getShockWave() {
         CompositeState renderState = CompositeState.builder()

@@ -93,7 +93,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class Ignis_Entity extends Boss_monster implements IHoldEntity {
+public class Ignis_Entity extends LLibrary_Boss_Monster implements IHoldEntity {
     private final CMBossInfoServer bossInfo = new CMBossInfoServer(this.getDisplayName(), this, BossEvent.BossBarColor.YELLOW, false,2);
     public static final Animation SWING_ATTACK = Animation.create(55);
     public static final Animation SWING_ATTACK_SOUL = Animation.create(46);
@@ -639,7 +639,7 @@ public class Ignis_Entity extends Boss_monster implements IHoldEntity {
             swordProgress--;
         }
 
-        if (tickCount % 4 == 0) bossInfo.update();
+        if (tickCount % 4 == 0) bossInfo.update(this.getHealth(), this.getMaxHealth());
         LivingEntity target = this.getTarget();
         SwingParticles();
         if (this.level.isClientSide) {

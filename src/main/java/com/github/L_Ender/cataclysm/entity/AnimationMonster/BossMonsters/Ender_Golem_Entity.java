@@ -52,7 +52,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 
 
-public class Ender_Golem_Entity extends Boss_monster {
+public class Ender_Golem_Entity extends LLibrary_Boss_Monster {
 
     public static final Animation ANIMATION_ATTACK1 = Animation.create(25);
     public static final Animation ANIMATION_ATTACK2 = Animation.create(25);

@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.AI.MobAILeaveWater;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.Animation_Monster;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.LLibrary_Monster;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.path.GroundPathNavigatorWide;
@@ -34,7 +34,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
-public class AbstractDeepling extends Animation_Monster implements ISemiAquatic,Enemy {
+public class AbstractDeepling extends LLibrary_Monster implements ISemiAquatic,Enemy {
     private int moistureAttackTime = 0;
     public float LayerBrightness, oLayerBrightness;
     public int LayerTicks;

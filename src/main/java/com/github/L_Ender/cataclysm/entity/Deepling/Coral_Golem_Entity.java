@@ -8,9 +8,9 @@ import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AI.CmAttackGoal;
 import com.github.L_Ender.cataclysm.entity.AI.MobAIFindWater;
 import com.github.L_Ender.cataclysm.entity.AI.MobAILeaveWater;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.LLibrary_Monster;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.AttackAnimationGoal1;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.SimpleAnimationGoal;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Boss_monster;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
@@ -69,7 +69,7 @@ import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.fluids.FluidType;
 
 
-public class Coral_Golem_Entity extends Boss_monster implements ISemiAquatic {
+public class Coral_Golem_Entity extends LLibrary_Monster implements ISemiAquatic {
     private boolean isLandNavigator;
     boolean searchingForLand;
     public static final Animation CORAL_GOLEM_LEAP = Animation.create(100);

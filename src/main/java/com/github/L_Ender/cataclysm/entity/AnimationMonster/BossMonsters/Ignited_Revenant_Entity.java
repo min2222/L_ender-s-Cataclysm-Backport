@@ -44,7 +44,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 
 
-public class Ignited_Revenant_Entity extends Boss_monster {
+public class Ignited_Revenant_Entity extends LLibrary_Boss_Monster {
 
     public static final Animation ASH_BREATH_ATTACK = Animation.create(53);
     public static final Animation BONE_STORM_ATTACK = Animation.create(49);

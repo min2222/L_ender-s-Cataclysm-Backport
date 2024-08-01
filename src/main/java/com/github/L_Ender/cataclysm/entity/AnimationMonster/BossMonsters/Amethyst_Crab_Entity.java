@@ -59,7 +59,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 
 
-public class Amethyst_Crab_Entity extends Boss_monster implements NeutralMob {
+public class Amethyst_Crab_Entity extends LLibrary_Boss_Monster implements NeutralMob {
     public static final Animation CRAB_SMASH = Animation.create(53);
     public static final Animation CRAB_SMASH_THREE = Animation.create(77);
     public static final Animation CRAB_DEATH = Animation.create(114);

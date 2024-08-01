@@ -44,7 +44,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.Path;
 
 
-public class The_Prowler_Entity extends Boss_monster {
+public class The_Prowler_Entity extends LLibrary_Boss_Monster {
 
     public static final Animation PROWLER_MISSILE = Animation.create(55);
     public static final Animation PROWLER_ATTACK = Animation.create(84);

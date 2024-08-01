@@ -78,7 +78,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 
-public class Ancient_Remnant_Entity extends Boss_monster {
+public class Ancient_Remnant_Entity extends LLibrary_Boss_Monster {
 
     public static final Animation REMNANT_BITE1 = Animation.create(61);
     public static final Animation REMNANT_BITE2 = Animation.create(67);
@@ -331,9 +331,6 @@ public class Ancient_Remnant_Entity extends Boss_monster {
 
         if (hunting_cooldown > 0) {
             hunting_cooldown--;
-        }
-        if (this.getIsAct()) {
-            if (tickCount % 4 == 0) bossEvent.update();
         }
 
 

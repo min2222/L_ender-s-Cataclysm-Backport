@@ -79,7 +79,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class Ender_Guardian_Entity extends Boss_monster {
+public class Ender_Guardian_Entity extends LLibrary_Boss_Monster {
 
     private final CMBossInfoServer bossInfo = new CMBossInfoServer(this.getDisplayName(),this,BossEvent.BossBarColor.PURPLE,false,1);
     private static final EntityDataAccessor<Boolean> IS_HELMETLESS = SynchedEntityData.defineId(Ender_Guardian_Entity.class, EntityDataSerializers.BOOLEAN);
@@ -336,7 +336,7 @@ public class Ender_Guardian_Entity extends Boss_monster {
     public void tick() {
         super.tick();
         //prevgetYRot() = getYRot();
-        if (tickCount % 4 == 0) bossInfo.update();
+        if (tickCount % 4 == 0) bossInfo.update(this.getHealth(), this.getMaxHealth());
         repelEntities(1.8F, 4.0f, 1.8F, 1.8F);
         this.bossInfo.setProgress(this.getHealth() / this.getMaxHealth());
 

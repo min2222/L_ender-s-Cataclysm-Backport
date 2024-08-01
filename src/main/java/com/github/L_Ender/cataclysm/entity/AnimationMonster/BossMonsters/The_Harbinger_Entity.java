@@ -75,7 +75,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 
-public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMob, PowerableMob {
+public class The_Harbinger_Entity extends LLibrary_Boss_Monster implements RangedAttackMob, PowerableMob {
     public static final Animation DEATHLASER_ANIMATION = Animation.create(124);
     public static final Animation CHARGE_ANIMATION = Animation.create(45);
     public static final Animation DEATH_ANIMATION = Animation.create(144);
@@ -298,7 +298,7 @@ public class The_Harbinger_Entity extends Boss_monster implements RangedAttackMo
         }
         if (this.getIsAct()) {
             if (skill_cooldown > 0) skill_cooldown--;
-            if (tickCount % 4 == 0) bossEvent.update();
+            if (tickCount % 4 == 0) bossEvent.update(this.getHealth(), this.getMaxHealth());
         }
 
 

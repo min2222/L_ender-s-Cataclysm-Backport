@@ -20,7 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import com.github.L_Ender.cataclysm.util.AssetsProtector.AESUtil;
+import com.github.L_Ender.cataclysm.util.AESUtil;
 
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.Resource.IoSupplier;
