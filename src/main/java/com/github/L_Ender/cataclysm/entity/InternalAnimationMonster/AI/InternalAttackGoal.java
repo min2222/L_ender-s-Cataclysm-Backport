@@ -42,7 +42,7 @@ public class InternalAttackGoal extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity target = entity.getTarget();
-        return target != null && target.isAlive() && this.entity.distanceTo(target) < attackrange && this.entity.getAttackState() == getattackstate && this.entity.getSensing().hasLineOfSight(target) ;
+        return target != null && target.isAlive() && this.entity.distanceTo(target) < attackrange && this.entity.getAttackState() == getattackstate;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class InternalAttackGoal extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-    	return this.entity.attackTicks <= attackMaxtick;
+        return  this.entity.getAttackState() == attackstate && this.entity.attackTicks <= attackMaxtick;
     }
 
 

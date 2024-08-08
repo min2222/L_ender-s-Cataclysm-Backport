@@ -36,6 +36,7 @@ public class Phantom_Halberd_Entity extends Entity {
     private LivingEntity caster;
     private UUID casterUuid;
     private static final EntityDataAccessor<Integer> STATE = SynchedEntityData.defineId(Phantom_Halberd_Entity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Phantom_Halberd_Entity.class, EntityDataSerializers.FLOAT);
 
     public AnimationState OneAnimationState = new AnimationState();
     public AnimationState TwospawnAnimationState = new AnimationState();
@@ -49,17 +50,19 @@ public class Phantom_Halberd_Entity extends Entity {
     }
 
 
-    public Phantom_Halberd_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn) {
+    public Phantom_Halberd_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn,float damage) {
         this(ModEntities.PHANTOM_HALBERD.get(), worldIn);
         this.warmupDelayTicks = p_i47276_9_;
         this.setCaster(casterIn);
         this.setYRot(p_i47276_8_ * (180F / (float)Math.PI));
+        this.setDamage(damage);
         this.setPos(x, y, z);
     }
 
 
     protected void defineSynchedData() {
         this.entityData.define(STATE,0);
+        this.entityData.define(DAMAGE,0f);
     }
 
     public AnimationState getAnimationState(String input) {
@@ -118,6 +121,14 @@ public class Phantom_Halberd_Entity extends Entity {
 
     public void setState(int state) {
         entityData.set(STATE, state);
+    }
+    
+    public float getDamage() {
+        return entityData.get(DAMAGE);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DAMAGE, damage);
     }
 
     public void setCaster(@Nullable LivingEntity p_190549_1_) {
@@ -186,7 +197,7 @@ public class Phantom_Halberd_Entity extends Entity {
                 }
             }
             if (this.warmupDelayTicks < -12 && this.warmupDelayTicks > -34) {
-                for(LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.2D, 0.0D, 0.2D))) {
+                for(LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox())) {
                     this.damage(livingentity);
                 }
             }
@@ -210,12 +221,12 @@ public class Phantom_Halberd_Entity extends Entity {
         if (Hitentity.isAlive() && !Hitentity.isInvulnerable() && Hitentity != livingentity) {
             if (this.tickCount % 5 == 0) {
                 if (livingentity == null) {
-                    Hitentity.hurt(DamageSource.MAGIC, 12);
+                    Hitentity.hurt(DamageSource.MAGIC, getDamage());
                 } else {
                     if (livingentity.isAlliedTo(Hitentity)) {
                         return;
                     }
-                    Hitentity.hurt(CMDamageTypes.causeMaledictioMagicaeDamage(this,livingentity), 12);
+                    Hitentity.hurt(CMDamageTypes.causeMaledictioMagicaeDamage(this,livingentity), getDamage());
                 }
             }
         }
@@ -231,7 +242,7 @@ public class Phantom_Halberd_Entity extends Entity {
         if (id == 4) {
             this.clientSideAttackStarted = true;
             if (!this.isSilent()) {
-               // this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.VOID_RUNE_RISING.get(), this.getSoundSource(), 0.5F, this.random.nextFloat() * 0.2F + 0.85F, false);
+            	this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.PHANTOM_SPEAR.get(), this.getSoundSource(), 0.3F, this.random.nextFloat() * 0.2F + 0.85F, false);
             }
         }
 
@@ -246,12 +257,6 @@ public class Phantom_Halberd_Entity extends Entity {
             return i <= 0 ? 1.0F : 1.0F - ((float)i - p_36937_) / 20.0F;
         }
     }
-
-    public float getLightLevelDependentMagicValue() {
-        return 1.0F;
-    }
-
-
 
     @Override
     public Packet<?> getAddEntityPacket() {

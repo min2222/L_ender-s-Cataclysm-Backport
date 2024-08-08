@@ -501,8 +501,8 @@ public class Coralssus_Entity extends Internal_Animation_Monster implements Vari
                 launch(entity, true);
                 DamageSource damagesource = DamageSource.mobAttack(this);
                 entity.hurt(damagesource, (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) + this.random.nextInt(damage));
-                if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
-                    disableShield(entity, shieldbreakticks);
+                if (entity.isDamageSourceBlocked(damagesource) && entity instanceof Player player  && shieldbreakticks > 0) {
+                    disableShield(player, shieldbreakticks);
                 }
             }
         }

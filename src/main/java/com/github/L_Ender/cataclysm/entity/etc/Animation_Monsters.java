@@ -106,10 +106,13 @@ public class Animation_Monsters extends Monster implements Enemy {
         return Math.atan2(second.getZ() - first.getZ(), second.getX() - first.getX()) * (180 / Math.PI) + 90;
     }
 
-    public static void disableShield(LivingEntity livingEntity, int ticks) {
-        ((Player)livingEntity).getCooldowns().addCooldown(livingEntity.getUseItem().getItem(), ticks);
-        livingEntity.stopUsingItem();
-        livingEntity.level.broadcastEntityEvent(livingEntity, (byte)30);
+    public void disableShield(Player player, int ticks) {
+        player.disableShield(true);
+        /*SHIELDS.forEach((item) -> player.getCooldowns().addCooldown(item, 300));*/
+
+        player.getCooldowns().addCooldown(player.getUseItem().getItem(), ticks);
+        player.stopUsingItem();
+
     }
 
     protected boolean canPlayMusic() {

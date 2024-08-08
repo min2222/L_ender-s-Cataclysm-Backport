@@ -113,7 +113,7 @@ public class Ancient_Remnant_Rework extends IABoss_monster {
     public static final int ROAR2_COOLDOWN = 200;
     public static final int EARTHQUAKE_COOLDOWN = 160;
     public static final int STOMP_COOLDOWN = 200;
-    private final CMBossInfoServer bossEvent = new CMBossInfoServer(this.getDisplayName(),this, BossEvent.BossBarColor.WHITE,false,7);
+    private final CMBossInfoServer bossEvent = new CMBossInfoServer(this.getDisplayName(), BossEvent.BossBarColor.WHITE,false,7);
     public static final int NATURE_HEAL_COOLDOWN = 200;
     private int timeWithoutTarget;
     public int frame;
@@ -309,6 +309,7 @@ public class Ancient_Remnant_Rework extends IABoss_monster {
 
     public void setNecklace(boolean necklace) {
         this.entityData.set(NECKLACE, necklace);
+        this.bossEvent.setVisible(necklace);
     }
 
     public boolean getNecklace() {
@@ -500,9 +501,6 @@ public class Ancient_Remnant_Rework extends IABoss_monster {
         this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
         this.legSolver.update(this, this.yBodyRot, this.getScale());
 
-        if (!this.isSleep()) {
-            if (tickCount % 4 == 0) bossEvent.update(this.getHealth(), this.getMaxHealth());
-        }
         if (!getNecklace()) {
             this.setAttackState(1);
         }
@@ -748,8 +746,8 @@ public class Ancient_Remnant_Rework extends IABoss_monster {
                 if (!isAlliedTo(entityHit) && !(entityHit instanceof LLibrary_Boss_Monster) && entityHit != this) {
                     DamageSource damagesource = DamageSource.mobAttack(this);
                     boolean flag = entityHit.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
-                    if (entityHit instanceof Player && entityHit.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
-                        disableShield(entityHit, shieldbreakticks);
+                    if (entityHit.isDamageSourceBlocked(damagesource) && entityHit instanceof Player player && shieldbreakticks > 0) {
+                        disableShield(player, shieldbreakticks);
                     }
 
 
@@ -782,8 +780,8 @@ public class Ancient_Remnant_Rework extends IABoss_monster {
                 if (!isAlliedTo(entityHit) && !(entityHit instanceof LLibrary_Boss_Monster) && entityHit != this) {
                     DamageSource damagesource = DamageSource.mobAttack(this);
                     boolean flag = entityHit.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + Math.min(this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage, entityHit.getMaxHealth() * hpdamage) ));
-                    if (entityHit instanceof Player && entityHit.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
-                        disableShield(entityHit, shieldbreakticks);
+                    if (entityHit.isDamageSourceBlocked(damagesource) && entityHit instanceof Player player && shieldbreakticks > 0) {
+                        disableShield(player, shieldbreakticks);
                     }
 
 
@@ -876,8 +874,8 @@ public class Ancient_Remnant_Rework extends IABoss_monster {
             if (!isAlliedTo(entity) && !(entity instanceof LLibrary_Boss_Monster) && entity != this) {
                 DamageSource damagesource = DamageSource.mobAttack(this);
                 boolean flag = entity.hurt(damagesource, (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage + entity.getMaxHealth() * hpdamage));
-                if (entity instanceof Player && entity.isDamageSourceBlocked(damagesource) && shieldbreakticks > 0) {
-                    disableShield(entity, shieldbreakticks);
+                if (entity.isDamageSourceBlocked(damagesource) && entity instanceof Player player  && shieldbreakticks > 0) {
+                    disableShield(player, shieldbreakticks);
                 }
                 if (flag) {
                     double magnitude = -4;
@@ -1174,7 +1172,7 @@ public class Ancient_Remnant_Rework extends IABoss_monster {
 
         @Override
         public boolean canContinueToUse() {
-            return this.entity.attackTicks <= attackMaxtick;
+            return this.entity.attackTicks <= attackMaxtick && this.entity.getAttackState() == attackstate;
         }
 
         public boolean requiresUpdateEveryTick() {

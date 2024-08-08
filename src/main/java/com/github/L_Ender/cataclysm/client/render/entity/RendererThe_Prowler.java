@@ -25,13 +25,19 @@ public class RendererThe_Prowler extends MobRenderer<The_Prowler_Entity, ModelTh
         this.addLayer(new The_Prowler_Layer(this));
 
     }
+    
+    @Override
+    protected float getFlipDegrees(The_Prowler_Entity entity) {
+        return 0;
+    }
+    
     @Override
     public ResourceLocation getTextureLocation(The_Prowler_Entity entity) {
         return PROWLER_TEXTURES;
     }
 
     public Vec3 getRenderOffset(The_Prowler_Entity entityIn, float partialTicks) {
-        if (entityIn.getAnimation() == The_Prowler_Entity.PROWLER_STUN && entityIn.getAnimationTick() <= 45 ) {
+    	if (entityIn.getAttackState() == 1) {
             double d0 = 0.05D;
             return new Vec3(this.rnd.nextGaussian() * d0, 0.0D, this.rnd.nextGaussian() * d0);
         } else {
