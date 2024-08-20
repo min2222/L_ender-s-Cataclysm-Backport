@@ -1,10 +1,13 @@
 package com.github.L_Ender.cataclysm.entity.etc;
 
 
+import java.util.List;
+import java.util.UUID;
+
+import javax.annotation.Nullable;
+
 import com.github.L_Ender.cataclysm.client.sound.BossMusicPlayer;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -24,10 +27,6 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import javax.annotation.Nullable;
-import java.util.List;
-import java.util.UUID;
 
 public class Animation_Monsters extends Monster implements Enemy {
 
@@ -107,11 +106,13 @@ public class Animation_Monsters extends Monster implements Enemy {
     }
 
     public void disableShield(Player player, int ticks) {
-        player.disableShield(true);
-        /*SHIELDS.forEach((item) -> player.getCooldowns().addCooldown(item, 300));*/
+        if (player.isBlocking()) {
+            player.disableShield(true);
+            /*SHIELDS.forEach((item) -> player.getCooldowns().addCooldown(item, 300));*/
 
-        player.getCooldowns().addCooldown(player.getUseItem().getItem(), ticks);
-        player.stopUsingItem();
+            player.getCooldowns().addCooldown(player.getUseItem().getItem(), ticks);
+            player.stopUsingItem();
+        }
 
     }
 

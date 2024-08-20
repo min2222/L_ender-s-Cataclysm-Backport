@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelEnder_Golem;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererEnder_Golem;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Golem_Entity;
@@ -16,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class Ender_Golem_Layer extends RenderLayer<Ender_Golem_Entity, ModelEnder_Golem> {
-    private static final ResourceLocation ENDER_GOLEM_LAYER_TEXTURES  = new ResourceLocation("cataclysm:textures/entity/ender_golem_layer.png");
+    private static final ResourceLocation ENDER_GOLEM_LAYER_TEXTURES  =new ResourceLocation(Cataclysm.MODID,"textures/entity/ender_golem_layer.png");
 
     public Ender_Golem_Layer(RendererEnder_Golem renderIn) {
         super(renderIn);

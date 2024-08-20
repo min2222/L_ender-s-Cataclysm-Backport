@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.entity.projectile.Poison_Dart_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -19,7 +20,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class RendererPoison_Dart extends EntityRenderer<Poison_Dart_Entity> {
-    private static final ResourceLocation TEXTURE = new ResourceLocation("cataclysm:textures/entity/poison_dart.png");
+    private static final ResourceLocation TEXTURE =new ResourceLocation(Cataclysm.MODID,"textures/entity/poison_dart.png");
 
     public RendererPoison_Dart(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn);

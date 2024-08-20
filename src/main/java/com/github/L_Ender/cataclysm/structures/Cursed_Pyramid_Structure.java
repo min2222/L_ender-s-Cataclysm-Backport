@@ -4,9 +4,9 @@ import java.util.Map;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Wadjet_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Ancient_Remnant.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.world.structures.Processor.WaterLoggingFixProcessor;
@@ -229,9 +229,9 @@ public class Cursed_Pyramid_Structure extends CataclysmStructure {
                 case "remnant" -> {
                     Ancient_Remnant_Entity remnant = ModEntities.ANCIENT_REMNANT.get().create(worldIn.getLevel());
                     if (remnant != null) {
+                        remnant.setNecklace(false);
                         remnant.setPersistenceRequired();
                         remnant.moveTo(pos, 0.0F, 0.0F);
-                        remnant.setIsAct(false);
                         remnant.finalizeSpawn(worldIn, worldIn.getCurrentDifficultyAt(remnant.blockPosition()), MobSpawnType.STRUCTURE, (SpawnGroupData) null, (CompoundTag) null);
                         worldIn.addFreshEntityWithPassengers(remnant);
                         worldIn.setBlock(pos, Blocks.AIR.defaultBlockState(), 2);

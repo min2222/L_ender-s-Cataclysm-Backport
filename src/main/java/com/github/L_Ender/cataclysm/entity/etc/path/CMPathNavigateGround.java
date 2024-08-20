@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.entity.etc.path;
 
+import java.util.Objects;
+
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
@@ -9,8 +11,6 @@ import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathFinder;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Objects;
 
 public class CMPathNavigateGround extends GroundPathNavigation {
     public CMPathNavigateGround(Mob mob, Level world) {

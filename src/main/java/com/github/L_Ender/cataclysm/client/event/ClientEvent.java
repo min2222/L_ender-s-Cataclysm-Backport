@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.client.event;
 
 import java.util.Random;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.ClientProxy;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.client.gui.CustomBossBar;
@@ -63,12 +64,12 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @OnlyIn(Dist.CLIENT)
 public class ClientEvent {
-    public static final ResourceLocation FLAME_STRIKE = new ResourceLocation("cataclysm:textures/entity/soul_flame_strike_sigil.png");
+    public static final ResourceLocation FLAME_STRIKE =new ResourceLocation(Cataclysm.MODID,"textures/entity/soul_flame_strike_sigil.png");
     private boolean previousLavaVision = false;
     private LiquidBlockRenderer previousFluidRenderer;
-    private static final ResourceLocation SANDSTORM_ICON = new ResourceLocation("cataclysm:textures/gui/sandstorm_icons.png");
-    private static final ResourceLocation EFFECT_HEART = new ResourceLocation("cataclysm:textures/gui/effect_heart.png");
-    private static final ResourceLocation SANDSTORM_TEXTURE = new ResourceLocation("cataclysm:textures/entity/ancient_remnant/sandstorm.png");
+    private static final ResourceLocation SANDSTORM_ICON =new ResourceLocation(Cataclysm.MODID,"textures/gui/sandstorm_icons.png");
+    private static final ResourceLocation EFFECT_HEART =new ResourceLocation(Cataclysm.MODID,"textures/gui/effect_heart.png");
+    private static final ResourceLocation SANDSTORM_TEXTURE =new ResourceLocation(Cataclysm.MODID,"textures/entity/ancient_remnant/sandstorm.png");
     private static final Model_PlayerSandstorm SANDSTORM_MODEL = new Model_PlayerSandstorm();
     private final Random random = new Random();
     private int lastHealth;

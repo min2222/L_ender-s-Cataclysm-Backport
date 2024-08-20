@@ -93,6 +93,9 @@ public class ModItems {
 
     public static final RegistryObject<BlockItem> ANCIENT_METAL_BLOCK = ITEMS.register("ancient_metal_block",
             () -> new BlockItem(ModBlocks.ANCIENT_METAL_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.RARE)));
+    
+    public static final RegistryObject<BlockItem> CURSIUM_BLOCK = ITEMS.register("cursium_block",
+            () -> new BlockItem(ModBlocks.CURSIUM_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.RARE)));
 
     public static final RegistryObject<BlockItem> DUNGEON_BLOCK = ITEMS.register("dungeon_block",
             () -> new BlockItem(ModBlocks.DUNGEON_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB)));
@@ -403,7 +406,7 @@ public class ModItems {
             () -> new RecordItem(14, ModSounds.ENDERGUARDIAN_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 226 * 20));
 
     public static final RegistryObject<Item> MUSIC_DISC_IGNIS = ITEMS.register("music_disc_ignis",
-            () -> new RecordItem(14, ModSounds.IGNIS_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 149 * 20));
+            () -> new RecordItem(14, ModSounds.IGNIS_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 153 * 20));
 
     public static final RegistryObject<Item> MUSIC_DISC_THE_HARBINGER = ITEMS.register("music_disc_the_harbinger",
             () -> new RecordItem(14, ModSounds.HARBINGER_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 144 * 20));

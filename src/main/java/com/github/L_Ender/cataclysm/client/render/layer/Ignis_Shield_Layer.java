@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelIgnis;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignis_Entity;
@@ -19,15 +20,15 @@ public class Ignis_Shield_Layer extends RenderLayer<Ignis_Entity, ModelIgnis> {
 
     private final ModelIgnis model = new ModelIgnis();
 
-    private static final ResourceLocation IGNIS_SHIELD = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_shield.png");
+    private static final ResourceLocation IGNIS_SHIELD =new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_shield.png");
 
-    private static final ResourceLocation IGNIS_SOUL_SHIELD = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_soul_shield.png");
+    private static final ResourceLocation IGNIS_SOUL_SHIELD =new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_soul_shield.png");
 
-    private static final ResourceLocation IGNIS_SHIELD_CRACK1 = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_shield_crack1.png");
+    private static final ResourceLocation IGNIS_SHIELD_CRACK1 =new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_shield_crack1.png");
 
-    private static final ResourceLocation IGNIS_SHIELD_CRACK2 = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_shield_crack2.png");
+    private static final ResourceLocation IGNIS_SHIELD_CRACK2 =new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_shield_crack2.png");
 
-    private static final ResourceLocation IGNIS_SHIELD_CRACK3 = new ResourceLocation("cataclysm:textures/entity/ignis/ignis_shield_crack3.png");
+    private static final ResourceLocation IGNIS_SHIELD_CRACK3 =new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_shield_crack3.png");
 
     public Ignis_Shield_Layer(RendererIgnis renderIgnis) {
         super(renderIgnis);

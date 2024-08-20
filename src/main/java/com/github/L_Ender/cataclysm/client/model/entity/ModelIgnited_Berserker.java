@@ -19,7 +19,6 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 
 public class ModelIgnited_Berserker<T extends Ignited_Berserker_Entity> extends HierarchicalModel<T> {
 

@@ -3,6 +3,7 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.Model_Maledictus;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.client.render.layer.Maledictus_Circle_Layer;
@@ -29,7 +30,7 @@ import net.minecraftforge.client.event.RenderNameTagEvent;
 @OnlyIn(Dist.CLIENT)
 public class RendererMaledictus extends MobRenderer<Maledictus_Entity, Model_Maledictus> {
 
-    private static final ResourceLocation MALEDICTUS_TEXTURES = new ResourceLocation("cataclysm:textures/entity/maledictus/maledictus_ghost.png");
+    private static final ResourceLocation MALEDICTUS_TEXTURES =new ResourceLocation(Cataclysm.MODID,"textures/entity/maledictus/maledictus_ghost.png");
 
     public RendererMaledictus(EntityRendererProvider.Context renderManagerIn) {
         super(renderManagerIn, new Model_Maledictus(), 0.75F);

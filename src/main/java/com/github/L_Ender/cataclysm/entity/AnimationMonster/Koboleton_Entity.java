@@ -6,7 +6,7 @@ import java.util.Optional;
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Remnant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
@@ -264,7 +264,7 @@ public class Koboleton_Entity extends Animation_Monster {
             return true;
         } else if (super.isAlliedTo(entityIn)) {
             return true;
-        } else if (entityIn instanceof Koboleton_Entity || entityIn instanceof Ancient_Remnant_Entity) {
+        } else if (entityIn instanceof Koboleton_Entity || entityIn instanceof Ancient_Ancient_Remnant_Entity) {
             return this.getTeam() == null && entityIn.getTeam() == null;
         } else {
             return false;

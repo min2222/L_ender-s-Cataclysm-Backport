@@ -40,7 +40,7 @@ public class CMConfig {
     public static double Sandstormdamage = 5;
     public static double AncientDesertSteledamage = 18;
     public static double PhantomArrowbasedamage = 4;
-    public static double PhantomHalberddamage = 13;
+    public static double PhantomHalberddamage = 12;
 
     public static boolean ScreenShake = true;
     public static boolean BossMusic = true;
@@ -107,7 +107,7 @@ public class CMConfig {
     public static double BabyLeviathanDamageMultiplier = 1D;
 
     public static double AmethystCrabHealthMultiplier = 1D;
-    public static double AmethystCrabEarthQuakeDamage = 5D;
+    public static double AmethystCrabEarthQuakeDamage = 11D;
     public static double AmethystCrabDamageMultiplier = 1D;
 
     public static double AncientRemnantHealthMultiplier = 1D;
@@ -137,8 +137,9 @@ public class CMConfig {
     public static double IgnisLongRangelimit = 15D;
     public static double HarbingerLongRangelimit = 35D;
     public static double LeviathanLongRangelimit = 38D;
-    public static double AncientRemnantLongRangelimit = 10;
-    public static double ProwlerLongRangelimit = 12;
+    public static double AncientRemnantLongRangelimit = 14D;
+    public static double ProwlerLongRangelimit = 12D;
+    public static double MaledictusLongRangelimit = 38D;
 
     public static int BossMusicVolume = 1;
 
@@ -154,7 +155,7 @@ public class CMConfig {
     public static double LeviathanTailSwingHpdamage = 0.08D;
     public static double LeviathanRushHpdamage = 0.05D;
     public static double LeviathanTentacleHpdamage = 0.03D;
-    public static double RemnantChargeHpDamage = 0.06D;
+    public static double RemnantChargeHpDamage = 0.1D;
     public static double RemnantStompHpDamage = 0.03D;
     public static double RemnantHpDamage = 0.05D;
     public static double MaledictusHpDamage = 0.05D;
@@ -295,6 +296,7 @@ public class CMConfig {
             LeviathanLongRangelimit = ConfigHolder.COMMON.LeviathanLongRangelimit.get();
             AncientRemnantLongRangelimit = ConfigHolder.COMMON.AncientRemnantLongRangelimit.get();
             ProwlerLongRangelimit = ConfigHolder.COMMON.ProwlerLongRangelimit.get();
+            MaledictusLongRangelimit = ConfigHolder.COMMON.MaledictusLongRangelimit.get();
 
             MonstrositysHpdamage = ConfigHolder.COMMON.MonstrositysHpdamage.get();
             EnderguardianTeleportAttackHpdamage = ConfigHolder.COMMON.EnderguardianTeleportAttackHpdamage.get();
@@ -337,7 +339,7 @@ public class CMConfig {
             AncientRemnantHealthMultiplier = ConfigHolder.COMMON.AncientRemnantHealthMultiplier.get();
             AncientRemnantDamageMultiplier = ConfigHolder.COMMON.AncientRemnantDamageMultiplier.get();
             AncientRemnantBlockBreaking = ConfigHolder.COMMON.AncientRemnantBlockBreaking.get();
-            AncientRemnantEarthQuakeDamage = ConfigHolder.COMMON.HarbingerLaserdamage.get();
+            AncientRemnantEarthQuakeDamage = ConfigHolder.COMMON.AncientRemnantEarthQuakeDamage.get();
             AncientRemnantNatureHealing = ConfigHolder.COMMON.AncientRemnantNatureHealing.get();
 
             ModernRemnantHealthMultiplier = ConfigHolder.COMMON.ModernRemnantHealthMultiplier.get();

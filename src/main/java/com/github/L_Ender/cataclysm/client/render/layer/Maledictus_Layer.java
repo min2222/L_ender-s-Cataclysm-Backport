@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.Model_Maledictus;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererMaledictus;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
@@ -16,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class Maledictus_Layer extends RenderLayer<Maledictus_Entity, Model_Maledictus> {
-    private static final ResourceLocation LAYER_TEXTURES  = new ResourceLocation("cataclysm:textures/entity/maledictus/maledictus_armor.png");
+    private static final ResourceLocation LAYER_TEXTURES  =new ResourceLocation(Cataclysm.MODID,"textures/entity/maledictus/maledictus_armor.png");
 
     public Maledictus_Layer(RendererMaledictus renderIn) {
         super(renderIn);

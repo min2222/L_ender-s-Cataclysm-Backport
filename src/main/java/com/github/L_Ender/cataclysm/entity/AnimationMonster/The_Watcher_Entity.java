@@ -119,7 +119,6 @@ public class The_Watcher_Entity extends LLibrary_Monster {
 
         setYRot(yBodyRot);
         LivingEntity target = this.getTarget();
-
         if (this.getAnimation() == WATCHER_BITE) {
             if (this.getAnimationTick() == 13) {
                 if (target != null) {

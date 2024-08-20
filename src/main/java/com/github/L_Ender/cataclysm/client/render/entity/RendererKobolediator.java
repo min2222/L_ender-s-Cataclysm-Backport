@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelKobolediator;
 import com.github.L_Ender.cataclysm.client.render.layer.Kobolediator_Layer;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
@@ -15,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RendererKobolediator extends MobRenderer<Kobolediator_Entity, ModelKobolediator> {
 
-    private static final ResourceLocation KOBOLEDIATOR_TEXTURES = new ResourceLocation("cataclysm:textures/entity/koboleton/kobolediator.png");
+    private static final ResourceLocation KOBOLEDIATOR_TEXTURES =new ResourceLocation(Cataclysm.MODID,"textures/entity/koboleton/kobolediator.png");
     ;
 
     public RendererKobolediator(EntityRendererProvider.Context renderManagerIn) {

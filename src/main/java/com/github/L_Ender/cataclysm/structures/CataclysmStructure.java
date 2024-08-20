@@ -1,5 +1,8 @@
 package com.github.L_Ender.cataclysm.structures;
 
+import java.util.Optional;
+import java.util.Set;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.ChunkPos;
@@ -12,9 +15,6 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
-
-import java.util.Optional;
-import java.util.Set;
 
 public abstract class CataclysmStructure extends Structure {
     private Set<Holder<Biome>> allowedBiomes;

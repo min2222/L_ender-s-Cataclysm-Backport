@@ -22,22 +22,22 @@ public class CustomBossBar {
         customBossBars.put(0, new CustomBossBar(
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/monstrosity_bar_base.png"),
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/monstrosity_bar_overlay.png"),
-                5, 16, 1,0, -2, -2, 256, 16, 25, 182,ChatFormatting.RED));
+                5, 16, 1,1, -2, -2, 256, 16, 25, 182,ChatFormatting.RED));
         //E.G
         customBossBars.put(1, new CustomBossBar(
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/ender_guardian_bar_base.png"),
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/ender_guardian_bar_overlay.png"),
-                5, 16, 1,0, -2, -2, 256, 16, 25, 182,ChatFormatting.LIGHT_PURPLE));
+                5, 16, 1,1, -2, -2, 256, 16, 25, 182,ChatFormatting.LIGHT_PURPLE));
         //Ignis 1 Phase
         customBossBars.put(2, new CustomBossBar(
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/ignis_bar_base.png"),
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/ignis_bar_overlay.png"),
-                5, 16, 1,0, -2, -2, 256, 16, 25,182, ChatFormatting.YELLOW));
+                5, 16, 1,1, -2, -2, 256, 16, 25,182, ChatFormatting.YELLOW));
         //Ignis 2,3 Phase
         customBossBars.put(3, new CustomBossBar(
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/ignis_soul_bar_base.png"),
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/ignis_soul_bar_overlay.png"),
-                5, 16, 1,0, -2, -2, 256, 16, 25, 182,ChatFormatting.DARK_AQUA));
+                5, 16, 1,1, -2, -2, 256, 16, 25, 182,ChatFormatting.DARK_AQUA));
         //harbinger
         customBossBars.put(4, new CustomBossBar(
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/harbinger_bar_base.png"),
@@ -60,14 +60,19 @@ public class CustomBossBar {
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/remnant_bar_base.png"),
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/remnant_bar_overlay.png"),
                 5, 16, 1,7, -4, -10, 256, 32, 30, 182,ChatFormatting.WHITE));
-        //maledictus health
+        //remnant rage
         customBossBars.put(8, new CustomBossBar(
+                new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/remnant_rage_bar_base.png"),
+                new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/remnant_rage_bar_overlay.png"),
+                5, 16, 69,-8, -6,  -8, 256, 16, 15, 48,ChatFormatting.DARK_PURPLE));
+        //maledictus health
+        customBossBars.put(9, new CustomBossBar(
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/maledictus_bar_base.png"),
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/maledictus_bar_overlay.png"),
                 5, 16, 1,7, -6, -9, 256, 32, 25,182, ChatFormatting.DARK_GREEN));
 
         //maledictus rage
-        customBossBars.put(9, new CustomBossBar(
+        customBossBars.put(10, new CustomBossBar(
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/maledictus_rage_bar_base.png"),
                 new ResourceLocation(Cataclysm.MODID, "textures/gui/boss_bar/maledictus_rage_bar_overlay.png"),
                 5, 16, 69,-3, -6,  -8, 256, 16, 15, 48,ChatFormatting.DARK_PURPLE));

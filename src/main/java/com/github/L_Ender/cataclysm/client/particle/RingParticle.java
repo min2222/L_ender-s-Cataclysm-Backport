@@ -2,7 +2,6 @@ package com.github.L_Ender.cataclysm.client.particle;
 
 import java.util.Locale;
 
-import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.util.CMMathUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;

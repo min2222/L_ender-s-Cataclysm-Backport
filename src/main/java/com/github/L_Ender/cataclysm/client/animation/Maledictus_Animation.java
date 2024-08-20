@@ -4,8 +4,6 @@ import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedAn
 import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedAnimationDefinition;
 import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedKeyframe;
 import com.github.L_Ender.lionfishapi.client.model.AdvancedAnimations.AdvancedKeyframeAnimations;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Made with Blockbench 4.9.4

@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.client.render.layer;
 
 import java.util.Map;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelIgnis;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererIgnis;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignis_Entity;
@@ -19,9 +20,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class Ignis_Armor_Crack_Layer extends RenderLayer<Ignis_Entity, ModelIgnis> {
 
     private static final Map<Ignis_Entity.Crackiness, ResourceLocation> resourceLocations = ImmutableMap.of(
-            Ignis_Entity.Crackiness.LOW, new ResourceLocation("cataclysm:textures/entity/ignis/ignis_armor_crack1.png"),
-            Ignis_Entity.Crackiness.MEDIUM, new ResourceLocation("cataclysm:textures/entity/ignis/ignis_armor_crack2.png"),
-            Ignis_Entity.Crackiness.HIGH, new ResourceLocation("cataclysm:textures/entity/ignis/ignis_armor_crack3.png"));
+            Ignis_Entity.Crackiness.LOW,new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_armor_crack1.png"),
+            Ignis_Entity.Crackiness.MEDIUM,new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_armor_crack2.png"),
+            Ignis_Entity.Crackiness.HIGH,new ResourceLocation(Cataclysm.MODID,"textures/entity/ignis/ignis_armor_crack3.png"));
 
     public Ignis_Armor_Crack_Layer(RendererIgnis renderIn) {
         super(renderIn);

@@ -2,15 +2,11 @@ package com.github.L_Ender.cataclysm.entity.etc;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.message.MessageUpdateBossBar;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.BossEvent;
-import net.minecraft.world.entity.Mob;
-
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 
 public class CMBossInfoServer extends ServerBossEvent {
 

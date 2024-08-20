@@ -1,5 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelNetherite_Monstrosity;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererNetherite_Monstrosity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Netherite_Monstrosity_Entity;
@@ -17,7 +18,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class Netherite_Monstrosity_Layer extends RenderLayer<Netherite_Monstrosity_Entity, ModelNetherite_Monstrosity> {
-    private static final ResourceLocation NETHERITE_MONSTRISITY_LAYER_TEXTURES  = new ResourceLocation("cataclysm:textures/entity/netherite_monstrosity_layer.png");
+    private static final ResourceLocation NETHERITE_MONSTRISITY_LAYER_TEXTURES  =new ResourceLocation(Cataclysm.MODID,"textures/entity/netherite_monstrosity_layer.png");
 
     public Netherite_Monstrosity_Layer(RendererNetherite_Monstrosity renderIn) {
         super(renderIn);

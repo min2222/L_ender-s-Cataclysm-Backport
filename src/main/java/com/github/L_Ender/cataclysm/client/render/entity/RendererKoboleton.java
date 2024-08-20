@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
 
+import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.ModelKoboleton;
 import com.github.L_Ender.cataclysm.client.render.layer.LayerKoboletonItem;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
@@ -15,7 +16,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RendererKoboleton extends MobRenderer<Koboleton_Entity, ModelKoboleton> {
 
-    private static final ResourceLocation KOBOLETON_TEXTURES = new ResourceLocation("cataclysm:textures/entity/koboleton/koboleton.png");
+    private static final ResourceLocation KOBOLETON_TEXTURES =new ResourceLocation(Cataclysm.MODID,"textures/entity/koboleton/koboleton.png");
     ;
 
     public RendererKoboleton(EntityRendererProvider.Context renderManagerIn) {

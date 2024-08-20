@@ -8,7 +8,7 @@ import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Amethyst_Crab_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Remnant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Golem_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Guardian_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignis_Entity;
@@ -37,7 +37,7 @@ import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_En
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Ignited_Berserker_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Wadjet_Entity;
-import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Ancient_Remnant.Ancient_Remnant_Rework;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Ancient_Remnant.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.Modern_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
@@ -498,19 +498,19 @@ public class ModEntities {
             .setUpdateInterval(20)
             .build(Cataclysm.MODID + ":amethyst_cluster_projectile"));
 
-    public static final RegistryObject<EntityType<Ancient_Remnant_Entity>> ANCIENT_REMNANT = ENTITY_TYPE.register("ancient_remnant", () -> EntityType.Builder.of(Ancient_Remnant_Entity::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<Ancient_Ancient_Remnant_Entity>> ANCIENT_ANCIENT_REMNANT = ENTITY_TYPE.register("ancient_ancient_remnant", () -> EntityType.Builder.of(Ancient_Ancient_Remnant_Entity::new, MobCategory.MONSTER)
             .sized(3.8F, 5F)
             .fireImmune()
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(true)
-            .build(Cataclysm.MODID + ":ancient_remnant"));
+            .build(Cataclysm.MODID + ":ancient_ancient_remnant"));
     
-    public static final RegistryObject<EntityType<Ancient_Remnant_Rework>> ANCIENT_REMNANT_REWORK = ENTITY_TYPE.register("ancient_remnant_rework", () -> EntityType.Builder.of(Ancient_Remnant_Rework::new, MobCategory.MONSTER)
+    public static final RegistryObject<EntityType<Ancient_Remnant_Entity>> ANCIENT_REMNANT = ENTITY_TYPE.register("ancient_remnant", () -> EntityType.Builder.of(Ancient_Remnant_Entity::new, MobCategory.MONSTER)
     		.sized(4.35F, 5F)
             .fireImmune()
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(true)
-            .build(Cataclysm.MODID + ":ancient_remnant_rework"));
+            .build(Cataclysm.MODID + ":ancient_remnant"));
 
     public static final RegistryObject<EntityType<Modern_Remnant_Entity>> MODERN_REMNANT = ENTITY_TYPE.register("modern_remnant", () -> EntityType.Builder.of(Modern_Remnant_Entity::new, MobCategory.CREATURE)
             .sized(0.75F, 0.42F)
@@ -610,7 +610,7 @@ public class ModEntities {
         event.put(CORALSSUS.get(), Coralssus_Entity.coralssus().build());
         event.put(LIONFISH.get(), Lionfish_Entity.lionfish().build());
         event.put(AMETHYST_CRAB.get(), Amethyst_Crab_Entity.amethyst_crab().build());
-        event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.ancient_remnant().build());
+        event.put(ANCIENT_ANCIENT_REMNANT.get(), Ancient_Ancient_Remnant_Entity.ancient_remnant().build());
         event.put(MODERN_REMNANT.get(), Modern_Remnant_Entity.modernremnant().build());
         event.put(KOBOLETON.get(), Koboleton_Entity.koboleton().build());
         event.put(THE_WATCHER.get(), The_Watcher_Entity.the_watcher().build());
@@ -618,7 +618,7 @@ public class ModEntities {
         event.put(KOBOLEDIATOR.get(), Kobolediator_Entity.kobolediator().build());
         event.put(WADJET.get(), Wadjet_Entity.wadjet().build());
         event.put(MALEDICTUS.get(), Maledictus_Entity.maledictus().build());
-        event.put(ANCIENT_REMNANT_REWORK.get(), Ancient_Remnant_Rework.maledictus().build());
+        event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.maledictus().build());
     }
 }
 
