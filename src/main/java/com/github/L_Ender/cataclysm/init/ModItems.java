@@ -12,6 +12,7 @@ import com.github.L_Ender.cataclysm.items.Bulwark_of_the_flame;
 import com.github.L_Ender.cataclysm.items.CataclysmSkullItem;
 import com.github.L_Ender.cataclysm.items.Coral_Bardiche;
 import com.github.L_Ender.cataclysm.items.Coral_Spear;
+import com.github.L_Ender.cataclysm.items.Cursed_bow;
 import com.github.L_Ender.cataclysm.items.Cursium_Armor;
 import com.github.L_Ender.cataclysm.items.Gauntlet_of_Bulwark;
 import com.github.L_Ender.cataclysm.items.Gauntlet_of_Guard;
@@ -27,6 +28,8 @@ import com.github.L_Ender.cataclysm.items.ModernRemantBucket;
 import com.github.L_Ender.cataclysm.items.Monstrous_Helm;
 import com.github.L_Ender.cataclysm.items.Necklace_Of_The_Desert;
 import com.github.L_Ender.cataclysm.items.Remnant_Skull;
+import com.github.L_Ender.cataclysm.items.Soul_Render;
+import com.github.L_Ender.cataclysm.items.The_Annihilator;
 import com.github.L_Ender.cataclysm.items.The_Incinerator;
 import com.github.L_Ender.cataclysm.items.Tidal_Claws;
 import com.github.L_Ender.cataclysm.items.Void_Assault_SHoulder_Weapon;
@@ -275,6 +278,15 @@ public class ModItems {
 
     public static final RegistryObject<Item> THE_INCINERATOR = ITEMS.register("the_incinerator",
             () -> new The_Incinerator(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    
+    public static final RegistryObject<Item> CURSED_BOW = ITEMS.register("cursed_bow",
+            () -> new Cursed_bow(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+    
+    public static final RegistryObject<Item> SOUL_RENDER = ITEMS.register("soul_render",
+            () -> new Soul_Render(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).fireResistant().rarity(Rarity.EPIC)));
+
+    public static final RegistryObject<Item> THE_ANNIHILATOR = ITEMS.register("the_annihilator",
+            () -> new The_Annihilator(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> MEAT_SHREDDER = ITEMS.register("meat_shredder",
             () -> new Meat_Shredder(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).fireResistant().rarity(Rarity.EPIC)));

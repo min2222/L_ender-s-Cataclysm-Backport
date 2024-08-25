@@ -4,6 +4,7 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
+import com.github.L_Ender.cataclysm.capabilities.RenderRushCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
@@ -41,6 +42,7 @@ import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -126,6 +128,19 @@ public class ServerEventHandler {
             }
         }
     }
+    
+    @SubscribeEvent
+    public void onLivingAttack(CriticalHitEvent event) {
+        ItemStack weapon = event.getEntity().getMainHandItem();
+        if (!weapon.isEmpty() && event.getTarget() instanceof LivingEntity) {
+            if (weapon.getItem() == ModItems.THE_ANNIHILATOR.get()) {
+                if(event.isVanillaCritical()){
+                    event.setDamageModifier(2.25F);
+                }
+
+            }
+        }
+    }
 
     @SubscribeEvent
     public void onLivingFall(LivingFallEvent event) {
@@ -144,6 +159,11 @@ public class ServerEventHandler {
         ChargeCapability.IChargeCapability chargeCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.CHARGE_CAPABILITY);
         if (chargeCapability != null) {
             chargeCapability.tick(event.getEntity());
+        }
+        
+        RenderRushCapability.IRenderRushCapability RushCapability = ModCapabilities.getCapability(event.getEntity(), ModCapabilities.RENDER_RUSH_CAPABILITY);
+        if (RushCapability != null) {
+            RushCapability.tick(event.getEntity());
         }
     }
 

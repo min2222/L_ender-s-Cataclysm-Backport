@@ -21,7 +21,9 @@
 		"StructureTemplateMixin",
 		"WorldGenRegionAccessor"
 	],
-	"client": [],
+	"client": [
+		"Client.HumanoidModelMixin"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	},

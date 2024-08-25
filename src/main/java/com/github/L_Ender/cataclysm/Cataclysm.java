@@ -30,6 +30,7 @@ import com.github.L_Ender.cataclysm.message.MessageCharge;
 import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
 import com.github.L_Ender.cataclysm.message.MessageHookFalling;
 import com.github.L_Ender.cataclysm.message.MessageParticle;
+import com.github.L_Ender.cataclysm.message.MessageRenderRush;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
 import com.github.L_Ender.cataclysm.message.MessageTidalTentacle;
 import com.github.L_Ender.cataclysm.message.MessageToggleSandstorm;
@@ -187,6 +188,7 @@ public class Cataclysm {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateBossBar.class, MessageUpdateBossBar::write, MessageUpdateBossBar::read, MessageUpdateBossBar::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageArmorKey.class, MessageArmorKey::write, MessageArmorKey::read, MessageArmorKey::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageParticle.class, MessageParticle::encode, MessageParticle::new, MessageParticle.Handler::onMessage);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageRenderRush.class, MessageRenderRush::encode, MessageRenderRush::new, MessageRenderRush.Handler::onMessage);
 
         event.enqueueWork(ModItems::initDispenser);
     }
