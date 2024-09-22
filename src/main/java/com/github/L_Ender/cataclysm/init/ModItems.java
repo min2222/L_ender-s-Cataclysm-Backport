@@ -5,6 +5,7 @@ import com.github.L_Ender.cataclysm.entity.projectile.Void_Scatter_Arrow_Entity;
 import com.github.L_Ender.cataclysm.items.Ancient_Spear;
 import com.github.L_Ender.cataclysm.items.Armortier;
 import com.github.L_Ender.cataclysm.items.Athame;
+import com.github.L_Ender.cataclysm.items.Black_Steel_Targe;
 import com.github.L_Ender.cataclysm.items.Blessed_Amethyst_Crab_Meat;
 import com.github.L_Ender.cataclysm.items.Bloom_Stone_Pauldrons;
 import com.github.L_Ender.cataclysm.items.Bone_Reptile_Armor;
@@ -32,6 +33,7 @@ import com.github.L_Ender.cataclysm.items.Soul_Render;
 import com.github.L_Ender.cataclysm.items.The_Annihilator;
 import com.github.L_Ender.cataclysm.items.The_Incinerator;
 import com.github.L_Ender.cataclysm.items.Tidal_Claws;
+import com.github.L_Ender.cataclysm.items.Tooltier;
 import com.github.L_Ender.cataclysm.items.Void_Assault_SHoulder_Weapon;
 import com.github.L_Ender.cataclysm.items.Void_Scatter_Arrow_Item;
 import com.github.L_Ender.cataclysm.items.Wither_Assault_SHoulder_Weapon;
@@ -62,14 +64,19 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.DispensibleContainerItem;
+import net.minecraft.world.item.HoeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.RecordItem;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
@@ -245,6 +252,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> ANCIENT_METAL_NUGGET = ITEMS.register("ancient_metal_nugget",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<Item> BLACK_STEEL_INGOT = ITEMS.register("black_steel_ingot",
+            () -> new Item(new Item.Properties().tab(Cataclysm.TAB)));
+
+    public static final RegistryObject<Item> BLACK_STEEL_NUGGET = ITEMS.register("black_steel_nugget",
+            () -> new Item(new Item.Properties().tab(Cataclysm.TAB)));
 
     public static final RegistryObject<Item> IGNITIUM_INGOT = ITEMS.register("ignitium_ingot",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
@@ -265,7 +278,25 @@ public class ModItems {
             () -> new Athame((new Item.Properties().tab(Cataclysm.TAB)).durability(250)));
 
     public static final RegistryObject<Item> KHOPESH = ITEMS.register("khopesh",
-            () -> new Khopesh(Tiers.GOLD, new Item.Properties().tab(Cataclysm.TAB)));
+            () -> new Khopesh(Tooltier.ANCIENT_METAL, new Item.Properties().tab(Cataclysm.TAB)));
+
+    public static final RegistryObject<Item> BLACK_STEEL_SWORD = ITEMS.register("black_steel_sword",
+            () -> new SwordItem(Tooltier.BLACK_STEEL, 3, -2.4F, new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<Item> BLACK_STEEL_SHOVEL = ITEMS.register("black_steel_shovel",
+            () -> new ShovelItem(Tooltier.BLACK_STEEL, 1.5F, -3.0F, new Item.Properties().tab(Cataclysm.TAB)));
+
+    public static final RegistryObject<Item> BLACK_STEEL_PICKAXE = ITEMS.register("black_steel_pickaxe",
+            () -> new PickaxeItem(Tooltier.BLACK_STEEL, 1, -2.8F, new Item.Properties().tab(Cataclysm.TAB)));
+
+    public static final RegistryObject<Item> BLACK_STEEL_AXE = ITEMS.register("black_steel_axe",
+            () -> new AxeItem(Tooltier.BLACK_STEEL, 6.0F, -3.1F, new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<Item> BLACK_STEEL_HOE = ITEMS.register("black_steel_hoe",
+            () -> new HoeItem(Tooltier.BLACK_STEEL, -2, -1.0F, new Item.Properties().tab(Cataclysm.TAB)));
+
+    public static final RegistryObject<Item> BLACK_STEEL_TARGE = ITEMS.register("black_steel_targe",
+            () -> new Black_Steel_Targe(new Item.Properties().tab(Cataclysm.TAB).durability(840)));
 
     public static final RegistryObject<Item> BULWARK_OF_THE_FLAME = ITEMS.register("bulwark_of_the_flame",
             () -> new Bulwark_of_the_flame(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
@@ -428,6 +459,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> MUSIC_DISC_ANCIENT_REMNANT = ITEMS.register("music_disc_ancient_remnant",
             () -> new RecordItem(14, ModSounds.REMNANT_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 144 * 20));
+    
+    public static final RegistryObject<Item> MUSIC_DISC_MALEDICTUS = ITEMS.register("music_disc_maledictus",
+            () -> new RecordItem(14, ModSounds.MALEDICTUS_MUSIC_DISC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 201 * 20));
 
     public static final RegistryObject<Item> MECH_EYE = ITEMS.register("mech_eye",
             () -> new MechEyeItem(new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
@@ -560,6 +594,15 @@ public class ModItems {
     
     public static final RegistryObject<SpawnEggItem> MALEDICTUS_SPAWN_EGG = ITEMS.register("maledictus_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.MALEDICTUS,0x39d2b2, 0x945b31, new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<SpawnEggItem> APTRGANGR_SPAWN_EGG = ITEMS.register("aptrgangr_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.APTRGANGR,0x392116, 0xe8e7e4, new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<SpawnEggItem> ROYAL_DRAUGR_SPAWN_EGG = ITEMS.register("royal_draugr_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.ROYAL_DRAUGR,0x392116, 0x945b31, new Item.Properties().tab(Cataclysm.TAB)));
+
+    public static final RegistryObject<SpawnEggItem> DRAUGR_SPAWN_EGG = ITEMS.register("draugr_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.DRAUGR,0x392116, 0x2b2825, new Item.Properties().tab(Cataclysm.TAB)));
 
     public static void initDispenser(){
         DispenserBlock.registerBehavior(VOID_SCATTER_ARROW.get(), new AbstractProjectileDispenseBehavior() {

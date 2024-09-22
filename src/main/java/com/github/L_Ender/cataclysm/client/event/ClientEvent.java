@@ -12,8 +12,10 @@ import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.client.render.etc.LavaVisionFluidRenderer;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Hold_Attack_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Aptrgangr_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
+import com.github.L_Ender.cataclysm.entity.etc.IHoldEntity;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
@@ -38,6 +40,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
@@ -106,7 +109,15 @@ public class ClientEvent {
                 event.setRoll((float) (event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4) * 25));
             }
         }
-
+        
+        Entity cameraEntity = Minecraft.getInstance().getCameraEntity();
+        if (cameraEntity != null && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Maledictus_Entity && event.getCamera().isDetached()) {
+            event.getCamera().move(-event.getCamera().getMaxZoom(6F), 0, 0);
+        }
+        
+        if (cameraEntity != null && cameraEntity.isPassenger() && cameraEntity.getVehicle() instanceof Aptrgangr_Entity && event.getCamera().isDetached()) {
+            event.getCamera().move(-event.getCamera().getMaxZoom(3F), 0, 0);
+        }
     }
 
     @SubscribeEvent
@@ -149,7 +160,7 @@ public class ClientEvent {
             Minecraft mc = Minecraft.getInstance();
             ForgeGui gui = (ForgeGui)mc.gui;
             if (player.isPassenger()) {
-                if (player.getVehicle() instanceof The_Leviathan_Tongue_Entity || player.getVehicle() instanceof Hold_Attack_Entity) {
+            	if (player.getVehicle() instanceof The_Leviathan_Tongue_Entity || player.getVehicle() instanceof IHoldEntity) {
                     if (event.getOverlay().id().equals(VanillaGuiOverlay.HELMET.id())) {
                         Minecraft.getInstance().gui.setOverlayMessage(Component.translatable("entity.cataclysm.you_cant_escape"), false);
                     }
@@ -217,6 +228,14 @@ public class ClientEvent {
             this.drawVertex(lvt_20_1_, lvt_21_1_, ivertexbuilder, 1, 0, 1, 1, 1, 1, 0, 1, 240);
             this.drawVertex(lvt_20_1_, lvt_21_1_, ivertexbuilder, 1, 0, -1, 1, 0, 1, 0, 1, 240);
             matrixStackIn.popPose();
+        }
+        
+        if (ClientProxy.blockedEntityRenders.contains(event.getEntity().getUUID())) {
+            if (!Cataclysm.PROXY.isFirstPersonPlayer(event.getEntity())) {
+                MinecraftForge.EVENT_BUS.post(new RenderLivingEvent.Post(event.getEntity(), event.getRenderer(), event.getPartialTick(), event.getPoseStack(), event.getMultiBufferSource(), event.getPackedLight()));
+                event.setCanceled(true);
+            }
+            ClientProxy.blockedEntityRenders.remove(event.getEntity().getUUID());
         }
     }
 
@@ -292,7 +311,7 @@ public class ClientEvent {
     @OnlyIn(Dist.CLIENT)
     public void onPoseHand(EventPosePlayerHand event) {
         LivingEntity player = (LivingEntity) event.getEntityIn();
-        if (player.getItemInHand(InteractionHand.MAIN_HAND).is(ModItems.THE_ANNIHILATOR.get()) && player.isUsingItem()){
+        if (player.getItemInHand(InteractionHand.OFF_HAND).is(ModItems.THE_ANNIHILATOR.get()) && player.getItemInHand(InteractionHand.MAIN_HAND).is(ModItems.THE_ANNIHILATOR.get()) && player.isUsingItem()){
             if (player.getMainArm() == HumanoidArm.LEFT) {
                 event.getModel().rightArm.xRot = event.getModel().rightArm.xRot * 0.5F - 3.1415927F;
                 event.getModel().rightArm.yRot = 0.0F;

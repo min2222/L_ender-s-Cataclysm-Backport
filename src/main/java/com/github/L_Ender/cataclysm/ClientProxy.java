@@ -1,6 +1,8 @@
 package com.github.L_Ender.cataclysm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
@@ -40,6 +42,8 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererAmethyst_Crab;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Desert_Stele;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Remnant;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererAncient_Remnant_Rework;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAptrgangr;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererAxe_Blade;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererBlazing_Bone;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererCm_Falling_Block;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererCoral_Golem;
@@ -77,6 +81,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererPhantom_Arrow;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPhantom_Halberd;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPoison_Dart;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererPortal_Abyss_Blast;
+import com.github.L_Ender.cataclysm.client.render.entity.RendererRoyal_Draugr;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererSandstorm;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererSandstorm_Projectile;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererThe_Baby_Leviathan;
@@ -96,6 +101,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.RendererWadjet;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Homing_Missile;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Howitzer;
 import com.github.L_Ender.cataclysm.client.render.entity.RendererWither_Missile;
+import com.github.L_Ender.cataclysm.client.render.entity.Renderer_Draugr;
 import com.github.L_Ender.cataclysm.client.render.etc.CurioHeadRenderer;
 import com.github.L_Ender.cataclysm.client.render.item.CMItemRenderProperties;
 import com.github.L_Ender.cataclysm.client.render.item.CustomArmorRenderProperties;
@@ -144,6 +150,8 @@ public class ClientProxy extends CommonProxy {
     public static final Int2ObjectMap<AbstractTickableSoundInstance> ENTITY_SOUND_INSTANCE_MAP = new Int2ObjectOpenHashMap<>();
     public static final Map<BlockEntity, AbstractTickableSoundInstance> BLOCK_ENTITY_SOUND_INSTANCE_MAP = new HashMap<>();
     public static Map<UUID, Integer> bossBarRenderTypes = new HashMap<>();
+
+    public static List<UUID> blockedEntityRenders = new ArrayList<>();
 
     public void init() {
        // FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerEvent::onAddLayers);
@@ -234,6 +242,10 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.KOBOLEDIATOR.get(), RendererKobolediator::new);
         EntityRenderers.register(ModEntities.WADJET.get(), RendererWadjet::new);
         EntityRenderers.register(ModEntities.MALEDICTUS.get(), RendererMaledictus::new);
+        EntityRenderers.register(ModEntities.DRAUGR.get(), Renderer_Draugr::new);
+        EntityRenderers.register(ModEntities.ROYAL_DRAUGR.get(), RendererRoyal_Draugr::new);
+        EntityRenderers.register(ModEntities.APTRGANGR.get(), RendererAptrgangr::new);
+        EntityRenderers.register(ModEntities.AXE_BLADE.get(), RendererAxe_Blade::new);
         EntityRenderers.register(ModEntities.PHANTOM_HALBERD.get(), RendererPhantom_Halberd::new);
         EntityRenderers.register(ModEntities.EARTHQUAKE.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.ANCIENT_DESERT_STELE.get(), RendererAncient_Desert_Stele::new);
@@ -257,7 +269,8 @@ public class ClientProxy extends CommonProxy {
             ItemProperties.register(ModItems.MEAT_SHREDDER.get(), new ResourceLocation("using"), (stack, p_239421_1_, p_239421_2_, j) -> p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F);
             ItemProperties.register(Items.CROSSBOW, new ResourceLocation(Cataclysm.MODID, "void_scatter_arrow"), (stack, world, entity, j) -> entity != null && CrossbowItem.isCharged(stack) && CrossbowItem.containsChargedProjectile(stack, ModItems.VOID_SCATTER_ARROW.get()) ? 1.0F : 0.0F);
             ItemProperties.register(ModItems.CORAL_CHUNK.get(), new ResourceLocation("chunk"), (stack, level, living, j) -> (stack.getCount() % 3 == 0) ? 0.0F : (stack.getCount() % 3 == 1) ? 0.5F : 1.0F);
-
+            ItemProperties.register(ModItems.BLACK_STEEL_TARGE.get(), new ResourceLocation("blocking"), (stack, p_239421_1_, p_239421_2_, j) -> p_239421_2_ != null && p_239421_2_.isUsingItem() && p_239421_2_.getUseItem() == stack ? 1.0F : 0.0F);
+            
         } catch (Exception e) {
             Cataclysm.LOGGER.warn("Could not load item models for weapons");
 
@@ -283,6 +296,18 @@ public class ClientProxy extends CommonProxy {
 
     public Player getClientSidePlayer() {
         return Minecraft.getInstance().player;
+    }
+    
+    public void blockRenderingEntity(UUID id) {
+        blockedEntityRenders.add(id);
+    }
+
+    public void releaseRenderingEntity(UUID id) {
+        blockedEntityRenders.remove(id);
+    }
+
+    public boolean isFirstPersonPlayer(Entity entity) {
+        return entity.equals(Minecraft.getInstance().cameraEntity) && Minecraft.getInstance().options.getCameraType().isFirstPerson();
     }
 
     @Override

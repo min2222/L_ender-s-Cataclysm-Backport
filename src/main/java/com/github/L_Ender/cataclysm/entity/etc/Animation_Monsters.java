@@ -107,11 +107,11 @@ public class Animation_Monsters extends Monster implements Enemy {
 
     public void disableShield(Player player, int ticks) {
         if (player.isBlocking()) {
-            player.disableShield(true);
-            /*SHIELDS.forEach((item) -> player.getCooldowns().addCooldown(item, 300));*/
-
-            player.getCooldowns().addCooldown(player.getUseItem().getItem(), ticks);
-            player.stopUsingItem();
+            if (!player.level.isClientSide) {
+                player.disableShield(true);
+                player.getCooldowns().addCooldown(player.getUseItem().getItem(), ticks);
+                player.stopUsingItem();
+            }
         }
 
     }
@@ -173,6 +173,7 @@ public class Animation_Monsters extends Monster implements Enemy {
                 if (entity == null || entity.wasKilled((ServerLevel)this.level, this)) {
                     this.gameEvent(GameEvent.ENTITY_DIE);
                     this.createWitherRose(livingentity);
+                    this.AfterDefeatBoss(livingentity);
                     if (!dropAfterDeathAnim){
                         this.dropAllDeathLoot(cause);
                     }

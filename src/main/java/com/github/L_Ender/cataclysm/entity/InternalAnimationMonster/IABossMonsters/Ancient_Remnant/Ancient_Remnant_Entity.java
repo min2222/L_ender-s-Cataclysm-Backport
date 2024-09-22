@@ -181,7 +181,7 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
 
         });
 
-        //sandstorm_roar
+        //monolith
         this.goalSelector.addGoal(3, new RemnantMonolithAttackGoal(this,0, 17, 0, 70, 20));
 
         //charge_prepare
@@ -240,8 +240,9 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                 .add(Attributes.FOLLOW_RANGE, 70.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.33F)
                 .add(Attributes.ATTACK_DAMAGE, 25)
-                .add(Attributes.MAX_HEALTH, 400)
-                .add(Attributes.ARMOR, 10)
+                .add(Attributes.MAX_HEALTH, 450)
+                .add(Attributes.ARMOR, 12)
+                .add(Attributes.ARMOR_TOUGHNESS, 4)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0);
     }
 
@@ -549,7 +550,7 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
     public void tick() {
         super.tick();
         if (this.level.isClientSide()) {
-            this.animateWhen(this.idleAnimationState, getAttackState() != 3, this.tickCount);
+        	this.animateWhen(this.idleAnimationState, getAttackState() != 3, this.tickCount);
         }
         this.bossEvent.setProgress(this.getHealth() / this.getMaxHealth());
         this.bossEvent2.setProgress((float) this.getRage() / 5);
@@ -579,7 +580,15 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                 }
             }
         }
-
+        if (!this.level.isClientSide) {
+            if(CMConfig.AncientRemnantBlockBreaking) {
+                ChargeBlockBreaking(0.5D);
+            }else{
+                if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                    ChargeBlockBreaking(0.5D);
+                }
+            }
+        }
         if(this.getIsPower()) {
             if (this.tickCount % 20 == 0) {
                 this.heal(1.0F);
@@ -596,7 +605,7 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         }
 
     }
-
+    
     public void animateWhen(AnimationState state, boolean p_252220_, int p_249486_) {
         if (p_252220_) {
         	state.startIfStopped(p_249486_);
@@ -612,10 +621,10 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
     private void Charge() {
         if (!this.level.isClientSide) {
             if(CMConfig.AncientRemnantBlockBreaking) {
-                ChargeBlockBreaking();
+                ChargeBlockBreaking(1.5D);
             }else{
                 if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-                    ChargeBlockBreaking();
+                    ChargeBlockBreaking(1.5D);
                 }
             }
         }
@@ -638,9 +647,9 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
 
     }
     
-    private void ChargeBlockBreaking(){
+    private void ChargeBlockBreaking(double inflate){
         boolean flag = false;
-        AABB aabb = this.getBoundingBox().inflate(1.5D, 0.2D, 1.5D);
+        AABB aabb = this.getBoundingBox().inflate(inflate, 0.2D, inflate);
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = this.level.getBlockState(blockpos);
             if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.REMNANT_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
@@ -707,8 +716,8 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                     int d = l - 26;
                     int d2 = l - 25;
                     float ds = (d + d2) / 2;
-                    StompDamage(0.4f, d, 6,0.9F, 0, 1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
-                    StompDamage(0.4f, d2, 6,0.9F, 0, 1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d, 6,0.9F, 0, 1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d2, 6,0.9F, 0, 1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
                     Stompsound(ds,1.4f);
                 }
             }
@@ -724,8 +733,8 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                     int d = l - 26;
                     int d2 = l - 25;
                     float ds = (d + d2) / 2;
-                    StompDamage(0.4f, d, 6,0.9F, 0, -1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
-                    StompDamage(0.4f, d2, 6,0.9F, 0, -1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d, 6,0.9F, 0, -1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d2, 6,0.9F, 0, -1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
                     Stompsound(ds,-1.4f);
                 }
             }
@@ -778,8 +787,8 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                     int d = l - 26;
                     int d2 = l - 25;
                     float ds = (d + d2) / 2;
-                    StompDamage(0.4f, d, 6,0.9F, 0, 1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
-                    StompDamage(0.4f, d2, 6,0.9F, 0, 1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d, 6,0.9F, 0, 1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d2, 6,0.9F, 0, 1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
                     Stompsound(ds,1.4f);
                 }
             }
@@ -795,8 +804,8 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                     int d = l - 48;
                     int d2 = l - 47;
                     float ds = (d + d2) / 2;
-                    StompDamage(0.4f, d, 6,0.9F, 0, 1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
-                    StompDamage(0.4f, d2, 6,0.9F, 0, 1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d, 6,0.9F, 0, 1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d2, 6,0.9F, 0, 1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
                     Stompsound(ds,1.4f);
                 }
             }
@@ -813,8 +822,8 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                     int d = l - 26;
                     int d2 = l - 25;
                     float ds = (d + d2) / 2;
-                    StompDamage(0.4f, d, 6,0.9F, 0, -1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
-                    StompDamage(0.4f, d2, 6,0.9F, 0, -1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d, 6,0.9F, 0, -1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d2, 6,0.9F, 0, -1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
                     Stompsound(ds,-1.4f);
                 }
             }
@@ -828,8 +837,8 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                     int d = l - 48;
                     int d2 = l - 47;
                     float ds = (d + d2) / 2;
-                    StompDamage(0.4f, d, 6,0.9F, 0, -1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
-                    StompDamage(0.4f, d2, 6,0.9F, 0, -1.4f,80, 0.85f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d, 6,0.9F, 0, -1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
+                    StompDamage(0.4f, d2, 6,0.9F, 0, -1.4f,80, 0.9f, (float) CMConfig.RemnantStompHpDamage, 0.1f);
                     Stompsound(ds,-1.4f);
                 }
             }
@@ -976,7 +985,7 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
             double vx = Math.cos(theta);
             double vz = Math.sin(theta);
             double px = this.getX() + vx * distance + vec * Math.cos((yBodyRot + 90) * Math.PI / 180) + f * math;
-            double pz = this.getZ() + vz * distance + vec * Math.sin((yBodyRot + 90) * Math.PI / 180  + f1 * math);
+            double pz = this.getZ() + vz * distance + vec * Math.sin((yBodyRot + 90) * Math.PI / 180) + f1 * math;
             float factor = 1 - distance / (float) 12;
             int hitX = Mth.floor(px);
             int hitZ = Mth.floor(pz);
@@ -1257,7 +1266,6 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                 }
             }
             this.entity.hit = false;
-            entity.getNavigation().stop();
             LivingEntity target = entity.getTarget();
             if (target != null) {
                 this.entity.lookAt(target, 30.0F, 30.0F);
@@ -1424,7 +1432,6 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         @Override
         public void start() {
             this.entity.setAttackState(attackstate);
-            entity.getNavigation().stop();
             this.entity.hit = false;
             LivingEntity target = entity.getTarget();
             if (target != null) {
@@ -1487,7 +1494,6 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         @Override
         public void start() {
             this.entity.setAttackState(attackstate);
-            entity.getNavigation().stop();
             this.entity.hit = false;
             LivingEntity target = entity.getTarget();
             if (target != null) {
@@ -1553,7 +1559,7 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         }
 
         private void spawnSpikeLine(double posX, double posZ, double posY, float rotation, int delay) {
-            BlockPos blockpos = new BlockPos(Mth.floor(posX), Mth.floor(posY), Mth.floor(posZ));
+            BlockPos blockpos = new BlockPos(posX, posY, posZ);
             double d0 = 0.0D;
 
             do {
@@ -1612,7 +1618,6 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         @Override
         public void start() {
             this.entity.setAttackState(attackstate);
-            entity.getNavigation().stop();
             this.entity.hit = false;
             LivingEntity target = entity.getTarget();
             if (target != null) {
@@ -1687,7 +1692,6 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         @Override
         public void start() {
             this.entity.setAttackState(attackstate);
-            entity.getNavigation().stop();
             entity.setRage(0);
             LivingEntity target = entity.getTarget();
             if (target != null) {
@@ -1709,6 +1713,10 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
                     this.entity.setRage(this.entity.getRage() + 1);
                 }
             }
+        }
+
+        public boolean requiresUpdateEveryTick() {
+            return true;
         }
 
         @Override

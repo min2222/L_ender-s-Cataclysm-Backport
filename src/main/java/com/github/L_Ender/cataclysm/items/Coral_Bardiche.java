@@ -124,17 +124,24 @@ public class Coral_Bardiche extends Item implements Vanishable {
         }
     }
 
-    public InteractionResultHolder<ItemStack> use(Level p_43405_, Player p_43406_, InteractionHand p_43407_) {
-        ItemStack itemstack = p_43406_.getItemInHand(p_43407_);
-        if (itemstack.getDamageValue() >= itemstack.getMaxDamage() - 1) {
-            return InteractionResultHolder.fail(itemstack);
-        } else if (EnchantmentHelper.getRiptide(itemstack) > 0 && !p_43406_.isInWaterOrRain()) {
-            return InteractionResultHolder.fail(itemstack);
-        } else {
-            p_43406_.startUsingItem(p_43407_);
-            return InteractionResultHolder.consume(itemstack);
+
+    public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
+        ItemStack item = p_77659_2_.getItemInHand(p_77659_3_);
+        InteractionHand otherhand = p_77659_3_ == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        ItemStack otheritem = p_77659_2_.getItemInHand(otherhand);
+        if (otheritem.canPerformAction(net.minecraftforge.common.ToolActions.SHIELD_BLOCK) && !p_77659_2_.getCooldowns().isOnCooldown(otheritem.getItem())) {
+            return InteractionResultHolder.fail(item);
+        }else if (item.getDamageValue() >= item.getMaxDamage() - 1) {
+                return InteractionResultHolder.fail(item);
+            } else if (EnchantmentHelper.getRiptide(item) > 0 && !p_77659_2_.isInWaterOrRain()) {
+                return InteractionResultHolder.fail(item);
+        }else{
+            p_77659_2_.startUsingItem(p_77659_3_);
+            return InteractionResultHolder.consume(item);
         }
     }
+
+
 
     public boolean hurtEnemy(ItemStack p_43390_, LivingEntity p_43391_, LivingEntity p_43392_) {
         p_43390_.hurtAndBreak(1, p_43392_, (p_43414_) -> {

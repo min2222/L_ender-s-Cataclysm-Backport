@@ -48,7 +48,7 @@ public class The_Incinerator extends Item {
         super(group);
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 13.0D, AttributeModifier.Operation.ADDITION));
-        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.6F, AttributeModifier.Operation.ADDITION));
+        builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.7F, AttributeModifier.Operation.ADDITION));
         builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(UUID.fromString("0CB612AF-CE7C-4FD2-9647-4BFD75B8D8A0"), "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
         this.incineratorAttributes = builder.build();
     }
@@ -84,8 +84,6 @@ public class The_Incinerator extends Item {
                     ScreenShake_Entity.ScreenShake(p_43395_, player.position(), 30, 0.15f, 0, 30);
                     player.playSound(ModSounds.SWORD_STOMP.get(), 1.0F, 1.0f);
                 }
-
-              //  RendererUtils.setUsingIncineratorTime(player, 0);
             }
         }
     }
@@ -95,18 +93,22 @@ public class The_Incinerator extends Item {
         if (i == 60) {
             livingEntityIn.playSound(ModSounds.FLAME_BURST.get(), 1.0F, 1.0f);
         }
-        //RendererUtils.setUsingIncineratorTime(player, i);
     }
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-        if (hand == InteractionHand.MAIN_HAND) {
-            player.startUsingItem(hand);
-            return InteractionResultHolder.consume(player.getItemInHand(hand));
-        } else {
-            return InteractionResultHolder.fail(player.getItemInHand(hand));
+    public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
+        ItemStack item = p_77659_2_.getItemInHand(p_77659_3_);
+        InteractionHand otherhand = p_77659_3_ == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+
+        ItemStack otheritem = p_77659_2_.getItemInHand(otherhand);
+
+        if (otheritem.canPerformAction(net.minecraftforge.common.ToolActions.SHIELD_BLOCK) && !p_77659_2_.getCooldowns().isOnCooldown(otheritem.getItem())) {
+            return InteractionResultHolder.fail(item);
+        }else{
+            p_77659_2_.startUsingItem(p_77659_3_);
+            return InteractionResultHolder.consume(item);
         }
     }
+
     @Override
     public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
         return true;
@@ -139,7 +141,7 @@ public class The_Incinerator extends Item {
         return p_43298_.is(Blocks.COBWEB);
     }
 
-    private boolean spawnFlameStrike(double x, double z, double minY, double maxY, float rotation, int duration, int wait, int delay, Level world, float radius, Player player) {
+    private boolean spawnFlameStrike(double x, double z, double minY, double maxY, float rotation, int duration, int wait, int delay, Level world, float radius, LivingEntity player) {
         BlockPos blockpos = new BlockPos(x, maxY, z);
         boolean flag = false;
         double d0 = 0.0D;

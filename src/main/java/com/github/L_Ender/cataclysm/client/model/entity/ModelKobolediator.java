@@ -228,6 +228,7 @@ public class ModelKobolediator extends AdvancedEntityModel<Kobolediator_Entity> 
 
         this.resetToDefaultPose();
 
+        this.faceTarget(netHeadYaw, headPitch, 1, head);
         if(entity.getAttackState() != 6 && !entity.isSleep()) {
             this.animateWalk(Kobolediator_Animation.WALK, limbSwing, limbSwingAmount, 1.0F, 4.0F);
         }

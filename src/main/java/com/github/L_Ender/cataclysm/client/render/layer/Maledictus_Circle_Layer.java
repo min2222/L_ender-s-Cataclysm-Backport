@@ -55,7 +55,10 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Mode
         Quaternion camera = this.entityRenderDispatcher.cameraOrientation();
         matrixStackIn.pushPose();
         matrixStackIn.pushPose();
-        translateToHand(matrixStackIn, right);
+
+        Vec3 offset = new Vec3(0, 0.0F, 0F);
+        Vec3 ridePos = getRiderPosition(offset,right);
+        matrixStackIn.translate(ridePos.x, ridePos.y, ridePos.z);
         matrixStackIn.mulPose(camera);
         matrixStackIn.translate(0.0F, -0.1F, 0.0F);
         matrixStackIn.scale(0.9F, 0.9F, 0.9F);
@@ -139,6 +142,17 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Mode
                     drawCircle(portalStatic, matrix4f, matrix3f, packedLightIn, 0.95f, 0.5215f, 0.1333F);
                 }
             }
+            if (entity.getAttackState() == 28) {
+                if (entity.attackTicks <= 26) {
+                    drawCircle(portalStatic, matrix4f, matrix3f, packedLightIn, 0.423f, 0.062f, 0.019F);
+                }
+            }
+            if (entity.getAttackState() == 29) {
+                if (entity.attackTicks <= 26) {
+                    drawCircle(portalStatic, matrix4f, matrix3f, packedLightIn, 0.423f, 0.062f, 0.019F);
+                }
+            }
+
         }
 
         matrixStackIn.popPose();
@@ -148,8 +162,9 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Mode
 
     private void renderLightning(PoseStack matrixStackIn, MultiBufferSource bufferIn, Maledictus_Entity entity,float partialtick, boolean right){
         matrixStackIn.pushPose();
-        translateToHand(matrixStackIn, right);
-        matrixStackIn.translate(0.0F, 0.1F, 0.0F);
+        Vec3 offset = new Vec3(0, 0.0F, 0F);
+        Vec3 ridePos = getRiderPosition(offset,right);
+        matrixStackIn.translate(ridePos.x, ridePos.y, ridePos.z);
         if (entity.attackTicks > 1 ) {
             if (entity.getAttackState() == 1) {
                 if (entity.attackTicks <= 50) {
@@ -229,6 +244,16 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Mode
                     drawLightning(matrixStackIn, bufferIn, entity, 0.95f, 0.5215f, 0.1333F, partialtick);
                 }
             }
+            if (entity.getAttackState() == 28) {
+                if (entity.attackTicks <= 26) {
+                    drawLightning(matrixStackIn, bufferIn, entity, 0.423f, 0.062f, 0.019F, partialtick);
+                }
+            }
+            if (entity.getAttackState() == 29) {
+                if (entity.attackTicks <= 26) {
+                    drawLightning(matrixStackIn, bufferIn, entity, 0.423f, 0.062f, 0.019F, partialtick);
+                }
+            }
         }
 
         matrixStackIn.popPose();
@@ -304,6 +329,17 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Mode
         }
     }
 
+
+    public Vec3 getRiderPosition(Vec3 offsetIn,boolean right) {
+        PoseStack translationStack = new PoseStack();
+        translationStack.pushPose();
+        translateToHand(translationStack,right);
+        Vector4f armOffsetVec = new Vector4f((float) offsetIn.x, (float) offsetIn.y, (float) offsetIn.z, 1.0F);
+        armOffsetVec.transform(translationStack.last().pose());
+        Vec3 vec3 = new Vec3(armOffsetVec.x(), armOffsetVec.y(), armOffsetVec.z());
+        translationStack.popPose();
+        return vec3;
+    }
 
 }
 

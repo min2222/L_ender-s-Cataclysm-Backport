@@ -127,6 +127,9 @@ public class CMConfig {
     public static double WadjetHealthMultiplier = 1D;
     public static double WadjetDamageMultiplier = 1D;
 
+    public static double AptrgangrHealthMultiplier = 1D;
+    public static double AptrgangrDamageMultiplier = 1D;
+
     public static double MaledictusHealthMultiplier = 1D;
     public static double MaledictusDamageMultiplier = 1D;
     public static double MaledictusNatureHealing = 10D;
@@ -186,14 +189,14 @@ public class CMConfig {
     public static int AmethystCrabSpawnWeight = 1;
     public static int AmethystCrabSpawnRolls = 100;
 
-    public static int KoboletonSpawnWeight = 2;
-    public static int KoboletonSpawnRolls = 30;
+    public static int KoboletonSpawnWeight = 15;
+    public static int KoboletonSpawnRolls = 1;
 
     public static int CoralgolemSpawnWeight = 1;
     public static int CoralgolemSpawnRolls = 70;
 
-    public static int IgnitedBerserkerSpawnWeight = 2;
-    public static int IgnitedBerserkerSpawnRolls = 15;
+    public static int IgnitedBerserkerSpawnWeight = 5;
+    public static int IgnitedBerserkerSpawnRolls = 2;
 
     public static int cursedPyramidCheckRange = 2;
     public static int cursedPyramidHeightVariance = 7;
@@ -356,6 +359,9 @@ public class CMConfig {
 
             WadjetHealthMultiplier = ConfigHolder.COMMON.WadjetHealthMultiplier.get();
             WadjetDamageMultiplier = ConfigHolder.COMMON.WadjetDamageMultiplier.get();
+
+            AptrgangrHealthMultiplier = ConfigHolder.COMMON.AptrgangrHealthMultiplier.get();
+            AptrgangrDamageMultiplier = ConfigHolder.COMMON.AptrgangrDamageMultiplier.get();
 
             MaledictusHealthMultiplier = ConfigHolder.COMMON.MaledictusHealthMultiplier.get();
             MaledictusDamageMultiplier = ConfigHolder.COMMON.MaledictusDamageMultiplier.get();

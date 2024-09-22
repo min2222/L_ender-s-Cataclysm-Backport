@@ -3,6 +3,8 @@ package com.github.L_Ender.cataclysm.util;
 import com.mojang.math.Quaternion;
 
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 
 public class CMMathUtil {
     public static float approachSmooth(float current, float previous, float desired, float desiredSpeed, float deltaSpeed) {
@@ -24,4 +26,15 @@ public class CMMathUtil {
     public static Quaternion quatFromRotationXYZ(float x, float y, float z, boolean degrees) {
         return new Quaternion(x, y, z, degrees);
     }
+    
+    public static Vec3 getOffsetPos(Entity entity, double offsetX, double offsetY, double offsetZ, float rotationX, float rotationY) {
+        Vec3 Vec3 = (new Vec3(offsetZ, offsetY, offsetX)).zRot(rotationX * 0.017453292F).yRot(-rotationY * 0.017453292F - 1.5707964F);
+        return entity.position().add(Vec3.x, Vec3.y, Vec3.z);
+    }
+
+    public static Vec3 getOffsetMotion(Entity entity, double offsetX, double offsetY, double offsetZ, float rotationX, float rotationY) {
+        Vec3 Vec3 = (new Vec3(offsetZ, offsetY, offsetX)).zRot(rotationX * 0.017453292F).yRot(-rotationY * 0.017453292F - 1.5707964F);
+        return Vec3;
+    }
+
 }

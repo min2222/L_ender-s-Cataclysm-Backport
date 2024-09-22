@@ -1,94 +1,29 @@
 package com.github.L_Ender.cataclysm.init;
 
 
-import java.util.function.Predicate;
-
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.*;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.*;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Amethyst_Crab_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Ancient_Remnant_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Golem_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Guardian_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignis_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignited_Revenant_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Nameless_Sorcerer_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Netherite_Monstrosity_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Prowler_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Blast_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Blast_Portal_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Mine_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Orb_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Portal_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Dimensional_Rift_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Portal_Abyss_Blast_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.Coral_Golem_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Angler_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Brute_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Priest_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Warlock_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.Lionfish_Entity;
-import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_Entity;
-import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Ignited_Berserker_Entity;
-import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
-import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Wadjet_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.*;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.*;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Aptrgangr_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Draugr_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Royal_Draugr_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Ancient_Remnant.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.Modern_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Abyss_Mark_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Flame_Strike_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Hold_Attack_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Void_Vortex_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Wall_Watcher_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Wither_Smoke_Effect_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Amethyst_Cluster_Projectile_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Ancient_Desert_Stele_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Ashen_Breath_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Blazing_Bone_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.EarthQuake_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Ender_Guardian_Bullet_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Eye_Of_Dungeon_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Abyss_Fireball_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Fireball_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Lava_Bomb_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Lionfish_Spike_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Mini_Abyss_Blast_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Arrow_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Halberd_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Poison_Dart_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Sandstorm_Projectile;
-import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Bardiche_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Hook_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Tentacle_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Void_Howitzer_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Void_Rune_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Void_Scatter_Arrow_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Void_Shard_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Wither_Homing_Missile_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Wither_Howitzer_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Wither_Missile_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.*;
+import com.github.L_Ender.cataclysm.entity.projectile.*;
 import com.google.common.base.Predicates;
-
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -97,6 +32,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(modid = Cataclysm.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities {
@@ -267,15 +204,15 @@ public class ModEntities {
             .setCustomClientFactory(Poison_Dart_Entity::new)
             .updateInterval(20)
             .clientTrackingRange(4)
-            .build(Cataclysm.MODID + ":poison_dart"));
-    
+            .build(Cataclysm.MODID + ":void_scatter_arrow"));
+
     public static final RegistryObject<EntityType<Phantom_Arrow_Entity>> PHANTOM_ARROW = ENTITY_TYPE.register("phantom_arrow", () -> EntityType.Builder.<Phantom_Arrow_Entity>of(Phantom_Arrow_Entity::new, MobCategory.MISC)
             .sized(0.5f, 0.5f)
             .setCustomClientFactory(Phantom_Arrow_Entity::new)
             .setUpdateInterval(1)
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":phantom_arrow"));
-    
+
     public static final RegistryObject<EntityType<Phantom_Halberd_Entity>> PHANTOM_HALBERD = ENTITY_TYPE.register("phantom_halberd", () -> EntityType.Builder.<Phantom_Halberd_Entity>of(Phantom_Halberd_Entity::new, MobCategory.MISC)
             .sized(0.6F, 1.95F)
             .clientTrackingRange(6)
@@ -310,7 +247,10 @@ public class ModEntities {
 
     public static final RegistryObject<EntityType<Hold_Attack_Entity>> HOLD_ATTACK = ENTITY_TYPE.register("hold_attack", () -> EntityType.Builder.<Hold_Attack_Entity>of(Hold_Attack_Entity::new, MobCategory.MISC)
             .noSummon()
-            .sized(0f, 0f)
+            .sized(0.5f, 0.5f)
+            .clientTrackingRange(4)
+            .updateInterval(10)
+            .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":hold_attack"));
 
     public static final RegistryObject<EntityType<Cm_Falling_Block_Entity>> CM_FALLING_BLOCK = ENTITY_TYPE.register("cm_falling_block", () -> EntityType.Builder.<Cm_Falling_Block_Entity>of(Cm_Falling_Block_Entity::new, MobCategory.MISC)
@@ -504,9 +444,9 @@ public class ModEntities {
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":ancient_ancient_remnant"));
-    
+
     public static final RegistryObject<EntityType<Ancient_Remnant_Entity>> ANCIENT_REMNANT = ENTITY_TYPE.register("ancient_remnant", () -> EntityType.Builder.of(Ancient_Remnant_Entity::new, MobCategory.MONSTER)
-    		.sized(4.35F, 5F)
+            .sized(4.35F, 5F)
             .fireImmune()
             .clientTrackingRange(8)
             .setShouldReceiveVelocityUpdates(true)
@@ -554,13 +494,36 @@ public class ModEntities {
             .setShouldReceiveVelocityUpdates(true)
             .fireImmune()
             .build(Cataclysm.MODID + ":ancient_desert_stele"));
-    
+
     public static final RegistryObject<EntityType<Maledictus_Entity>> MALEDICTUS = ENTITY_TYPE.register("maledictus", () -> EntityType.Builder.of(Maledictus_Entity::new, MobCategory.MONSTER)
             .sized(1.5F, 3.0F)
             .fireImmune()
             .clientTrackingRange(10)
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":maledictus"));
+
+
+    public static final RegistryObject<EntityType<Draugr_Entity>> DRAUGR = ENTITY_TYPE.register("draugr", () -> EntityType.Builder.of(Draugr_Entity::new, MobCategory.MONSTER)
+            .sized(0.6F, 1.95F)
+            .clientTrackingRange(10)
+            .build(Cataclysm.MODID + ":draugr"));
+
+    public static final RegistryObject<EntityType<Royal_Draugr_Entity>> ROYAL_DRAUGR = ENTITY_TYPE.register("royal_draugr", () -> EntityType.Builder.of(Royal_Draugr_Entity::new, MobCategory.MONSTER)
+            .sized(0.6F, 1.95F)
+            .clientTrackingRange(10)
+            .build(Cataclysm.MODID + ":royal_draugr"));
+
+    public static final RegistryObject<EntityType<Aptrgangr_Entity>> APTRGANGR = ENTITY_TYPE.register("aptrgangr", () -> EntityType.Builder.of(Aptrgangr_Entity::new, MobCategory.MONSTER)
+            .sized(2.4F, 4.0f)
+            .clientTrackingRange(8)
+            .build(Cataclysm.MODID + ":aptrgangr"));
+
+    public static final RegistryObject<EntityType<Axe_Blade_Entity>> AXE_BLADE = ENTITY_TYPE.register("axe_blade", () -> EntityType.Builder.<Axe_Blade_Entity>of(Axe_Blade_Entity::new, MobCategory.MISC)
+            .sized(1.2F, 2.5F)
+            .clientTrackingRange(4)
+            .updateInterval(10)
+            .setShouldReceiveVelocityUpdates(true)
+            .build(Cataclysm.MODID + ":axe_blade"));
 
     public static Predicate<LivingEntity> buildPredicateFromTag(TagKey<EntityType<?>> entityTag){
         if(entityTag == null){
@@ -581,7 +544,7 @@ public class ModEntities {
     @SubscribeEvent
     public static void initializeAttributes(EntityAttributeCreationEvent event) {
         SpawnPlacements.register(ENDERMAPTERA.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Endermaptera_Entity::canSpawn);
-        SpawnPlacements.register(KOBOLETON.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(KOBOLETON.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Koboleton_Entity::checkKoboletonSpawnRules);
         SpawnPlacements.register(DEEPLING_ANGLER.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Deepling_Angler_Entity::candeeplingSpawn);
         SpawnPlacements.register(DEEPLING.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Deepling_Entity::candeeplingSpawn);
         SpawnPlacements.register(DEEPLING_BRUTE.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Deepling_Brute_Entity::candeeplingSpawn);
@@ -589,7 +552,7 @@ public class ModEntities {
         SpawnPlacements.register(DEEPLING_PRIEST.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Deepling_Priest_Entity::candeeplingSpawn);
         SpawnPlacements.register(CORAL_GOLEM.get(), SpawnPlacements.Type.IN_WATER, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Coral_Golem_Entity::cangolemSpawn);
         SpawnPlacements.register(AMETHYST_CRAB.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Amethyst_Crab_Entity::canCrabSpawnSpawnRules);
-        SpawnPlacements.register(IGNITED_BERSERKER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkMonsterSpawnRules);
+        SpawnPlacements.register(IGNITED_BERSERKER.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Monster::checkAnyLightMonsterSpawnRules);
         event.put(ENDER_GOLEM.get(), Ender_Golem_Entity.ender_golem().build());
         event.put(NETHERITE_MONSTROSITY.get(), Netherite_Monstrosity_Entity.netherite_monstrosity().build());
         event.put(NAMELESS_SORCERER.get(), Nameless_Sorcerer_Entity.nameless_sorcerer().build());
@@ -616,9 +579,12 @@ public class ModEntities {
         event.put(THE_WATCHER.get(), The_Watcher_Entity.the_watcher().build());
         event.put(THE_PROWLER.get(), The_Prowler_Entity.the_prowler().build());
         event.put(KOBOLEDIATOR.get(), Kobolediator_Entity.kobolediator().build());
+        event.put(APTRGANGR.get(), Aptrgangr_Entity.aptrgangr().build());
         event.put(WADJET.get(), Wadjet_Entity.wadjet().build());
         event.put(MALEDICTUS.get(), Maledictus_Entity.maledictus().build());
         event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.maledictus().build());
+        event.put(DRAUGR.get(), Draugr_Entity.draugr().build());
+        event.put(ROYAL_DRAUGR.get(), Royal_Draugr_Entity.royal_draugr().build());
     }
 }
 

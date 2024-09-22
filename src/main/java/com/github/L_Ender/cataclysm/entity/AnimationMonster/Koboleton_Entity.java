@@ -258,6 +258,10 @@ public class Koboleton_Entity extends Animation_Monster {
         this.setIsAngry(p_32537_ != null);
         super.setTarget(p_32537_); //Forge: Moved down to allow event handlers to write data manager values.
     }
+    
+    public static boolean checkKoboletonSpawnRules(EntityType<Koboleton_Entity> p_218997_, ServerLevelAccessor p_218998_, MobSpawnType p_218999_, BlockPos p_219000_, RandomSource p_219001_) {
+        return checkMonsterSpawnRules(p_218997_, p_218998_, p_218999_, p_219000_, p_219001_) && (p_218999_ == MobSpawnType.SPAWNER || p_218998_.canSeeSky(p_219000_));
+    }
 
     public boolean isAlliedTo(Entity entityIn) {
         if (entityIn == this) {

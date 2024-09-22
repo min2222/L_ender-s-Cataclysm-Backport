@@ -1,14 +1,9 @@
 package com.github.L_Ender.cataclysm.items;
 
-import java.util.List;
-import java.util.UUID;
-
-import javax.annotation.Nullable;
-
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,6 +27,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+
+import javax.annotation.Nullable;
+import java.util.List;
+import java.util.UUID;
 
 public class Gauntlet_of_Guard extends Item {
     private final Multimap<Attribute, AttributeModifier> guantletAttributes;
@@ -60,13 +59,15 @@ public class Gauntlet_of_Guard extends Item {
     }
 
 
-    @Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-        if (hand == InteractionHand.MAIN_HAND) {
-            player.startUsingItem(hand);
-            return InteractionResultHolder.consume(player.getItemInHand(hand));
-        } else {
-            return InteractionResultHolder.fail(player.getItemInHand(hand));
+    public InteractionResultHolder<ItemStack> use(Level p_77659_1_, Player p_77659_2_, InteractionHand p_77659_3_) {
+        ItemStack item = p_77659_2_.getItemInHand(p_77659_3_);
+        InteractionHand otherhand = p_77659_3_ == InteractionHand.MAIN_HAND ? InteractionHand.OFF_HAND : InteractionHand.MAIN_HAND;
+        ItemStack otheritem = p_77659_2_.getItemInHand(otherhand);
+        if (otheritem.canPerformAction(net.minecraftforge.common.ToolActions.SHIELD_BLOCK) && !p_77659_2_.getCooldowns().isOnCooldown(otheritem.getItem())) {
+            return InteractionResultHolder.fail(item);
+        }else{
+            p_77659_2_.startUsingItem(p_77659_3_);
+            return InteractionResultHolder.consume(item);
         }
     }
 
