@@ -67,6 +67,7 @@ public class Amethyst_Crab_Entity extends LLibrary_Boss_Monster implements Neutr
     public static final Animation CRAB_BITE = Animation.create(48);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
     private int remainingPersistentAngerTime;
+    private int despawnTime = 4000;
 
     public static final int BURROW_ATTACK_COOLDOWN = 240;
     private int burrow_cooldown = 0;
@@ -143,6 +144,7 @@ public class Amethyst_Crab_Entity extends LLibrary_Boss_Monster implements Neutr
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
+        this.addPersistentAngerSaveData(compound);
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
@@ -169,13 +171,17 @@ public class Amethyst_Crab_Entity extends LLibrary_Boss_Monster implements Neutr
     }
 
     public static boolean canCrabSpawnSpawnRules(EntityType<? extends Amethyst_Crab_Entity> p_219020_, LevelAccessor p_219021_, MobSpawnType p_219022_, BlockPos p_219023_, RandomSource p_219024_) {
-        return checkMobSpawnRules(p_219020_, p_219021_, p_219022_, p_219023_, p_219024_);
+        return checkAnyLightMonsterSpawnRules(p_219020_, p_219021_, p_219022_, p_219023_, p_219024_);
     }
 
     public void tick() {
         super.tick();
         repelEntities(1.7F, 3.7f, 1.7F, 1.7F);
         if (burrow_cooldown > 0) burrow_cooldown--;
+        
+        if(this.getdespawnTimee()>0){
+            this.setdespawnTime(getdespawnTimee()- 1);
+        }
     }
 
     public void aiStep() {
@@ -384,6 +390,18 @@ public class Amethyst_Crab_Entity extends LLibrary_Boss_Monster implements Neutr
 
     public int getRemainingPersistentAngerTime() {
         return this.remainingPersistentAngerTime;
+    }
+    
+    public void setdespawnTime(int p_32515_) {
+        this.despawnTime = p_32515_;
+    }
+
+    public int getdespawnTimee() {
+        return this.despawnTime;
+    }
+
+    public boolean removeWhenFarAway(double p_21542_) {
+        return this.despawnTime >= 0;
     }
 
     @Nullable

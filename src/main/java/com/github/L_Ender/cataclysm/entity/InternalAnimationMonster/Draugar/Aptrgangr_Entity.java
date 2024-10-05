@@ -626,6 +626,11 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         return true;
     }
 
+    @Override
+    public void positionRider(Entity p_20312_) {
+        this.positionRider(p_20312_, Entity::setPos);
+    }
+    
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         double theta = (yBodyRot) * (Math.PI / 180);
         theta += Math.PI / 2;

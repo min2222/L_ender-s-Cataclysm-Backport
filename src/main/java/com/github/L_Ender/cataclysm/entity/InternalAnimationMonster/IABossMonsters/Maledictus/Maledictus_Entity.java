@@ -584,6 +584,11 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public boolean canRiderInteract() {
         return true;
     }
+    
+    @Override
+    public void positionRider(Entity p_20312_) {
+        this.positionRider(p_20312_, Entity::setPos);
+    }
 
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         float f1 = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F)) ;

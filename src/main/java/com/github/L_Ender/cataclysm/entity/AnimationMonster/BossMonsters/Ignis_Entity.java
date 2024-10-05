@@ -1580,7 +1580,11 @@ public class Ignis_Entity extends LLibrary_Boss_Monster implements IHoldEntity {
         }
     }
 
-
+    @Override
+    public void positionRider(Entity p_20312_) {
+        this.positionRider(p_20312_, Entity::setPos);
+    }
+    
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (hasPassenger(passenger)) {
             int tick = 5;

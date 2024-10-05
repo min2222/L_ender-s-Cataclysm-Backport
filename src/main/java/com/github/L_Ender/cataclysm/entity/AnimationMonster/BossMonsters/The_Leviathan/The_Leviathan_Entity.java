@@ -1155,6 +1155,10 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
 
     }
 
+    @Override
+    public void positionRider(Entity p_20312_) {
+        this.positionRider(p_20312_, Entity::setPos);
+    }
 
     public void positionRider(Entity passenger, Entity.MoveFunction moveFunc) {
         if (hasPassenger(passenger)) {
