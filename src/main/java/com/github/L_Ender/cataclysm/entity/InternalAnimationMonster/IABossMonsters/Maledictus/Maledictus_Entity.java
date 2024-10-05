@@ -860,7 +860,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public void tick() {
         super.tick();
 
-        if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isShiftKeyDown()) {
+        if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isShiftKeyDown() && this.getAttackState() == 33) {
             this.getPassengers().get(0).setShiftKeyDown(false);
         }
 

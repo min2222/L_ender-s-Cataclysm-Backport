@@ -104,13 +104,13 @@ public class EarthQuake_Entity extends ThrowableProjectile {
         }
         BlockPos pos = new BlockPos(this.getX(), this.getY() - 1, this.getZ());
         BlockState iblockstate = this.level.getBlockState(pos);
-
+        Entity entity1 = this.getOwner();
+        LivingEntity livingonwer = entity1 instanceof LivingEntity ? (LivingEntity)entity1 : null;
         for (LivingEntity livingentity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.5,0.5,0.5))) {
             if (this.getOwner() != null) {
                 if (this.tickCount % 5 == 0) {
-                    if (livingentity != this.getOwner() && livingentity.isOnGround() && !this.getOwner().isAlliedTo(livingentity)) {
-                        // entity.motionY += this.getEntityThrowDistance();
-                        if(livingentity.hurt(DamageSource.indirectMobAttack(this, (LivingEntity) this.getOwner()), this.getDamage())) {
+                    if (livingentity != this.getOwner() && livingentity.isOnGround() && !this.getOwner().isAlliedTo(livingentity) && livingentity.isAlive()) {
+                        if(livingentity.hurt(DamageSource.indirectMobAttack(this, livingonwer), this.getDamage())) {
                             this.strongKnockback(livingentity, 0.5);
                         }
                     }
