@@ -1,12 +1,12 @@
 package com.github.L_Ender.cataclysm.client.render.item;
 
 import com.github.L_Ender.cataclysm.client.model.CMModelLayers;
-import com.github.L_Ender.cataclysm.client.model.armor.ModelBloom_Stone_Pauldrons;
-import com.github.L_Ender.cataclysm.client.model.armor.ModelBone_Reptile_Armor;
-import com.github.L_Ender.cataclysm.client.model.armor.ModelCursium_Armor;
-import com.github.L_Ender.cataclysm.client.model.armor.ModelIgnitium_Armor;
-import com.github.L_Ender.cataclysm.client.model.armor.ModelMonstrousHelm;
-import com.github.L_Ender.cataclysm.client.model.armor.Modelignitium_Elytra_chestplate;
+import com.github.L_Ender.cataclysm.client.model.armor.Bloom_Stone_Pauldrons_Model;
+import com.github.L_Ender.cataclysm.client.model.armor.Bone_Reptile_Armor_Model;
+import com.github.L_Ender.cataclysm.client.model.armor.Cursium_Armor_Model;
+import com.github.L_Ender.cataclysm.client.model.armor.Ignitium_Armor_Model;
+import com.github.L_Ender.cataclysm.client.model.armor.MonstrousHelm_Model;
+import com.github.L_Ender.cataclysm.client.model.armor.ignitium_Elytra_chestplate_Model;
 import com.github.L_Ender.cataclysm.init.ModItems;
 
 import net.minecraft.client.Minecraft;
@@ -20,25 +20,25 @@ public class CustomArmorRenderProperties implements IClientItemExtensions {
 
     private static boolean init;
 
-    public static Modelignitium_Elytra_chestplate ELYTRA_ARMOR;
-    public static ModelMonstrousHelm MONSTROUS_HELM_MODEL;
-    public static ModelIgnitium_Armor IGNITIUM_ARMOR_MODEL;
-    public static ModelIgnitium_Armor IGNITIUM_ARMOR_MODEL_LEGS;
-    public static ModelBloom_Stone_Pauldrons BLOOM_STONE_PAULDRONS_MODEL;
-    public static ModelBone_Reptile_Armor BONE_REPTILE_ARMOR_MODEL;
-    public static ModelCursium_Armor CURSIUM_ARMOR_MODEL;
-    public static ModelCursium_Armor CURSIUM_ARMOR_MODEL_LEGS;
+    public static ignitium_Elytra_chestplate_Model ELYTRA_ARMOR;
+    public static MonstrousHelm_Model MONSTROUS_HELM_MODEL;
+    public static Ignitium_Armor_Model IGNITIUM_ARMOR_MODEL;
+    public static Ignitium_Armor_Model IGNITIUM_ARMOR_MODEL_LEGS;
+    public static Bloom_Stone_Pauldrons_Model BLOOM_STONE_PAULDRONS_MODEL;
+    public static Bone_Reptile_Armor_Model BONE_REPTILE_ARMOR_MODEL;
+    public static Cursium_Armor_Model CURSIUM_ARMOR_MODEL;
+    public static Cursium_Armor_Model CURSIUM_ARMOR_MODEL_LEGS;
 
     public static void initializeModels() {
         init = true;
-        MONSTROUS_HELM_MODEL = new ModelMonstrousHelm(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.MONSTROUS_HELM));
-        IGNITIUM_ARMOR_MODEL = new ModelIgnitium_Armor(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.IGNITIUM_ARMOR_MODEL));
-        ELYTRA_ARMOR = new Modelignitium_Elytra_chestplate(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.ELYTRA_ARMOR));
-        IGNITIUM_ARMOR_MODEL_LEGS = new ModelIgnitium_Armor(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.IGNITIUM_ARMOR_MODEL_LEGS));
-        BLOOM_STONE_PAULDRONS_MODEL = new ModelBloom_Stone_Pauldrons(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.BLOOM_STONE_PAULDRONS_MODEL));
-        BONE_REPTILE_ARMOR_MODEL = new ModelBone_Reptile_Armor(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.BONE_REPTILE_ARMOR_MODEL));
-        CURSIUM_ARMOR_MODEL = new ModelCursium_Armor(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.CURSIUM_ARMOR_MODEL));
-        CURSIUM_ARMOR_MODEL_LEGS = new ModelCursium_Armor(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.CURSIUM_ARMOR_MODEL_LEGS));
+        MONSTROUS_HELM_MODEL = new MonstrousHelm_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.MONSTROUS_HELM));
+        IGNITIUM_ARMOR_MODEL = new Ignitium_Armor_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.IGNITIUM_ARMOR_MODEL));
+        ELYTRA_ARMOR = new ignitium_Elytra_chestplate_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.ELYTRA_ARMOR));
+        IGNITIUM_ARMOR_MODEL_LEGS = new Ignitium_Armor_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.IGNITIUM_ARMOR_MODEL_LEGS));
+        BLOOM_STONE_PAULDRONS_MODEL = new Bloom_Stone_Pauldrons_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.BLOOM_STONE_PAULDRONS_MODEL));
+        BONE_REPTILE_ARMOR_MODEL = new Bone_Reptile_Armor_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.BONE_REPTILE_ARMOR_MODEL));
+        CURSIUM_ARMOR_MODEL = new Cursium_Armor_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.CURSIUM_ARMOR_MODEL));
+        CURSIUM_ARMOR_MODEL_LEGS = new Cursium_Armor_Model(Minecraft.getInstance().getEntityModels().bakeLayer(CMModelLayers.CURSIUM_ARMOR_MODEL_LEGS));
     }
 
     public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entityLiving, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> _default) {

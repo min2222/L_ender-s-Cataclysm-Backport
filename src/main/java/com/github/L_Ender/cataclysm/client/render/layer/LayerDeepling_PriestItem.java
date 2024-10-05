@@ -1,6 +1,6 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
-import com.github.L_Ender.cataclysm.client.model.entity.ModelDeepling_Priest;
+import com.github.L_Ender.cataclysm.client.model.entity.Deepling_Priest_Model;
 import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Priest_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -14,7 +14,7 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
 
-public class LayerDeepling_PriestItem extends RenderLayer<Deepling_Priest_Entity, ModelDeepling_Priest> {
+public class LayerDeepling_PriestItem extends RenderLayer<Deepling_Priest_Entity, Deepling_Priest_Model> {
     private final ItemInHandRenderer itemInHandRenderer;
 
     public LayerDeepling_PriestItem(RenderLayerParent p_234846_, ItemInHandRenderer p_234847_) {

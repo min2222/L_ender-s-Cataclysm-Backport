@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Goals.Royal_DraugrAttackGoal;
 import com.github.L_Ender.cataclysm.entity.etc.IShieldEntity;
 import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 
 import net.minecraft.nbt.CompoundTag;
@@ -27,13 +28,13 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -51,8 +52,6 @@ public class Royal_Draugr_Entity extends Monster implements IShieldEntity {
     public AnimationState attackAnimationState = new AnimationState();
     public AnimationState attack2AnimationState = new AnimationState();
     private int shieldCooldownTime = 0;
-    private int jump_cooldown = 0;
-    private int attackTick;
 
     public Royal_Draugr_Entity(EntityType entity, Level world) {
         super(entity, world);
@@ -248,6 +247,18 @@ public class Royal_Draugr_Entity extends Monster implements IShieldEntity {
         }
         return super.doHurtTarget(p_219472_);
     }
+    
+    protected void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+        super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
+        Entity entity = p_33574_.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(ModItems.DRAUGR_HEAD.get());
+            }
+        }
+
+    }
 
     @Nullable
     public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_34088_, DifficultyInstance p_34089_, MobSpawnType p_34090_, @Nullable SpawnGroupData p_34091_, @Nullable CompoundTag p_34092_) {
@@ -285,20 +296,10 @@ public class Royal_Draugr_Entity extends Monster implements IShieldEntity {
         if (this.level.isClientSide()) {
             this.animateWhen(this.idleAnimationState, true, this.tickCount);
         }
-        if (this.attackTick > 0) {
-            --this.attackTick;
-        }
 
         if (this.shieldCooldownTime > 0) {
             --this.shieldCooldownTime;
         }
-       if(this.isDraugrBlocking()){
-           this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.24F);
-           this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(1.0F);
-       }else{
-           this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.27F);
-           this.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(0.1F);
-       }
     }
 
     public void aiStep() {
@@ -328,29 +329,16 @@ public class Royal_Draugr_Entity extends Monster implements IShieldEntity {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ZOMBIE_HURT;
+        return ModSounds.DRAUGR_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ZOMBIE_DEATH;
+        return ModSounds.DRAUGR_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ZOMBIE_AMBIENT;
+        return ModSounds.DRAUGR_IDLE.get();
     }
-
-
-    class DraugrMeleeAttackGoal extends MeleeAttackGoal {
-        public DraugrMeleeAttackGoal() {
-            super(Royal_Draugr_Entity.this, 1.0D, true);
-        }
-
-        protected double getAttackReachSqr(LivingEntity p_33377_) {
-            float f = Royal_Draugr_Entity.this.getBbWidth();
-            return (double)(f * 2.25F * f * 2.25F + p_33377_.getBbWidth());
-        }
-    }
-
 }
 
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.blocks.Cursed_Tombstone_Block;
 import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
@@ -20,6 +21,7 @@ import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.etc.path.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Arrow_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Halberd_Entity;
+import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
@@ -37,12 +39,15 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
@@ -55,6 +60,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -124,11 +130,15 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public static final int SPEAR_SWING_COOLDOWN = 100;
     public static final int GRAB_COOLDOWN = 300;
     private int timeWithoutTarget;
+    private int destroyBlocksTick;
     private static final EntityDataAccessor<Boolean> FLYING = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.BOOLEAN);
 
     public static final EntityDataAccessor<Integer> RAGE = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.INT);
 
     public static final EntityDataAccessor<Integer> WEAPON = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.INT);
+    
+    private static final EntityDataAccessor<BlockPos> TOMBSTONE_POS = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<Direction> TOMBSTONE_DIRECTION = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.DIRECTION);
 
     private final CMBossInfoServer bossEvent1 = new CMBossInfoServer(this.getDisplayName(), BossEvent.BossBarColor.GREEN,true,9);
     private final CMBossInfoServer bossEvent2 = new CMBossInfoServer(Component.translatable("entity.cataclysm.rage_meter"), BossEvent.BossBarColor.GREEN,false,10);
@@ -411,6 +421,11 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
             float reductionFactor = 1.0f - (reducedDamageTicks / 30.0f);
             damage *= reductionFactor;
         }
+
+        if (this.destroyBlocksTick <= 0) {
+            this.destroyBlocksTick = 20;
+        }
+        
         boolean flag = super.hurt(source, damage);
         if (flag) {
             reducedDamageTicks = 30;
@@ -507,6 +522,8 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(TOMBSTONE_POS, BlockPos.ZERO);
+        this.entityData.define(TOMBSTONE_DIRECTION, Direction.NORTH);
         this.entityData.define(WEAPON, 0);
         this.entityData.define(FLYING, false);
         this.entityData.define(RAGE, 0);
@@ -527,6 +544,23 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
     public void setFlying(boolean flying) {
         this.entityData.set(FLYING, flying);
+    }
+    
+    BlockPos getTombstonePos() {
+        return this.entityData.get(TOMBSTONE_POS);
+    }
+
+    public void setTombstonePos(BlockPos p_30220_) {
+        this.entityData.set(TOMBSTONE_POS, p_30220_);
+    }
+
+    public Direction getTombstoneDirection() {
+        return this.entityData.get(TOMBSTONE_DIRECTION);
+    }
+
+
+    public void setTombstoneDirection(Direction p_30220_) {
+        this.entityData.set(TOMBSTONE_DIRECTION, p_30220_);
     }
 
     public int getRageMeter() {
@@ -778,13 +812,43 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public int deathtimer() {
         return 60;
     }
+    
+    @Override
+    protected void AfterDefeatBoss(@Nullable LivingEntity living) {
+        if (!this.level.isClientSide) {
+            if(this.getTombstonePos() != BlockPos.ZERO) {
+                BlockState block = ModBlocks.CURSED_TOMBSTONE.get().defaultBlockState();
+                if (this.getTombstoneDirection() == Direction.UP || this.getTombstoneDirection() == Direction.DOWN) {
+                    this.level.setBlockAndUpdate(this.getTombstonePos(), block.setValue(Cursed_Tombstone_Block.FACING, Direction.NORTH));
+                } else {
+                    this.level.setBlockAndUpdate(this.getTombstonePos(), block.setValue(Cursed_Tombstone_Block.FACING, this.getTombstoneDirection()));
+                }
+            }
+        }
+    }
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
+        compound.putInt("TombstonePosX", this.getTombstonePos().getX());
+        compound.putInt("TombstonePosY", this.getTombstonePos().getY());
+        compound.putInt("TombstonePosZ", this.getTombstonePos().getZ());
+        compound.putByte("Tombstone_Direction", (byte)this.getTombstoneDirection().get3DDataValue());
     }
 
     public void readAdditionalSaveData(CompoundTag compound) {
         super.readAdditionalSaveData(compound);
+        int i = compound.getInt("TombstonePosX");
+        int j = compound.getInt("TombstonePosY");
+        int k = compound.getInt("TombstonePosZ");
+        this.setTombstoneDirection(Direction.from3DDataValue(compound.getByte("Tombstone_Direction")));
+        this.setTombstonePos(new BlockPos(i, j, k));
+    }
+
+    @Nullable
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_30153_, DifficultyInstance p_30154_, MobSpawnType p_30155_, @Nullable SpawnGroupData p_30156_, @Nullable CompoundTag p_30157_) {
+        this.setTombstonePos(this.blockPosition());
+        this.setTombstoneDirection(Direction.SOUTH);
+        return super.finalizeSpawn(p_30153_, p_30154_, p_30155_, p_30156_, p_30157_);
     }
 
 
@@ -842,8 +906,8 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
                     }
                 }
             }
-
         }
+        blockbreak();
     }
     
     public boolean isMoving() {
@@ -1295,7 +1359,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
                 for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(7.0D))) {
                     if (!isAlliedTo(entity) && entity != this) {
-                        entity.hurt(CMDamageTypes.causeMaledictioDamage(this), (float) (DMG() * 2.0F + Math.min(DMG() * 2.0F, entity.getMaxHealth() * CMConfig.MaledictusAOEHpDamage)));
+                        entity.hurt(CMDamageTypes.causeMaledictioDamage(this), (float) (DMG() * 1.8F + Math.min(DMG() * 1.8F, entity.getMaxHealth() * CMConfig.MaledictusAOEHpDamage)));
                     }
                 }
             }
@@ -1306,8 +1370,37 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
     }
 
+    private void blockbreak() {
+        if (!this.isNoAi()) {
+            if (!this.level.isClientSide) {
+                if (CMConfig.MaledictusBlockBreaking) {
+                    if (this.destroyBlocksTick > 0) {
+                        --this.destroyBlocksTick;
+                        if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                            AABB aabb = this.getBoundingBox().inflate(0.5D);
+                            for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                                BlockState blockstate = this.level.getBlockState(blockpos);
+                                if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                                    this.level.destroyBlock(blockpos, true, this);
+                                }
+                            }
 
+                        }
+                    }
+                    if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                        AABB aabb = this.getBoundingBox().inflate(0.2D,0.5D,0.2D);
+                        for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                            BlockState blockstate = this.level.getBlockState(blockpos);
+                            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && blockstate.is(ModTag.FROSTED_PRISON_CHANDELIER) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                                this.level.destroyBlock(blockpos, true, this);
+                            }
+                        }
 
+                    }
+                }
+            }
+        }
+    }
 
     private void StrikeHalberd(int rune, float close,float radius,double range,int delay) {
         float angle2 = (0.01745329251F * this.yBodyRot);

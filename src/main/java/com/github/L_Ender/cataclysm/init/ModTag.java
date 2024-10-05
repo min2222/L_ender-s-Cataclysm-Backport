@@ -47,6 +47,8 @@ public class ModTag {
 
     public static final TagKey<EntityType<?>> TEAM_THE_LEVIATHAN = registerEntityTag("team_the_leviathan");
 
+    public static final TagKey<EntityType<?>> DIMENSIONAL_LIFT_IMMUNE = registerEntityTag("dimensional_lift_immune");
+
     public static final TagKey<EntityType<?>> TEAM_MALEDICTUS = registerEntityTag("team_maledictus");
 
     public static final TagKey<Block> ENDER_GOLEM_CAN_DESTROY = registerBlockTag("ender_golem_can_destroy");
@@ -66,6 +68,10 @@ public class ModTag {
     public static final TagKey<Block> LEVIATHAN_IMMUNE = registerBlockTag("leviathan_immune");
 
     public static final TagKey<Block> REMNANT_IMMUNE = registerBlockTag("remnant_immune");
+    
+    public static final TagKey<Block> MALEDICTUS_IMMUNE = registerBlockTag("maledictus_immune");
+
+    public static final TagKey<Block> FROSTED_PRISON_CHANDELIER = registerBlockTag("frosted_prison_chandelier");
 
     public static final TagKey<Block> CORALSSUS_BREAK = registerBlockTag("coralssus_break");
 
@@ -80,6 +86,8 @@ public class ModTag {
     public static final TagKey<Structure> EYE_OF_RUINED_LOCATED = registerStructureTag("eye_of_ruined_located");
 
     public static final TagKey<Structure> EYE_OF_FLAME_LOCATED = registerStructureTag("eye_of_flame_located");
+
+    public static final TagKey<Structure> EYE_OF_CURSE_LOCATED = registerStructureTag("eye_of_curse_located");
 
     public static final TagKey<Structure> EYE_OF_MONSTROUS_LOCATED = registerStructureTag("eye_of_monstrous_located");
 

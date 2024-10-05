@@ -10,6 +10,9 @@
     "cataclysm:altar_of_amethyst",
     "cataclysm:altar_of_abyss",
     "cataclysm:dungeon_block",
-    "cataclysm:emp"
+    "cataclysm:emp",
+    "cataclysm:door_of_seal",
+    "cataclysm:door_of_seal_part",
+    "cataclysm:cursed_tombstone"
   ]
 }

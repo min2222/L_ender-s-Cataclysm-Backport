@@ -11,6 +11,8 @@ import com.github.L_Ender.cataclysm.blocks.Altar_Of_Amethyst_Block;
 import com.github.L_Ender.cataclysm.blocks.Altar_Of_Fire_Block;
 import com.github.L_Ender.cataclysm.blocks.Altar_Of_Void_Block;
 import com.github.L_Ender.cataclysm.blocks.Cataclysm_Skull_Block;
+import com.github.L_Ender.cataclysm.blocks.Cursed_Tombstone_Block;
+import com.github.L_Ender.cataclysm.blocks.Door_of_Seal_Block;
 import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.blocks.EndStoneTeleportTrapBricks;
 import com.github.L_Ender.cataclysm.blocks.Mechanical_fusion_Anvil;
@@ -175,10 +177,13 @@ public class ModBlocks {
             Altar_Of_Void_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> ALTAR_OF_AMETHYST = registerBlockAndItem("altar_of_amethyst",
-            Altar_Of_Amethyst_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant().fireResistant(), true);
+            Altar_Of_Amethyst_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> ALTAR_OF_ABYSS = registerBlockAndItem("altar_of_abyss",
-            Altar_Of_Abyss_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant().fireResistant(), true);
+            Altar_Of_Abyss_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
+    
+    public static final RegistryObject<Block> CURSED_TOMBSTONE = registerBlockAndItem("cursed_tombstone",
+            Cursed_Tombstone_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
     public static final RegistryObject<Block> DUNGEON_BLOCK = BLOCKS.register("dungeon_block",
             () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.STONE).strength(-1.0F, 3600000.0F).noLootTable()));
@@ -189,13 +194,26 @@ public class ModBlocks {
     public static final RegistryObject<Block> MECHANICAL_FUSION_ANVIL = registerBlockAndItem("mechanical_fusion_anvil",
             Mechanical_fusion_Anvil::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 
+    public static final RegistryObject<Block> DOOR_OF_SEAL = registerBlockAndItem("door_of_seal",
+            Door_of_Seal_Block::new, new Item.Properties().rarity(Rarity.EPIC), true);
 
+    public static final RegistryObject<Block> DOOR_OF_SEAL_PART = BLOCKS.register("door_of_seal_part", () -> new
+            Door_of_Seal_Block.Door_Of_Seal_Part_Block(BlockBehaviour.Properties.copy(ModBlocks.DOOR_OF_SEAL.get())));
+    
     public static final RegistryObject<Block> KOBOLEDIATOR_SKULL = BLOCKS.register("kobolediator_skull", () -> new Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.KOBOLEDIATOR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F)));
 
 
     public static final RegistryObject<Block> KOBOLEDIATOR_WALL_SKULL = BLOCKS.register("kobolediator_wall_skull", () -> new Wall_Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.KOBOLEDIATOR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).lootFrom(() -> KOBOLEDIATOR_SKULL.get())));
 
+    public static final RegistryObject<Block> APTRGANGR_HEAD = BLOCKS.register("aptrgangr_head", () -> new Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.APTRGANGR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F)));
 
+
+    public static final RegistryObject<Block> APTRGANGR_WALL_HEAD = BLOCKS.register("aptrgangr_wall_head", () -> new Wall_Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.APTRGANGR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).lootFrom(() -> APTRGANGR_HEAD.get())));
+
+    public static final RegistryObject<Block> DRAUGR_HEAD = BLOCKS.register("draugr_head", () -> new Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.DRAUGR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F)));
+
+    public static final RegistryObject<Block> DRAUGR_WALL_HEAD = BLOCKS.register("draugr_wall_head", () -> new Wall_Cataclysm_Skull_Block(Cataclysm_Skull_Block.Types.DRAUGR, BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).lootFrom(() -> APTRGANGR_HEAD.get())));
+    
     public static final RegistryObject<Block> ABYSSAL_EGG = registerBlockAndItem("abyssal_egg",
             Abyssal_Egg_Block::new, new Item.Properties().rarity(Rarity.EPIC).fireResistant(), true);
 

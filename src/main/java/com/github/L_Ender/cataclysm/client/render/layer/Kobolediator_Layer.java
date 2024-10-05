@@ -1,8 +1,8 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.client.model.entity.ModelKobolediator;
-import com.github.L_Ender.cataclysm.client.render.entity.RendererKobolediator;
+import com.github.L_Ender.cataclysm.client.model.entity.Kobolediator_Model;
+import com.github.L_Ender.cataclysm.client.render.entity.Kobolediator_Renderer;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,10 +16,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class Kobolediator_Layer extends RenderLayer<Kobolediator_Entity, ModelKobolediator> {
+public class Kobolediator_Layer extends RenderLayer<Kobolediator_Entity, Kobolediator_Model> {
     private static final ResourceLocation LAYER_TEXTURES =new ResourceLocation(Cataclysm.MODID,"textures/entity/koboleton/kobolediator_layer.png");
 
-    public Kobolediator_Layer(RendererKobolediator renderIn) {
+    public Kobolediator_Layer(Kobolediator_Renderer renderIn) {
         super(renderIn);
 
     }

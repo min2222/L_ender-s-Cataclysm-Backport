@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:smithing",
+    "addition": {
+        "item": "cataclysm:cursium_ingot"
+    },
+    "base": {
+        "item": "minecraft:netherite_leggings"
+    },
+    "result": {
+        "item": "cataclysm:cursium_leggings"
+    }
+}

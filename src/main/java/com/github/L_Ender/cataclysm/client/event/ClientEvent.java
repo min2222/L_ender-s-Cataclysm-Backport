@@ -6,7 +6,7 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.ClientProxy;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.client.gui.CustomBossBar;
-import com.github.L_Ender.cataclysm.client.model.entity.Model_PlayerSandstorm;
+import com.github.L_Ender.cataclysm.client.model.entity.PlayerSandstorm_Model;
 import com.github.L_Ender.cataclysm.client.render.CMItemstackRenderer;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
 import com.github.L_Ender.cataclysm.client.render.etc.LavaVisionFluidRenderer;
@@ -75,7 +75,7 @@ public class ClientEvent {
     private static final ResourceLocation SANDSTORM_ICON =new ResourceLocation(Cataclysm.MODID,"textures/gui/sandstorm_icons.png");
     private static final ResourceLocation EFFECT_HEART =new ResourceLocation(Cataclysm.MODID,"textures/gui/effect_heart.png");
     private static final ResourceLocation SANDSTORM_TEXTURE =new ResourceLocation(Cataclysm.MODID,"textures/entity/ancient_remnant/sandstorm.png");
-    private static final Model_PlayerSandstorm SANDSTORM_MODEL = new Model_PlayerSandstorm();
+    private static final PlayerSandstorm_Model SANDSTORM_MODEL = new PlayerSandstorm_Model();
     private final Random random = new Random();
     private int lastHealth;
     private int displayHealth;

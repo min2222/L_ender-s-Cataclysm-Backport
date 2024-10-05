@@ -5,6 +5,7 @@ import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
 import com.github.L_Ender.cataclysm.capabilities.Gone_With_SandstormCapability;
 import com.github.L_Ender.cataclysm.capabilities.HookCapability;
 import com.github.L_Ender.cataclysm.capabilities.RenderRushCapability;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Royal_Draugr_Entity;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
@@ -40,6 +41,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -264,6 +266,16 @@ public class ServerEventHandler {
         if (entity instanceof LivingEntity) {
             LivingEntity living = (LivingEntity) entity;
             if (event.isCancelable() && living.hasEffect(ModEffect.EFFECTSTUN.get())) {
+                event.setCanceled(true);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void KnockbackEvent(LivingKnockBackEvent event) {
+        LivingEntity living = event.getEntity();
+        if(living instanceof Royal_Draugr_Entity royalDraugr){
+            if(royalDraugr.isDraugrBlocking()){
                 event.setCanceled(true);
             }
         }

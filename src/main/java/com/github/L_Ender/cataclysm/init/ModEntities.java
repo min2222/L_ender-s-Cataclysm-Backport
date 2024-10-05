@@ -1,29 +1,99 @@
 package com.github.L_Ender.cataclysm.init;
 
 
+import java.util.function.Predicate;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.*;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.*;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Endermaptera_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.Koboleton_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.The_Watcher_Entity;
-import com.github.L_Ender.cataclysm.entity.Deepling.*;
-import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.*;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Amethyst_Crab_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ancient_Ancient_Remnant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Golem_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ender_Guardian_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignis_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignited_Revenant_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Nameless_Sorcerer_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Netherite_Monstrosity_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Prowler_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Blast_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Blast_Portal_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Mine_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Orb_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Portal_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Dimensional_Rift_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Portal_Abyss_Blast_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Entity;
+import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.The_Leviathan_Tongue_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.Coral_Golem_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Angler_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Brute_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Priest_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.Deepling_Warlock_Entity;
+import com.github.L_Ender.cataclysm.entity.Deepling.Lionfish_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Ignited_Berserker_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Wadjet_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Aptrgangr_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Draugr_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Elite_Draugr_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Royal_Draugr_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Ancient_Remnant.Ancient_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.Modern_Remnant_Entity;
 import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.*;
-import com.github.L_Ender.cataclysm.entity.projectile.*;
+import com.github.L_Ender.cataclysm.entity.effect.Abyss_Mark_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Flame_Strike_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Hold_Attack_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Void_Vortex_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Wall_Watcher_Entity;
+import com.github.L_Ender.cataclysm.entity.effect.Wither_Smoke_Effect_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Amethyst_Cluster_Projectile_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Ancient_Desert_Stele_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Ashen_Breath_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Axe_Blade_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Blazing_Bone_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.EarthQuake_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Ender_Guardian_Bullet_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Eye_Of_Dungeon_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Abyss_Fireball_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Ignis_Fireball_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Lava_Bomb_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Lionfish_Spike_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Mini_Abyss_Blast_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Arrow_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Phantom_Halberd_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Poison_Dart_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Sandstorm_Projectile;
+import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Bardiche_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.ThrownCoral_Spear_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Hook_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Tentacle_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Void_Howitzer_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Void_Rune_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Void_Scatter_Arrow_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Void_Shard_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Wither_Homing_Missile_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Wither_Howitzer_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Wither_Missile_Entity;
 import com.google.common.base.Predicates;
+
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
@@ -32,8 +102,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Predicate;
 
 @Mod.EventBusSubscriber(modid = Cataclysm.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModEntities {
@@ -512,6 +580,11 @@ public class ModEntities {
             .sized(0.6F, 1.95F)
             .clientTrackingRange(10)
             .build(Cataclysm.MODID + ":royal_draugr"));
+    
+    public static final RegistryObject<EntityType<Elite_Draugr_Entity>> ELITE_DRAUGR = ENTITY_TYPE.register("elite_draugr", () -> EntityType.Builder.of(Elite_Draugr_Entity::new, MobCategory.MONSTER)
+            .sized(0.8F, 2.6F)
+            .clientTrackingRange(10)
+            .build(Cataclysm.MODID + ":elite_draugr"));
 
     public static final RegistryObject<EntityType<Aptrgangr_Entity>> APTRGANGR = ENTITY_TYPE.register("aptrgangr", () -> EntityType.Builder.of(Aptrgangr_Entity::new, MobCategory.MONSTER)
             .sized(2.4F, 4.0f)
@@ -585,6 +658,7 @@ public class ModEntities {
         event.put(ANCIENT_REMNANT.get(), Ancient_Remnant_Entity.maledictus().build());
         event.put(DRAUGR.get(), Draugr_Entity.draugr().build());
         event.put(ROYAL_DRAUGR.get(), Royal_Draugr_Entity.royal_draugr().build());
+        event.put(ELITE_DRAUGR.get(), Elite_Draugr_Entity.elite_draugr().build());
     }
 }
 

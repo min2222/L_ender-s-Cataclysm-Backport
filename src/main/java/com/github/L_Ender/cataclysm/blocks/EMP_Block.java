@@ -2,7 +2,7 @@ package com.github.L_Ender.cataclysm.blocks;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.blockentities.TileEntityEMP;
+import com.github.L_Ender.cataclysm.blockentities.EMP_Block_Entity;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 
@@ -86,7 +86,7 @@ public class EMP_Block extends BaseEntityBlock {
                         worldIn.addParticle(DustParticleOptions.REDSTONE, (double) pos.getX() + d1, (double) pos.getY() + 0.75D, (double) pos.getZ() + d3, 0, 0, 0);
                     }
                 }else{
-                    worldIn.addParticle((new LightningParticle.OrbData(1.0f, 0.2f,  0.0f)), (double) pos.getX() + 0.5D, (double) pos.getY() + 0.75D, (double) pos.getZ() + 0.5D, d * 2.0D, d, d * 2.0D);
+                	worldIn.addParticle((new LightningParticle.OrbData(255, 51,  0)), (double) pos.getX() + 0.5D, (double) pos.getY() + 0.75D, (double) pos.getZ() + 0.5D, d * 2.0D, d, d * 2.0D);
                 }
             }
         }
@@ -95,7 +95,7 @@ public class EMP_Block extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEntityEMP(pos, state);
+        return new EMP_Block_Entity(pos, state);
     }
 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -104,6 +104,6 @@ public class EMP_Block extends BaseEntityBlock {
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, ModTileentites.EMP.get(), TileEntityEMP::commonTick);
+        return createTickerHelper(p_152182_, ModTileentites.EMP.get(), EMP_Block_Entity::commonTick);
     }
 }

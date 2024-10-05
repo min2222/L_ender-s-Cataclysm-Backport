@@ -3,11 +3,11 @@ package com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar;
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
@@ -29,6 +29,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -41,9 +42,6 @@ public class Draugr_Entity extends Monster {
     public AnimationState idleAnimationState = new AnimationState();
     public AnimationState attackAnimationState = new AnimationState();
     public AnimationState attack2AnimationState = new AnimationState();
-    private int nanta_cooldown = 0;
-    private int jump_cooldown = 0;
-    private int attackTick;
 
     public Draugr_Entity(EntityType entity, Level world) {
         super(entity, world);
@@ -148,9 +146,6 @@ public class Draugr_Entity extends Monster {
         if (this.level.isClientSide()) {
             this.animateWhen(this.idleAnimationState, true, this.tickCount);
         }
-        if (this.attackTick > 0) {
-            --this.attackTick;
-        }
     }
 
     public void aiStep() {
@@ -166,6 +161,17 @@ public class Draugr_Entity extends Monster {
         }
     }
 
+    protected void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+        super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
+        Entity entity = p_33574_.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(ModItems.DRAUGR_HEAD.get());
+            }
+        }
+
+    }
 
     public boolean isAlliedTo(Entity entityIn) {
         if (entityIn == this) {
@@ -180,15 +186,15 @@ public class Draugr_Entity extends Monster {
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.ZOMBIE_HURT;
+        return ModSounds.DRAUGR_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.ZOMBIE_DEATH;
+        return ModSounds.DRAUGR_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ZOMBIE_AMBIENT;
+        return ModSounds.DRAUGR_IDLE.get();
     }
 
 

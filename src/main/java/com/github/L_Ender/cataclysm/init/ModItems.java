@@ -45,6 +45,7 @@ import com.github.L_Ender.cataclysm.items.zweiender;
 import com.github.L_Ender.cataclysm.items.CuriosItem.Sandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.items.CuriosItem.Sticky_Gloves;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.AbyssEyeItem;
+import com.github.L_Ender.cataclysm.items.Dungeon_Eye.CursedEyeItem;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.DesertEyeItem;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.FlameEyeItem;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.MechEyeItem;
@@ -390,6 +391,12 @@ public class ModItems {
 
     public static final RegistryObject<Item> NECKLACE_OF_THE_DESERT = ITEMS.register("necklace_of_the_desert",
             () -> new Necklace_Of_The_Desert(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+    
+    public static final RegistryObject<Item> APTRGANGR_HEAD = ITEMS.register("aptrgangr_head",
+            () -> new CataclysmSkullItem(ModBlocks.APTRGANGR_HEAD.get(), ModBlocks.APTRGANGR_WALL_HEAD.get(), (new Item.Properties().tab(Cataclysm.TAB)).rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> DRAUGR_HEAD = ITEMS.register("draugr_head",
+            () -> new CataclysmSkullItem(ModBlocks.DRAUGR_HEAD.get(), ModBlocks.DRAUGR_WALL_HEAD.get(), (new Item.Properties().tab(Cataclysm.TAB)).rarity(Rarity.UNCOMMON)));
 
     public static final RegistryObject<Item> KOBOLEDIATOR_SKULL = ITEMS.register("kobolediator_skull",
             () -> new CataclysmSkullItem(ModBlocks.KOBOLEDIATOR_SKULL.get(), ModBlocks.KOBOLEDIATOR_WALL_SKULL.get(), (new Item.Properties().tab(Cataclysm.TAB)).rarity(Rarity.UNCOMMON)));
@@ -443,7 +450,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.UNCOMMON)));
 
     public static final RegistryObject<Item> MUSIC_DISC_NETHERITE_MONSTROSITY = ITEMS.register("music_disc_netherite_monstrosity",
-            () -> new RecordItem(14, ModSounds.MONSTROSITY_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 188 * 20));
+            () -> new RecordItem(14, ModSounds.MONSTROSITY_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 289 * 20));
 
     public static final RegistryObject<Item> MUSIC_DISC_ENDER_GUARDIAN = ITEMS.register("music_disc_ender_guardian",
             () -> new RecordItem(14, ModSounds.ENDERGUARDIAN_MUSIC,new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant(), 226 * 20));
@@ -480,6 +487,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> DESERT_EYE = ITEMS.register("desert_eye",
             () -> new DesertEyeItem(new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
+    
+    public static final RegistryObject<Item> CURSED_EYE = ITEMS.register("cursed_eye",
+            () -> new CursedEyeItem(new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
 
     public static final RegistryObject<Item> LIONFISH = ITEMS.register("lionfish",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).food(new FoodProperties.Builder().nutrition(1).saturationMod(0.1F)
@@ -594,6 +604,9 @@ public class ModItems {
     
     public static final RegistryObject<SpawnEggItem> MALEDICTUS_SPAWN_EGG = ITEMS.register("maledictus_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.MALEDICTUS,0x39d2b2, 0x945b31, new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<SpawnEggItem> ELITE_DRAUGR_SPAWN_EGG = ITEMS.register("elite_draugr_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.ELITE_DRAUGR,0x392116, 0x442318, new Item.Properties().tab(Cataclysm.TAB)));
     
     public static final RegistryObject<SpawnEggItem> APTRGANGR_SPAWN_EGG = ITEMS.register("aptrgangr_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.APTRGANGR,0x392116, 0xe8e7e4, new Item.Properties().tab(Cataclysm.TAB)));

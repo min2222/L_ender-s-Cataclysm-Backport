@@ -8,7 +8,7 @@ public class CMConfig {
     public static double LavaVisionOpacity = 0.5F;
     public static boolean shadersCompat = false;
     public static boolean custombossbar = true;
-    public static boolean AddedServerlist = true;
+
 
     public static int GauntletOfBulwarkCooldown = 80;
     public static int BulwarkOfTheFlameCooldown = 80;
@@ -22,6 +22,8 @@ public class CMConfig {
     public static int VoidCoreCooldown = 160;
     public static int SoulRenderCooldown = 100;
     public static int Sandstorm_In_A_Bottle_Timer = 160;
+
+    public static int Cursed_tombstone_summon_cooldown = 30;
 
     public static double Voidrunedamage = 7;
     public static double DimensionalRiftdamage = 10;
@@ -64,6 +66,7 @@ public class CMConfig {
     public static boolean EnderguardianBlockBreaking = true;
     public static boolean EndergolemBlockBreaking = false;
     public static boolean IgnisBlockBreaking = true;
+    public static boolean MaledictusBlockBreaking = true;
     public static boolean AncientRemnantBlockBreaking = true;
     public static boolean LeviathanBlockBreaking = true;
     public static boolean HarbingerLightFire = true;
@@ -207,7 +210,7 @@ public class CMConfig {
             LavaVisionOpacity = ConfigHolder.COMMON.LavaVisionOpacity.get();
             shadersCompat = ConfigHolder.COMMON.shadersCompat.get();
             custombossbar = ConfigHolder.COMMON.custombossbar.get();
-            AddedServerlist = ConfigHolder.COMMON.AddedServerlist.get();
+
 
             GauntletOfBulwarkCooldown = ConfigHolder.COMMON.GauntletOfBulwarkCooldown.get();
             BulwarkOfTheFlameCooldown = ConfigHolder.COMMON.BulwarkOfTheFlameCooldown.get();
@@ -221,6 +224,8 @@ public class CMConfig {
             VoidCoreCooldown = ConfigHolder.COMMON.VoidCoreCooldown.get();
             Sandstorm_In_A_Bottle_Timer = ConfigHolder.COMMON.Sandstorm_In_A_Bottle_Timer.get();
             SoulRenderCooldown = ConfigHolder.COMMON.SoulRenderCooldown.get();
+
+            Cursed_tombstone_summon_cooldown = ConfigHolder.COMMON.SoulRenderCooldown.get();
 
             Voidrunedamage = ConfigHolder.COMMON.Voidrunedamage.get();
             Ashenbreathdamage = ConfigHolder.COMMON.Ashenbreathdamage.get();
@@ -321,6 +326,7 @@ public class CMConfig {
             RemnantHpDamage = ConfigHolder.COMMON.RemnantHpDamage.get();
             RemnantStompHpDamage = ConfigHolder.COMMON.RemnantStompHpDamage.get();
 
+            MaledictusBlockBreaking = ConfigHolder.COMMON.MaledictusBlockBreaking.get();
             MaledictusHpDamage = ConfigHolder.COMMON.MaledictusHpDamage.get();
             MaledictusNatureHealing = ConfigHolder.COMMON.MaledictusNatureHealing.get();
             MaledictusPhantomHalberddamage = ConfigHolder.COMMON.MaledictusPhantomHalberddamage.get();

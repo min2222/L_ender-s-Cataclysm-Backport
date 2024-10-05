@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.client.model.entity.Model_Maledictus;
-import com.github.L_Ender.cataclysm.client.render.entity.RendererMaledictus;
+import com.github.L_Ender.cataclysm.client.model.entity.Maledictus_Model;
+import com.github.L_Ender.cataclysm.client.render.entity.Maledictus_Renderer;
 import com.github.L_Ender.cataclysm.client.render.etc.LightningBoltData;
 import com.github.L_Ender.cataclysm.client.render.etc.LightningRender;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
@@ -31,12 +31,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Model_Maledictus> {
+public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Maledictus_Model> {
     protected final EntityRenderDispatcher entityRenderDispatcher;
 
     private Map<UUID, LightningRender> lightningRenderMap = new HashMap<>();
     private final RandomSource rnd = RandomSource.create();
-    public Maledictus_Circle_Layer(RendererMaledictus renderIn, EntityRendererProvider.Context context) {
+    public Maledictus_Circle_Layer(Maledictus_Renderer renderIn, EntityRendererProvider.Context context) {
         super(renderIn);
         entityRenderDispatcher = context.getEntityRenderDispatcher();
     }

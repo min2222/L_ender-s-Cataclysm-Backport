@@ -1,8 +1,8 @@
 package com.github.L_Ender.cataclysm.client.render.layer;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.client.model.entity.ModelAptrgangr;
-import com.github.L_Ender.cataclysm.client.render.entity.RendererAptrgangr;
+import com.github.L_Ender.cataclysm.client.model.entity.Aptrgangr_Model;
+import com.github.L_Ender.cataclysm.client.render.entity.Aptrgangr_Renderer;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Aptrgangr_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
@@ -19,9 +19,9 @@ import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class AptrgangrRiderLayer extends RenderLayer<Aptrgangr_Entity, ModelAptrgangr> {
+public class AptrgangrRiderLayer extends RenderLayer<Aptrgangr_Entity, Aptrgangr_Model> {
 
-    public AptrgangrRiderLayer(RendererAptrgangr render) {
+    public AptrgangrRiderLayer(Aptrgangr_Renderer render) {
         super(render);
     }
 

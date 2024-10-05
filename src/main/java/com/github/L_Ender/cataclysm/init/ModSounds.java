@@ -441,4 +441,25 @@ public class ModSounds {
     
     public static final RegistryObject<SoundEvent> AXE_SWING = SOUNDS.register("axe_swing",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"axe_swing")));
+    
+    public static final RegistryObject<SoundEvent> DRAUGR_IDLE = SOUNDS.register("draugr_idle",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"draugr_idle")));
+
+    public static final RegistryObject<SoundEvent> DRAUGR_HURT = SOUNDS.register("draugr_hurt",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"draugr_hurt")));
+
+    public static final RegistryObject<SoundEvent> DRAUGR_DEATH = SOUNDS.register("draugr_death",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"draugr_death")));
+
+    public static final RegistryObject<SoundEvent> APTRGANGR_IDLE = SOUNDS.register("aptrgangr_idle",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"aptrgangr_idle")));
+
+    public static final RegistryObject<SoundEvent> APTRGANGR_HURT = SOUNDS.register("aptrgangr_hurt",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"aptrgangr_hurt")));
+
+    public static final RegistryObject<SoundEvent> APTRGANGR_DEATH = SOUNDS.register("aptrgangr_death",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"aptrgangr_death")));
+    
+    public static final RegistryObject<SoundEvent> DOOR_OF_SEAL_OPEN = SOUNDS.register("door_of_seal_open",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"door_of_seal_open")));
 }

@@ -3,7 +3,7 @@ package com.github.L_Ender.cataclysm.blocks;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.blockentities.TileEntityAltarOfFire;
+import com.github.L_Ender.cataclysm.blockentities.AltarOfFire_Block_Entity;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
 
 import net.minecraft.core.BlockPos;
@@ -59,8 +59,8 @@ public class Altar_Of_Fire_Block extends BaseEntityBlock {
 
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         ItemStack heldItem = player.getItemInHand(handIn);
-        if (worldIn.getBlockEntity(pos) instanceof TileEntityAltarOfFire && (!player.isShiftKeyDown() && heldItem.getItem() != this.asItem())) {
-            TileEntityAltarOfFire aof = (TileEntityAltarOfFire)worldIn.getBlockEntity(pos);
+        if (worldIn.getBlockEntity(pos) instanceof AltarOfFire_Block_Entity && (!player.isShiftKeyDown() && heldItem.getItem() != this.asItem())) {
+            AltarOfFire_Block_Entity aof = (AltarOfFire_Block_Entity)worldIn.getBlockEntity(pos);
             ItemStack copy = heldItem.copy();
             copy.setCount(1);
             if(aof.getItem(0).isEmpty()){
@@ -80,12 +80,12 @@ public class Altar_Of_Fire_Block extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEntityAltarOfFire(pos, state);
+        return new AltarOfFire_Block_Entity(pos, state);
     }
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, ModTileentites.ALTAR_OF_FIRE.get(), TileEntityAltarOfFire::commonTick);
+        return createTickerHelper(p_152182_, ModTileentites.ALTAR_OF_FIRE.get(), AltarOfFire_Block_Entity::commonTick);
     }
 
 }

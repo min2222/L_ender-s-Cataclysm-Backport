@@ -129,7 +129,7 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
         }else{
             Vec3 center = this.position().add(this.getDeltaMovement());
             Vec3 vec3 = center.add(new Vec3(random.nextFloat() - 0.5F, random.nextFloat() - 0.5F, random.nextFloat() - 0.5F));
-            this.level.addParticle((new TrackLightningParticle.OrbData(0.1f, 0.42f,  0.35f)), center.x, center.y, center.z, vec3.x, vec3.y, vec3.z);
+            this.level.addParticle((new TrackLightningParticle.OrbData(26, 107,  89)), center.x, center.y, center.z, vec3.x, vec3.y, vec3.z);
             Vec3 vec31 = this.getDeltaMovement();
             double d5 = vec31.x;
             double d6 = vec31.y;

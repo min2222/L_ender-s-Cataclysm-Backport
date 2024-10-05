@@ -2,7 +2,7 @@ package com.github.L_Ender.cataclysm.blocks;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.blockentities.TileEntitySandstoneIgniteTrap;
+import com.github.L_Ender.cataclysm.blockentities.SandstoneIgniteTrap_Block_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
@@ -82,12 +82,12 @@ public class Sandstone_Ignite_Trap extends BaseEntityBlock {
     @Nullable
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileEntitySandstoneIgniteTrap(pos, state);
+        return new SandstoneIgniteTrap_Block_Entity(pos, state);
     }
 
     @Nullable
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level p_152180_, BlockState p_152181_, BlockEntityType<T> p_152182_) {
-        return createTickerHelper(p_152182_, ModTileentites.SANDSTONE_IGNITE_TRAP.get(), TileEntitySandstoneIgniteTrap::commonTick);
+        return createTickerHelper(p_152182_, ModTileentites.SANDSTONE_IGNITE_TRAP.get(), SandstoneIgniteTrap_Block_Entity::commonTick);
     }
 
 

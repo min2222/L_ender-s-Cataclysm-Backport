@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.github.L_Ender.cataclysm.blocks.PointedIcicleBlock;
 import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.config.CMConfig;
+import com.github.L_Ender.cataclysm.entity.AI.EntityAINearestTarget3D;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Internal_Animation_Monster;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalAttackGoal;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalMoveGoal;
@@ -15,9 +17,10 @@ import com.github.L_Ender.cataclysm.entity.etc.IHoldEntity;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.etc.path.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.projectile.Axe_Blade_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Void_Rune_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Wither_Missile_Entity;
+import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModEffect;
+import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
@@ -50,17 +53,20 @@ import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Fallable;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 
 public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHoldEntity {
@@ -96,7 +102,7 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
-        this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(2, new EntityAINearestTarget3D<>(this, Player.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, SnowGolem.class, false));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, false));
@@ -297,6 +303,18 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         super.die(p_21014_);
         this.setAttackState(7);
     }
+    
+    protected void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+        super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
+        Entity entity = p_33574_.getEntity();
+        if (entity instanceof Creeper creeper) {
+            if (creeper.canDropMobsSkull()) {
+                creeper.increaseDroppedSkulls();
+                this.spawnAtLocation(ModItems.APTRGANGR_HEAD.get());
+            }
+        }
+
+    }
 
     public int deathtimer(){
         return 60;
@@ -342,6 +360,7 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         if(this.getAttackState() == 1) {
             if (this.attackTicks == 15) {
                 this.playSound(ModSounds.STRONGSWING.get(), 1.0F, 0.7f);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.06f, 0, 20);
                 AreaAttack(5.75f, 5.75f, 120, 1, 120,true);
             }
         }
@@ -351,7 +370,7 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
             }
             if (this.attackTicks == 15) {
                 AreaAttack(6.5f, 6.5f, 60, 1, 120,false);
-                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 20);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.15f, 0, 20);
                 this.playSound(SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.8f);
                 Makeparticle(0.6f, 5.0f, 0f);
 
@@ -383,6 +402,9 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
             ChargeGrab(0.0D,0.0D,0.5, 0.1F, 0, true);
             if (this.horizontalCollision) {
                 chubu = true;
+                if (!this.level.isClientSide) {
+                    Icicle_Crash();
+                }
             }
             if (this.level.isClientSide) {
                 double x = this.getX();
@@ -400,46 +422,18 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         if(this.getAttackState() == 5) {
             if (this.attackTicks == 4) {
                 this.playSound(ModSounds.STRONGSWING.get(), 1.0F, 0.7f);
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.06f, 0, 20);
                 UpperAreaAttack(6.5f, 6.5f, 60, 1, 120,true);
             }
         }
 
         if(this.getAttackState() == 6) {
             if (this.attackTicks == 1) {
+                ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.1f, 0, 20);
                 this.playSound(SoundEvents.ZOMBIE_ATTACK_IRON_DOOR, 1.0F, 0.9f);
             }
         }
 
-    }
-
-
-    private void spawnFangs(double x, double z, double minY, double maxY, float rotation, int delay) {
-        BlockPos blockpos = new BlockPos(x, maxY, z);
-        boolean flag = false;
-        double d0 = 0.0D;
-
-        do {
-            BlockPos blockpos1 = blockpos.below();
-            BlockState blockstate = this.level.getBlockState(blockpos1);
-            if (blockstate.isFaceSturdy(this.level, blockpos1, Direction.UP)) {
-                if (!this.level.isEmptyBlock(blockpos)) {
-                    BlockState blockstate1 = this.level.getBlockState(blockpos);
-                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level, blockpos);
-                    if (!voxelshape.isEmpty()) {
-                        d0 = voxelshape.max(Direction.Axis.Y);
-                    }
-                }
-
-                flag = true;
-                break;
-            }
-
-            blockpos = blockpos.below();
-        } while(blockpos.getY() >= Mth.floor(minY) - 1);
-
-        if (flag) {
-            this.level.addFreshEntity(new Void_Rune_Entity(this.level, x, (double)blockpos.getY() + d0, z, rotation, delay, this));
-        }
     }
 
     private void doSpawnBlade(int count, float offset) {
@@ -584,6 +578,39 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         }
     }
 
+    private void Icicle_Crash() {
+
+        if (this.level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            BlockPos ceil = this.blockPosition().offset(0, 5, 0);
+            while ((!level.getBlockState(ceil).getMaterial().isSolid() || level.getBlockState(ceil).getBlock() == ModBlocks.POINTED_ICICLE.get()) && ceil.getY() < level.getMaxBuildHeight()) {
+                ceil = ceil.above();
+            }
+            final int i = 8;
+            final int j = 8;
+            final int k = 8;
+
+            for (BlockPos blockpos1 : BlockPos.betweenClosed(ceil.offset(-i, -j, -k), ceil.offset(i, j, k))) {
+                if (level.getBlockState(blockpos1).getBlock() instanceof Fallable) {
+                    if (isHangingIcicle(blockpos1)) {
+                        while (isHangingIcicle(blockpos1.above()) && blockpos1.getY() < level.getMaxBuildHeight()) {
+                            blockpos1 = blockpos1.above();
+                        }
+                        if (isHangingIcicle(blockpos1)) {
+                            Vec3 vec3 = Vec3.atBottomCenterOf(blockpos1);
+                            FallingBlockEntity.fall(level, new BlockPos(vec3.x, vec3.y, vec3.z), level.getBlockState(blockpos1));
+                        }
+                    } else {
+                        this.level.scheduleTick(blockpos1, level.getBlockState(blockpos1).getBlock(), 2);
+                    }
+                }
+            }
+        }
+
+    }
+
+    private boolean isHangingIcicle(BlockPos pos) {
+        return level.getBlockState(pos).getBlock() instanceof PointedIcicleBlock && level.getBlockState(pos).getValue(PointedIcicleBlock.TIP_DIRECTION) == Direction.DOWN;
+    }
 
     public void travel(Vec3 travelVector) {
         super.travel(travelVector);
@@ -604,8 +631,8 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         theta += Math.PI / 2;
         double vecX = Math.cos(theta);
         double vecZ = Math.sin(theta);
-        double px = this.getX() + 2.0F * vecX;
-        double pz = this.getZ() + 2.0F * vecZ;
+        double px = this.getX() + 0.7F * vecX;
+        double pz = this.getZ() + 0.7F * vecZ;
 
         double y = this.getY() + passenger.getMyRidingOffset() + 0.6D;
         if (hasPassenger(passenger)) {
@@ -678,15 +705,15 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
-        return SoundEvents.HUSK_HURT;
+        return ModSounds.APTRGANGR_HURT.get();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.HUSK_DEATH;
+        return ModSounds.APTRGANGR_DEATH.get();
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.HUSK_AMBIENT;
+        return ModSounds.APTRGANGR_IDLE.get();
     }
 
     @Override
