@@ -42,7 +42,7 @@ repositories{
 
 }
 
-version = '2.03-1.19.2'
+version = '2.05-1.19.2'
 group = 'com.github.L_Ender' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'L_Enders_Cataclysm'
 

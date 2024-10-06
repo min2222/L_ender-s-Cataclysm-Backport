@@ -54,11 +54,13 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.item.FallingBlockEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.DismountHelper;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Fallable;
@@ -201,6 +203,16 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
 
     public MobType getMobType() {
         return MobType.UNDEAD;
+    }
+    
+    @Override
+    public ItemEntity spawnAtLocation(ItemStack stack) {
+        ItemEntity itementity = this.spawnAtLocation(stack,0.0f);
+        if (itementity != null) {
+            itementity.setGlowingTag(true);
+            itementity.setExtendedLifetime();
+        }
+        return itementity;
     }
 
     @Override

@@ -57,8 +57,10 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -406,6 +408,16 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public MobType getMobType() {
         return MobType.UNDEAD;
 
+    }
+    
+    @Override
+    public ItemEntity spawnAtLocation(ItemStack stack) {
+        ItemEntity itementity = this.spawnAtLocation(stack,0.0f);
+        if (itementity != null) {
+            itementity.setGlowingTag(true);
+            itementity.setExtendedLifetime();
+        }
+        return itementity;
     }
 
     @Override
@@ -860,7 +872,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public void tick() {
         super.tick();
 
-        if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isShiftKeyDown() && this.getAttackState() == 33) {
+        if (!this.getPassengers().isEmpty() && this.getPassengers().get(0).isShiftKeyDown() && (this.getAttackState() == 31 || this.getAttackState() == 32 || this.getAttackState() == 33 ) ) {
             this.getPassengers().get(0).setShiftKeyDown(false);
         }
 
@@ -1364,7 +1376,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
                 for (LivingEntity entity : this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(7.0D))) {
                     if (!isAlliedTo(entity) && entity != this) {
-                        entity.hurt(CMDamageTypes.causeMaledictioDamage(this), (float) (DMG() * 1.8F + Math.min(DMG() * 1.8F, entity.getMaxHealth() * CMConfig.MaledictusAOEHpDamage)));
+                        entity.hurt(CMDamageTypes.causeMaledictioDamage(this), (float) (DMG() * 2.0F + Math.min(DMG() * 2.0F, entity.getMaxHealth() * CMConfig.MaledictusAOEHpDamage)));
                     }
                 }
             }

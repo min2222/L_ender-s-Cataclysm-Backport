@@ -310,6 +310,9 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
         boolean flag1 = this.canInFluidType(this.getEyeInFluidType());
         if (!flag1) {
             if(!source.isBypassInvul() && CMConfig.LeviathanImmuneOutofWater) {
+                if (entity instanceof Player player) {
+                    player.displayClientMessage(Component.translatable("entity.cataclysm.the_leviathan_immune"), true);
+                }
                 return false;
             }
         }
