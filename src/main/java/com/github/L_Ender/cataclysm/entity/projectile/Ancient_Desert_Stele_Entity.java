@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 
@@ -44,21 +43,32 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
     private LivingEntity caster;
     private UUID casterUuid;
     private static final EntityDataAccessor<Boolean> ACTIVATE = SynchedEntityData.defineId(Ancient_Desert_Stele_Entity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Ancient_Desert_Stele_Entity.class, EntityDataSerializers.FLOAT);
 
     public Ancient_Desert_Stele_Entity(EntityType<? extends Ancient_Desert_Stele_Entity> p_i50170_1_, Level p_i50170_2_) {
         super(p_i50170_1_, p_i50170_2_);
     }
 
-    public Ancient_Desert_Stele_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn) {
+    public Ancient_Desert_Stele_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_,float damage, LivingEntity casterIn) {
         this(ModEntities.ANCIENT_DESERT_STELE.get(), worldIn);
         this.warmupDelayTicks = p_i47276_9_;
         this.setCaster(casterIn);
+        this.setDamage(damage);
         this.setYRot(p_i47276_8_ * (180F / (float)Math.PI));
         this.setPos(x, y, z);
     }
 
     protected void defineSynchedData() {
         this.entityData.define(ACTIVATE, Boolean.valueOf(false));
+        this.entityData.define(DAMAGE, 0F);
+    }
+
+    public float getDamage() {
+        return entityData.get(DAMAGE);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DAMAGE, damage);
     }
 
     public void setCaster(@Nullable LivingEntity p_190549_1_) {
@@ -86,7 +96,7 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
         if (compound.hasUUID("Owner")) {
             this.casterUuid = compound.getUUID("Owner");
         }
-
+        this.setDamage(compound.getFloat("damage"));
     }
 
     protected void addAdditionalSaveData(CompoundTag compound) {
@@ -94,7 +104,7 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
         if (this.casterUuid != null) {
             compound.putUUID("Owner", this.casterUuid);
         }
-
+        compound.putFloat("damage", this.getDamage());
     }
 
     /**
@@ -174,13 +184,13 @@ public class Ancient_Desert_Stele_Entity extends Projectile {
         if (shooter != null) {
             LivingEntity owner = shooter;
             if (owner != entity) {
-                flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), (float) CMConfig.AncientDesertSteledamage);
+                flag = entity.hurt(DamageSource.indirectMobAttack(this, owner), this.getDamage());
                 if (flag) {
                     this.doEnchantDamageEffects(owner, entity);
                 }
             }
         } else {
-            flag = entity.hurt(DamageSource.MAGIC, (float) CMConfig.AncientDesertSteledamage);
+            flag = entity.hurt(DamageSource.MAGIC, this.getDamage());
         }
         if (flag && entity instanceof LivingEntity) {
             MobEffectInstance effectinstance = new MobEffectInstance(ModEffect.EFFECTCURSE_OF_DESERT.get(), 200, 0);

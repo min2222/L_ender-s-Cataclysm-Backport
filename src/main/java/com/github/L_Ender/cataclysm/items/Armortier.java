@@ -14,9 +14,9 @@ import net.minecraft.world.item.crafting.Ingredient;
 
  public enum Armortier implements ArmorMaterial {
      IGNITIUM(new int[] {6, 11, 9, 6}, 4.0f, 45, 15, 0.15f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.IGNITIUM_INGOT),
-     CURSIUM(new int[] {5, 10, 8, 5}, 4.0f, 45, 15, 0.05f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.IGNITIUM_INGOT),
+     CURSIUM(new int[] {5, 10, 8, 5}, 4.0f, 45, 15, 0.05f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.CURSIUM_INGOT),
      CRAB(new int[] {3, 6, 8, 3}, 2.0f, 30, 15, 0.1f, SoundEvents.ARMOR_EQUIP_IRON , ModItems.AMETHYST_CRAB_SHELL),
-     BONE_REPTILE(new int[] {4, 7, 11, 6}, 2.5f, 35, 15, 0.1f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.ANCIENT_METAL_INGOT);
+     BONE_REPTILE(new int[] {4, 7, 11, 6}, 3f, 35, 15, 0.2f, SoundEvents.ARMOR_EQUIP_NETHERITE , ModItems.ANCIENT_METAL_INGOT);
 
      private static final int[] DURABILITY_ARRAY = new int[] {13, 15, 16, 11};
      private final int durability, enchantability;

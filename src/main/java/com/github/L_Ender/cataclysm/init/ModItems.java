@@ -106,7 +106,7 @@ public class ModItems {
             () -> new BlockItem(ModBlocks.ANCIENT_METAL_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.RARE)));
     
     public static final RegistryObject<BlockItem> CURSIUM_BLOCK = ITEMS.register("cursium_block",
-            () -> new BlockItem(ModBlocks.CURSIUM_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.RARE)));
+            () -> new BlockItem(ModBlocks.CURSIUM_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<BlockItem> DUNGEON_BLOCK = ITEMS.register("dungeon_block",
             () -> new BlockItem(ModBlocks.DUNGEON_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB)));

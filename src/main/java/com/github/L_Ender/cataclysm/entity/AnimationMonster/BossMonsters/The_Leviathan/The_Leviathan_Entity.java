@@ -937,14 +937,14 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
 
     public void shootAbyssOrb(double xMotion, double yMotion, double zMotion) {
         if(getTarget() != null) {
-            Abyss_Orb_Entity fireball = new Abyss_Orb_Entity(this, xMotion, yMotion, zMotion, this.level, this.getTarget());
+            Abyss_Orb_Entity fireball = new Abyss_Orb_Entity(this, xMotion, yMotion, zMotion, this.level, (float) CMConfig.AbyssOrbdamage,this.getTarget());
             fireball.setPos(fireball.getX(), this.getEyeY(), fireball.getZ());
             fireball.setUp(40);
             if (!this.level.isClientSide) {
                 this.level.addFreshEntity(fireball);
             }
         }else{
-            Abyss_Orb_Entity fireball = new Abyss_Orb_Entity(this, xMotion, yMotion, zMotion, this.level, null);
+            Abyss_Orb_Entity fireball = new Abyss_Orb_Entity(this, xMotion, yMotion, zMotion, this.level, (float) CMConfig.AbyssOrbdamage,null);
             fireball.setPos(fireball.getX(), this.getEyeY(), fireball.getZ());
             fireball.setUp(40);
             if (!this.level.isClientSide) {
@@ -1693,7 +1693,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
             float dir = 90.0f;
             if(this.entity.getAnimationTick() == 64) {
                 if(!entity.level.isClientSide) {
-                    Abyss_Blast_Entity DeathBeam = new Abyss_Blast_Entity(ModEntities.ABYSS_BLAST.get(), entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 80, dir);
+                    Abyss_Blast_Entity DeathBeam = new Abyss_Blast_Entity(ModEntities.ABYSS_BLAST.get(), entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 80, dir,(float)CMConfig.AbyssBlastdamage,(float)CMConfig.AbyssBlastHpdamage);
                     entity.level.addFreshEntity(DeathBeam);
                 }
             }
@@ -1741,7 +1741,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
             float dir = 90.0f;
             if(this.entity.getAnimationTick() == 64 || this.entity.getAnimationTick() == 109 || this.entity.getAnimationTick() == 154) {
                 if(!entity.level.isClientSide) {
-                    Abyss_Blast_Entity DeathBeam = new Abyss_Blast_Entity(ModEntities.ABYSS_BLAST.get(), entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 28, dir);
+                    Abyss_Blast_Entity DeathBeam = new Abyss_Blast_Entity(ModEntities.ABYSS_BLAST.get(), entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 28, dir,(float)CMConfig.AbyssBlastdamage,(float)CMConfig.AbyssBlastHpdamage);
                     entity.level.addFreshEntity(DeathBeam);
                 }
             }
@@ -1991,7 +1991,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
             } while (blockpos.getY() >= Mth.floor(minY) - 1);
 
             if (flag) {
-                entity.level.addFreshEntity(new Abyss_Blast_Portal_Entity(entity.level, x, (double) blockpos.getY() + d0, z, rotation, delay, entity));
+                entity.level.addFreshEntity(new Abyss_Blast_Portal_Entity(entity.level, x, (double) blockpos.getY() + d0, z, rotation, delay, (float)CMConfig.AbyssBlastdamage,(float)CMConfig.AbyssBlastHpdamage,entity));
             }
         }
 
@@ -2020,7 +2020,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
             } while (blockpos.getY() < Math.min(entity.level.getMaxBuildHeight(), entity.getBlockY() + 100) && !entity.level.getBlockState(blockpos).getMaterial().isSolid());
 
             if (flag) {
-                entity.level.addFreshEntity(new Abyss_Blast_Portal_Entity(entity.level, x, (double) blockpos.getY() + d0 + 0.5F, z, rotation, delay, entity));
+                entity.level.addFreshEntity(new Abyss_Blast_Portal_Entity(entity.level, x, (double) blockpos.getY() + d0 + 0.5F, z, rotation, delay, (float)CMConfig.AbyssBlastdamage,(float)CMConfig.AbyssBlastHpdamage,entity));
             }
         }
     }
@@ -2189,7 +2189,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
             float dir = 90.0f;
             if(this.entity.getAnimationTick() == 64) {
                 if(!entity.level.isClientSide) {
-                    Abyss_Blast_Entity DeathBeam = new Abyss_Blast_Entity(ModEntities.ABYSS_BLAST.get(), entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 80, dir);
+                    Abyss_Blast_Entity DeathBeam = new Abyss_Blast_Entity(ModEntities.ABYSS_BLAST.get(), entity.level, entity, entity.getX(), entity.getY(), entity.getZ(), (float) ((entity.yHeadRot + dir) * Math.PI / 180), (float) (-entity.getXRot() * Math.PI / 180), 80, dir, (float)CMConfig.AbyssBlastdamage,(float)CMConfig.AbyssBlastHpdamage);
                     entity.level.addFreshEntity(DeathBeam);
                 }
             }

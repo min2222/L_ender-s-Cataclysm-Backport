@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 
@@ -34,6 +33,7 @@ public class Void_Rune_Entity extends Entity {
     private LivingEntity caster;
     private UUID casterUuid;
     private static final EntityDataAccessor<Boolean> ACTIVATE = SynchedEntityData.defineId(Void_Rune_Entity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Void_Rune_Entity.class, EntityDataSerializers.FLOAT);
     public float activateProgress;
     public float prevactivateProgress;
 
@@ -41,16 +41,26 @@ public class Void_Rune_Entity extends Entity {
         super(p_i50170_1_, p_i50170_2_);
     }
 
-    public Void_Rune_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_, LivingEntity casterIn) {
+    public Void_Rune_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_,float damage, LivingEntity casterIn) {
         this(ModEntities.VOID_RUNE.get(), worldIn);
         this.warmupDelayTicks = p_i47276_9_;
         this.setCaster(casterIn);
+        this.setDamage(damage);
         this.setYRot(p_i47276_8_ * (180F / (float)Math.PI));
         this.setPos(x, y, z);
     }
 
     protected void defineSynchedData() {
         this.entityData.define(ACTIVATE, Boolean.valueOf(false));
+        this.entityData.define(DAMAGE, 0F);
+    }
+
+    public float getDamage() {
+        return entityData.get(DAMAGE);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DAMAGE, damage);
     }
 
     public void setCaster(@Nullable LivingEntity p_190549_1_) {
@@ -78,7 +88,7 @@ public class Void_Rune_Entity extends Entity {
         if (compound.hasUUID("Owner")) {
             this.casterUuid = compound.getUUID("Owner");
         }
-
+        this.setDamage(compound.getFloat("damage"));
     }
 
     protected void addAdditionalSaveData(CompoundTag compound) {
@@ -86,7 +96,7 @@ public class Void_Rune_Entity extends Entity {
         if (this.casterUuid != null) {
             compound.putUUID("Owner", this.casterUuid);
         }
-
+        compound.putFloat("damage", this.getDamage());
     }
 
     /**
@@ -170,12 +180,12 @@ public class Void_Rune_Entity extends Entity {
         if (Hitentity.isAlive() && !Hitentity.isInvulnerable() && Hitentity != livingentity) {
             if (this.tickCount % 5 == 0) {
                 if (livingentity == null) {
-                    Hitentity.hurt(DamageSource.MAGIC, (float) CMConfig.Voidrunedamage);
+                    Hitentity.hurt(DamageSource.MAGIC, this.getDamage());
                 } else {
                     if (livingentity.isAlliedTo(Hitentity)) {
                         return;
                     }
-                    Hitentity.hurt(DamageSource.indirectMagic(this, livingentity), (float) CMConfig.Voidrunedamage);
+                    Hitentity.hurt(DamageSource.indirectMagic(this, livingentity), this.getDamage());
                 }
             }
         }

@@ -45,6 +45,8 @@ public class Abyss_Orb_Entity extends Projectile {
     private UUID targetId;
 
     private static final EntityDataAccessor<Boolean> TRACKING = SynchedEntityData.defineId(Abyss_Orb_Entity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Abyss_Orb_Entity.class, EntityDataSerializers.FLOAT);
+    
     private int timer;
     private int lifetick;
 
@@ -70,9 +72,10 @@ public class Abyss_Orb_Entity extends Projectile {
 
     }
 
-    public Abyss_Orb_Entity(LivingEntity p_36827_, double p_36828_, double p_36829_, double p_36830_, Level p_36831_, LivingEntity finalTarget) {
+    public Abyss_Orb_Entity(LivingEntity p_36827_, double p_36828_, double p_36829_, double p_36830_, Level p_36831_,float damage, LivingEntity finalTarget) {
         this(ModEntities.ABYSS_ORB.get(), p_36827_.getX(), p_36827_.getY(), p_36827_.getZ(), p_36828_, p_36829_, p_36830_, p_36831_);
         this.setOwner(p_36827_);
+        this.setDamage(damage);
         this.finalTarget = finalTarget;
         this.setRot(p_36827_.getYRot(), p_36827_.getXRot());
     }
@@ -84,6 +87,15 @@ public class Abyss_Orb_Entity extends Projectile {
 
     protected void defineSynchedData() {
         this.entityData.define(TRACKING, false);
+        this.entityData.define(DAMAGE, 0F);
+    }
+
+    public float getDamage() {
+        return entityData.get(DAMAGE);
+    }
+
+    public void setDamage(float damage) {
+        entityData.set(DAMAGE, damage);
     }
 
     public boolean shouldRenderAtSqrDistance(double p_36837_) {
@@ -106,6 +118,7 @@ public class Abyss_Orb_Entity extends Projectile {
         p_37357_.put("power", this.newDoubleList(new double[]{this.xPower, this.yPower, this.zPower}));
         p_37357_.putInt("timer", timer);
         p_37357_.putBoolean("tracking", getTracking());
+        p_37357_.putFloat("damage", this.getDamage());
     }
 
     public void readAdditionalSaveData(CompoundTag p_37353_) {
@@ -123,6 +136,7 @@ public class Abyss_Orb_Entity extends Projectile {
         }
         timer = p_37353_.getInt("timer");
         this.setTracking(p_37353_.getBoolean("fired"));
+        this.setDamage(p_37353_.getFloat("damage"));
     }
 
     public void setTracking(boolean tracking) {
@@ -226,9 +240,9 @@ public class Abyss_Orb_Entity extends Projectile {
             boolean flag;
             if (entity1 instanceof LivingEntity) {
                 LivingEntity livingentity = (LivingEntity)entity1;
-                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), (float) CMConfig.AbyssOrbdamage);
+                flag = entity.hurt(DamageSource.indirectMobAttack(this, livingentity), (float) this.getDamage());
             } else {
-                flag = entity.hurt(DamageSource.MAGIC, (float) CMConfig.AbyssOrbdamage);
+                flag = entity.hurt(DamageSource.MAGIC, (float) this.getDamage());
             }
 
             if (flag && entity instanceof LivingEntity) {

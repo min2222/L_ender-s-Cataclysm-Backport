@@ -7,8 +7,10 @@ import javax.annotation.Nullable;
 import com.github.L_Ender.cataclysm.client.particle.TrackLightningParticle;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModParticle;
+import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -26,6 +28,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -35,6 +39,8 @@ import net.minecraftforge.network.PlayMessages;
 
 public class Phantom_Arrow_Entity extends AbstractArrow {
     private static final EntityDataAccessor<Integer> TRANSPARENCY  = SynchedEntityData.defineId(Phantom_Arrow_Entity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> BROKE  = SynchedEntityData.defineId(Phantom_Arrow_Entity.class, EntityDataSerializers.BOOLEAN);
+    private BlockPos hitPos;
     @Nullable
     private Entity finalTarget;
     @Nullable
@@ -57,7 +63,7 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
             this.pickup = Pickup.ALLOWED;
         }
     }
-    
+
     public Phantom_Arrow_Entity(Level worldIn, LivingEntity shooter) {
         this(ModEntities.PHANTOM_ARROW.get(), shooter.getX(), shooter.getEyeY() - (double)0.1F, shooter.getZ(), worldIn);
         this.setOwner(shooter);
@@ -69,6 +75,7 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(TRANSPARENCY, 0);
+        this.entityData.define(BROKE, false);
     }
 
     public Phantom_Arrow_Entity(PlayMessages.SpawnEntity spawnEntity, Level world) {
@@ -81,6 +88,14 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
 
     public void setTransparency(int trans) {
         this.entityData.set(TRANSPARENCY, trans);
+    }
+
+    public boolean getBroke() {
+        return this.entityData.get(BROKE);
+    }
+
+    public void setBroke(boolean trans) {
+        this.entityData.set(BROKE, trans);
     }
 
 
@@ -108,21 +123,33 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
                 }
             }
             setTransparency(this.life);
-            if (!inGround && !stopSeeking) {
-                if (this.finalTarget != null && this.finalTarget.isAlive() || (this.finalTarget instanceof Player && !this.finalTarget.isSpectator())) {
-                    float sqrt = (float) this.getDeltaMovement().length();
-                    if (sqrt > 1.25F) {
-                        if(this.tickCount > 2){
-                            if (finalTarget != null) {
-                                Vec3 arcVec = finalTarget.position().add(0, 0.65F * finalTarget.getBbHeight(), 0).subtract(this.position());
-                                if (arcVec.length() > finalTarget.getBbWidth()) {
-                                    this.setDeltaMovement(this.getDeltaMovement().scale(0.625F).add(arcVec.normalize().scale(0.4775F)));
+            if (!inGround ) {
+                if(!stopSeeking) {
+                    if (this.finalTarget != null && this.finalTarget.isAlive() || (this.finalTarget instanceof Player && !this.finalTarget.isSpectator())) {
+                        float sqrt = (float) this.getDeltaMovement().length();
+                        if (sqrt > 1.25F) {
+                            if (this.tickCount > 2) {
+                                if (finalTarget != null) {
+                                    Vec3 arcVec = finalTarget.position().add(0, 0.65F * finalTarget.getBbHeight(), 0).subtract(this.position());
+                                    if (arcVec.length() > finalTarget.getBbWidth()) {
+                                        this.setDeltaMovement(this.getDeltaMovement().scale(0.625F).add(arcVec.normalize().scale(0.4775F)));
 
+                                    }
                                 }
+
                             }
 
                         }
-
+                    }
+                }
+            }else{
+                if (hitPos != null && !this.getBroke()){
+                    BlockState state = level.getBlockState(hitPos);
+                    if (state != Blocks.AIR.defaultBlockState() && state.canEntityDestroy(this.level, hitPos, this) && !state.is(ModTag.MALEDICTUS_IMMUNE) ) {
+                       boolean flag = this.level.destroyBlock(hitPos, false, this);
+                       if(flag){
+                           setBroke(true);
+                       }
                     }
                 }
             }
@@ -149,6 +176,7 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
 
     }
 
+
     protected void onHitEntity(EntityHitResult p_37573_) {
         Entity entity = p_37573_.getEntity();
         float f = (float)this.getDeltaMovement().length();
@@ -160,8 +188,11 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
         if (this.isOnFire() && !flag) {
             entity.setSecondsOnFire(5);
         }
+        if(!this.getBroke()) {
+            setBroke(true);
+        }
+
         if (entity.hurt(damagesource, (float) this.getBaseDamage())) {
-        	entity.invulnerableTime = 0;
             if (flag) {
                 return;
             }
@@ -184,7 +215,6 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
                     this.spawnAtLocation(this.getPickupItem(), 0.1F);
                 }
             }
-
             this.discard();
         }
 
@@ -232,6 +262,7 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
 
          */
         super.onHitBlock(result);
+        hitPos = result.getBlockPos();
     }
 
     @Override

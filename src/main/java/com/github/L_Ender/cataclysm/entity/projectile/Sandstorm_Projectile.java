@@ -257,6 +257,7 @@ public class Sandstorm_Projectile extends Projectile {
         super.addAdditionalSaveData(p_36848_);
         p_36848_.put("power", this.newDoubleList(new double[]{this.xPower, this.yPower, this.zPower}));
         p_36848_.putInt("state", this.getState());
+        p_36848_.putFloat("damage", this.getDamage());
     }
 
     public void readAdditionalSaveData(CompoundTag p_36844_) {
@@ -270,6 +271,7 @@ public class Sandstorm_Projectile extends Projectile {
             }
         }
         this.setState(p_36844_.getInt("state"));
+        this.setDamage(p_36844_.getFloat("damage"));
     }
 
     public boolean isPickable() {

@@ -48,7 +48,6 @@ import com.github.L_Ender.cataclysm.entity.Pet.The_Baby_Leviathan_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Abyss_Mark_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Cm_Falling_Block_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Flame_Strike_Entity;
-import com.github.L_Ender.cataclysm.entity.effect.Hold_Attack_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Sandstorm_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.ScreenShake_Entity;
 import com.github.L_Ender.cataclysm.entity.effect.Void_Vortex_Entity;
@@ -312,14 +311,6 @@ public class ModEntities {
             .sized(0.0f, 0.0f)
             .setUpdateInterval(Integer.MAX_VALUE)
             .build(Cataclysm.MODID + ":screen_shake"));
-
-    public static final RegistryObject<EntityType<Hold_Attack_Entity>> HOLD_ATTACK = ENTITY_TYPE.register("hold_attack", () -> EntityType.Builder.<Hold_Attack_Entity>of(Hold_Attack_Entity::new, MobCategory.MISC)
-            .noSummon()
-            .sized(0.5f, 0.5f)
-            .clientTrackingRange(4)
-            .updateInterval(10)
-            .setShouldReceiveVelocityUpdates(true)
-            .build(Cataclysm.MODID + ":hold_attack"));
 
     public static final RegistryObject<EntityType<Cm_Falling_Block_Entity>> CM_FALLING_BLOCK = ENTITY_TYPE.register("cm_falling_block", () -> EntityType.Builder.<Cm_Falling_Block_Entity>of(Cm_Falling_Block_Entity::new, MobCategory.MISC)
             .sized(0.98F, 0.98F)

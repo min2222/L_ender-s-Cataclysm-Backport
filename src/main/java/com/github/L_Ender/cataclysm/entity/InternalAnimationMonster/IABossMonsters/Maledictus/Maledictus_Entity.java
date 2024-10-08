@@ -138,7 +138,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public static final EntityDataAccessor<Integer> RAGE = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.INT);
 
     public static final EntityDataAccessor<Integer> WEAPON = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.INT);
-    
+
     private static final EntityDataAccessor<BlockPos> TOMBSTONE_POS = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<Direction> TOMBSTONE_DIRECTION = SynchedEntityData.defineId(Maledictus_Entity.class, EntityDataSerializers.DIRECTION);
 
@@ -409,7 +409,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
         return MobType.UNDEAD;
 
     }
-    
+
     @Override
     public ItemEntity spawnAtLocation(ItemStack stack) {
         ItemEntity itementity = this.spawnAtLocation(stack,0.0f);
@@ -433,11 +433,10 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
             float reductionFactor = 1.0f - (reducedDamageTicks / 30.0f);
             damage *= reductionFactor;
         }
-
         if (this.destroyBlocksTick <= 0) {
             this.destroyBlocksTick = 20;
         }
-        
+
         boolean flag = super.hurt(source, damage);
         if (flag) {
             reducedDamageTicks = 30;
@@ -557,7 +556,8 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public void setFlying(boolean flying) {
         this.entityData.set(FLYING, flying);
     }
-    
+
+
     BlockPos getTombstonePos() {
         return this.entityData.get(TOMBSTONE_POS);
     }
@@ -574,6 +574,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public void setTombstoneDirection(Direction p_30220_) {
         this.entityData.set(TOMBSTONE_DIRECTION, p_30220_);
     }
+
 
     public int getRageMeter() {
         return this.entityData.get(RAGE);
@@ -829,7 +830,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public int deathtimer() {
         return 60;
     }
-    
+
     @Override
     protected void AfterDefeatBoss(@Nullable LivingEntity living) {
         if (!this.level.isClientSide) {
@@ -843,6 +844,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
             }
         }
     }
+
 
     public void addAdditionalSaveData(CompoundTag compound) {
         super.addAdditionalSaveData(compound);
@@ -906,7 +908,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
         LivingEntity target = this.getTarget();
         if (!this.level.isClientSide) {
             if (this.isFlying()) {
-                this.setNoGravity(!this.isOnGround());
+                this.setNoGravity(!this.onGround);
             } else {
                 this.setNoGravity(false);
             }
@@ -956,6 +958,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
     public void aiStep() {
         super.aiStep();
         if (this.getAttackState() == 1) {
+            flyingdestroy();
             if (this.attackTicks == 23) {
                 this.playSound(ModSounds.MALEDICTUS_MACE_SWING.get(), 1F, 1.0f);
             }
@@ -973,6 +976,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
         }
 
         if (this.getAttackState() == 3) {
+            flyingdestroy();
             if (this.attackTicks == 6) {
                 this.playSound(ModSounds.MALEDICTUS_LEAP.get(), 1F, 1.0f);
             }
@@ -982,7 +986,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
         }
 
         if (this.getAttackState() == 4) {
-            if (this.isOnGround() || !this.getFeetBlockState().getFluidState().isEmpty()) {
+            if (this.onGround || !this.getFeetBlockState().getFluidState().isEmpty()) {
                 this.setAttackState(5);
             }
         }
@@ -1043,17 +1047,19 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
             }
         }
         if (this.getAttackState() == 8) {
+            flyingdestroy();
             if (this.attackTicks == 23) {
                 this.playSound(ModSounds.MALEDICTUS_LEAP.get(), 1F, 1.0f);
             }
             if (this.attackTicks >= 65) {
-                if (this.isOnGround() || !this.getFeetBlockState().getFluidState().isEmpty()) {
+                if (this.onGround || !this.getFeetBlockState().getFluidState().isEmpty()) {
                     this.setAttackState(9);
                 }
             }
         }
 
         if (this.getAttackState() == 9) {
+            flyingdestroy();
             if (this.attackTicks == 2) {
                 this.playSound(ModSounds.MALEDICTUS_MACE_SWING.get(), 1F, 1.0f);
             }
@@ -1236,17 +1242,19 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
         }
 
         if (this.getAttackState() == 24) {
+            flyingdestroy();
             if (this.attackTicks == 23) {
                 this.playSound(ModSounds.MALEDICTUS_LEAP.get(), 1F, 1.0f);
             }
             if (this.attackTicks >= 60) {
-                if (this.isOnGround() || !this.getFeetBlockState().getFluidState().isEmpty()) {
+                if (this.onGround || !this.getFeetBlockState().getFluidState().isEmpty()) {
                     this.setAttackState(25);
                 }
             }
         }
 
         if (this.getAttackState() == 25) {
+            flyingdestroy();
             if (this.attackTicks == 4) {
                 this.playSound(ModSounds.PHANTOM_SPEAR.get(), 1.0f, 1F + this.getRandom().nextFloat() * 0.1F);
                 ScreenShake_Entity.ScreenShake(level, this.position(), 15, 0.3f, 0, 40);
@@ -1349,7 +1357,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
 
         if(this.getAttackState() == 32){
-            if (this.isOnGround() || !this.getFeetBlockState().getFluidState().isEmpty()) {
+            if (this.onGround || !this.getFeetBlockState().getFluidState().isEmpty()) {
                 this.setAttackState(33);
             }
             if (this.level.isClientSide) {
@@ -1387,37 +1395,68 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
     }
 
+
     private void blockbreak() {
         if (!this.isNoAi()) {
             if (!this.level.isClientSide) {
                 if (CMConfig.MaledictusBlockBreaking) {
-                    if (this.destroyBlocksTick > 0) {
-                        --this.destroyBlocksTick;
-                        if (this.destroyBlocksTick == 0 && net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-                            AABB aabb = this.getBoundingBox().inflate(0.5D);
-                            for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-                                BlockState blockstate = this.level.getBlockState(blockpos);
-                                if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
-                                    this.level.destroyBlock(blockpos, true, this);
-                                }
-                            }
-
-                        }
-                    }
+                    blockdestroy();
+                } else {
                     if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
-                        AABB aabb = this.getBoundingBox().inflate(0.2D,0.5D,0.2D);
-                        for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
-                            BlockState blockstate = this.level.getBlockState(blockpos);
-                            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && blockstate.is(ModTag.FROSTED_PRISON_CHANDELIER) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
-                                this.level.destroyBlock(blockpos, true, this);
-                            }
-                        }
-
+                        blockdestroy();
                     }
                 }
             }
         }
     }
+
+    private void flyingdestroy(){
+        if (!this.level.isClientSide) {
+            if (CMConfig.MaledictusBlockBreaking) {
+                blockdestroy2(0.35D,2.0D);
+            } else {
+                if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.level, this)) {
+                    blockdestroy2(0.35D,2.0D);
+                }
+            }
+        }
+    }
+
+    private void blockdestroy() {
+        if (this.destroyBlocksTick > 0) {
+            --this.destroyBlocksTick;
+            if (this.destroyBlocksTick == 0) {
+                AABB aabb = this.getBoundingBox().inflate(0.5D);
+                for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+                    BlockState blockstate = this.level.getBlockState(blockpos);
+                    if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                        this.level.destroyBlock(blockpos, true, this);
+                    }
+                }
+
+            }
+        }
+        AABB aabb = this.getBoundingBox().inflate(0.2D, 0.5D, 0.2D);
+        for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+            BlockState blockstate = this.level.getBlockState(blockpos);
+            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && blockstate.is(ModTag.FROSTED_PRISON_CHANDELIER) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                this.level.destroyBlock(blockpos, true, this);
+            }
+        }
+
+    }
+
+    private void blockdestroy2(double xz,double y) {
+        AABB aabb = this.getBoundingBox().inflate(xz, y, xz);
+        for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
+            BlockState blockstate = this.level.getBlockState(blockpos);
+            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                this.level.destroyBlock(blockpos, true, this);
+            }
+        }
+
+    }
+
 
     private void StrikeHalberd(int rune, float close,float radius,double range,int delay) {
         float angle2 = (0.01745329251F * this.yBodyRot);
@@ -1963,6 +2002,14 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
                         Phantom_Arrow_Entity throwntrident = new Phantom_Arrow_Entity(this.entity.level, this.entity, target);
                         throwntrident.setBaseDamage(CMConfig.MaledictusPhantomArrowbasedamage + CMConfig.MaledictusPhantomArrowbasedamage * this.entity.getRageMeter() * 0.05f);
+                        if (CMConfig.MaledictusBlockBreaking) {
+                            throwntrident.setBroke(false);
+                        } else {
+                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.level, this.entity)) {
+                                throwntrident.setBroke(true);
+
+                            }
+                        }
                         throwntrident.shoot(x, d2 + distance * (double) 0.15F, z, 1.8F, 1);
                         this.entity.playSound(SoundEvents.CROSSBOW_SHOOT, 1.0F, 1.0F / (this.entity.getRandom().nextFloat() * 0.4F + 0.8F));
                         this.entity.level.addFreshEntity(throwntrident);
@@ -2034,7 +2081,8 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
                         z = Math.sin(dodgeYaw);
                     }
 
-                    this.entity.setDeltaMovement(x * -r, 0.9, z * -r);
+                    double d1 = target.getY() - this.entity.getY();
+                    this.entity.setDeltaMovement(x * -r, 0.9 + Mth.clamp(d1 * 0.075, 0.0, 7.0), z * -r);
                 } else {
                     this.entity.setDeltaMovement(0, 0.9, 0);
                 }
@@ -2064,6 +2112,13 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
                         Phantom_Arrow_Entity throwntrident = new Phantom_Arrow_Entity(this.entity.level, this.entity, target);
                         throwntrident.setBaseDamage(CMConfig.MaledictusPhantomArrowbasedamage + CMConfig.MaledictusPhantomArrowbasedamage * this.entity.getRageMeter() * 0.05f);
+                        if (CMConfig.MaledictusBlockBreaking) {
+                            throwntrident.setBroke(false);
+                        } else {
+                            if (net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.entity.level, this.entity)) {
+                                throwntrident.setBroke(true);
+                            }
+                        }
                         throwntrident.shoot(x, d2 + distance * (double) 0.15F, z, 1.5F, 1);
                         this.entity.playSound(SoundEvents.CROSSBOW_SHOOT, 1.0F, 1.0F / (this.entity.getRandom().nextFloat() * 0.4F + 0.8F));
                         this.entity.level.addFreshEntity(throwntrident);
@@ -2173,6 +2228,13 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
             }
             if (this.entity.attackTicks == 25) {
                 this.entity.setDeltaMovement(0, 0.9, 0);
+
+                if(target !=null) {
+                    double d1 = target.getY() - this.entity.getY();
+                    this.entity.setDeltaMovement(0, 0.9 + Mth.clamp(d1 * 0.075, 0.0, 7.0), 0);
+                }else{
+                    this.entity.setDeltaMovement(0, 0.9, 0);
+                }
                 entity.setFlying(true);
             }
             if (this.entity.attackTicks == attackstrike) {
@@ -2345,7 +2407,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
             }
 
             if (this.entity.getAttackState() == 13) {
-                if (entity.attackTicks == 34 && (entity.isOnGround() || entity.isInLava() || entity.isInWater())) {
+                if (entity.attackTicks == 34 && (entity.onGround || entity.isInLava() || entity.isInWater())) {
                     float speed = -1.7f;
                     float dodgeYaw = (float) Math.toRadians(entity.getYRot() + 90);
                     Vec3 m = entity.getDeltaMovement().add(speed * Math.cos(dodgeYaw), 0, speed * Math.sin(dodgeYaw));
@@ -2430,7 +2492,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
                 }
             }
 
-            if (backsteptick > 0 && entity.attackTicks == backsteptick && (entity.isOnGround() || entity.isInLava() || entity.isInWater())) {
+            if (backsteptick > 0 && entity.attackTicks == backsteptick && (entity.onGround || entity.isInLava() || entity.isInWater())) {
                 float speed = -1.7f;
                 float dodgeYaw = (float) Math.toRadians(entity.getYRot() + 90);
                 Vec3 m = entity.getDeltaMovement().add(speed * Math.cos(dodgeYaw), 0, speed * Math.sin(dodgeYaw));
@@ -2618,7 +2680,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
 
         @Override
         public void tick() {
-            if(this.entity.isOnGround()){
+            if(this.entity.onGround){
                 Vec3 vector3d = entity.getDeltaMovement();
                 float f = entity.getYRot() * ((float)Math.PI / 180F);
                 Vec3 vector3d1 = new Vec3(-Mth.sin(f), entity.getDeltaMovement().y, Mth.cos(f)).scale(0.8D).add(vector3d.scale(0.8D));

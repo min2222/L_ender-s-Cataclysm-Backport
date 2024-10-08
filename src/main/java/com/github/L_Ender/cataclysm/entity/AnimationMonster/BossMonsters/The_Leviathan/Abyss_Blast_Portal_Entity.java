@@ -32,19 +32,22 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 	public float activateProgress;
 	public float prevactivateProgress;
 	private static final EntityDataAccessor<Boolean> ACTIVATE = SynchedEntityData.defineId(Abyss_Blast_Portal_Entity.class, EntityDataSerializers.BOOLEAN);
-
+	private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(Abyss_Blast_Portal_Entity.class, EntityDataSerializers.FLOAT);
+	private static final EntityDataAccessor<Float> HPDAMAGE = SynchedEntityData.defineId(Abyss_Blast_Portal_Entity.class, EntityDataSerializers.FLOAT);
 
 
 	public Abyss_Blast_Portal_Entity(EntityType<? extends Entity> type, Level level) {
 		super(type, level);
 	}
 
-	public Abyss_Blast_Portal_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_ ,LivingEntity casterIn) {
+	public Abyss_Blast_Portal_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, int p_i47276_9_,float damage,float hpdamage ,LivingEntity casterIn) {
 		this(ModEntities.ABYSS_BLAST_PORTAL.get(), worldIn);
 		this.warmupDelayTicks = p_i47276_9_;
 
 		this.setCaster(casterIn);
 		this.setYRot(p_i47276_8_ * (180F / (float)Math.PI));
+		this.setDamage(damage);
+		this.setHpDamage(hpdamage);
 		this.setPos(x, y, z);
 	}
 
@@ -98,10 +101,10 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 			}
 			if (this.warmupDelayTicks == -22) {
 				if (caster != null) {
-					Portal_Abyss_Blast_Entity DeathBeam1 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level, this.getCaster(), this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90);
+					Portal_Abyss_Blast_Entity DeathBeam1 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level, this.getCaster(), this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90, 1,0);
 					this.level.addFreshEntity(DeathBeam1);
 				}else{
-					Portal_Abyss_Blast_Entity DeathBeam2 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level, this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90);
+					Portal_Abyss_Blast_Entity DeathBeam2 = new Portal_Abyss_Blast_Entity(ModEntities.PORTAL_ABYSS_BLAST.get(), this.level, this.getX(), this.getY(), this.getZ(), (float) ((this.getYRot() - 90) * Math.PI / 180), (float) (90 * Math.PI / 180), laserdurations, 90, 2, 1);
 					this.level.addFreshEntity(DeathBeam2);
 				}
 			}
@@ -135,9 +138,25 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 	@Override
 	protected void defineSynchedData() {
 		this.entityData.define(ACTIVATE, Boolean.valueOf(false));
-
+		this.entityData.define(DAMAGE, 0F);
+		this.entityData.define(HPDAMAGE, 0F);
 	}
 
+	public float getDamage() {
+		return entityData.get(DAMAGE);
+	}
+
+	public void setDamage(float damage) {
+		entityData.set(DAMAGE, damage);
+	}
+
+	public float getHpDamage() {
+		return entityData.get(HPDAMAGE);
+	}
+
+	public void setHpDamage(float damage) {
+		entityData.set(HPDAMAGE, damage);
+	}
 
 	public boolean isActivate() {
 		return this.entityData.get(ACTIVATE);
@@ -153,7 +172,8 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 		if (compound.hasUUID("Owner")) {
 			this.casterUuid = compound.getUUID("Owner");
 		}
-
+		this.setDamage(compound.getFloat("damage"));
+		this.setHpDamage(compound.getFloat("Hpdamage"));
 	}
 
 	protected void addAdditionalSaveData(CompoundTag compound) {
@@ -161,7 +181,8 @@ public class Abyss_Blast_Portal_Entity extends Entity {
 		if (this.casterUuid != null) {
 			compound.putUUID("Owner", this.casterUuid);
 		}
-
+		compound.putFloat("damage", this.getDamage());
+		compound.putFloat("Hpdamage", this.getHpDamage());
 	}
 
 	@OnlyIn(Dist.CLIENT)

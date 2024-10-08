@@ -5,12 +5,12 @@ import java.util.Map;
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.blocks.Abstract_Cataclysm_Skull_Block;
 import com.github.L_Ender.cataclysm.blocks.Cataclysm_Skull_Block;
-import com.github.L_Ender.cataclysm.client.model.block.Cataclysm_Skull_Model_Base;
 import com.github.L_Ender.cataclysm.client.model.block.Abyssal_Egg_Model;
 import com.github.L_Ender.cataclysm.client.model.block.Altar_of_Abyss_Model;
 import com.github.L_Ender.cataclysm.client.model.block.Altar_of_Amethyst_Model;
 import com.github.L_Ender.cataclysm.client.model.block.Altar_of_Fire_Model;
 import com.github.L_Ender.cataclysm.client.model.block.Altar_of_Void_Model;
+import com.github.L_Ender.cataclysm.client.model.block.Cataclysm_Skull_Model_Base;
 import com.github.L_Ender.cataclysm.client.model.block.EMP_Model;
 import com.github.L_Ender.cataclysm.client.model.block.Mechanical_Anvil_Model;
 import com.github.L_Ender.cataclysm.client.model.entity.Coral_Bardiche_Model;
@@ -18,17 +18,17 @@ import com.github.L_Ender.cataclysm.client.model.entity.Coral_Spear_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Ancient_Spear_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Black_Steel_Targe_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Bulwark_of_the_flame_Model;
+import com.github.L_Ender.cataclysm.client.model.item.Cursed_Bow_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Gauntlet_of_Bulwark_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Gauntlet_of_Guard_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Incinerator_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Laser_Gatling_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Meat_Shredder_Model;
+import com.github.L_Ender.cataclysm.client.model.item.Soul_render_Model;
+import com.github.L_Ender.cataclysm.client.model.item.The_Annihilator_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Tidal_Claws_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Void_Forge_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Wither_Assault_SHoulder_Weapon_Model;
-import com.github.L_Ender.cataclysm.client.model.item.Cursed_Bow_Model;
-import com.github.L_Ender.cataclysm.client.model.item.Soul_render_Model;
-import com.github.L_Ender.cataclysm.client.model.item.The_Annihilator_Model;
 import com.github.L_Ender.cataclysm.client.render.blockentity.Cataclysm_Skull_Block_Renderer;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModItems;
@@ -101,6 +101,8 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final ResourceLocation BLACK_STEEL_TARGE_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/black_steel_targe.png");
     private static final ResourceLocation GAUNTLET_OF_GUARD_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_guard.png");
     private static final ResourceLocation GAUNTLET_OF_BULWARK_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_bulwark.png");
+    private static final ResourceLocation GAUNTLET_OF_GUARD_LAYER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_guard_layer.png");
+    private static final ResourceLocation GAUNTLET_OF_BULWARK_LAYER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_bulwark_layer.png");
     private static final ResourceLocation THE_INCINERATOR_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/the_incinerator.png");
     private static final ResourceLocation VOID_FORGE_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/void_forge.png");
     private static final ResourceLocation VOID_FORGE_LAYER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/void_forge_layer.png");
@@ -195,16 +197,20 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
-            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(GAUNTLET_OF_GUARD_TEXTURE), false, itemStackIn.hasFoil());
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(GAUNTLET_OF_GUARD_TEXTURE), false, itemStackIn.hasFoil());
             GAUNTLET_OF_GUARD_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexconsumer2 = ItemRenderer.getArmorFoilBuffer(bufferIn, CMRenderTypes.eyes(GAUNTLET_OF_GUARD_LAYER_TEXTURE), false, itemStackIn.hasFoil());
+            GAUNTLET_OF_GUARD_MODEL.renderToBuffer(matrixStackIn, vertexconsumer2, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
         if (itemStackIn.getItem() == ModItems.GAUNTLET_OF_BULWARK.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
             matrixStackIn.scale(1.0F, -1.0F, -1.0F);
-            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(GAUNTLET_OF_BULWARK_TEXTURE), false, itemStackIn.hasFoil());
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(GAUNTLET_OF_BULWARK_TEXTURE), false, itemStackIn.hasFoil());
             GAUNTLET_OF_BULWARK_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexconsumer2 = ItemRenderer.getArmorFoilBuffer(bufferIn, CMRenderTypes.eyes(GAUNTLET_OF_BULWARK_LAYER_TEXTURE), false, itemStackIn.hasFoil());
+            GAUNTLET_OF_BULWARK_MODEL.renderToBuffer(matrixStackIn, vertexconsumer2, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
         if (itemStackIn.getItem() == ModItems.THE_INCINERATOR.get()) {
