@@ -17,7 +17,6 @@ import com.github.L_Ender.cataclysm.entity.etc.IHoldEntity;
 import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.etc.path.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.projectile.Axe_Blade_Entity;
-import com.github.L_Ender.cataclysm.entity.projectile.Wither_Missile_Entity;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModItems;
@@ -400,7 +399,7 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
                     float rad = (float) Math.toRadians(angle);
                     double dx = -Math.sin(rad);
                     double dz = Math.cos(rad);
-                    Axe_Blade_Entity witherskull = new Axe_Blade_Entity(this, dx, 0, dz, this.level,(float) CMConfig.HarbingerWitherMissiledamage,angle);
+                    Axe_Blade_Entity witherskull = new Axe_Blade_Entity(this, dx, 0, dz, this.level,(float) CMConfig.AptrgangrAxeBladeDamage,angle);
                     double spawnX = this.getX() + vecX * 5;
                     double spawnY = this.getY(0.15D);
                     double spawnZ = this.getZ() + vecZ * 5;
@@ -447,25 +446,6 @@ public class Aptrgangr_Entity extends Internal_Animation_Monster implements IHol
         }
 
     }
-
-    private void doSpawnBlade(int count, float offset) {
-        Vec3 looking = this.getLookAngle();
-        for (int i = -count; i < count; i++) {
-            SpawnBlade(looking.yRot(i * offset));
-        }
-    }
-
-    private void SpawnBlade(Vec3 vec3) {
-        float f0 = (float) Mth.atan2(vec3.z, vec3.x);
-        double x = this.getX() + Mth.cos(f0) * 2.5D;
-        double y = this.getY() + 0.5D;
-        double z = this.getZ() + Mth.sin(f0) * 2.5D;
-
-        Wither_Missile_Entity witherskull = new Wither_Missile_Entity(this, x, y, z, this.level,(float) CMConfig.HarbingerWitherMissiledamage);
-        this.level.addFreshEntity(witherskull);
-
-    }
-
 
     private void Makeparticle(float size,float vec, float math) {
         if (this.level.isClientSide) {

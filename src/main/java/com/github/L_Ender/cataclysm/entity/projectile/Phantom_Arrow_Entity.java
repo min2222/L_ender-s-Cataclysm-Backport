@@ -7,10 +7,8 @@ import javax.annotation.Nullable;
 import com.github.L_Ender.cataclysm.client.particle.TrackLightningParticle;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModParticle;
-import com.github.L_Ender.cataclysm.init.ModTag;
 import com.github.L_Ender.cataclysm.util.CMDamageTypes;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,8 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -39,8 +35,6 @@ import net.minecraftforge.network.PlayMessages;
 
 public class Phantom_Arrow_Entity extends AbstractArrow {
     private static final EntityDataAccessor<Integer> TRANSPARENCY  = SynchedEntityData.defineId(Phantom_Arrow_Entity.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Boolean> BROKE  = SynchedEntityData.defineId(Phantom_Arrow_Entity.class, EntityDataSerializers.BOOLEAN);
-    private BlockPos hitPos;
     @Nullable
     private Entity finalTarget;
     @Nullable
@@ -75,7 +69,6 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(TRANSPARENCY, 0);
-        this.entityData.define(BROKE, false);
     }
 
     public Phantom_Arrow_Entity(PlayMessages.SpawnEntity spawnEntity, Level world) {
@@ -89,15 +82,6 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
     public void setTransparency(int trans) {
         this.entityData.set(TRANSPARENCY, trans);
     }
-
-    public boolean getBroke() {
-        return this.entityData.get(BROKE);
-    }
-
-    public void setBroke(boolean trans) {
-        this.entityData.set(BROKE, trans);
-    }
-
 
     public void addAdditionalSaveData(CompoundTag p_37357_) {
         super.addAdditionalSaveData(p_37357_);
@@ -142,16 +126,6 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
                         }
                     }
                 }
-            }else{
-                if (hitPos != null && !this.getBroke()){
-                    BlockState state = level.getBlockState(hitPos);
-                    if (state != Blocks.AIR.defaultBlockState() && state.canEntityDestroy(this.level, hitPos, this) && !state.is(ModTag.MALEDICTUS_IMMUNE) ) {
-                       boolean flag = this.level.destroyBlock(hitPos, false, this);
-                       if(flag){
-                           setBroke(true);
-                       }
-                    }
-                }
             }
         }else{
             Vec3 center = this.position().add(this.getDeltaMovement());
@@ -187,9 +161,6 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
         this.stopSeeking = true;
         if (this.isOnFire() && !flag) {
             entity.setSecondsOnFire(5);
-        }
-        if(!this.getBroke()) {
-            setBroke(true);
         }
 
         if (entity.hurt(damagesource, (float) this.getBaseDamage())) {
@@ -262,7 +233,6 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
 
          */
         super.onHitBlock(result);
-        hitPos = result.getBlockPos();
     }
 
     @Override
