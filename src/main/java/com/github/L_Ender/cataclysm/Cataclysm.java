@@ -15,6 +15,7 @@ import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModGroup;
 import com.github.L_Ender.cataclysm.init.ModItems;
+import com.github.L_Ender.cataclysm.init.ModJigsaw;
 import com.github.L_Ender.cataclysm.init.ModMenu;
 import com.github.L_Ender.cataclysm.init.ModParticle;
 import com.github.L_Ender.cataclysm.init.ModRecipeSerializers;
@@ -191,6 +192,7 @@ public class Cataclysm {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageRenderRush.class, MessageRenderRush::encode, MessageRenderRush::new, MessageRenderRush.Handler::onMessage);
 
         event.enqueueWork(ModItems::initDispenser);
+        event.enqueueWork(ModJigsaw::registerJigsawElements);
     }
 }
 

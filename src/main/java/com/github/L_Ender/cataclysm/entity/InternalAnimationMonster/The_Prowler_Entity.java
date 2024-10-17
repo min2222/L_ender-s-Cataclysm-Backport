@@ -1,10 +1,9 @@
-package com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters;
+package com.github.L_Ender.cataclysm.entity.InternalAnimationMonster;
 
 import java.util.EnumSet;
 import java.util.List;
 
 import com.github.L_Ender.cataclysm.config.CMConfig;
-import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Internal_Animation_Monster;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalAttackGoal;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalMoveGoal;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.AI.InternalStateGoal;
@@ -12,6 +11,7 @@ import com.github.L_Ender.cataclysm.entity.etc.SmartBodyHelper2;
 import com.github.L_Ender.cataclysm.entity.etc.path.CMPathNavigateGround;
 import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Wither_Homing_Missile_Entity;
+import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.cataclysm.init.ModTag;
@@ -24,6 +24,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -56,7 +57,8 @@ public class The_Prowler_Entity extends Internal_Animation_Monster {
     public static final int LASER_COOLDOWN = 200;
     private int spin_cooldown = 0;
     private int laser_cooldown = 100;
-
+    public static final int NATURE_HEAL_COOLDOWN = 60;
+    private int timeWithoutTarget;
     public The_Prowler_Entity(EntityType entity, Level world) {
         super(entity, world);
         this.xpReward = 20;
@@ -257,6 +259,20 @@ public class The_Prowler_Entity extends Internal_Animation_Monster {
         super.tick();
         if (this.level.isClientSide()) {
             this.animateWhen(this.idleAnimationState, this.getAttackState() != 1, this.tickCount);
+        }else{
+            if (timeWithoutTarget > 0) timeWithoutTarget--;
+            LivingEntity target = this.getTarget();
+            if (target != null) {
+                timeWithoutTarget = NATURE_HEAL_COOLDOWN;
+            }
+
+            if (timeWithoutTarget <= 0) {
+                if (!isNoAi() ) {
+                    if (this.tickCount % 20 == 0) {
+                        this.heal(this.getMaxHealth()/ 10);
+                    }
+                }
+            }
         }
         if (laser_cooldown > 0) laser_cooldown--;
         if (spin_cooldown > 0) spin_cooldown--;
@@ -418,6 +434,19 @@ public class The_Prowler_Entity extends Internal_Animation_Monster {
 
     protected SoundEvent getAmbientSound() {
         return ModSounds.PROWLER_IDLE.get();
+    }
+    
+    public boolean canBeAffected(MobEffectInstance p_34192_) {
+        return p_34192_.getEffect() != ModEffect.EFFECTSTUN.get() && p_34192_.getEffect() != ModEffect.EFFECTABYSSAL_CURSE.get() && super.canBeAffected(p_34192_);
+    }
+
+
+    public boolean removeWhenFarAway(double p_21542_) {
+        return false;
+    }
+
+    protected boolean shouldDespawnInPeaceful() {
+        return false;
     }
 
     @Override

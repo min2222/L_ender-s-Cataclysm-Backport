@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.AI.SimpleAnimationGoal;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Prowler_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.The_Prowler_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.init.ModSounds;
 import com.github.L_Ender.lionfishapi.server.animation.Animation;

@@ -16,7 +16,6 @@ import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Ignited
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Nameless_Sorcerer_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Netherite_Monstrosity_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Harbinger_Entity;
-import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Prowler_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Blast_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Blast_Portal_Entity;
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.The_Leviathan.Abyss_Mine_Entity;
@@ -36,6 +35,7 @@ import com.github.L_Ender.cataclysm.entity.Deepling.Lionfish_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Coralssus_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Ignited_Berserker_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Kobolediator_Entity;
+import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.The_Prowler_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Wadjet_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Aptrgangr_Entity;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Draugr_Entity;
