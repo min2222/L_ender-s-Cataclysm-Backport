@@ -128,7 +128,7 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         super(entity, world);
         this.xpReward = 500;
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, -1.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         setConfigattribute(this, CMConfig.AncientRemnantHealthMultiplier, CMConfig.AncientRemnantDamageMultiplier);
     }
     
@@ -652,7 +652,7 @@ public class Ancient_Remnant_Entity extends IABoss_monster {
         AABB aabb = this.getBoundingBox().inflate(inflate, 0.2D, inflate);
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = this.level.getBlockState(blockpos);
-            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.REMNANT_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+            if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.REMNANT_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                 if (random.nextInt(6) == 0 && !blockstate.hasBlockEntity()) {
                     Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
                     flag = this.level.destroyBlock(blockpos, false, this) || flag;

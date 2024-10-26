@@ -23,7 +23,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
@@ -142,7 +141,7 @@ public class The_Leviathan_Tongue_Entity extends Entity {
             AABB aabb = this.getBoundingBox().inflate(x, y, z);
             for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(aabb.minY), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
                 BlockState blockstate = this.level.getBlockState(blockpos);
-                if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE)) {
+                if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE)) {
                     flag = this.level.destroyBlock(blockpos, false, this) || flag;
                 }
             }

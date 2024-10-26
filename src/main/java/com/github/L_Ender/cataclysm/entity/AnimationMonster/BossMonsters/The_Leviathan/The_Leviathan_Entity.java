@@ -76,7 +76,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
@@ -995,7 +994,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
         AABB aabb = this.getBoundingBox().inflate(x, y, z);
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = this.level.getBlockState(blockpos);
-            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+            if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                 flag = this.level.destroyBlock(blockpos, false, this) || flag;
             }
         }
@@ -1011,7 +1010,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
         AABB aabb = this.getBoundingBox().inflate(0.2D);
         for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = level.getBlockState(pos);
-            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, pos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE)) {
+            if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, pos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE)) {
                 if (random.nextInt(5) == 0 && !blockstate.hasBlockEntity()) {
                     Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, blockstate, 20);
                     flag = this.level.destroyBlock(pos, false, this) || flag;
@@ -1035,7 +1034,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
         double yblockbreak = this.isInWater() ? aabb.minY : this.getY();
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(yblockbreak), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = this.level.getBlockState(blockpos);
-            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+            if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.LEVIATHAN_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                 flag = this.level.destroyBlock(blockpos, false, this) || flag;
             }
         }

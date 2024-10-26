@@ -1429,7 +1429,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
                 AABB aabb = this.getBoundingBox().inflate(0.5D);
                 for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
                     BlockState blockstate = this.level.getBlockState(blockpos);
-                    if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                    if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                         this.level.destroyBlock(blockpos, true, this);
                     }
                 }
@@ -1439,7 +1439,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
         AABB aabb = this.getBoundingBox().inflate(0.2D, 0.5D, 0.2D);
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = this.level.getBlockState(blockpos);
-            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && blockstate.is(ModTag.FROSTED_PRISON_CHANDELIER) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+            if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && blockstate.is(ModTag.FROSTED_PRISON_CHANDELIER) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                 this.level.destroyBlock(blockpos, true, this);
             }
         }
@@ -1450,7 +1450,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
         AABB aabb = this.getBoundingBox().inflate(xz, y, xz);
         for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
             BlockState blockstate = this.level.getBlockState(blockpos);
-            if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+            if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && !blockstate.is(ModTag.MALEDICTUS_IMMUNE) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                 this.level.destroyBlock(blockpos, true, this);
             }
         }

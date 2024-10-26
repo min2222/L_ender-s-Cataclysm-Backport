@@ -60,7 +60,6 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
@@ -515,7 +514,7 @@ public class Coralssus_Entity extends Internal_Animation_Monster implements Vari
             AABB aabb = this.getBoundingBox().inflate(1.5D, 1.5D, 1.5D);
             for (BlockPos blockpos : BlockPos.betweenClosed(Mth.floor(aabb.minX), Mth.floor(this.getY()), Mth.floor(aabb.minZ), Mth.floor(aabb.maxX), Mth.floor(aabb.maxY), Mth.floor(aabb.maxZ))) {
                 BlockState blockstate = this.level.getBlockState(blockpos);
-                if (blockstate != Blocks.AIR.defaultBlockState() && blockstate.canEntityDestroy(this.level, blockpos, this) && blockstate.is(ModTag.CORALSSUS_BREAK) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
+                if (!blockstate.isAir() && blockstate.canEntityDestroy(this.level, blockpos, this) && blockstate.is(ModTag.CORALSSUS_BREAK) && net.minecraftforge.event.ForgeEventFactory.onEntityDestroyBlock(this, blockpos, blockstate)) {
                     if (random.nextInt(6) == 0 && !blockstate.hasBlockEntity()) {
                         Cm_Falling_Block_Entity fallingBlockEntity = new Cm_Falling_Block_Entity(level, blockpos.getX() + 0.5D, blockpos.getY() + 0.5D, blockpos.getZ() + 0.5D, blockstate, 20);
                         flag = this.level.destroyBlock(blockpos, false, this) || flag;
