@@ -2,15 +2,13 @@ package com.github.L_Ender.cataclysm.items;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.init.ModItems;
+
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
-
-import java.util.List;
-import java.util.function.Consumer;
 
 public class Black_Steel_Targe extends ShieldItem {
 

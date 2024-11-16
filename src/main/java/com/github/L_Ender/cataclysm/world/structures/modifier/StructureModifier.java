@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.world.structures.modifier;
 
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.structures.jisaw.PieceEntry;
 import com.github.L_Ender.cataclysm.structures.jisaw.condition.StructureCondition;
 import com.github.L_Ender.cataclysm.structures.jisaw.condition.StructureConditionType;
@@ -10,8 +12,6 @@ import com.github.L_Ender.cataclysm.world.structures.targetselector.StructureTar
 import com.github.L_Ender.cataclysm.world.structures.targetselector.StructureTargetSelectorType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-
-import java.util.List;
 
 /**
  */

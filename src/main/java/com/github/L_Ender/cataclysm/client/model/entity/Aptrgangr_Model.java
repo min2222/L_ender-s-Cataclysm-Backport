@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.client.model.entity;
 
 import com.github.L_Ender.cataclysm.client.animation.Aptrgangr_Animation;
-import com.github.L_Ender.cataclysm.client.animation.Kobolediator_Animation;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.Draugar.Aptrgangr_Entity;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;

@@ -4,13 +4,11 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 
 
 import com.github.L_Ender.cataclysm.client.animation.Axe_blade_Animation;
-import com.github.L_Ender.cataclysm.client.animation.Phantom_Halberd_Animation;
 import com.github.L_Ender.cataclysm.entity.projectile.Axe_Blade_Entity;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.entity.Entity;
 
 public class Axe_Blade_Model extends AdvancedEntityModel<Axe_Blade_Entity> {
 	private final AdvancedModelBox root;

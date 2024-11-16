@@ -9,6 +9,7 @@ import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.world.entity.Entity;
 
 public class Black_Steel_Targe_Model extends AdvancedEntityModel<Entity> {

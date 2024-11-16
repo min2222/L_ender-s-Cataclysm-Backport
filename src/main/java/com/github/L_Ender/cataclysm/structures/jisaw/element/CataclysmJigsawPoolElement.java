@@ -1,5 +1,9 @@
 package com.github.L_Ender.cataclysm.structures.jisaw.element;
 
+import java.util.Optional;
+
+import javax.annotation.ParametersAreNonnullByDefault;
+
 import com.github.L_Ender.cataclysm.structures.jisaw.condition.StructureCondition;
 import com.github.L_Ender.cataclysm.structures.jisaw.condition.StructureConditionType;
 import com.github.L_Ender.cataclysm.structures.jisaw.context.StructureContext;
@@ -7,13 +11,11 @@ import com.github.L_Ender.cataclysm.world.structures.terrainadaptation.EnhancedT
 import com.github.L_Ender.cataclysm.world.structures.terrainadaptation.EnhancedTerrainAdaptationType;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.MethodsReturnNonnullByDefault;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.Optional;
 
 /**
  * Custom {@link StructurePoolElement} with support for many additional settings.

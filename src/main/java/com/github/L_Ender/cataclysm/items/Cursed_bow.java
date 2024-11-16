@@ -144,24 +144,18 @@ public class Cursed_bow extends ProjectileWeaponItem  {
         double hitDist = 0;
 
         for (Entity possibleEntity : possibleList) {
-
-            if (possibleEntity.isPickable()) {
-                float borderSize = possibleEntity.getPickRadius();
-                AABB collisionBB = possibleEntity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
-                Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
-
-                if (collisionBB.contains(srcVec)) {
-                    if (0.0D < hitDist || hitDist == 0.0D) {
-                        pointedEntity = possibleEntity;
-                        hitDist = 0.0D;
-                    }
-                } else if (interceptPos.isPresent()) {
-                    double possibleDist = srcVec.distanceTo(interceptPos.get());
-
-                    if (possibleDist < hitDist || hitDist == 0.0D) {
-                        pointedEntity = possibleEntity;
-                        hitDist = possibleDist;
-                    }
+            AABB collisionBB = possibleEntity.getBoundingBox().inflate(1.0d, 1.0d, 1.0d);
+            Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
+            if (collisionBB.contains(srcVec)) {
+                if (0.0D < hitDist || hitDist == 0.0D) {
+                    pointedEntity = possibleEntity;
+                    hitDist = 0.0D;
+                }
+            } else if (interceptPos.isPresent()) {
+                double possibleDist = srcVec.distanceTo(interceptPos.get());
+                if (possibleDist < hitDist || hitDist == 0.0D) {
+                    pointedEntity = possibleEntity;
+                    hitDist = possibleDist;
                 }
             }
         }

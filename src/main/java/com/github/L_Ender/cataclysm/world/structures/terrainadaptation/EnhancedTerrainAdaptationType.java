@@ -1,13 +1,14 @@
 package com.github.L_Ender.cataclysm.world.structures.terrainadaptation;
 
-import com.github.L_Ender.cataclysm.Cataclysm;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import net.minecraft.resources.ResourceLocation;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import com.github.L_Ender.cataclysm.Cataclysm;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+
+import net.minecraft.resources.ResourceLocation;
 
 /**
  * Specifies the type of a specific {@link EnhancedTerrainAdaptation}.

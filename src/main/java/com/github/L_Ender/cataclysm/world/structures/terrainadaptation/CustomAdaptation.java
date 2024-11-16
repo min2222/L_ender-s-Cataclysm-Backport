@@ -2,6 +2,7 @@ package com.github.L_Ender.cataclysm.world.structures.terrainadaptation;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.util.ExtraCodecs;
 
 public class CustomAdaptation extends EnhancedTerrainAdaptation {

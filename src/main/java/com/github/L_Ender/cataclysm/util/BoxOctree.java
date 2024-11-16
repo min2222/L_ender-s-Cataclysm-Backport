@@ -1,11 +1,11 @@
 package com.github.L_Ender.cataclysm.util;
 
 
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.phys.AABB;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import net.minecraft.core.Vec3i;
+import net.minecraft.world.phys.AABB;
 
 public class BoxOctree {
     private static final int subdivideThreshold = 10;

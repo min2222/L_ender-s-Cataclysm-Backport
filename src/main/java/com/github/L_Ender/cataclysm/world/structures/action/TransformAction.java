@@ -1,5 +1,7 @@
 package com.github.L_Ender.cataclysm.world.structures.action;
 
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.structures.jisaw.PieceEntry;
 import com.github.L_Ender.cataclysm.structures.jisaw.context.StructureContext;
@@ -21,8 +23,6 @@ import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
 import net.minecraft.world.phys.AABB;
-
-import java.util.List;
 
 /**
  * Transforms target piece(s) into specified piece.

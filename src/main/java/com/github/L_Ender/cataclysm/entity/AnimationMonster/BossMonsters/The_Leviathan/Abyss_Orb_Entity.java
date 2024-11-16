@@ -5,7 +5,6 @@ import java.util.UUID;
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
-import com.github.L_Ender.cataclysm.config.CMConfig;
 import com.github.L_Ender.cataclysm.init.ModEffect;
 import com.github.L_Ender.cataclysm.init.ModEntities;
 

@@ -5,8 +5,6 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.entity.etc.IHoldEntity;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.syncher.EntityDataAccessor;

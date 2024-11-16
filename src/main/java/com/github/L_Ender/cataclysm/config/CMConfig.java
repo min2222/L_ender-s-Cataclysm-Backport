@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.config;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
+
 import net.minecraftforge.fml.config.ModConfig;
 
 public class CMConfig {

@@ -10,7 +10,6 @@ import com.github.L_Ender.cataclysm.entity.etc.ISemiAquatic;
 import com.github.L_Ender.cataclysm.entity.etc.path.GroundPathNavigatorWide;
 import com.github.L_Ender.cataclysm.entity.etc.path.SemiAquaticPathNavigator;
 import com.github.L_Ender.cataclysm.init.ModTag;
-import com.github.L_Ender.lionfishapi.server.animation.AnimationHandler;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;

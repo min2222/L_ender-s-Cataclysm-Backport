@@ -4,9 +4,9 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 
 
 import com.github.L_Ender.cataclysm.client.animation.Maledictus_Animation;
+import com.github.L_Ender.cataclysm.client.animation.Maledictus_Attack_Animation;
 import com.github.L_Ender.cataclysm.client.animation.Maledictus_Grab_Attack_Animation;
 import com.github.L_Ender.cataclysm.client.animation.Maledictus_Halberd_Animation;
-import com.github.L_Ender.cataclysm.client.animation.Maledictus_Attack_Animation;
 import com.github.L_Ender.cataclysm.entity.InternalAnimationMonster.IABossMonsters.Maledictus.Maledictus_Entity;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;

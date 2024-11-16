@@ -1,5 +1,10 @@
 package com.github.L_Ender.cataclysm.structures.jisaw;
 
+import java.util.Optional;
+import java.util.function.Function;
+
+import org.jetbrains.annotations.NotNull;
+
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.world.structures.Pieces.CataclysmJigsawManager;
 import com.github.L_Ender.cataclysm.world.structures.terrainadaptation.EnhancedTerrainAdaptation;
@@ -7,6 +12,7 @@ import com.github.L_Ender.cataclysm.world.structures.terrainadaptation.EnhancedT
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
@@ -22,10 +28,6 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Optional;
-import java.util.function.Function;
 
 /**
  * Enhanced jigsaw structure that uses the {@link CataclysmJigsawManager} to assemble jigsaw structures.

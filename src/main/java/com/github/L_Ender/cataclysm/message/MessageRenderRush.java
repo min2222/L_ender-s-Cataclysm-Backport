@@ -1,15 +1,15 @@
 package com.github.L_Ender.cataclysm.message;
 
-import com.github.L_Ender.cataclysm.capabilities.ChargeCapability;
+import java.util.function.Supplier;
+
 import com.github.L_Ender.cataclysm.capabilities.RenderRushCapability;
 import com.github.L_Ender.cataclysm.init.ModCapabilities;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.network.NetworkEvent;
-
-import java.util.function.Supplier;
 
 public class MessageRenderRush {
 	private final int entityID;

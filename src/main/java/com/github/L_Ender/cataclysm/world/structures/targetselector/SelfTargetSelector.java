@@ -1,11 +1,11 @@
 package com.github.L_Ender.cataclysm.world.structures.targetselector;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.structures.jisaw.PieceEntry;
 import com.github.L_Ender.cataclysm.structures.jisaw.context.StructureContext;
 import com.mojang.serialization.Codec;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Target selector that returns the piece currently undergoing modification.

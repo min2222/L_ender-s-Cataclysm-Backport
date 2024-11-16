@@ -7,6 +7,7 @@ import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.world.entity.Entity;
 
 public class The_Annihilator_Model extends AdvancedEntityModel<Entity> {

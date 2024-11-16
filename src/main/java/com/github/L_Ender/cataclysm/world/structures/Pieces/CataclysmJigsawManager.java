@@ -1,14 +1,15 @@
 package com.github.L_Ender.cataclysm.world.structures.Pieces;
 
+import java.util.Optional;
+
 import com.github.L_Ender.cataclysm.structures.jisaw.JigsawManager;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-
-import java.util.Optional;
 
 public class CataclysmJigsawManager {
 

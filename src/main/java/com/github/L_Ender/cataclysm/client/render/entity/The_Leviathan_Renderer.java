@@ -3,8 +3,8 @@ package com.github.L_Ender.cataclysm.client.render.entity;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.model.entity.The_Leviathan_Model;
-import com.github.L_Ender.cataclysm.client.model.entity.The_Leviathan_Tongue_Model;
 import com.github.L_Ender.cataclysm.client.model.entity.The_Leviathan_Tongue_End_Model;
+import com.github.L_Ender.cataclysm.client.model.entity.The_Leviathan_Tongue_Model;
 import com.github.L_Ender.cataclysm.client.render.RenderUtils;
 import com.github.L_Ender.cataclysm.client.render.layer.LayerBasicGlow;
 import com.github.L_Ender.cataclysm.client.render.layer.The_Leviathan_Layer;

@@ -1,19 +1,21 @@
 package com.github.L_Ender.cataclysm.structures.jisaw;
 
 
-import com.github.L_Ender.cataclysm.structures.jisaw.assembler.PieceContext;
-import com.github.L_Ender.cataclysm.structures.jisaw.element.CataclysmJigsawSinglePoolElement;
-import com.github.L_Ender.cataclysm.util.BoxOctree;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
-import net.minecraft.world.level.levelgen.structure.pools.JigsawJunction;
-import net.minecraft.world.phys.AABB;
-import org.apache.commons.lang3.mutable.MutableObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import org.apache.commons.lang3.mutable.MutableObject;
+
+import com.github.L_Ender.cataclysm.structures.jisaw.assembler.PieceContext;
+import com.github.L_Ender.cataclysm.structures.jisaw.element.CataclysmJigsawSinglePoolElement;
+import com.github.L_Ender.cataclysm.util.BoxOctree;
+
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
+import net.minecraft.world.level.levelgen.structure.pools.JigsawJunction;
+import net.minecraft.world.phys.AABB;
 
 public class PieceEntry {
     private PoolElementStructurePiece piece;

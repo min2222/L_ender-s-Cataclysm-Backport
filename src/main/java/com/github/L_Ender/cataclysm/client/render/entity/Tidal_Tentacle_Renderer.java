@@ -1,8 +1,8 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
-import com.github.L_Ender.cataclysm.client.model.entity.Tidal_Tentacle_Model;
 import com.github.L_Ender.cataclysm.client.model.entity.Tidal_Tentacle_Claws_Model;
+import com.github.L_Ender.cataclysm.client.model.entity.Tidal_Tentacle_Model;
 import com.github.L_Ender.cataclysm.entity.projectile.Tidal_Tentacle_Entity;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.mojang.blaze3d.vertex.PoseStack;

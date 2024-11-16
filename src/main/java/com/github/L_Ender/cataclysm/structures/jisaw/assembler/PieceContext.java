@@ -1,13 +1,15 @@
 package com.github.L_Ender.cataclysm.structures.jisaw.assembler;
 
+import org.apache.commons.lang3.mutable.MutableObject;
+
 import com.github.L_Ender.cataclysm.structures.jisaw.PieceEntry;
 import com.github.L_Ender.cataclysm.util.BoxOctree;
 import com.mojang.datafixers.util.Pair;
+
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.apache.commons.lang3.mutable.MutableObject;
 
 public class PieceContext {
     public ObjectArrayList<Pair<StructurePoolElement, Integer>> candidatePoolElements;

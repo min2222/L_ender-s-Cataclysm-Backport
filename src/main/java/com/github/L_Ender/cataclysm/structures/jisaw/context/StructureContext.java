@@ -1,12 +1,13 @@
 package com.github.L_Ender.cataclysm.structures.jisaw.context;
 
+import java.util.List;
+
 import com.github.L_Ender.cataclysm.structures.jisaw.PieceEntry;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplateManager;
-
-import java.util.List;
 
 /**
  * Context class capable of holding various arguments used for jigsaw structure generation and modification.

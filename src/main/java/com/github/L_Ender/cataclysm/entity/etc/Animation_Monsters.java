@@ -6,7 +6,8 @@ import java.util.UUID;
 
 import javax.annotation.Nullable;
 
-import com.github.L_Ender.cataclysm.client.sound.BossMusicPlayer;
+import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.message.MessageMusic;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -35,8 +36,6 @@ public class Animation_Monsters extends Monster implements Enemy {
     public DamageSource killDataCause;
     public Player killDataAttackingPlayer;
     public int attackTicks;
-    public static final byte MUSIC_PLAY_ID = 67;
-    public static final byte MUSIC_STOP_ID = 68;
 
     @OnlyIn(Dist.CLIENT)
     public Vec3[] socketPosArray;
@@ -58,21 +57,10 @@ public class Animation_Monsters extends Monster implements Enemy {
         super.tick();
         if (!level.isClientSide && getBossMusic() != null) {
             if (canPlayMusic()) {
-                this.level.broadcastEntityEvent(this, MUSIC_PLAY_ID);
+                Cataclysm.sendMSGToAll(new MessageMusic(this.getId(), true));
             } else {
-                this.level.broadcastEntityEvent(this, MUSIC_STOP_ID);
+                Cataclysm.sendMSGToAll(new MessageMusic(this.getId(), false));
             }
-        }
-    }
-
-    @Override
-    public void handleEntityEvent(byte id) {
-        if (id == MUSIC_PLAY_ID) {
-            BossMusicPlayer.playBossMusic(this);
-        } else if (id == MUSIC_STOP_ID) {
-            BossMusicPlayer.stopBossMusic(this);
-        } else{
-            super.handleEntityEvent(id);
         }
     }
 
@@ -108,9 +96,9 @@ public class Animation_Monsters extends Monster implements Enemy {
     public void disableShield(Player player, int ticks) {
         if (player.isBlocking()) {
             if (!player.level.isClientSide) {
-                player.disableShield(true);
                 player.getCooldowns().addCooldown(player.getUseItem().getItem(), ticks);
                 player.stopUsingItem();
+                player.level.broadcastEntityEvent(this, (byte)30);
             }
         }
 
