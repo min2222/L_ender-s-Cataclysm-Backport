@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.items;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -42,7 +41,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
-public class Soul_Render extends Item {
+public class Soul_Render extends Item implements More_Tool_Attribute {
 	private final Multimap<Attribute, AttributeModifier> whirligigsawAttributes;
 
 	public Soul_Render(Properties properties) {
@@ -50,8 +49,8 @@ public class Soul_Render extends Item {
 		ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 14D, AttributeModifier.Operation.ADDITION));
 		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.9F, AttributeModifier.Operation.ADDITION));
-		builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(UUID.fromString("8F20D3D4-99E1-41D2-8CF4-F1C8B9E32F65"), "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
-		builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(UUID.fromString("E7902C57-6C37-41CB-BBC4-F23AB1F287C0"), "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
+		builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(BASE_ENTITY_INTERACTION_RANGE_ID, "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
+		builder.put(ForgeMod.REACH_DISTANCE.get(), new AttributeModifier(BASE_BLOCK_INTERACTION_RANGE_ID, "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
 
 		this.whirligigsawAttributes = builder.build();
 	}

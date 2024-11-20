@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.items;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +15,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -35,7 +35,7 @@ import net.minecraft.world.level.material.Material;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
-public class Ancient_Spear extends Item implements ILeftClick, Vanishable {
+public class Ancient_Spear extends Item implements ILeftClick, Vanishable, More_Tool_Attribute {
     private final Multimap<Attribute, AttributeModifier> incineratorAttributes;
 
     public Ancient_Spear(Properties group) {
@@ -43,7 +43,7 @@ public class Ancient_Spear extends Item implements ILeftClick, Vanishable {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 8.5D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.6F, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(UUID.fromString("ED58696E-EBFF-4848-A9D8-FCAA39072ABE"), "Tool modifier", 1.5F, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(BASE_ENTITY_INTERACTION_RANGE_ID, "Tool modifier", 1.5F, AttributeModifier.Operation.ADDITION));
 
         this.incineratorAttributes = builder.build();
     }
@@ -81,7 +81,7 @@ public class Ancient_Spear extends Item implements ILeftClick, Vanishable {
     }
 
     public boolean onLeftClick(ItemStack stack, LivingEntity playerIn){
-        if(stack.is(ModItems.ANCIENT_SPEAR.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn, stack))){
+    	if(stack.is(ModItems.ANCIENT_SPEAR.get()) && playerIn.getItemInHand(InteractionHand.MAIN_HAND).is(ModItems.ANCIENT_SPEAR.get()) && (!(playerIn instanceof Player) || isCharged((Player)playerIn, stack))){
             return launchTornado(stack, playerIn);
         }
         return false;

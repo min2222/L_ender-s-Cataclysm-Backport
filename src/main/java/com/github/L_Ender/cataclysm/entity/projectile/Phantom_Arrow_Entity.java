@@ -167,6 +167,7 @@ public class Phantom_Arrow_Entity extends AbstractArrow {
             if (flag) {
                 return;
             }
+        	entity.invulnerableTime = 0;
 
             if (entity instanceof LivingEntity) {
                 LivingEntity livingentity1 = (LivingEntity)entity;

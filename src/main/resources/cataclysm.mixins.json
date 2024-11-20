@@ -5,7 +5,6 @@
 	"target": "@env(DEFAULT)",
 	"refmap": "cataclysm.refmap.json",
 	"mixins": [
-		"MixinResource",
 		"BrushItemMixin",
 		"ItemMixin",
 		"LivingEntityMixin",

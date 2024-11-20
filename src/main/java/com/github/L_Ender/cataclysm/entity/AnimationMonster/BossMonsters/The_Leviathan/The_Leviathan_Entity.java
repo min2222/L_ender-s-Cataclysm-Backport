@@ -357,6 +357,10 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
         return type.canSwim(self());
     }
 
+    @Override
+    public void onInsideBubbleColumn(boolean p_20322_) {
+
+    }
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {

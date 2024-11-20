@@ -25,6 +25,7 @@ import com.github.L_Ender.cataclysm.init.ModStructurePlacementType;
 import com.github.L_Ender.cataclysm.init.ModStructureProcessor;
 import com.github.L_Ender.cataclysm.init.ModStructures;
 import com.github.L_Ender.cataclysm.init.ModTileentites;
+import com.github.L_Ender.cataclysm.init.Modfeatures;
 import com.github.L_Ender.cataclysm.message.MessageArmorKey;
 import com.github.L_Ender.cataclysm.message.MessageCMMultipart;
 import com.github.L_Ender.cataclysm.message.MessageCharge;
@@ -113,6 +114,7 @@ public class Cataclysm {
         ModParticle.PARTICLE.register(bus);
         ModStructures.STRUCTURE_PIECE_DEF_REG.register(bus);
         ModStructures.STRUCTURE_TYPE_DEF_REG.register(bus);
+        Modfeatures.FEATURES.register(bus);
         ModTileentites.TILE_ENTITY_TYPES.register(bus);
         ModEntities.ENTITY_TYPE.register(bus);
         ModSounds.SOUNDS.register(bus);

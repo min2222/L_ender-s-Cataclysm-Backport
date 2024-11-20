@@ -1,7 +1,6 @@
 package com.github.L_Ender.cataclysm.items;
 
 import java.util.List;
-import java.util.UUID;
 
 import javax.annotation.Nullable;
 
@@ -41,7 +40,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 
-public class The_Incinerator extends Item {
+public class The_Incinerator extends Item implements More_Tool_Attribute {
     private final Multimap<Attribute, AttributeModifier> incineratorAttributes;
 
     public The_Incinerator(Properties group) {
@@ -49,7 +48,7 @@ public class The_Incinerator extends Item {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", 13.0D, AttributeModifier.Operation.ADDITION));
         builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", -2.7F, AttributeModifier.Operation.ADDITION));
-        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(UUID.fromString("0CB612AF-CE7C-4FD2-9647-4BFD75B8D8A0"), "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
+        builder.put(ForgeMod.ATTACK_RANGE.get(), new AttributeModifier(BASE_ENTITY_INTERACTION_RANGE_ID, "Tool modifier", 2.0F, AttributeModifier.Operation.ADDITION));
         this.incineratorAttributes = builder.build();
     }
 

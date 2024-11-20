@@ -21,19 +21,23 @@ import com.github.L_Ender.cataclysm.client.model.item.Bulwark_of_the_flame_Model
 import com.github.L_Ender.cataclysm.client.model.item.Cursed_Bow_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Gauntlet_of_Bulwark_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Gauntlet_of_Guard_Model;
+import com.github.L_Ender.cataclysm.client.model.item.Gauntlet_of_Maelstrom_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Incinerator_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Laser_Gatling_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Meat_Shredder_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Soul_render_Model;
 import com.github.L_Ender.cataclysm.client.model.item.The_Annihilator_Model;
+import com.github.L_Ender.cataclysm.client.model.item.The_Immolator_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Tidal_Claws_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Void_Forge_Model;
 import com.github.L_Ender.cataclysm.client.model.item.Wither_Assault_SHoulder_Weapon_Model;
+import com.github.L_Ender.cataclysm.client.model.item.Wrath_of_Desert_Model;
 import com.github.L_Ender.cataclysm.client.render.blockentity.Cataclysm_Skull_Block_Renderer;
 import com.github.L_Ender.cataclysm.init.ModBlocks;
 import com.github.L_Ender.cataclysm.init.ModItems;
 import com.github.L_Ender.cataclysm.items.Cursed_bow;
 import com.github.L_Ender.cataclysm.items.Laser_Gatling;
+import com.github.L_Ender.cataclysm.items.Wrath_of_the_desert;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -74,6 +78,7 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final Mechanical_Anvil_Model MF_MODEL = new Mechanical_Anvil_Model();
     private static final Gauntlet_of_Guard_Model GAUNTLET_OF_GUARD_MODEL = new Gauntlet_of_Guard_Model();
     private static final Gauntlet_of_Bulwark_Model GAUNTLET_OF_BULWARK_MODEL = new Gauntlet_of_Bulwark_Model();
+    private static final Gauntlet_of_Maelstrom_Model GAUNTLET_OF_MAELSTROM_MODEL = new Gauntlet_of_Maelstrom_Model();
     private static final Incinerator_Model THE_INCINERATOR_MODEL = new Incinerator_Model();
     private static final Coral_Spear_Model CORAL_SPEAR_MODEL = new Coral_Spear_Model();
     private static final Coral_Bardiche_Model CORAL_BARDICHE_MODEL = new Coral_Bardiche_Model();
@@ -89,20 +94,34 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
     private static final Laser_Gatling_Model LASER_GATLING_MODEL = new Laser_Gatling_Model();
     private static final Ancient_Spear_Model ANCIENT_SPEAR_MODEL = new Ancient_Spear_Model();
     private static final Cursed_Bow_Model CURSED_BOW_MODEL = new Cursed_Bow_Model();
+    private static final Wrath_of_Desert_Model WRATH_OF_DESERT_MODEL = new Wrath_of_Desert_Model();
     private static final The_Annihilator_Model THE_ANNIHILATOR = new The_Annihilator_Model();
+    private static final The_Immolator_Model THE_IMMOLATOR_MODEL = new The_Immolator_Model();
     private static final Soul_render_Model SOUL_RENDER = new Soul_render_Model();
     private static final ResourceLocation CURSED_BOW_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/cursed_bow.png");
     private static final ResourceLocation CURSED_BOW_GHOST_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/cursed_bow_ghost.png");
+    
+    private static final ResourceLocation WRATH_OF_DESERT_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/wrath_of_desert.png");
+    private static final ResourceLocation WRATH_OF_DESERT_GHOST_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/wrath_of_desert_ghost.png");
+    
     private static final ResourceLocation SOUL_RENDER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/soul_render.png");
     private static final ResourceLocation SOUL_RENDER_GHOST_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/soul_render_ghost.png");
     private static final ResourceLocation THE_ANNIHILATOR_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/the_annihilator.png");
     private static final ResourceLocation THE_ANNIHILATOR_GHOST_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/the_annihilator_ghost.png");
+
+    private static final ResourceLocation THE_IMMOLATOR_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/the_immolator.png");
+    private static final ResourceLocation THE_IMMOLATOR_GHOST_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/the_immolator_ghost.png");
+    
     private static final ResourceLocation BULWARK_OF_THE_FLAME_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/bulwark_of_the_flame.png");
     private static final ResourceLocation BLACK_STEEL_TARGE_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/black_steel_targe.png");
     private static final ResourceLocation GAUNTLET_OF_GUARD_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_guard.png");
+    private static final ResourceLocation GAUNTLET_OF_MAELSTROM_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_maelstrom.png");
+    
     private static final ResourceLocation GAUNTLET_OF_BULWARK_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_bulwark.png");
     private static final ResourceLocation GAUNTLET_OF_GUARD_LAYER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_guard_layer.png");
     private static final ResourceLocation GAUNTLET_OF_BULWARK_LAYER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_bulwark_layer.png");
+    private static final ResourceLocation GAUNTLET_OF_MAELSTROM_LAYER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/gauntlet_of_maelstrom_layer.png");
+    
     private static final ResourceLocation THE_INCINERATOR_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/the_incinerator.png");
     private static final ResourceLocation VOID_FORGE_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/void_forge.png");
     private static final ResourceLocation VOID_FORGE_LAYER_TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/item/void_forge_layer.png");
@@ -213,6 +232,17 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             GAUNTLET_OF_BULWARK_MODEL.renderToBuffer(matrixStackIn, vertexconsumer2, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
+        if (itemStackIn.getItem() == ModItems.GAUNTLET_OF_MAELSTROM.get()) {
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0.5F, 0.5F, 0.5F);
+            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.entityCutoutNoCull(GAUNTLET_OF_MAELSTROM_TEXTURE), false, itemStackIn.hasFoil());
+            GAUNTLET_OF_MAELSTROM_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexconsumer2 = ItemRenderer.getArmorFoilBuffer(bufferIn, CMRenderTypes.eyes(GAUNTLET_OF_MAELSTROM_LAYER_TEXTURE), false, itemStackIn.hasFoil());
+            GAUNTLET_OF_MAELSTROM_MODEL.renderToBuffer(matrixStackIn, vertexconsumer2, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
+        }
+        
         if (itemStackIn.getItem() == ModItems.THE_INCINERATOR.get()) {
             matrixStackIn.pushPose();
             matrixStackIn.translate(0.5F, 0.5F, 0.5F);
@@ -328,6 +358,21 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
 
             matrixStackIn.popPose();
         }
+        
+        if (itemStackIn.is(ModItems.WRATH_OF_THE_DESERT.get())) {
+            float ageInTicks = Minecraft.getInstance().player == null ? 0F : Minecraft.getInstance().player.tickCount + partialTick;
+            float pullAmount = Wrath_of_the_desert.getPullingAmount(itemStackIn, partialTick);
+
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0.5F, 0.5f, 0.5f);
+            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
+            WRATH_OF_DESERT_MODEL.setupAnim(null, pullAmount, ageInTicks,  ageInTicks, 0, 0);
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(WRATH_OF_DESERT_TEXTURE), false, itemStackIn.hasFoil());
+            WRATH_OF_DESERT_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexconsumer2 = ItemRenderer.getArmorFoilBuffer(bufferIn, CMRenderTypes.getGhost(WRATH_OF_DESERT_GHOST_TEXTURE), false, itemStackIn.hasFoil());
+            WRATH_OF_DESERT_MODEL.renderToBuffer(matrixStackIn, vertexconsumer2, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
+        }
 
         if (itemStackIn.is(ModItems.SOUL_RENDER.get())) {
             matrixStackIn.pushPose();
@@ -348,6 +393,17 @@ public class CMItemstackRenderer extends BlockEntityWithoutLevelRenderer {
             THE_ANNIHILATOR.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             VertexConsumer vertexconsumer2 = ItemRenderer.getArmorFoilBuffer(bufferIn, CMRenderTypes.getGhost(THE_ANNIHILATOR_GHOST_TEXTURE), false, itemStackIn.hasFoil());
             THE_ANNIHILATOR.renderToBuffer(matrixStackIn, vertexconsumer2, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            matrixStackIn.popPose();
+        }
+        
+        if (itemStackIn.is(ModItems.THE_IMMOLATOR.get())) {
+            matrixStackIn.pushPose();
+            matrixStackIn.translate(0.5F, 0.5f, 0.5f);
+            matrixStackIn.scale(1.0F, -1.0F, -1.0F);
+            VertexConsumer vertexconsumer = ItemRenderer.getArmorFoilBuffer(bufferIn, RenderType.armorCutoutNoCull(THE_IMMOLATOR_TEXTURE), false, itemStackIn.hasFoil());
+            THE_IMMOLATOR_MODEL.renderToBuffer(matrixStackIn, vertexconsumer, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
+            VertexConsumer vertexconsumer2 = ItemRenderer.getArmorFoilBuffer(bufferIn, CMRenderTypes.getGhost(THE_IMMOLATOR_GHOST_TEXTURE), false, itemStackIn.hasFoil());
+            THE_IMMOLATOR_MODEL.renderToBuffer(matrixStackIn, vertexconsumer2, combinedLightIn, combinedOverlayIn, 1.0F, 1.0F, 1.0F, 1.0F);
             matrixStackIn.popPose();
         }
 

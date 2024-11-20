@@ -58,6 +58,7 @@ import com.github.L_Ender.cataclysm.entity.projectile.Ancient_Desert_Stele_Entit
 import com.github.L_Ender.cataclysm.entity.projectile.Ashen_Breath_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Axe_Blade_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Blazing_Bone_Entity;
+import com.github.L_Ender.cataclysm.entity.projectile.Cursed_Sandstorm_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.EarthQuake_Entity;
 import com.github.L_Ender.cataclysm.entity.projectile.Ender_Guardian_Bullet_Entity;
@@ -545,6 +546,14 @@ public class ModEntities {
             .updateInterval(10)
             .setShouldReceiveVelocityUpdates(true)
             .build(Cataclysm.MODID + ":sandstorm_projectile"));
+    
+    public static final RegistryObject<EntityType<Cursed_Sandstorm_Entity>> CURSED_SANDSTORM = ENTITY_TYPE.register("cursed_sandstorm", () -> EntityType.Builder.<Cursed_Sandstorm_Entity>of(Cursed_Sandstorm_Entity::new, MobCategory.MISC)
+            .sized(0.5F, 1.0F)
+            .setShouldReceiveVelocityUpdates(true)
+            .setUpdateInterval(1)
+            .setTrackingRange(20)
+            .setShouldReceiveVelocityUpdates(true)
+            .build(Cataclysm.MODID + ":cursed_sandstorm"));
 
     public static final RegistryObject<EntityType<Ancient_Desert_Stele_Entity>> ANCIENT_DESERT_STELE = ENTITY_TYPE.register("ancient_desert_stele", () -> EntityType.Builder.<Ancient_Desert_Stele_Entity>of(Ancient_Desert_Stele_Entity::new, MobCategory.MISC)
             .sized(0.8F, 1.375F)
