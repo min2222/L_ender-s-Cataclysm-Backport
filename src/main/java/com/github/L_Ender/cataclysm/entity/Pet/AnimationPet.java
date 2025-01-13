@@ -1,30 +1,24 @@
 package com.github.L_Ender.cataclysm.entity.Pet;
 
 
-import java.util.UUID;
-
 import com.github.L_Ender.cataclysm.entity.etc.IFollower;
 import com.github.L_Ender.lionfishapi.server.animation.Animation;
 import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
-
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class AnimationPet extends TamableAnimal implements IAnimatedEntity, IFollower {
-    private int animationTick;
-    private Animation currentAnimation;
+import java.util.UUID;
+
+public class AnimationPet extends TamableAnimal implements IFollower {
     private static final EntityDataAccessor<Boolean> SITTING = SynchedEntityData.defineId(AnimationPet.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> COMMAND = SynchedEntityData.defineId(AnimationPet.class, EntityDataSerializers.INT);
 
@@ -33,39 +27,6 @@ public class AnimationPet extends TamableAnimal implements IAnimatedEntity, IFol
 
     }
 
-
-    protected void onAnimationFinish(Animation animation) {}
-
-
-    @Override
-    public Animation[] getAnimations() {
-        return new Animation[]{NO_ANIMATION};
-    }
-
-    @Override
-    public int getAnimationTick() {
-        return animationTick;
-    }
-
-    @Override
-    public void setAnimationTick(int tick) {
-        animationTick = tick;
-    }
-
-    @Override
-    public Animation getAnimation() {
-        return this.currentAnimation;
-    }
-
-
-    @Override
-    public void setAnimation(Animation animation) {
-        if (animation == NO_ANIMATION) {
-            onAnimationFinish(this.currentAnimation);
-        }
-        this.currentAnimation = animation;
-        setAnimationTick(0);
-    }
 
 
     protected void defineSynchedData() {
@@ -120,6 +81,8 @@ public class AnimationPet extends TamableAnimal implements IAnimatedEntity, IFol
     public boolean removeWhenFarAway(double p_21542_) {
         return false;
     }
+
+
 
     public void circleEntity(LivingEntity target, float radius, float speed, boolean direction, int circleFrame, float offset, float moveSpeedMultiplier) {
         int directionInt = direction ? 1 : -1;

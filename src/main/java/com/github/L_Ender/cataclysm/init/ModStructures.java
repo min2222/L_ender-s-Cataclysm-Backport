@@ -4,7 +4,6 @@ import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.structures.Burning_Arena_Structure;
 import com.github.L_Ender.cataclysm.structures.Cursed_Pyramid_Structure;
 import com.github.L_Ender.cataclysm.structures.RuinedCitadelStructure;
-import com.github.L_Ender.cataclysm.structures.SoulBlackSmithStructure;
 import com.github.L_Ender.cataclysm.structures.Sunken_City_Structure;
 import com.github.L_Ender.cataclysm.structures.jisaw.CataclysmJigsawStructure;
 
@@ -22,7 +21,6 @@ public class ModStructures {
     public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_DEF_REG = DeferredRegister.create(Registry.STRUCTURE_PIECE_REGISTRY, Cataclysm.MODID);
     public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPE_DEF_REG = DeferredRegister.create(Registry.STRUCTURE_TYPE_REGISTRY, Cataclysm.MODID);
 
-    public static final RegistryObject<StructureType<SoulBlackSmithStructure>> SOUL_BLACK_SMITH = STRUCTURE_TYPE_DEF_REG.register("soul_black_smith", () -> () -> SoulBlackSmithStructure.CODEC);
     public static final RegistryObject<StructureType<RuinedCitadelStructure>> RUINED_CITADEL = STRUCTURE_TYPE_DEF_REG.register("ruined_citadel", () -> () ->
             RuinedCitadelStructure.CODEC);
     public static final RegistryObject<StructureType<Burning_Arena_Structure>> BURNING_ARENA = STRUCTURE_TYPE_DEF_REG.register("burning_arena", () -> () ->
@@ -37,7 +35,6 @@ public class ModStructures {
     public static final RegistryObject<StructureType<CataclysmJigsawStructure>> CATACLYSM_JIGSAW = STRUCTURE_TYPE_DEF_REG.register("cataclysm_jigsaw", () -> () ->
     CataclysmJigsawStructure.CODEC);
 
-    public static final RegistryObject<StructurePieceType> SBSP = STRUCTURE_PIECE_DEF_REG.register("soul_black_smith", () -> SoulBlackSmithStructure.Piece::new);
     public static final RegistryObject<StructurePieceType> RCP = STRUCTURE_PIECE_DEF_REG.register("ruined_citadel", () -> RuinedCitadelStructure.Piece::new);
     public static final RegistryObject<StructurePieceType> BAP = STRUCTURE_PIECE_DEF_REG.register("burning_arena", () -> Burning_Arena_Structure.Piece::new);
     public static final RegistryObject<StructurePieceType> SCP = STRUCTURE_PIECE_DEF_REG.register("sunken_city", () -> Sunken_City_Structure.Piece::new);

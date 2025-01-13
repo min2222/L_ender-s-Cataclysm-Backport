@@ -29,7 +29,9 @@ import com.github.L_Ender.cataclysm.items.ModItemTier;
 import com.github.L_Ender.cataclysm.items.ModernRemantBucket;
 import com.github.L_Ender.cataclysm.items.Monstrous_Helm;
 import com.github.L_Ender.cataclysm.items.Necklace_Of_The_Desert;
+import com.github.L_Ender.cataclysm.items.Netherite_Effigy;
 import com.github.L_Ender.cataclysm.items.Remnant_Skull;
+import com.github.L_Ender.cataclysm.items.Sandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.items.Soul_Render;
 import com.github.L_Ender.cataclysm.items.The_Annihilator;
 import com.github.L_Ender.cataclysm.items.The_Immolator;
@@ -46,7 +48,6 @@ import com.github.L_Ender.cataclysm.items.void_core;
 import com.github.L_Ender.cataclysm.items.void_forge;
 import com.github.L_Ender.cataclysm.items.zweiender;
 import com.github.L_Ender.cataclysm.items.CuriosItem.Blazing_Grips;
-import com.github.L_Ender.cataclysm.items.CuriosItem.Sandstorm_In_A_Bottle;
 import com.github.L_Ender.cataclysm.items.CuriosItem.Sticky_Gloves;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.AbyssEyeItem;
 import com.github.L_Ender.cataclysm.items.Dungeon_Eye.CursedEyeItem;
@@ -82,7 +83,6 @@ import net.minecraft.world.item.RecordItem;
 import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.item.SwordItem;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.material.Fluids;
@@ -138,12 +138,18 @@ public class ModItems {
 
     public static final RegistryObject<BlockItem> VOID_STONE = ITEMS.register("void_stone",
             () -> new BlockItem(ModBlocks.VOID_STONE.get(), new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
+    
+    public static final RegistryObject<BlockItem> VOID_CRYSTAL = ITEMS.register("void_crystal",
+            () -> new BlockItem(ModBlocks.VOID_CRYSTAL.get(), new Item.Properties().tab(Cataclysm.TAB)));
 
     public static final RegistryObject<BlockItem> VOID_LANTERN_BLOCK = ITEMS.register("void_lantern_block",
             () -> new BlockItem(ModBlocks.VOID_LANTERN_BLOCK.get(), new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
 
     public static final RegistryObject<BlockItem> OBSIDIAN_BRICKS = ITEMS.register("obsidian_bricks",
             () -> new BlockItem(ModBlocks.OBSIDIAN_BRICKS.get(), new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<BlockItem> POLISHED_OBSIDIAN = ITEMS.register("polished_obsidian",
+            () -> new BlockItem(ModBlocks.POLISHED_OBSIDIAN.get(), new Item.Properties().tab(Cataclysm.TAB)));
 
     public static final RegistryObject<BlockItem> CHISELED_OBSIDIAN_BRICKS = ITEMS.register("chiseled_obsidian_bricks",
             () -> new BlockItem(ModBlocks.CHISELED_OBSIDIAN_BRICKS.get(), new Item.Properties().tab(Cataclysm.TAB)));
@@ -349,7 +355,7 @@ public class ModItems {
             () -> new Void_Assault_SHoulder_Weapon(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 
     public static final RegistryObject<Item> VOID_FORGE = ITEMS.register("void_forge",
-            () -> new void_forge(Tiers.NETHERITE, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+            () -> new void_forge(Tooltier.MONSTROSITY, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> TIDAL_CLAWS = ITEMS.register("tidal_claws",
             () -> new Tidal_Claws(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
@@ -361,7 +367,7 @@ public class ModItems {
             () -> new zweiender(ModItemTier.TOOL_ENDERITE, new Item.Properties().fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> INFERNAL_FORGE = ITEMS.register("infernal_forge",
-            () -> new infernal_forge(Tiers.NETHERITE, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+            () -> new infernal_forge(Tooltier.MONSTROSITY, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> SANDSTORM_IN_A_BOTTLE = ITEMS.register("sandstorm_in_a_bottle",
             () -> new Sandstorm_In_A_Bottle(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
@@ -374,6 +380,9 @@ public class ModItems {
 
     public static final RegistryObject<Item> REMNANT_SKULL = ITEMS.register("remnant_skull",
             () -> new Remnant_Skull(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+
+    public static final RegistryObject<Item> NETHERITE_EFFIGY = ITEMS.register("netherite_effigy",
+            () -> new Netherite_Effigy(new Item.Properties().tab(Cataclysm.TAB).stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
 
     public static final RegistryObject<Item> VOID_SCATTER_ARROW = ITEMS.register("void_scatter_arrow",
             () -> new Void_Scatter_Arrow_Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
@@ -451,6 +460,9 @@ public class ModItems {
             () -> new Cursium_Armor(Armortier.CURSIUM, EquipmentSlot.FEET, new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> MONSTROUS_HORN = ITEMS.register("monstrous_horn",
+            () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
+    
+    public static final RegistryObject<Item> LAVA_POWER_CELL = ITEMS.register("lava_power_cell",
             () -> new Item(new Item.Properties().tab(Cataclysm.TAB).fireResistant().rarity(Rarity.EPIC)));
 
     public static final RegistryObject<Item> MONSTROUS_HELM = ITEMS.register("monstrous_helm",
@@ -536,12 +548,18 @@ public class ModItems {
 
     public static final RegistryObject<Item> MODERN_REMNANT_BUCKET = ITEMS.register("modern_remnant_bucket",
             () -> new ModernRemantBucket(ModEntities.MODERN_REMNANT, Fluids.EMPTY, new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
+    
+    public static final RegistryObject<Item> NETHERITE_MINISTROSITY_BUCKET = ITEMS.register("netherite_ministrosity_bucket",
+            () -> new ModernRemantBucket(ModEntities.NETHERITE_MINISTROSITY, Fluids.EMPTY, new Item.Properties().tab(Cataclysm.TAB).fireResistant()));
 
     public static final RegistryObject<SpawnEggItem> ENDER_GOLEM_SPAWN_EGG = ITEMS.register("ender_golem_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.ENDER_GOLEM, 0x2a1a42, 0xa153fe, new Item.Properties().tab(Cataclysm.TAB)));
 
     public static final RegistryObject<SpawnEggItem> NETHERITE_MONSTROSITY_SPAWN_EGG = ITEMS.register("netherite_monstrosity_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.NETHERITE_MONSTROSITY, 0x4d494d, 0xf48522, new Item.Properties().tab(Cataclysm.TAB)));
+    
+    public static final RegistryObject<SpawnEggItem> NETHERITE_MINISTROSITY_SPAWN_EGG = ITEMS.register("netherite_ministrosity_spawn_egg",
+            () -> new ForgeSpawnEggItem(ModEntities.NETHERITE_MINISTROSITY, 0x6b686b, 0xc25f01, new Item.Properties().tab(Cataclysm.TAB)));
 
     public static final RegistryObject<SpawnEggItem> NAMELESS_SORCERER_SPAWN_EGG = ITEMS.register("nameless_sorcerer_spawn_egg",
             () -> new ForgeSpawnEggItem(ModEntities.NAMELESS_SORCERER, 9804699, 0xB92424, new Item.Properties().tab(Cataclysm.TAB)));

@@ -219,7 +219,7 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
             @Override
             public boolean canUse() {
                 LivingEntity target = entity.getTarget();
-                return super.canUse() && Maledictus_Entity.this.getRandom().nextFloat() * 100.0F < 20 && target !=null && this.entity.distanceTo(target) >= 2.75D ;
+                return super.canUse() && Maledictus_Entity.this.getRandom().nextFloat() * 100.0F < 24 && target !=null && this.entity.distanceTo(target) >= 1.75D ;
             }
 
             @Override
@@ -1655,7 +1655,9 @@ public class Maledictus_Entity extends IABoss_monster implements IHoldEntity {
                             entity.setShiftKeyDown(false);
                         }
                         if(this.getPassengers().isEmpty()){
-                            entity.startRiding(this, true);
+                            if (!this.level.isClientSide) {
+                                entity.startRiding(this, true);
+                            }
                         }
                     }
 

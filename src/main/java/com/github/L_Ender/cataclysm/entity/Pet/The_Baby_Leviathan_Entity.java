@@ -76,7 +76,7 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
-public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAquatic, Bucketable {
+public class The_Baby_Leviathan_Entity extends LLibraryAnimationPet implements ISemiAquatic, Bucketable {
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(The_Baby_Leviathan_Entity.class, EntityDataSerializers.BOOLEAN);
 
     public static final Animation BABY_LEVIATHAN_BITE = Animation.create(14);
@@ -134,7 +134,7 @@ public class The_Baby_Leviathan_Entity extends AnimationPet implements ISemiAqua
 
 
     public static AttributeSupplier.Builder babyleviathan() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 100.0D)
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 120.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.ARMOR, 5D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)

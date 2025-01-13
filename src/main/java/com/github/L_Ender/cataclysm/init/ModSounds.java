@@ -62,6 +62,12 @@ public class ModSounds {
 
     public static final RegistryObject<SoundEvent> MONSTROSITY_MUSIC = SOUNDS.register("monstrosity_music",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"monstrosity_music")));
+    
+    public static final RegistryObject<SoundEvent> MINISTROSITY_FILL_BUCKET = SOUNDS.register("ministrosity_fill_bucket",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"ministrosity_fill_bucket")));
+
+    public static final RegistryObject<SoundEvent> MINISTROSITY_HURT = SOUNDS.register("ministrosity_hurt",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"ministrosity_hurt")));
 
     public static final RegistryObject<SoundEvent> ENDERGUARDIAN_MUSIC = SOUNDS.register("enderguardian_music",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"enderguardian_music")));
@@ -462,4 +468,7 @@ public class ModSounds {
     
     public static final RegistryObject<SoundEvent> DOOR_OF_SEAL_OPEN = SOUNDS.register("door_of_seal_open",
             () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"door_of_seal_open")));
+    
+    public static final RegistryObject<SoundEvent> BOLT_STRIKE = SOUNDS.register("bolt_strike",
+            () -> new SoundEvent(new ResourceLocation(Cataclysm.MODID,"bolt_strike")));
 }

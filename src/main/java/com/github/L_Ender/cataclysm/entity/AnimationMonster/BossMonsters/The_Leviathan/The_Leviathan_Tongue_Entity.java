@@ -123,7 +123,9 @@ public class The_Leviathan_Tongue_Entity extends Entity {
 
     private void hurtEntity(LivingEntity holder, Entity target) {
         if(target.hurt(DamageSource.mobAttack(holder), 6)){
-            target.startRiding(this);
+            if (!this.level.isClientSide) {
+                target.startRiding(this);
+            }
         }
     }
 

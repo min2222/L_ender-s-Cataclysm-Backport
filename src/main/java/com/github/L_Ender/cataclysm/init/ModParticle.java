@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.init;
 
 import com.github.L_Ender.cataclysm.Cataclysm;
+import com.github.L_Ender.cataclysm.client.particle.LightTrailParticle;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.particle.RingParticle;
 import com.github.L_Ender.cataclysm.client.particle.StormParticle;
@@ -34,6 +35,13 @@ public class ModParticle {
         }
     });
     
+    public static final RegistryObject<ParticleType<LightTrailParticle.OrbData>> LIGHT_TRAIL = PARTICLE.register("light_trail", () -> new ParticleType<LightTrailParticle.OrbData>(false, LightTrailParticle.OrbData.DESERIALIZER) {
+        @Override
+        public Codec<LightTrailParticle.OrbData> codec() {
+            return LightTrailParticle.OrbData.CODEC(LIGHT_TRAIL.get());
+        }
+    });
+    
     public static final RegistryObject<ParticleType<TrackLightningParticle.OrbData>> TRACK_LIGHTNING = PARTICLE.register("track_lightning", () -> new ParticleType<TrackLightningParticle.OrbData>(false, TrackLightningParticle.OrbData.DESERIALIZER) {
         @Override
         public Codec<TrackLightningParticle.OrbData> codec() {
@@ -58,5 +66,9 @@ public class ModParticle {
     public static final RegistryObject<SimpleParticleType> SHOCK_WAVE = PARTICLE.register("shock_wave", () -> new SimpleParticleType(false));
 
     public static final RegistryObject<SimpleParticleType> TRAP_FLAME = PARTICLE.register("trap_flame", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<SimpleParticleType> FLAME_JET = PARTICLE.register("flame_jet", () -> new SimpleParticleType(false));
+
+    public static final RegistryObject<SimpleParticleType> FLARE_EXPLODE = PARTICLE.register("flare_explode", () -> new SimpleParticleType(false));
 
 }

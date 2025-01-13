@@ -34,36 +34,23 @@ public class MaledictusRiderLayer extends RenderLayer<Maledictus_Entity, Maledic
                 if (passenger == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
                     continue;
                 }
-                Cataclysm.PROXY.releaseRenderingEntity(passenger.getUUID());
                 poseStack.pushPose();
                 poseStack.translate(ridePos.x, ridePos.y - 0.65F + passenger.getBbHeight(), ridePos.z);
                 poseStack.mulPose(Vector3f.XN.rotationDegrees(180F));
                 poseStack.mulPose(Vector3f.YN.rotationDegrees(360 - bodyYaw));
+                Cataclysm.PROXY.releaseRenderingEntity(passenger.getUUID());
                 renderPassenger(passenger, 0, 0, 0, 0, partialTicks, poseStack, bufferIn, packedLightIn);
-                poseStack.popPose();
                 Cataclysm.PROXY.blockRenderingEntity(passenger.getUUID());
+                poseStack.popPose();
             }
 
         }
     }
 
-
-    public void translateToHand(PoseStack matrixStack) {
-        this.getParentModel().root.translateAndRotate(matrixStack);
-        this.getParentModel().berserker.translateAndRotate(matrixStack);
-        this.getParentModel().pelvis.translateAndRotate(matrixStack);
-        this.getParentModel().body.translateAndRotate(matrixStack);
-        this.getParentModel().right_shoulder.translateAndRotate(matrixStack);
-        this.getParentModel().right_arm.translateAndRotate(matrixStack);
-        this.getParentModel().right_front_arm.translateAndRotate(matrixStack);
-        this.getParentModel().right_particle.translateAndRotate(matrixStack);
-
-    }
-
     public Vec3 getRiderPosition(Vec3 offsetIn) {
         PoseStack translationStack = new PoseStack();
         translationStack.pushPose();
-        translateToHand(translationStack);
+        this.getParentModel().translateToHand(translationStack,true);
         Vector4f armOffsetVec = new Vector4f((float) offsetIn.x, (float) offsetIn.y, (float) offsetIn.z, 1.0F);
         armOffsetVec.transform(translationStack.last().pose());
         Vec3 vec3 = new Vec3(armOffsetVec.x(), armOffsetVec.y(), armOffsetVec.z());

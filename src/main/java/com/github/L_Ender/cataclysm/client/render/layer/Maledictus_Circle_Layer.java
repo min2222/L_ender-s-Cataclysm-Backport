@@ -308,32 +308,10 @@ public class Maledictus_Circle_Layer extends RenderLayer<Maledictus_Entity, Male
         vertex.vertex(mat4f, p_114094_ - 0.5F, (float)p_114095_ - 0.25F, 0.0F).color(r, g, b,  alpha).uv((float)p_114096_, (float)p_114097_).overlayCoords(NO_OVERLAY).uv2(240).normal(mat3f, 0.0F, -1.0F, 0.0F).endVertex();
     }
 
-
-
-
-    public void translateToHand(PoseStack matrixStack,boolean right) {
-        this.getParentModel().root.translateAndRotate(matrixStack);
-        this.getParentModel().berserker.translateAndRotate(matrixStack);
-        this.getParentModel().pelvis.translateAndRotate(matrixStack);
-        this.getParentModel().body.translateAndRotate(matrixStack);
-        if(right) {
-            this.getParentModel().right_shoulder.translateAndRotate(matrixStack);
-            this.getParentModel().right_arm.translateAndRotate(matrixStack);
-            this.getParentModel().right_front_arm.translateAndRotate(matrixStack);
-            this.getParentModel().right_particle.translateAndRotate(matrixStack);
-        }else{
-            this.getParentModel().left_shoulder.translateAndRotate(matrixStack);
-            this.getParentModel().left_arm.translateAndRotate(matrixStack);
-            this.getParentModel().left_front_arm.translateAndRotate(matrixStack);
-            this.getParentModel().left_particle.translateAndRotate(matrixStack);
-        }
-    }
-
-
     public Vec3 getRiderPosition(Vec3 offsetIn,boolean right) {
         PoseStack translationStack = new PoseStack();
         translationStack.pushPose();
-        translateToHand(translationStack,right);
+        this.getParentModel().translateToHand(translationStack,right);
         Vector4f armOffsetVec = new Vector4f((float) offsetIn.x, (float) offsetIn.y, (float) offsetIn.z, 1.0F);
         armOffsetVec.transform(translationStack.last().pose());
         Vec3 vec3 = new Vec3(armOffsetVec.x(), armOffsetVec.y(), armOffsetVec.z());

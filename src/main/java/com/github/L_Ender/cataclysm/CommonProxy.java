@@ -68,6 +68,12 @@ public class CommonProxy {
 
     }
 
+    public Entity getReferencedMob() {
+        return null;
+    }
+
+    public void setReferencedMob(Entity base) {
+    }
 
     public void removeBossBarRender(UUID bossBar) {
     }

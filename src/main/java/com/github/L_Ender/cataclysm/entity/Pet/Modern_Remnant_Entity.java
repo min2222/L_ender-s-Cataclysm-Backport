@@ -43,6 +43,7 @@ import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
@@ -60,7 +61,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 
-public class Modern_Remnant_Entity extends AnimationPet implements Bucketable {
+public class Modern_Remnant_Entity extends LLibraryAnimationPet implements Bucketable {
     private static final EntityDataAccessor<Boolean> FROM_BUCKET = SynchedEntityData.defineId(Modern_Remnant_Entity.class, EntityDataSerializers.BOOLEAN);
     public float sitProgress;
     public float prevSitProgress;
@@ -96,7 +97,7 @@ public class Modern_Remnant_Entity extends AnimationPet implements Bucketable {
     }
 
     public static AttributeSupplier.Builder modernremnant() {
-        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 120.0D)
+        return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 150.0D)
                 .add(Attributes.KNOCKBACK_RESISTANCE, 0.5D)
                 .add(Attributes.ARMOR, 5D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D)
@@ -121,6 +122,7 @@ public class Modern_Remnant_Entity extends AnimationPet implements Bucketable {
         this.goalSelector.addGoal(3, new ModernRemnantAIMelee(this));
         this.goalSelector.addGoal(6, new TameableAIFollowOwner(this, 1.3D, 6.0F, 2.0F, true));
         this.goalSelector.addGoal(6, new TemptGoal(this, 1.0D, Ingredient.of(ArchaeologyItems.BRUSH.get()), false));
+        this.goalSelector.addGoal(7, new RandomStrollGoal(this, 1.0D, 60));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 6.0F));
         this.targetSelector.addGoal(1, new OwnerHurtByTargetGoal(this));

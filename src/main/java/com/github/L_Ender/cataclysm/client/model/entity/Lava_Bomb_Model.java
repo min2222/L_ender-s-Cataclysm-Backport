@@ -5,11 +5,10 @@ import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 
-public class Lava_Bomb_Model extends AdvancedEntityModel<Entity> {
+public class Lava_Bomb_Model extends AdvancedEntityModel<Lava_Bomb_Entity> {
     private final AdvancedModelBox root;
 
 
@@ -37,11 +36,10 @@ public class Lava_Bomb_Model extends AdvancedEntityModel<Entity> {
     }
 
     @Override
-    public void setupAnim(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
-        Lava_Bomb_Entity lava = (Lava_Bomb_Entity) entity;
+    public void setupAnim(Lava_Bomb_Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch){
         float delta = ageInTicks - entity.tickCount;
-        Vec3 prevV = new Vec3(lava.prevDeltaMovementX, lava.prevDeltaMovementY, lava.prevDeltaMovementZ);
-        Vec3 dv = prevV.add(lava.getDeltaMovement().subtract(prevV).scale(delta));
+        Vec3 prevV = new Vec3(entity.prevDeltaMovementX, entity.prevDeltaMovementY, entity.prevDeltaMovementZ);
+        Vec3 dv = prevV.add(entity.getDeltaMovement().subtract(prevV).scale(delta));
         double d = Math.sqrt(dv.x * dv.x + dv.y * dv.y + dv.z * dv.z);
         if (d != 0) {
             double a = dv.y / d;
@@ -50,6 +48,7 @@ public class Lava_Bomb_Model extends AdvancedEntityModel<Entity> {
             root.rotateAngleX = pitch + (float)Math.PI / 2f;
 
         }
+
     }
 
 

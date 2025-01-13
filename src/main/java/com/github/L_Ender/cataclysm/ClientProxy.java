@@ -11,8 +11,12 @@ import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.client.event.ClientEvent;
 import com.github.L_Ender.cataclysm.client.gui.GUIWeponfusion;
+import com.github.L_Ender.cataclysm.client.gui.MinistrosityInventoryScreen;
 import com.github.L_Ender.cataclysm.client.particle.CursedFlameParticle;
+import com.github.L_Ender.cataclysm.client.particle.CustomExplodeParticle;
 import com.github.L_Ender.cataclysm.client.particle.EM_PulseParticle;
+import com.github.L_Ender.cataclysm.client.particle.FlameJetParticle;
+import com.github.L_Ender.cataclysm.client.particle.LightTrailParticle;
 import com.github.L_Ender.cataclysm.client.particle.LightningParticle;
 import com.github.L_Ender.cataclysm.client.particle.Phantom_Wing_FlameParticle;
 import com.github.L_Ender.cataclysm.client.particle.RingParticle;
@@ -47,6 +51,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.Ancient_Remnant_Rework_
 import com.github.L_Ender.cataclysm.client.render.entity.Aptrgangr_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Axe_Blade_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Blazing_Bone_Renderer;
+import com.github.L_Ender.cataclysm.client.render.entity.Boltstrike_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Cm_Falling_Block_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Coral_Golem_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Coralssus_Renderer;
@@ -65,6 +70,7 @@ import com.github.L_Ender.cataclysm.client.render.entity.Ender_Guardian_Renderer
 import com.github.L_Ender.cataclysm.client.render.entity.Ender_Guardian_bullet_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Endermaptera_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Flame_Strike_Renderer;
+import com.github.L_Ender.cataclysm.client.render.entity.Flare_Bomb_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Ignis_Abyss_Fireball_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Ignis_Fireball_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Ignis_Renderer;
@@ -80,7 +86,9 @@ import com.github.L_Ender.cataclysm.client.render.entity.Maledictus_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Mini_Abyss_Blast_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Modern_Remnant_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Nameless_Sorcerer_Renderer;
+import com.github.L_Ender.cataclysm.client.render.entity.Netherite_Ministrosity_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Netherite_Monstrosity_Renderer;
+import com.github.L_Ender.cataclysm.client.render.entity.New_Netherite_Monstrosity_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Phantom_Arrow_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Phantom_Halberd_Renderer;
 import com.github.L_Ender.cataclysm.client.render.entity.Poison_Dart_Renderer;
@@ -157,7 +165,7 @@ public class ClientProxy extends CommonProxy {
     public static Map<UUID, Integer> bossBarRenderTypes = new HashMap<>();
 
     public static List<UUID> blockedEntityRenders = new ArrayList<>();
-
+    private Entity referencedMob = null;
     public void init() {
        // FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientLayerEvent::onAddLayers);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupParticles);
@@ -178,13 +186,20 @@ public class ClientProxy extends CommonProxy {
         registry.register(ModParticle.RING.get(), RingParticle.RingFactory::new);
         registry.register(ModParticle.SANDSTORM.get(), SandStormParticle.Factory::new);
         registry.register(ModParticle.TRAP_FLAME.get(), TrapFlameParticle.Factory::new);
+        registry.register(ModParticle.LIGHT_TRAIL.get(), new LightTrailParticle.OrbFactory());
+        registry.register(ModParticle.FLAME_JET.get(), FlameJetParticle.Factory::new);
+        registry.register(ModParticle.FLARE_EXPLODE.get(), CustomExplodeParticle.FlareFactory::new);
     }
 
     public void clientInit() {
         ItemRenderer itemRendererIn = Minecraft.getInstance().getItemRenderer();
         EntityRenderers.register(ModEntities.ENDER_GOLEM.get(), Ender_Golem_Renderer::new);
-        EntityRenderers.register(ModEntities.NETHERITE_MONSTROSITY.get(), Netherite_Monstrosity_Renderer::new);
+        EntityRenderers.register(ModEntities.NETHERITE_MONSTROSITY.get(), New_Netherite_Monstrosity_Renderer::new);
+        EntityRenderers.register(ModEntities.NETHERITE_MINISTROSITY.get(), Netherite_Ministrosity_Renderer::new);
+        EntityRenderers.register(ModEntities.OLD_NETHERITE_MONSTROSITY.get(), Netherite_Monstrosity_Renderer::new);
         EntityRenderers.register(ModEntities.LAVA_BOMB.get(), Lava_Bomb_Renderer::new);
+        EntityRenderers.register(ModEntities.FLARE_BOMB.get(), Flare_Bomb_Renderer::new);
+        EntityRenderers.register(ModEntities.FLAME_JET.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.NAMELESS_SORCERER.get(), Nameless_Sorcerer_Renderer::new);
         EntityRenderers.register(ModEntities.IGNIS.get(), Ignis_Renderer::new);
         EntityRenderers.register(ModEntities.ENDER_GUARDIAN.get(), Ender_Guardian_Renderer::new);
@@ -202,6 +217,9 @@ public class ClientProxy extends CommonProxy {
         EntityRenderers.register(ModEntities.ASHEN_BREATH.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.WALL_WATCHER.get(), RendererNull::new);
         EntityRenderers.register(ModEntities.FLAME_STRIKE.get(), Flame_Strike_Renderer::new);
+
+        EntityRenderers.register(ModEntities.BOLT_STRIKE.get(), Boltstrike_Renderer::new);
+        
         EntityRenderers.register(ModEntities.CM_FALLING_BLOCK.get(), Cm_Falling_Block_Renderer::new);
         EntityRenderers.register(ModEntities.IGNIS_FIREBALL.get(), Ignis_Fireball_Renderer::new);
         EntityRenderers.register(ModEntities.IGNIS_ABYSS_FIREBALL.get(), Ignis_Abyss_Fireball_Renderer::new);
@@ -419,6 +437,14 @@ public class ClientProxy extends CommonProxy {
         e.register(ModKeybind.HELMET_KEY_ABILITY);
         e.register(ModKeybind.CHESTPLATE_KEY_ABILITY);
         e.register(ModKeybind.BOOTS_KEY_ABILITY);
+    }
+    
+    public Entity getReferencedMob() {
+        return referencedMob;
+    }
+
+    public void setReferencedMob(Entity referencedMob) {
+        this.referencedMob = referencedMob;
     }
 
     public void removeBossBarRender(UUID bossBar) {

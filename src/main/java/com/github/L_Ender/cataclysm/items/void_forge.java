@@ -23,7 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
-import net.minecraft.world.item.Tiers;
+import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -36,9 +36,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 public class void_forge extends PickaxeItem {
-    public void_forge(Tiers toolMaterial, Properties props) {
+    public void_forge(Tier toolMaterial, Properties props) {
 
-        super(toolMaterial, 8, -3.2f, props);
+        super(toolMaterial, 8, -3.0f, props);
     }
 
     @Override

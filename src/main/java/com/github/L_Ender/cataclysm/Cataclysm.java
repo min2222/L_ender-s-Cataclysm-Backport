@@ -29,14 +29,14 @@ import com.github.L_Ender.cataclysm.init.Modfeatures;
 import com.github.L_Ender.cataclysm.message.MessageArmorKey;
 import com.github.L_Ender.cataclysm.message.MessageCMMultipart;
 import com.github.L_Ender.cataclysm.message.MessageCharge;
-import com.github.L_Ender.cataclysm.message.MessageGoneWithSandstorm;
 import com.github.L_Ender.cataclysm.message.MessageHookFalling;
+import com.github.L_Ender.cataclysm.message.MessageMiniinventory;
 import com.github.L_Ender.cataclysm.message.MessageMusic;
+import com.github.L_Ender.cataclysm.message.MessageParryFrame;
 import com.github.L_Ender.cataclysm.message.MessageParticle;
 import com.github.L_Ender.cataclysm.message.MessageRenderRush;
 import com.github.L_Ender.cataclysm.message.MessageSwingArm;
 import com.github.L_Ender.cataclysm.message.MessageTidalTentacle;
-import com.github.L_Ender.cataclysm.message.MessageToggleSandstorm;
 import com.github.L_Ender.cataclysm.message.MessageUpdateBossBar;
 import com.github.L_Ender.cataclysm.message.MessageUpdateblockentity;
 import com.github.L_Ender.cataclysm.world.CMMobSpawnBiomeModifier;
@@ -186,14 +186,15 @@ public class Cataclysm {
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageSwingArm.class, MessageSwingArm::write, MessageSwingArm::read, MessageSwingArm.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageHookFalling.class, MessageHookFalling::encode, MessageHookFalling::new, MessageHookFalling.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageTidalTentacle.class, MessageTidalTentacle::encode, MessageTidalTentacle::new, MessageTidalTentacle.Handler::onMessage);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageGoneWithSandstorm.class, MessageGoneWithSandstorm::encode, MessageGoneWithSandstorm::new, MessageGoneWithSandstorm.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageCharge.class, MessageCharge::encode, MessageCharge::new, MessageCharge.Handler::onMessage);
-        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageToggleSandstorm.class, MessageToggleSandstorm::encode, MessageToggleSandstorm::new, MessageToggleSandstorm.Handler::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageUpdateBossBar.class, MessageUpdateBossBar::write, MessageUpdateBossBar::read, MessageUpdateBossBar::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageArmorKey.class, MessageArmorKey::write, MessageArmorKey::read, MessageArmorKey::handle);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageParticle.class, MessageParticle::encode, MessageParticle::new, MessageParticle.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageRenderRush.class, MessageRenderRush::encode, MessageRenderRush::new, MessageRenderRush.Handler::onMessage);
         NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMusic.class, MessageMusic::write, MessageMusic::read, MessageMusic.Handler::onMessage);
+        
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageParryFrame.class, MessageParryFrame::encode, MessageParryFrame::new, MessageParryFrame.Handler::onMessage);
+        NETWORK_WRAPPER.registerMessage(packetsRegistered++, MessageMiniinventory.class, MessageMiniinventory::write, MessageMiniinventory::read, MessageMiniinventory.Handler::handle);
 
         event.enqueueWork(ModItems::initDispenser);
         event.enqueueWork(ModJigsaw::registerJigsawElements);

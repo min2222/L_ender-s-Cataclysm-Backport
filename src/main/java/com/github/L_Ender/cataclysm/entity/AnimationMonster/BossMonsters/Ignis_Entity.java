@@ -89,7 +89,7 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class Ignis_Entity extends LLibrary_Boss_Monster implements IHoldEntity {
+public class Ignis_Entity extends LLibrary_Boss_Monster {
     private final CMBossInfoServer bossInfo = new CMBossInfoServer(this.getDisplayName(), BossEvent.BossBarColor.YELLOW, false, 2);
     public static final Animation SWING_ATTACK = Animation.create(55);
     public static final Animation SWING_ATTACK_SOUL = Animation.create(46);
@@ -1571,7 +1571,9 @@ public class Ignis_Entity extends LLibrary_Boss_Monster implements IHoldEntity {
                             if (entityHit.isShiftKeyDown()) {
                                 entityHit.setShiftKeyDown(false);
                             }
-                            entityHit.startRiding(this, true);
+                            if (!this.level.isClientSide) {
+                                entityHit.startRiding(this, true);
+                            }
                             AnimationHandler.INSTANCE.sendAnimationMessage(this, POKED_ATTACK);
                         }
                     }

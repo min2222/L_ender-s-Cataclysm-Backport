@@ -34,34 +34,23 @@ public class AptrgangrRiderLayer extends RenderLayer<Aptrgangr_Entity, Aptrgangr
                 if (passenger == Minecraft.getInstance().player && Minecraft.getInstance().options.getCameraType().isFirstPerson()) {
                     continue;
                 }
-                Cataclysm.PROXY.releaseRenderingEntity(passenger.getUUID());
                 poseStack.pushPose();
                 poseStack.translate(ridePos.x, ridePos.y - 0.65F + passenger.getBbHeight(), ridePos.z);
                 poseStack.mulPose(Vector3f.XN.rotationDegrees(180F));
                 poseStack.mulPose(Vector3f.YN.rotationDegrees(360 - bodyYaw));
+                Cataclysm.PROXY.releaseRenderingEntity(passenger.getUUID());
                 renderPassenger(passenger, 0, 0, 0, 0, partialTicks, poseStack, bufferIn, packedLightIn);
-                poseStack.popPose();
                 Cataclysm.PROXY.blockRenderingEntity(passenger.getUUID());
+                poseStack.popPose();
             }
 
         }
     }
 
-
-    public void translateToHand(PoseStack matrixStack) {
-        this.getParentModel().roots.translateAndRotate(matrixStack);
-        this.getParentModel().body.translateAndRotate(matrixStack);
-        this.getParentModel().chest.translateAndRotate(matrixStack);
-        this.getParentModel().l_arm.translateAndRotate(matrixStack);
-        this.getParentModel().left_arm2.translateAndRotate(matrixStack);
-        this.getParentModel().l_arm_cloth.translateAndRotate(matrixStack);
-        this.getParentModel().hold.translateAndRotate(matrixStack);
-    }
-
     public Vec3 getRiderPosition(Vec3 offsetIn) {
         PoseStack translationStack = new PoseStack();
         translationStack.pushPose();
-        translateToHand(translationStack);
+        this.getParentModel().translateToHand(translationStack);
         Vector4f armOffsetVec = new Vector4f((float) offsetIn.x, (float) offsetIn.y, (float) offsetIn.z, 1.0F);
         armOffsetVec.transform(translationStack.last().pose());
         Vec3 vec3 = new Vec3(armOffsetVec.x(), armOffsetVec.y(), armOffsetVec.z());
