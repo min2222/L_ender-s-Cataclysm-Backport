@@ -1,10 +1,11 @@
 package com.github.L_Ender.cataclysm.entity.Pet.AI;
 
+import java.util.EnumSet;
+
 import com.github.L_Ender.cataclysm.entity.Pet.InternalAnimationPet;
+
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
-
-import java.util.EnumSet;
 
 public class InternalPetAttackGoal extends Goal {
     protected final InternalAnimationPet entity;

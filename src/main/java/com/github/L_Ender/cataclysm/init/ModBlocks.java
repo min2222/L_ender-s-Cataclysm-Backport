@@ -15,6 +15,8 @@ import com.github.L_Ender.cataclysm.blocks.Cursed_Tombstone_Block;
 import com.github.L_Ender.cataclysm.blocks.Door_of_Seal_Block;
 import com.github.L_Ender.cataclysm.blocks.EMP_Block;
 import com.github.L_Ender.cataclysm.blocks.EndStoneTeleportTrapBricks;
+import com.github.L_Ender.cataclysm.blocks.FacingBlock;
+import com.github.L_Ender.cataclysm.blocks.FacingPillarBlock;
 import com.github.L_Ender.cataclysm.blocks.Mechanical_fusion_Anvil;
 import com.github.L_Ender.cataclysm.blocks.MeltingNetherrack;
 import com.github.L_Ender.cataclysm.blocks.ObsidianExplosionTrapBricks;
@@ -246,9 +248,15 @@ public class ModBlocks {
     
     public static final RegistryObject<Block> CHORUS_FENCE = BLOCKS.register("chorus_fence",
             () -> new FenceBlock(BlockBehaviour.Properties.copy(CHORUS_PLANKS.get())));
+    
+    public static final RegistryObject<Block> PRISMARINE_BRICK_FENCE = BLOCKS.register("prismarine_brick_fence",
+            () -> new FenceBlock(BlockBehaviour.Properties.copy(Blocks.PRISMARINE_BRICKS)));
 
     public static final RegistryObject<Block> QUARTZ_BRICK_WALL = BLOCKS.register("quartz_brick_wall",
             () -> new WallBlock(BlockBehaviour.Properties.copy(Blocks.QUARTZ_BRICKS)));
+    
+    public static final RegistryObject<Block> PRISMARINE_BRICK_WALL = BLOCKS.register("prismarine_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(Blocks.PRISMARINE_BRICKS)));
 
     public static final RegistryObject<Block> STONE_PILLAR = BLOCKS.register("stone_pillar",
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.STONE)
@@ -306,6 +314,65 @@ public class ModBlocks {
             () -> new RotatedPillarBlock(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.COLOR_BLACK)
                     .requiresCorrectToolForDrops()
                     .strength(1.5F, 6.0F)));
+    
+    public static final RegistryObject<Block> AZURE_SEASTONE = BLOCKS.register("azure_seastone",
+            () -> new Block(BlockBehaviour.Properties.of(Material.STONE).color(MaterialColor.QUARTZ)
+                    .requiresCorrectToolForDrops()
+                    .strength(2.0F, 6.0F)));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_SLAB = BLOCKS.register("azure_seastone_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_STAIRS = BLOCKS.register("azure_seastone_stairs",
+            () -> new StairBlock(AZURE_SEASTONE.get().defaultBlockState(),BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_WALL = BLOCKS.register("azure_seastone_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+    
+    public static final RegistryObject<Block> AZURE_SEASTONE_FENCE = BLOCKS.register("azure_seastone_fence",
+            () -> new FenceBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_TILES = BLOCKS.register("azure_seastone_tiles",
+            () -> new FacingBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> CHISELED_AZURE_SEASTONE = BLOCKS.register("chiseled_azure_seastone",
+            () -> new FacingBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_BRICKS = BLOCKS.register("azure_seastone_bricks",
+            () -> new Block(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_BRICK_SLAB = BLOCKS.register("azure_seastone_brick_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE_BRICKS.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_BRICK_STAIRS = BLOCKS.register("azure_seastone_brick_stairs",
+            () -> new StairBlock(AZURE_SEASTONE_BRICKS.get().defaultBlockState(),BlockBehaviour.Properties.copy(AZURE_SEASTONE_BRICKS.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_BRICK_WALL = BLOCKS.register("azure_seastone_brick_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE_BRICKS.get())));
+
+    public static final RegistryObject<Block> POLISHED_AZURE_SEASTONE = BLOCKS.register("polished_azure_seastone",
+            () -> new Block(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> POLISHED_AZURE_SEASTONE_SLAB = BLOCKS.register("polished_azure_seastone_slab",
+            () -> new SlabBlock(BlockBehaviour.Properties.copy(POLISHED_AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> POLISHED_AZURE_SEASTONE_STAIRS = BLOCKS.register("polished_azure_seastone_stairs",
+            () -> new StairBlock(POLISHED_AZURE_SEASTONE.get().defaultBlockState(),BlockBehaviour.Properties.copy(POLISHED_AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> POLISHED_AZURE_SEASTONE_WALL = BLOCKS.register("polished_azure_seastone_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_PILLAR = BLOCKS.register("azure_seastone_pillar",
+            () -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> AZURE_SEASTONE_PILLAR_WALL = BLOCKS.register("azure_seastone_pillar_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> CHISELED_AZURE_SEASTONE_PILLAR = BLOCKS.register("chiseled_azure_seastone_pillar",
+            () -> new FacingPillarBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
+
+    public static final RegistryObject<Block> CHISELED_AZURE_SEASTONE_PILLAR_WALL = BLOCKS.register("chiseled_azure_seastone_pillar_wall",
+            () -> new WallBlock(BlockBehaviour.Properties.copy(AZURE_SEASTONE.get())));
 
     public static final RegistryObject<Block> POINTED_ICICLE = BLOCKS.register("pointed_icicle",
             () -> new PointedIcicleBlock(BlockBehaviour.Properties.of(Material.ICE).color(MaterialColor.ICE)
@@ -330,7 +397,7 @@ public class ModBlocks {
 
     public static RegistryObject<Block> registerBlockAndItem(String name, Supplier<Block> block, Item.Properties blockItemProps, boolean specialRender){
         RegistryObject<Block> blockObj = BLOCKS.register(name, block);
-        ModItems.ITEMS.register(name, () -> specialRender ?  new BlockItemCMRender(blockObj, blockItemProps.tab(Cataclysm.TAB)) :  new CMBlockItem(blockObj, blockItemProps.tab(Cataclysm.TAB)));
+        ModItems.ITEMS.register(name, () -> specialRender ?  new BlockItemCMRender(blockObj, blockItemProps.tab(ModGroup.BLOCK)) :  new CMBlockItem(blockObj, blockItemProps.tab(ModGroup.BLOCK)));
         return blockObj;
     }
 

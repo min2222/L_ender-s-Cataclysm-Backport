@@ -144,8 +144,10 @@ public class Ignited_Berserker_Model<T extends Ignited_Berserker_Entity> extends
 		this.root().getAllParts().forEach(ModelPart::resetPose);
 
 		this.animateHeadLookTarget(netHeadYaw, headPitch);
-		if(entity.getAttackState() == 0 && entity.isMoving() && entity.isAlive()) {
-			this.animateWalk(Ignited_Berserker_Animation.WALK, limbSwing, limbSwingAmount, 1.0F, 2.0F);
+		if(entity.getAttackState() == 0) {
+			if(limbSwing != 0.0F) {
+				this.animateWalk(Ignited_Berserker_Animation.WALK, limbSwing, limbSwingAmount, 1.0F, 2.0F);
+			}
 			edges.yRot -= ageInTicks * 0.1F;
 		}
 

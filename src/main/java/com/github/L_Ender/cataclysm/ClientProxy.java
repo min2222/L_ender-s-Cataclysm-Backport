@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.client.event.ClientEvent;
 import com.github.L_Ender.cataclysm.client.gui.GUIWeponfusion;
-import com.github.L_Ender.cataclysm.client.gui.MinistrosityInventoryScreen;
 import com.github.L_Ender.cataclysm.client.particle.CursedFlameParticle;
 import com.github.L_Ender.cataclysm.client.particle.CustomExplodeParticle;
 import com.github.L_Ender.cataclysm.client.particle.EM_PulseParticle;
@@ -437,14 +436,6 @@ public class ClientProxy extends CommonProxy {
         e.register(ModKeybind.HELMET_KEY_ABILITY);
         e.register(ModKeybind.CHESTPLATE_KEY_ABILITY);
         e.register(ModKeybind.BOOTS_KEY_ABILITY);
-    }
-    
-    public Entity getReferencedMob() {
-        return referencedMob;
-    }
-
-    public void setReferencedMob(Entity referencedMob) {
-        this.referencedMob = referencedMob;
     }
 
     public void removeBossBarRender(UUID bossBar) {

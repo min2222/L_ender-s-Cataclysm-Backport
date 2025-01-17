@@ -17,7 +17,11 @@ import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
 
 public class Maledictus_Model extends HierarchicalModel<Maledictus_Entity> {
 	private final ModelPart root;
@@ -350,7 +354,7 @@ public class Maledictus_Model extends HierarchicalModel<Maledictus_Entity> {
 
 		this.animate(entity.getAnimationState("grab_success_end"), Maledictus_Grab_Attack_Animation.GRAB_LAND, ageInTicks, 1.0F);
 
-		if(entity.getAttackState() != 10 && entity.getAttackState() != 11 && entity.getAttackState() != 12 && entity.getAttackState() != 13 && entity.getAttackState() != 14 && entity.getAttackState() != 18 && entity.getAttackState() != 29 && entity.getAttackState() != 33 && entity.getAttackState() != 32 && entity.getAttackState() != 31)  {
+		if(entity.getAttackState() != 10 && entity.getAttackState() != 11 && entity.getAttackState() != 12 && entity.getAttackState() != 13 && entity.getAttackState() != 14 && entity.getAttackState() != 18 && entity.getAttackState() != 29 && entity.getAttackState() != 33 && entity.getAttackState() != 32 && entity.getAttackState() != 31 && limbSwing != 0.0F)  {
 			this.animateWalk(Maledictus_Animation.WALK, limbSwing, limbSwingAmount, 1.0F, 4.0F);
 		}
 

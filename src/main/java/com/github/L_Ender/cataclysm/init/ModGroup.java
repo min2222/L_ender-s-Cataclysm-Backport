@@ -1,24 +1,20 @@
 package com.github.L_Ender.cataclysm.init;
 
-import com.github.L_Ender.cataclysm.Cataclysm;
-
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-public class ModGroup extends CreativeModeTab {
-
-    public ModGroup() {
-        super(Cataclysm.MODID);
-    }
-
-    @Override
-    public ItemStack makeIcon() {
-        return ModItems.THE_INCINERATOR.get().getDefaultInstance();
-    }
-
-    @Override
-    public void fillItemList(NonNullList<ItemStack> items) {
-        super.fillItemList(items);
-    }
+public class ModGroup {
+	public static final CreativeModeTab ITEM = new CreativeModeTab("cataclysm.item") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(ModItems.THE_INCINERATOR.get());
+		}
+	};
+	
+	public static final CreativeModeTab BLOCK = new CreativeModeTab("cataclysm.block") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(ModItems.VOID_STONE.get());
+		}
+	};
 }

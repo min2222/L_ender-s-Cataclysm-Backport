@@ -1,7 +1,5 @@
 package com.github.L_Ender.cataclysm.entity.effect;
 
-import java.util.UUID;
-
 import javax.annotation.Nullable;
 
 import com.github.L_Ender.cataclysm.client.particle.StormParticle;
@@ -29,12 +27,11 @@ import net.minecraft.world.phys.Vec3;
 public class Void_Vortex_Entity extends Entity {
 
     protected static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(Void_Vortex_Entity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> CASTER = SynchedEntityData.defineId(Void_Vortex_Entity.class, EntityDataSerializers.INT);
     private boolean madeOpenNoise = false;
     private boolean madeCloseNoise = false;
     @Nullable
     private LivingEntity owner;
-    @Nullable
-    private UUID ownerUUID;
 
 
     public Void_Vortex_Entity(EntityType<?> entityTypeIn, Level worldIn) {
@@ -43,8 +40,8 @@ public class Void_Vortex_Entity extends Entity {
 
     public Void_Vortex_Entity(Level worldIn, double x, double y, double z, float p_i47276_8_, LivingEntity casterIn,int span) {
         this(ModEntities.VOID_VORTEX.get(), worldIn);
-        this.setOwner(casterIn);
         this.setLifespan(span);
+        this.setOwner(casterIn);
         this.setYRot(p_i47276_8_ * (180F / (float)Math.PI));
         this.setPos(x, y, z);
     }
@@ -117,16 +114,24 @@ public class Void_Vortex_Entity extends Entity {
     public void setLifespan(int i) {
         this.entityData.set(LIFESPAN, i);
     }
+    
+    public int getCasterID() {
+        return entityData.get(CASTER);
+    }
+
+    public void setCasterID(int id) {
+        entityData.set(CASTER, id);
+    }
 
     public void setOwner(@Nullable LivingEntity p_19719_) {
         this.owner = p_19719_;
-        this.ownerUUID = p_19719_ == null ? null : p_19719_.getUUID();
+        setCasterID(p_19719_ == null ? 0 : p_19719_.getId());
     }
 
     @Nullable
     public LivingEntity getOwner() {
-        if (this.owner == null && this.ownerUUID != null && this.level instanceof ServerLevel) {
-            Entity entity = ((ServerLevel)this.level).getEntity(this.ownerUUID);
+        if (this.owner == null && getCasterID() != 0 && this.level instanceof ServerLevel) {
+            Entity entity = ((ServerLevel)this.level).getEntity(getCasterID());
             if (entity instanceof LivingEntity) {
                 this.owner = (LivingEntity)entity;
             }
@@ -138,22 +143,19 @@ public class Void_Vortex_Entity extends Entity {
     @Override
     protected void defineSynchedData() {
         this.entityData.define(LIFESPAN, 300);
+        this.entityData.define(CASTER, -1);
 
     }
 
     protected void readAdditionalSaveData(CompoundTag compound) {
         this.setLifespan(compound.getInt("Lifespan"));
-        if (compound.hasUUID("Owner")) {
-            this.ownerUUID = compound.getUUID("Owner");
-        }
+        this.setCasterID(compound.getInt("CasterId"));
 
     }
 
     protected void addAdditionalSaveData(CompoundTag compound) {
         compound.putInt("Lifespan", getLifespan());
-        if (this.ownerUUID != null) {
-            compound.putUUID("Owner", this.ownerUUID);
-        }
+        compound.putInt("CasterId", getCasterID());
 
     }
 

@@ -4,11 +4,14 @@ import java.util.function.Supplier;
 import com.github.L_Ender.cataclysm.client.gui.MinistrosityInventoryScreen;
 import com.github.L_Ender.cataclysm.entity.Pet.Netherite_Ministrosity_Entity;
 import com.github.L_Ender.cataclysm.inventory.MinistrostiyMenu;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.network.NetworkEvent;
 
 
@@ -52,18 +55,23 @@ public class MessageMiniinventory {
 
         public static void handle(MessageMiniinventory msg, Supplier<NetworkEvent.Context> context) {
             context.get().enqueueWork(() -> {
-                Player player = Minecraft.getInstance().player;
-                if (player != null) {
-                    Entity entity = player.level.getEntity(msg.getEntityId());
-                    if (entity instanceof Netherite_Ministrosity_Entity guard) {
-                        LocalPlayer clientplayerentity = Minecraft.getInstance().player;
-                        MinistrostiyMenu container = new MinistrostiyMenu(msg.getId(), player.getInventory(), guard.miniInventory, guard);
-                        clientplayerentity.containerMenu = container;
-                        Minecraft.getInstance().setScreen(new MinistrosityInventoryScreen(container, player.getInventory(), guard));
-                    }
-                }
+            	openInventory(msg);
             });
             context.get().setPacketHandled(true);
+        }
+    }
+    
+    @OnlyIn(Dist.CLIENT)
+    public static void openInventory(MessageMiniinventory packet) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null) {
+            Entity entity = player.level.getEntity(packet.getEntityId());
+            if (entity instanceof Netherite_Ministrosity_Entity guard) {
+                LocalPlayer clientplayerentity = Minecraft.getInstance().player;
+                MinistrostiyMenu container = new MinistrostiyMenu(packet.getId(), player.getInventory(), guard.miniInventory, guard);
+                clientplayerentity.containerMenu = container;
+                Minecraft.getInstance().setScreen(new MinistrosityInventoryScreen(container, player.getInventory(), guard));
+            }
         }
     }
 }

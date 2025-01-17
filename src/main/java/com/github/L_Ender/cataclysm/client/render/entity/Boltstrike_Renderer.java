@@ -1,10 +1,13 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.client.render.etc.LightningBoltData;
 import com.github.L_Ender.cataclysm.client.render.etc.LightningRender;
 import com.github.L_Ender.cataclysm.entity.effect.Boltstrike_Entity;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Vector4f;
 
 import net.minecraft.client.Minecraft;
@@ -16,10 +19,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 @OnlyIn(Dist.CLIENT)
 public class Boltstrike_Renderer extends EntityRenderer<Boltstrike_Entity> {

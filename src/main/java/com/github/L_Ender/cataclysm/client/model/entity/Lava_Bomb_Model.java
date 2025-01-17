@@ -5,7 +5,7 @@ import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.world.entity.Entity;
+
 import net.minecraft.world.phys.Vec3;
 
 public class Lava_Bomb_Model extends AdvancedEntityModel<Lava_Bomb_Entity> {

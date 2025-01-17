@@ -4,11 +4,13 @@ package com.github.L_Ender.cataclysm.client.model.entity;// Made with Blockbench
 
 
 import com.github.L_Ender.cataclysm.entity.AnimationMonster.BossMonsters.Old_Netherite_Monstrosity_Entity;
-import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
+import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
 import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedEntityModel;
-import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;import com.github.L_Ender.lionfishapi.client.model.Animations.ModelAnimator;
+import com.github.L_Ender.lionfishapi.client.model.tools.AdvancedModelBox;
 import com.github.L_Ender.lionfishapi.client.model.tools.BasicModelPart;
+import com.github.L_Ender.lionfishapi.server.animation.IAnimatedEntity;
 import com.google.common.collect.ImmutableList;
+
 import net.minecraft.client.Minecraft;
 
 public class Old_Netherite_Monstrosity_Model extends AdvancedEntityModel<Old_Netherite_Monstrosity_Entity> {

@@ -1,6 +1,7 @@
 package com.github.L_Ender.cataclysm.inventory;
 
 import com.github.L_Ender.cataclysm.init.ModTag;
+
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
