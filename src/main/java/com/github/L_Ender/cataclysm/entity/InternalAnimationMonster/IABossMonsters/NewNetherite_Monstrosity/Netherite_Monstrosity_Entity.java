@@ -139,6 +139,21 @@ public class Netherite_Monstrosity_Entity extends IABoss_monster {
     public float getStepHeight() {
     	return 4.5F;
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
+    
+    @Override
+    public boolean isInvulnerableTo(DamageSource p_20122_) {
+    	return super.isInvulnerableTo(p_20122_) || p_20122_.isFall();
+    }
+    
+    @Override
+    public boolean causeFallDamage(float p_148711_, float p_148712_, DamageSource p_148713_) {
+        return false;
+    }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));

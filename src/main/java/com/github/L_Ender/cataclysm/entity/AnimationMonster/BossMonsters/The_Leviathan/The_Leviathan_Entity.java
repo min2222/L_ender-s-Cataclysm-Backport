@@ -185,6 +185,11 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
         switchNavigator(false);
         setConfigattribute(this, CMConfig.LeviathanHealthMultiplier, CMConfig.LeviathanDamageMultiplier);
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
 
     public static AttributeSupplier.Builder leviathan() {
         return Monster.createMonsterAttributes().add(Attributes.MAX_HEALTH, 400.0D)
@@ -368,7 +373,7 @@ public class The_Leviathan_Entity extends LLibrary_Boss_Monster implements ISemi
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source) || source.isFall();
     }
 
     public boolean causeFallDamage(float p_148711_, float p_148712_, DamageSource p_148713_) {

@@ -72,6 +72,16 @@ public class The_Prowler_Entity extends Internal_Animation_Monster {
     public float getStepHeight() {
     	return 1.25F;
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
+    
+    @Override
+    public boolean isInvulnerableTo(DamageSource p_20122_) {
+    	return super.isInvulnerableTo(p_20122_) || p_20122_.isFall();
+    }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(2, new InternalMoveGoal(this, false, 1.0D));

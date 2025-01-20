@@ -50,6 +50,16 @@ public class The_Watcher_Entity extends LLibrary_Monster {
     public float getStepHeight() {
     	return 1.25F;
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
+    
+    @Override
+    public boolean isInvulnerableTo(DamageSource p_20122_) {
+    	return super.isInvulnerableTo(p_20122_) || p_20122_.isFall();
+    }
 
     @Override
     public Animation[] getAnimations() {

@@ -78,6 +78,11 @@ public class Modern_Remnant_Entity extends LLibraryAnimationPet implements Bucke
     public float getStepHeight() {
     	return 1.0F;
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
 
     protected SoundEvent getAmbientSound() {
         return ModSounds.REMNANT_IDLE.get();
@@ -146,7 +151,7 @@ public class Modern_Remnant_Entity extends LLibraryAnimationPet implements Bucke
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source) || source.isFall();
     }
 
 

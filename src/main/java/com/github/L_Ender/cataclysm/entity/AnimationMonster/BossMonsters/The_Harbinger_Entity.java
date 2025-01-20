@@ -121,6 +121,16 @@ public class The_Harbinger_Entity extends LLibrary_Boss_Monster implements Range
         this.moveControl = new FlyingMoveControl(this, 10, false);
         setConfigattribute(this, CMConfig.HarbingerHealthMultiplier, CMConfig.HarbingerDamageMultiplier);
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
+    
+    @Override
+    public boolean isInvulnerableTo(DamageSource p_20122_) {
+    	return super.isInvulnerableTo(p_20122_) || p_20122_.isFall();
+    }
 
     protected PathNavigation createNavigation(Level p_186262_) {
         FlyingPathNavigation flyingpathnavigation = new FlyingPathNavigation(this, p_186262_);

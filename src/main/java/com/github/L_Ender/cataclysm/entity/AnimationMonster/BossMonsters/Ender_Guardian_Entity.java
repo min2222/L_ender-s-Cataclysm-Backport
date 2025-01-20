@@ -133,6 +133,11 @@ public class Ender_Guardian_Entity extends LLibrary_Boss_Monster {
     public float getStepHeight() {
     	return 1.75F;
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
 
     @Override
     public Animation[] getAnimations() {
@@ -326,7 +331,7 @@ public class Ender_Guardian_Entity extends LLibrary_Boss_Monster {
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL  || super.isInvulnerableTo(source) || source.isFall();
     }
 
     public boolean causeFallDamage(float p_148711_, float p_148712_, DamageSource p_148713_) {

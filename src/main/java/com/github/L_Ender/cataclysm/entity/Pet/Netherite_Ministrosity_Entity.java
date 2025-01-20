@@ -85,6 +85,16 @@ public class Netherite_Ministrosity_Entity extends InternalAnimationPet implemen
     public float getStepHeight() {
     	return 1.0F;
     }
+    
+    @Override
+    protected int calculateFallDamage(float p_21237_, float p_21238_) {
+    	return 0;
+    }
+    
+    @Override
+    public boolean causeFallDamage(float p_148711_, float p_148712_, DamageSource p_148713_) {
+        return false;
+    }
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new SitWhenOrderedToGoal(this));
@@ -239,7 +249,7 @@ public class Netherite_Ministrosity_Entity extends InternalAnimationPet implemen
 
     @Override
     public boolean isInvulnerableTo(DamageSource source) {
-        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source);
+        return source == DamageSource.IN_WALL || source == DamageSource.FALLING_BLOCK || super.isInvulnerableTo(source) || source.isFall();
     }
 
     protected void dropEquipment() {
