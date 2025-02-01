@@ -181,7 +181,7 @@ public class Boltstrike_Entity extends Entity {
                 }
                 if (this.lifeTicks == 12){
                     if (!this.isSilent()) {
-                        this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.BOLT_STRIKE.get(), this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.2F + 0.85F, false);
+                        this.level.playLocalSound(this.getX(), this.getY(), this.getZ(), ModSounds.EMP_ACTIVATED.get(), this.getSoundSource(), 1.0F, this.random.nextFloat() * 0.2F + 0.85F, false);
                     }
                 }
 

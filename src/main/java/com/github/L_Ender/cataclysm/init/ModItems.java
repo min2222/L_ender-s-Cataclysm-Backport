@@ -480,13 +480,13 @@ public class ModItems {
             () -> new Necklace_Of_The_Desert(new Item.Properties().tab(ModGroup.ITEM).fireResistant().rarity(Rarity.RARE)));
     
     public static final RegistryObject<Item> APTRGANGR_HEAD = ITEMS.register("aptrgangr_head",
-            () -> new CataclysmSkullItem(ModBlocks.APTRGANGR_HEAD.get(), ModBlocks.APTRGANGR_WALL_HEAD.get(), (new Item.Properties().tab(ModGroup.ITEM)).rarity(Rarity.UNCOMMON)));
+            () -> new CataclysmSkullItem(ModBlocks.APTRGANGR_HEAD.get(), ModBlocks.APTRGANGR_WALL_HEAD.get(), (new Item.Properties().tab(ModGroup.BLOCK)).rarity(Rarity.UNCOMMON)));
 
     public static final RegistryObject<Item> DRAUGR_HEAD = ITEMS.register("draugr_head",
-            () -> new CataclysmSkullItem(ModBlocks.DRAUGR_HEAD.get(), ModBlocks.DRAUGR_WALL_HEAD.get(), (new Item.Properties().tab(ModGroup.ITEM)).rarity(Rarity.UNCOMMON)));
+            () -> new CataclysmSkullItem(ModBlocks.DRAUGR_HEAD.get(), ModBlocks.DRAUGR_WALL_HEAD.get(), (new Item.Properties().tab(ModGroup.BLOCK)).rarity(Rarity.UNCOMMON)));
 
     public static final RegistryObject<Item> KOBOLEDIATOR_SKULL = ITEMS.register("kobolediator_skull",
-            () -> new CataclysmSkullItem(ModBlocks.KOBOLEDIATOR_SKULL.get(), ModBlocks.KOBOLEDIATOR_WALL_SKULL.get(), (new Item.Properties().tab(ModGroup.ITEM)).rarity(Rarity.UNCOMMON)));
+            () -> new CataclysmSkullItem(ModBlocks.KOBOLEDIATOR_SKULL.get(), ModBlocks.KOBOLEDIATOR_WALL_SKULL.get(), (new Item.Properties().tab(ModGroup.BLOCK)).rarity(Rarity.UNCOMMON)));
 
     public static final RegistryObject<Item> BONE_REPTILE_HELMET = ITEMS.register("bone_reptile_helmet",
             () -> new Bone_Reptile_Armor(Armortier.BONE_REPTILE, EquipmentSlot.HEAD, new Item.Properties().tab(ModGroup.ITEM)));

@@ -1,7 +1,13 @@
 package com.github.L_Ender.cataclysm.client.render.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import com.github.L_Ender.cataclysm.Cataclysm;
 import com.github.L_Ender.cataclysm.client.render.CMRenderTypes;
+import com.github.L_Ender.cataclysm.client.render.etc.LightningBoltData;
+import com.github.L_Ender.cataclysm.client.render.etc.LightningRender;
 import com.github.L_Ender.cataclysm.entity.projectile.Death_Laser_Beam_Entity;
 import com.github.L_Ender.cataclysm.util.CMMathUtil;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -9,6 +15,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
+import com.mojang.math.Vector4f;
 
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
@@ -20,17 +27,19 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class Death_Laser_beam_Renderer extends EntityRenderer<Death_Laser_Beam_Entity> {
-    private static final ResourceLocation TEXTURE =new ResourceLocation(Cataclysm.MODID,"textures/entity/harbinger/death_laser_beam.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(Cataclysm.MODID,"textures/entity/harbinger/death_laser_beam.png");
     private static final float TEXTURE_WIDTH = 256;
     private static final float TEXTURE_HEIGHT = 32;
     private static final float START_RADIUS = 0.75f;
     private static final float BEAM_RADIUS = 0.75F;
     private boolean clearerView = false;
+    private Map<UUID, LightningRender> lightningRenderMap = new HashMap<>();
 
     public Death_Laser_beam_Renderer(EntityRendererProvider.Context mgr) {
         super(mgr);
@@ -61,13 +70,13 @@ public class Death_Laser_beam_Renderer extends EntityRenderer<Death_Laser_Beam_E
         }
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(CMRenderTypes.getGlowingEffect(getTextureLocation(solarBeam)));
 
-        renderStart(frame, matrixStackIn, ivertexbuilder, packedLightIn);
         renderBeam(length, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, frame, matrixStackIn, ivertexbuilder, packedLightIn);
 
         matrixStackIn.pushPose();
         matrixStackIn.translate(collidePosX - posX, collidePosY - posY, collidePosZ - posZ);
         renderEnd(frame, solarBeam.blockSide, matrixStackIn, ivertexbuilder, packedLightIn);
         matrixStackIn.popPose();
+        renderLighting(delta,matrixStackIn,solarBeam,bufferIn);
     }
 
     private void renderFlatQuad(int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
@@ -93,6 +102,54 @@ public class Death_Laser_beam_Renderer extends EntityRenderer<Death_Laser_Beam_E
         matrixStackIn.mulPose(quat);
         renderFlatQuad(frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
+    }
+
+    private void renderLighting(float frame, PoseStack poseStack,Death_Laser_Beam_Entity entity, MultiBufferSource buffer) {
+        double x = Mth.lerp(frame, entity.xOld, entity.getX());
+        double y = Mth.lerp(frame, entity.yOld, entity.getY());
+        double z = Mth.lerp(frame, entity.zOld, entity.getZ());
+
+
+        float f1 = 0.0F;
+
+        if (entity.tickCount > 20) {
+            poseStack.pushPose();
+
+            poseStack.translate(-x, -y, -z);
+            LightningBoltData.BoltRenderInfo RedboltData = new LightningBoltData.BoltRenderInfo(0.5F, 0.15F, 0.25F, 0.25F, new Vector4f((float) 255 / 255, (float) 26 / 255, (float) 0 / 255, 0.9F), 0.86F);
+            LightningBoltData bolt1 = new LightningBoltData(RedboltData, new Vec3(x, y, z), new Vec3(entity.collidePosX, entity.collidePosY, entity.collidePosZ), 5)
+                    .size(0.1f)
+                    .lifespan(1)
+                    .spawn(LightningBoltData.SpawnFunction.NO_DELAY)
+                    .fade(LightningBoltData.FadeFunction.NONE);
+
+            LightningBoltData.BoltRenderInfo YellowboltData = new LightningBoltData.BoltRenderInfo(0.5F, 0.1F, 0.25F, 0.15F, new Vector4f((float) 249 / 255, (float) 194 / 255, (float) 43 / 255, 0.7F), 0.86F);
+            LightningBoltData bolt2 = new LightningBoltData(YellowboltData, new Vec3(x, y, z), new Vec3(entity.collidePosX, entity.collidePosY, entity.collidePosZ), 5)
+                    .size(0.07f)
+                    .lifespan(1)
+                    .spawn(LightningBoltData.SpawnFunction.NO_DELAY)
+                    .fade(LightningBoltData.FadeFunction.NONE);
+
+            LightningRender lightningRender = getLightingRender(entity.getUUID());
+            if (!Minecraft.getInstance().isPaused()) {
+                lightningRender.update(entity, bolt1, frame);
+                lightningRender.update(entity, bolt2, frame);
+            }
+            lightningRender.render(frame, poseStack, buffer);
+
+            poseStack.popPose();
+
+        }
+        if (entity.isRemoved() && lightningRenderMap.containsKey(entity.getUUID())) {
+            lightningRenderMap.remove(entity.getUUID());
+        }
+    }
+
+    private LightningRender getLightingRender(UUID uuid) {
+        if (lightningRenderMap.get(uuid) == null) {
+            lightningRenderMap.put(uuid, new LightningRender());
+        }
+        return lightningRenderMap.get(uuid);
     }
 
     private void renderEnd(int frame, Direction side, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {

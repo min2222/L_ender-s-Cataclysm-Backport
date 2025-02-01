@@ -57,7 +57,10 @@ public class Cm_Falling_Block_Entity extends Entity {
     }
 
     public BlockState getBlockState() {
-        return this.entityData.get(BLOCK_STATE).get();
+    	if(this.entityData.get(BLOCK_STATE).isPresent()) {
+    		return this.entityData.get(BLOCK_STATE).get();
+    	}
+        return null;
     }
 
     public void setBlockState(BlockState p_270267_) {
@@ -82,7 +85,9 @@ public class Cm_Falling_Block_Entity extends Entity {
 
     protected void addAdditionalSaveData(CompoundTag p_31973_) {
         BlockState blockState = getBlockState();
-        p_31973_.put("block_state", NbtUtils.writeBlockState(blockState));
+        if(blockState != null) {
+            p_31973_.put("block_state", NbtUtils.writeBlockState(blockState));
+        }
         p_31973_.putInt("Time", this.duration);
 
     }
